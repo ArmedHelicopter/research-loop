@@ -1518,3 +1518,22 @@ attribution, audit overhead and all original scientific experiments remain
 open. Existing C5 integration is still frozen for its original live run. This
 fixture uses only synthetic acceptance material; no real VAL acceptance or
 production authorization is created.
+# 2026-09-14：state TRAIN 配置来源关联
+
+`ba69b3908334bdec837917186e90ec654ca97ff0` 将 M1+M9、M2+M9、M3+M9
+实际目标驱动器接到原构建目录：调用前记录候选与封存来源，调用后封存目录，
+宿主读取器校验原件和提前绑定的 trace。不同构建的相同候选保留各自来源；
+关闭 M9 的固定配置仍有记录并标为 not_applied。该边表示 configured_by，
+不授予跨题证据支持、VAL 访问或科学有效性。
+
+38/38 工程检查通过，701 份冻结源码前后相同，227.578 秒；11 个真实受限构建、
+22 个 Docker 目标和独立进程评分，模型/来源评审为合成响应，新增付费调用为零。
+7 项新增检查覆盖全图读取、4 类重算摘要后的伪造、2 个端点的封存缺失；
+另有 31 项既有标签隔离、目录及主体契约检查。首轮 18867dd 的 31/32 原件保留：
+失败是测试将 12 个关闭 M9 的目标误计为 10，实验执行与格子未改。
+
+两个版本分别归档为 state-configuration-edges-r1/r2，每份 378 个文件、
+33 个目录、823 条产物描述符和 22 条反向配置关联；它们是两个版本的工程检查，
+不能相加宣称独立样本数。见 [接口及范围](STATE-TRAIN-CONFIGURATION-ARTIFACTS.md)。
+其他模块输出、其他宿主配置、跨目录生命周期及实际资源分摊仍有待接入。
+真实增益、完整 C5 和独立 VAL 验收仍未因此完成。

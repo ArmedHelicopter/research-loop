@@ -1,0 +1,834 @@
+{
+  "schema": "state-configuration-reverse-links-v1",
+  "links": [
+    {
+      "target_catalogue": "runtime/targets/0a6337bf8966a0a8f3d09ec34da64f57af2d287263f40ffedf41c8012370ce81/runtime/artifacts.jsonl",
+      "target_descriptor": "caae94b20fab098184be1a7ba7843bd3ee4de5a6abe974673e37640c3fc488a6",
+      "source_catalogue": "runtime/builds/3/proposal/artifacts.jsonl",
+      "source_descriptor": "60d7f485c7d002683a48866c0f6f05c67ab828ccd3526a7acd2e3c2437474b2a",
+      "candidate_digest": "ac3570b3f3e207c8f73433ca27248d4c164cdf02d7d518d4e1cdb84f50e638cd",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "blade",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M1",
+            "M2",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "11",
+        "pair": "pair:M1+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "produced"
+    },
+    {
+      "target_catalogue": "runtime/targets/2c5624260ec296a5e277b031e8df57ada79e7cc1f769c36ffcb687f5650d300c/runtime/artifacts.jsonl",
+      "target_descriptor": "c6c53f6099bb5fed2ae890335e73e0da7618977a951f23b343cdfe56dd332395",
+      "source_catalogue": "runtime/builds/5/proposal/artifacts.jsonl",
+      "source_descriptor": "37ad1571cc8dad6cec7177896a4416144251d4097e9195364e4cd3ab6927cf0d",
+      "candidate_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "synth:test:case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "10",
+        "pair": "pair:M2+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "not_applied"
+    },
+    {
+      "target_catalogue": "runtime/targets/308b22550e1ea193c910f608f49cb3d088cd923e375d9335457f516b693184d1/runtime/artifacts.jsonl",
+      "target_descriptor": "d9790e793e1ffaae9db29dbad96013937dd5e95bc5b0c7b5c40a83a3a57dcbf7",
+      "source_catalogue": "runtime/builds/9/proposal/artifacts.jsonl",
+      "source_descriptor": "93968025f094af25c1b2a8416f2f1716b8fabdb6f9310ec0fe7bd1da4e8e4abd",
+      "candidate_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "synth:test:case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M3"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "10",
+        "pair": "pair:M3+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "not_applied"
+    },
+    {
+      "target_catalogue": "runtime/targets/3590d61008e9dc60ff2f855963e8e2746b62afbe7b81db2815da194196ca6cc9/runtime/artifacts.jsonl",
+      "target_descriptor": "3a67c524450ec821725c473525e4ff9deb995a1b1ab4e179309023e4f7f39e4c",
+      "source_catalogue": "runtime/builds/1/proposal/artifacts.jsonl",
+      "source_descriptor": "ef6b71d7f6b2bb1e9b8d8a115b2103e874b479e31e578278b7141fd068597c6e",
+      "candidate_digest": "94bbb736641c0fbcb5dec4a1afe7789733f29f04bf3a945d0e414809c1db998f",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "synth:test:case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "01",
+        "pair": "pair:M1+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "produced"
+    },
+    {
+      "target_catalogue": "runtime/targets/3c543bd6177fb5d7ecc256a0b4f7932f85198665c028022b7caa30ef70dd6ffc/runtime/artifacts.jsonl",
+      "target_descriptor": "1ae1bae78d5f69edf1319c55e797a4a0c1ce2443467f6e7eba437c9ecdc5c61c",
+      "source_catalogue": "runtime/builds/0/proposal/artifacts.jsonl",
+      "source_descriptor": "b94a468c31b451262607a109d953ab88f1c73eaa77fae0582d40594d5b92a234",
+      "candidate_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "blade",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "00",
+        "pair": "pair:M1+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "not_applied"
+    },
+    {
+      "target_catalogue": "runtime/targets/3d64db69d75ccad039ffc4f41493d549b06df9c7da71c032352e8231b641d3ad/runtime/artifacts.jsonl",
+      "target_descriptor": "39c9aad2da09eee6f7f570e185b45ff3695b50b7f52b198589d746f61fc97a3d",
+      "source_catalogue": "runtime/builds/6/proposal/artifacts.jsonl",
+      "source_descriptor": "2bc0d52c5c08c6939f158dda0ef7a60187f199f3d1b2f4edccae5f35775b3297",
+      "candidate_digest": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "blade",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "11",
+        "pair": "pair:M2+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "produced"
+    },
+    {
+      "target_catalogue": "runtime/targets/7771d808450c3420e68c42ec2dc8bb041a1ac87aa2032b77b4bbcb7517467b0e/runtime/artifacts.jsonl",
+      "target_descriptor": "9486129b63ec711772fc8f68fe4323517561e47c01f0571be3f5dbb46e7f388d",
+      "source_catalogue": "runtime/builds/10/proposal/artifacts.jsonl",
+      "source_descriptor": "90243a2fc461e6632720b128ca1a62ac1fa7dbd5398a89f3171478c97c49d335",
+      "candidate_digest": "abefadbf5c77f7a00518eb0259a5b780e838875ecf722e95febebd59c8a1fc27",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "synth:test:case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M3",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "11",
+        "pair": "pair:M3+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "produced"
+    },
+    {
+      "target_catalogue": "runtime/targets/8f2601d931e95fd61d395db6794ed2743c0aa91aeac0682745f1ed8e8808c239/runtime/artifacts.jsonl",
+      "target_descriptor": "7bcd1cc8ec649d16b565c9fe7884b1334563fe036777c21733a1be19ccce70ae",
+      "source_catalogue": "runtime/builds/6/proposal/artifacts.jsonl",
+      "source_descriptor": "2bc0d52c5c08c6939f158dda0ef7a60187f199f3d1b2f4edccae5f35775b3297",
+      "candidate_digest": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "synth:test:case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "11",
+        "pair": "pair:M2+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "produced"
+    },
+    {
+      "target_catalogue": "runtime/targets/9bc1b8adceeb269a3d0dabd586a2d3d6e82d45f2265e2e6476b35ee9554cce66/runtime/artifacts.jsonl",
+      "target_descriptor": "f75e2f8c9196d58566548055f769ff432bab37884712790d9b57a9eae64754e9",
+      "source_catalogue": "runtime/builds/4/proposal/artifacts.jsonl",
+      "source_descriptor": "8b01dbb87877a3fc6f519ba08eeaa563f5ffd5659531bec14198d30eebe640da",
+      "candidate_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "blade",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "00",
+        "pair": "pair:M2+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "not_applied"
+    },
+    {
+      "target_catalogue": "runtime/targets/9da85cc4339749d2c78449e0c975224f1f5797e40582b76b5751e3873f76dc60/runtime/artifacts.jsonl",
+      "target_descriptor": "ec4b5892330ffc2b602e4468868f53ec7d64acbb35cae7b9e262a1b42c9890a7",
+      "source_catalogue": "runtime/builds/2/proposal/artifacts.jsonl",
+      "source_descriptor": "5cb374a9b12a196329ca2c7e5815e8b54521bf266218e50e69e8568cb3627c45",
+      "candidate_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "synth:test:case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M1",
+            "M2"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "10",
+        "pair": "pair:M1+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "not_applied"
+    },
+    {
+      "target_catalogue": "runtime/targets/a3801ba5d1128db317afff5df742d6eb2798a0e9f58a59ff84f3b664a838d6d2/runtime/artifacts.jsonl",
+      "target_descriptor": "8b7996d6dc534c664570d4a299151ee78fe870872df0b7796738608e09671e41",
+      "source_catalogue": "runtime/builds/8/proposal/artifacts.jsonl",
+      "source_descriptor": "a0d6e4a3d976f1b3358d4ce08b85f934e39d7a42d8f20e3198d0cdf673f2bba9",
+      "candidate_digest": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "blade",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "01",
+        "pair": "pair:M3+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "produced"
+    },
+    {
+      "target_catalogue": "runtime/targets/a8f0e849f08c55f5c2216aa85e3939a5d64c4458e27866cb13ba843a4c906d43/runtime/artifacts.jsonl",
+      "target_descriptor": "31bc1ba0b0206726e8a8085e05adc9166a59d7ca90abe8fc694c46b4059fc13d",
+      "source_catalogue": "runtime/builds/7/proposal/artifacts.jsonl",
+      "source_descriptor": "ac5538da22cc9226a43769ff5334dc4f7f251bb391db37536a534a518ac52f3f",
+      "candidate_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "synth:test:case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "00",
+        "pair": "pair:M3+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "not_applied"
+    },
+    {
+      "target_catalogue": "runtime/targets/b8bb3875b24fa93a88b6cc15d9f3c212bdf84ab037845b9cf79efe6702a20acb/runtime/artifacts.jsonl",
+      "target_descriptor": "48db464ba4a4685daecc05ed47f990ad508abc515cb5b48ca0a0403205cf61e0",
+      "source_catalogue": "runtime/builds/9/proposal/artifacts.jsonl",
+      "source_descriptor": "93968025f094af25c1b2a8416f2f1716b8fabdb6f9310ec0fe7bd1da4e8e4abd",
+      "candidate_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "blade",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M3"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "10",
+        "pair": "pair:M3+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "not_applied"
+    },
+    {
+      "target_catalogue": "runtime/targets/c5a68b952e161349ff16906fda4b7c6dc883bd0c26abb2854f553df2ca148ddb/runtime/artifacts.jsonl",
+      "target_descriptor": "60515cf8c248a382257770d448d09ed53bc0fcb760a6abc1320511dc8915b789",
+      "source_catalogue": "runtime/builds/2/proposal/artifacts.jsonl",
+      "source_descriptor": "5cb374a9b12a196329ca2c7e5815e8b54521bf266218e50e69e8568cb3627c45",
+      "candidate_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "blade",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M1",
+            "M2"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "10",
+        "pair": "pair:M1+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "not_applied"
+    },
+    {
+      "target_catalogue": "runtime/targets/c9db1f91d31000230c403707f2452deadb89d941b9e7704a6ff892e2965f6265/runtime/artifacts.jsonl",
+      "target_descriptor": "31a04d7ca60ba6b584b30886f9daebee2cad87722642e934462389ea93425021",
+      "source_catalogue": "runtime/builds/5/proposal/artifacts.jsonl",
+      "source_descriptor": "37ad1571cc8dad6cec7177896a4416144251d4097e9195364e4cd3ab6927cf0d",
+      "candidate_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "blade",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "10",
+        "pair": "pair:M2+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "not_applied"
+    },
+    {
+      "target_catalogue": "runtime/targets/c9dc90f33b01b866d201aa5ecd3f96151dc30942e815d65e17c01c5d86f9344b/runtime/artifacts.jsonl",
+      "target_descriptor": "a32a2fe9d04a56e6ddf9bdac72da7d04251889f47088c1380ea316ccab1e484c",
+      "source_catalogue": "runtime/builds/3/proposal/artifacts.jsonl",
+      "source_descriptor": "60d7f485c7d002683a48866c0f6f05c67ab828ccd3526a7acd2e3c2437474b2a",
+      "candidate_digest": "ac3570b3f3e207c8f73433ca27248d4c164cdf02d7d518d4e1cdb84f50e638cd",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "synth:test:case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M1",
+            "M2",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "11",
+        "pair": "pair:M1+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "produced"
+    },
+    {
+      "target_catalogue": "runtime/targets/cf66d9a8bc4f2e59e30952d1785555ff4e280daff181f508b722489fdb38c22b/runtime/artifacts.jsonl",
+      "target_descriptor": "39a3ab7b0e701264c2953b61f340ee90ec3aae3829ad93497c0f870da5f40e14",
+      "source_catalogue": "runtime/builds/4/proposal/artifacts.jsonl",
+      "source_descriptor": "8b01dbb87877a3fc6f519ba08eeaa563f5ffd5659531bec14198d30eebe640da",
+      "candidate_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "synth:test:case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "00",
+        "pair": "pair:M2+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "not_applied"
+    },
+    {
+      "target_catalogue": "runtime/targets/d2756b2bdc174e8f512537273e1d5cc2d715f3949d01768e48a04ce547e85bc5/runtime/artifacts.jsonl",
+      "target_descriptor": "84d12cf83f60d43c2c9428b94fe541b3bf3ae76d222cdc38f3586677c93870fe",
+      "source_catalogue": "runtime/builds/1/proposal/artifacts.jsonl",
+      "source_descriptor": "ef6b71d7f6b2bb1e9b8d8a115b2103e874b479e31e578278b7141fd068597c6e",
+      "candidate_digest": "94bbb736641c0fbcb5dec4a1afe7789733f29f04bf3a945d0e414809c1db998f",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "blade",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "01",
+        "pair": "pair:M1+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "produced"
+    },
+    {
+      "target_catalogue": "runtime/targets/d302e4dbd5ea38da9437f1f5abf9205cdda7a680afda129fb2693317361ab5a6/runtime/artifacts.jsonl",
+      "target_descriptor": "76c834cb9ed9125897e1f5209ed8826a7dfa55b86bf242ea9b0d62609c9fc1c5",
+      "source_catalogue": "runtime/builds/7/proposal/artifacts.jsonl",
+      "source_descriptor": "ac5538da22cc9226a43769ff5334dc4f7f251bb391db37536a534a518ac52f3f",
+      "candidate_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "blade",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "00",
+        "pair": "pair:M3+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "not_applied"
+    },
+    {
+      "target_catalogue": "runtime/targets/e040b51ed970b67e02f4d02767cbe63e6d1d353bf31a47fb93c3bfe0edee3ae2/runtime/artifacts.jsonl",
+      "target_descriptor": "a45efaccc00c00b7ed93c56d9fc072cdd0fb2f58296ff4551fa65117b70930fa",
+      "source_catalogue": "runtime/builds/8/proposal/artifacts.jsonl",
+      "source_descriptor": "a0d6e4a3d976f1b3358d4ce08b85f934e39d7a42d8f20e3198d0cdf673f2bba9",
+      "candidate_digest": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "synth:test:case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "01",
+        "pair": "pair:M3+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "produced"
+    },
+    {
+      "target_catalogue": "runtime/targets/e800ee63e8208ea216f608bec9c4f9248f354c30f3c5fd88225cbc15ba5ecf60/runtime/artifacts.jsonl",
+      "target_descriptor": "eb909eaeeb92a24e3f3b7b641869e7cfc72dae8e74262e1f8f1a0463fe07d763",
+      "source_catalogue": "runtime/builds/0/proposal/artifacts.jsonl",
+      "source_descriptor": "b94a468c31b451262607a109d953ab88f1c73eaa77fae0582d40594d5b92a234",
+      "candidate_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "synth:test:case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "00",
+        "pair": "pair:M1+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "not_applied"
+    },
+    {
+      "target_catalogue": "runtime/targets/f114326b4aa19723ba7d0e7db3fbd8a730bf32af235b63e5687b5d9d1117686d/runtime/artifacts.jsonl",
+      "target_descriptor": "a15495e19b79339eaf059b923db7f949ff18dfd950ceb464983efa0b0662d9f4",
+      "source_catalogue": "runtime/builds/10/proposal/artifacts.jsonl",
+      "source_descriptor": "90243a2fc461e6632720b128ca1a62ac1fa7dbd5398a89f3171478c97c49d335",
+      "candidate_digest": "abefadbf5c77f7a00518eb0259a5b780e838875ecf722e95febebd59c8a1fc27",
+      "source_identity": {
+        "benchmark": "blade",
+        "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "domain": "train",
+        "group_id": "closed-history-group",
+        "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "task_id": "closed-history"
+      },
+      "target_identity": {
+        "benchmark": "blade",
+        "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+        "domain": "train",
+        "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+        "split_id": "d437d5b849cf81747ef4cddb23059e0f404f7b7d479c7c5b42a4d94022ba1c28",
+        "task_id": "case2"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M3",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "11",
+        "pair": "pair:M3+M9"
+      },
+      "relation": "configured_by",
+      "module_status": "produced"
+    }
+  ],
+  "scientific_validated": false
+}

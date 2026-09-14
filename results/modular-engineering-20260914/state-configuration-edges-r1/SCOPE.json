@@ -1,0 +1,2477 @@
+{
+  "schema": "state-configuration-public-archive-v1",
+  "check": {
+    "commit": "18867ddca89caf706cbaabdb9c8ebabfed3ccb3d",
+    "source_unchanged": true,
+    "source_count": 701,
+    "exit_code": 1,
+    "wall_seconds": 226.03099999998813,
+    "new_paid_calls": 0,
+    "report_sha256": "1e2099957af7c25903310911053386b6e0b3477d56f11e78ce88aa9fcafdff1d",
+    "junit": {
+      "tests": 32,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "source_archive_sha256": "fa19285a5e94c23c1d89d813e479fc7ce18352c3070dbc5b75cb2c38d860c0c5",
+  "catalogues": [
+    {
+      "path": "runtime/builds/0/proposal/artifacts.jsonl",
+      "descriptors": 23,
+      "files": 15,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/builds/1/proposal/artifacts.jsonl",
+      "descriptors": 23,
+      "files": 15,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/builds/10/proposal/artifacts.jsonl",
+      "descriptors": 26,
+      "files": 15,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/builds/2/proposal/artifacts.jsonl",
+      "descriptors": 26,
+      "files": 15,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/builds/3/proposal/artifacts.jsonl",
+      "descriptors": 26,
+      "files": 15,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/builds/4/proposal/artifacts.jsonl",
+      "descriptors": 13,
+      "files": 15,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/builds/5/proposal/artifacts.jsonl",
+      "descriptors": 26,
+      "files": 15,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/builds/6/proposal/artifacts.jsonl",
+      "descriptors": 26,
+      "files": 15,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/builds/7/proposal/artifacts.jsonl",
+      "descriptors": 26,
+      "files": 15,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/builds/8/proposal/artifacts.jsonl",
+      "descriptors": 26,
+      "files": 15,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/builds/9/proposal/artifacts.jsonl",
+      "descriptors": 26,
+      "files": 15,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94/runtime/artifacts.jsonl",
+      "descriptors": 14,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5/runtime/artifacts.jsonl",
+      "descriptors": 14,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d/runtime/artifacts.jsonl",
+      "descriptors": 24,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8/runtime/artifacts.jsonl",
+      "descriptors": 24,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c/runtime/artifacts.jsonl",
+      "descriptors": 24,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd/runtime/artifacts.jsonl",
+      "descriptors": 24,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "runtime/targets/fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15/runtime/artifacts.jsonl",
+      "descriptors": 27,
+      "files": 9,
+      "historical_semantic_replay_executed": false
+    }
+  ],
+  "items": [
+    {
+      "path": "checks/state-configuration-edges-r1-before.json",
+      "bytes": 82239,
+      "sha256": "080f6d384945a34cef5c228e5a2dc3a19f62d55f00eeaa9147d3c112bed31bdf",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1-before.json"
+    },
+    {
+      "path": "checks/state-configuration-edges-r1-closed.json",
+      "bytes": 82286,
+      "sha256": "47a3ec4a69e4847e886aea78020ef466d9cbdee576b8d6f6364e432c9cb88878",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1-closed.json"
+    },
+    {
+      "path": "checks/state-configuration-edges-r1-source-members.json",
+      "bytes": 123009,
+      "sha256": "d1f64728ec800b63aa80649c7df98ae252a38b35feabdcd0c05aaa91a82b08bd",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1-source-members.json"
+    },
+    {
+      "path": "checks/state-configuration-edges-r1-sources.zip",
+      "bytes": 2303374,
+      "sha256": "fa19285a5e94c23c1d89d813e479fc7ce18352c3070dbc5b75cb2c38d860c0c5",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1-sources.zip"
+    },
+    {
+      "path": "checks/state-configuration-edges-r1.xml",
+      "bytes": 8205,
+      "sha256": "1e2099957af7c25903310911053386b6e0b3477d56f11e78ce88aa9fcafdff1d",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1.xml"
+    },
+    {
+      "path": "checks/state-configuration-edges-r1-watchdog-config.json",
+      "bytes": 900,
+      "sha256": "5265443011372fd7bed2dd9725507c02d5c892c6d5e613a325c64b9ef40fff99",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1-watchdog-config.json"
+    },
+    {
+      "path": "checks/state-configuration-edges-r1-watchdog.json",
+      "bytes": 258,
+      "sha256": "8aa0fd59b5f692b9819ba041da48c21eb9459623538a953eae66f63f6e69d59a",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1-watchdog.json"
+    },
+    {
+      "path": "runtime/builds/0/build-receipt.json",
+      "bytes": 1812,
+      "sha256": "c213ba257d53820cf109a7c86e0c41529a09ace8020c2706fbaa89f7994c4d15",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\0\\build-receipt.json"
+    },
+    {
+      "path": "runtime/builds/0/builder-receipt.json",
+      "bytes": 560,
+      "sha256": "ba3e12958ab0dfcb35f833f0879623b1416ba2fa07ffc4730d3713d2aabb5640",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\0\\builder-receipt.json"
+    },
+    {
+      "path": "runtime/builds/0/builder.json",
+      "bytes": 117,
+      "sha256": "6d0c378ff718a098990a56200ca876b4849c3f3aa56b6d55c889c9d7cb017287",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\0\\builder.json"
+    },
+    {
+      "path": "runtime/builds/0/candidate.json",
+      "bytes": 599,
+      "sha256": "66f6a5956231537709f924becfc2882c3256a79e20514f157577aa5af5f64876",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\0\\candidate.json"
+    },
+    {
+      "path": "runtime/builds/0/m9-build-terminal.json",
+      "bytes": 3591,
+      "sha256": "6bf2147de1cc4f8b21244f56a5f8ce24ddcb2bfa8bed882b4879a9aed216e136",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\0\\m9-build-terminal.json"
+    },
+    {
+      "path": "runtime/builds/0/m9-builder-return.json",
+      "bytes": 1254,
+      "sha256": "de7512715c412d5f45b5d5ad9b01dc64f92cb421ae8e66d73239a474e2198761",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\0\\m9-builder-return.json"
+    },
+    {
+      "path": "runtime/builds/0/phase.jsonl",
+      "bytes": 3245,
+      "sha256": "c6c42b4b1ea9ca8fffca328273b096edf36fb0a50d40b178c8d00da6a6054bd9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\0\\phase.jsonl"
+    },
+    {
+      "path": "runtime/builds/0/proposal/artifacts.jsonl",
+      "bytes": 109486,
+      "sha256": "ace0a33c6beb1404bccbc99257727100f2ba6d4e68965ae84ab10f072245f055",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\0\\proposal\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/builds/0/proposal/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "8f53fb71f59a48dde8e8ea2b509a877353cb91c099e263accfc9ed68f5f6c337",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\0\\proposal\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/builds/0/proposal/claims.jsonl",
+      "bytes": 2402,
+      "sha256": "6789c615556af98a506ef9b428a79ae0b646efc5bac3c61ccfeeaa5b6daef0dd",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\0\\proposal\\claims.jsonl"
+    },
+    {
+      "path": "runtime/builds/0/proposal/evidence.jsonl",
+      "bytes": 4448,
+      "sha256": "c2ce66255bbafc607233728e38ba6d5e478e1baf5c4db27fabd48312d3a46d51",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\0\\proposal\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/builds/0/proposal/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\0\\proposal\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/builds/0/proposal/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\0\\proposal\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/builds/0/proposal/trace.jsonl",
+      "bytes": 16686,
+      "sha256": "26537eaf44414b34e47aca3cfee62dabce1175e8cb6fa94c955f6721e7f809f9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\0\\proposal\\trace.jsonl"
+    },
+    {
+      "path": "runtime/builds/0/source/source-verification.json",
+      "bytes": 9101,
+      "sha256": "3d6a6fae82eae9d4c081b8747dd017b9b125766c0a458dcf12db19a4b3cc20fe",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\0\\source\\source-verification.json"
+    },
+    {
+      "path": "runtime/builds/1/build-receipt.json",
+      "bytes": 1817,
+      "sha256": "ae69310023fc8abd36b35a77fdaf06696ff021493fe90b8164011d620677f7c6",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\1\\build-receipt.json"
+    },
+    {
+      "path": "runtime/builds/1/builder-receipt.json",
+      "bytes": 563,
+      "sha256": "7915e451fe7adda0f75cc22d4c4372fb966d9a22b11ed5d3a0157a98dc7a3808",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\1\\builder-receipt.json"
+    },
+    {
+      "path": "runtime/builds/1/builder.json",
+      "bytes": 120,
+      "sha256": "8df964b87ea25db643741d71e7680053c3257bb512edc590005575a769cc0266",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\1\\builder.json"
+    },
+    {
+      "path": "runtime/builds/1/candidate.json",
+      "bytes": 602,
+      "sha256": "5ee848d7de30ddc36a80c0037de9778158c74a5fe8ecf13a1dcb43f4d5c80dc5",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\1\\candidate.json"
+    },
+    {
+      "path": "runtime/builds/1/m9-build-terminal.json",
+      "bytes": 3602,
+      "sha256": "af237c9596b4891988eb79807932833c8f330548915fb858f3cc07266ef527b9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\1\\m9-build-terminal.json"
+    },
+    {
+      "path": "runtime/builds/1/m9-builder-return.json",
+      "bytes": 1260,
+      "sha256": "7e38b8290842c37c99f51d344bbe985436884ca5054d0c0526e283af726f351f",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\1\\m9-builder-return.json"
+    },
+    {
+      "path": "runtime/builds/1/phase.jsonl",
+      "bytes": 3251,
+      "sha256": "5c9f020bc64d95ca280ea39d6bde28c434be6b5a28fd0784a75793de7936a907",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\1\\phase.jsonl"
+    },
+    {
+      "path": "runtime/builds/1/proposal/artifacts.jsonl",
+      "bytes": 109580,
+      "sha256": "5e749b8c48201db85f2ee1180dca18b5bad187176a06cd09576a8905d340615c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\1\\proposal\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/builds/1/proposal/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "fbed2473f895a1d2c242ccad384e41fc491ea3d1a389a8cc2c2a08c7d3d45198",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\1\\proposal\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/builds/1/proposal/claims.jsonl",
+      "bytes": 2402,
+      "sha256": "6789c615556af98a506ef9b428a79ae0b646efc5bac3c61ccfeeaa5b6daef0dd",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\1\\proposal\\claims.jsonl"
+    },
+    {
+      "path": "runtime/builds/1/proposal/evidence.jsonl",
+      "bytes": 4448,
+      "sha256": "c2ce66255bbafc607233728e38ba6d5e478e1baf5c4db27fabd48312d3a46d51",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\1\\proposal\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/builds/1/proposal/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\1\\proposal\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/builds/1/proposal/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\1\\proposal\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/builds/1/proposal/trace.jsonl",
+      "bytes": 16691,
+      "sha256": "334228f5cc3d728cdf04655cf67dd1b99590efa90486f46f337363915a4ccaae",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\1\\proposal\\trace.jsonl"
+    },
+    {
+      "path": "runtime/builds/1/source/source-verification.json",
+      "bytes": 9101,
+      "sha256": "9938583125ed434717976a903c918d7f4d71a896999cb0f2a5d2712f003e56c0",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\1\\source\\source-verification.json"
+    },
+    {
+      "path": "runtime/builds/10/build-receipt.json",
+      "bytes": 1822,
+      "sha256": "26307d3494287881bf0491fc55262411d338eb6c8e4333f2d396089d78323394",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\10\\build-receipt.json"
+    },
+    {
+      "path": "runtime/builds/10/builder-receipt.json",
+      "bytes": 563,
+      "sha256": "cac7f0a6aee5e5855bcfa4f472a114bec00e9cd81e5fad648f59a31247a5c0c3",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\10\\builder-receipt.json"
+    },
+    {
+      "path": "runtime/builds/10/builder.json",
+      "bytes": 120,
+      "sha256": "80745a4a4539eeea753573cba0149ad199337f1a992899b0ede315b89aa2ca71",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\10\\builder.json"
+    },
+    {
+      "path": "runtime/builds/10/candidate.json",
+      "bytes": 602,
+      "sha256": "04bfaf86a879ac37385b3e2ac3a738da55a589daf7a48abdcd3b77d1d8ad0ce1",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\10\\candidate.json"
+    },
+    {
+      "path": "runtime/builds/10/m9-build-terminal.json",
+      "bytes": 3602,
+      "sha256": "a1538e91b9cec85f8404a09f622bad20537c0c7c8e4c9041b64629be20aa728e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\10\\m9-build-terminal.json"
+    },
+    {
+      "path": "runtime/builds/10/m9-builder-return.json",
+      "bytes": 1260,
+      "sha256": "52c39f2119c6153f5b96a9a6387a534c9f5f48c11893cb5a6dc6003305c7b0c1",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\10\\m9-builder-return.json"
+    },
+    {
+      "path": "runtime/builds/10/phase.jsonl",
+      "bytes": 3252,
+      "sha256": "76c0429dd3da812e221459157cf38441b2d846d24f24af558bff6838feb9fdb5",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\10\\phase.jsonl"
+    },
+    {
+      "path": "runtime/builds/10/proposal/artifacts.jsonl",
+      "bytes": 134948,
+      "sha256": "f282547b53e49c5f7681753a371ae7f5e7870e5c51078aa4117a47381711b1d2",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\10\\proposal\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/builds/10/proposal/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "5d785fc5b744e83fd6b3600f71ca55e6af50c2b3ecf40296a01d9c53836de13b",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\10\\proposal\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/builds/10/proposal/claims.jsonl",
+      "bytes": 4471,
+      "sha256": "a1d18c25fe31782edadfaf9804293eb9be259fe0f2fbc4a1625f1e3dd9ce2b98",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\10\\proposal\\claims.jsonl"
+    },
+    {
+      "path": "runtime/builds/10/proposal/evidence.jsonl",
+      "bytes": 4689,
+      "sha256": "a5c6c669adc21987e54ce2a7d2c8f8aba929dd5a2e710e7718520a58ee389662",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\10\\proposal\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/builds/10/proposal/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\10\\proposal\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/builds/10/proposal/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\10\\proposal\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/builds/10/proposal/trace.jsonl",
+      "bytes": 22535,
+      "sha256": "b8a27e3ee465769ef6558b87829d0a1b7368d2d01727408591c59a4da3cfbfa0",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\10\\proposal\\trace.jsonl"
+    },
+    {
+      "path": "runtime/builds/10/source/source-verification.json",
+      "bytes": 4682,
+      "sha256": "09504cd6919d1354f1e6d3a06521a6359b70a2d2c54b9f9bf91ad7c6199030f5",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\10\\source\\source-verification.json"
+    },
+    {
+      "path": "runtime/builds/2/build-receipt.json",
+      "bytes": 1817,
+      "sha256": "30842f25c8ad66acd9629fad591e861bafb26fa7b0b622dfa1a2f05205fef95d",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\2\\build-receipt.json"
+    },
+    {
+      "path": "runtime/builds/2/builder-receipt.json",
+      "bytes": 560,
+      "sha256": "ba3e12958ab0dfcb35f833f0879623b1416ba2fa07ffc4730d3713d2aabb5640",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\2\\builder-receipt.json"
+    },
+    {
+      "path": "runtime/builds/2/builder.json",
+      "bytes": 117,
+      "sha256": "6d0c378ff718a098990a56200ca876b4849c3f3aa56b6d55c889c9d7cb017287",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\2\\builder.json"
+    },
+    {
+      "path": "runtime/builds/2/candidate.json",
+      "bytes": 599,
+      "sha256": "66f6a5956231537709f924becfc2882c3256a79e20514f157577aa5af5f64876",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\2\\candidate.json"
+    },
+    {
+      "path": "runtime/builds/2/m9-build-terminal.json",
+      "bytes": 3591,
+      "sha256": "6bf2147de1cc4f8b21244f56a5f8ce24ddcb2bfa8bed882b4879a9aed216e136",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\2\\m9-build-terminal.json"
+    },
+    {
+      "path": "runtime/builds/2/m9-builder-return.json",
+      "bytes": 1254,
+      "sha256": "de7512715c412d5f45b5d5ad9b01dc64f92cb421ae8e66d73239a474e2198761",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\2\\m9-builder-return.json"
+    },
+    {
+      "path": "runtime/builds/2/phase.jsonl",
+      "bytes": 3245,
+      "sha256": "da155d7de17281e18eaca065c498a5ff3ed175cc85158bd2ef266eb4265640de",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\2\\phase.jsonl"
+    },
+    {
+      "path": "runtime/builds/2/proposal/artifacts.jsonl",
+      "bytes": 124245,
+      "sha256": "d1991e13bb917b716293c439ce9426c0e4f7a32c209329437dd5c955eef87d86",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\2\\proposal\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/builds/2/proposal/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "f44d238c2ab98b0634cae7af3fd68debfff492eee1d541634557950fe5f6ceb5",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\2\\proposal\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/builds/2/proposal/claims.jsonl",
+      "bytes": 4471,
+      "sha256": "a1d18c25fe31782edadfaf9804293eb9be259fe0f2fbc4a1625f1e3dd9ce2b98",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\2\\proposal\\claims.jsonl"
+    },
+    {
+      "path": "runtime/builds/2/proposal/evidence.jsonl",
+      "bytes": 4899,
+      "sha256": "f68650e3f63f1a3e5b1d9ea00ab26b4160652447d3e671f22570eafa736844cb",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\2\\proposal\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/builds/2/proposal/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\2\\proposal\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/builds/2/proposal/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\2\\proposal\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/builds/2/proposal/trace.jsonl",
+      "bytes": 16588,
+      "sha256": "478670ed59efe94a32ecf64c54e23c07420a6a708758256b15c240b257e119bf",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\2\\proposal\\trace.jsonl"
+    },
+    {
+      "path": "runtime/builds/2/source/source-verification.json",
+      "bytes": 9101,
+      "sha256": "f2df829c75b5c0274f832839ce8b8589a479b3a735c3f487b9447136300e4802",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\2\\source\\source-verification.json"
+    },
+    {
+      "path": "runtime/builds/3/build-receipt.json",
+      "bytes": 1822,
+      "sha256": "d2f68379befbd465e81ded5752dedbbf02836b7a83bd5c7ffd009eaaa15420a3",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\3\\build-receipt.json"
+    },
+    {
+      "path": "runtime/builds/3/builder-receipt.json",
+      "bytes": 562,
+      "sha256": "0a823db1ab939436069a7b2990ae076929eb1a67521999574cc6c0a06c4a50d7",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\3\\builder-receipt.json"
+    },
+    {
+      "path": "runtime/builds/3/builder.json",
+      "bytes": 119,
+      "sha256": "b104f0ba416b96548f2ab02fc03b1b40f39256d683657ebcc6426e6ce90642c7",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\3\\builder.json"
+    },
+    {
+      "path": "runtime/builds/3/candidate.json",
+      "bytes": 601,
+      "sha256": "f1b3768c28013619fac1607562ec46d09e328a5dd0f3a03983fef566bd99e6d0",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\3\\candidate.json"
+    },
+    {
+      "path": "runtime/builds/3/m9-build-terminal.json",
+      "bytes": 3597,
+      "sha256": "a32403aabde99199daf4c5608b9fa49b47e0b1c4d340ff7b75573f59bebbdafd",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\3\\m9-build-terminal.json"
+    },
+    {
+      "path": "runtime/builds/3/m9-builder-return.json",
+      "bytes": 1258,
+      "sha256": "4b2f35de5a168a911f33241432bae1ae7017bc5828303dee19eb0b1ece43f815",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\3\\m9-builder-return.json"
+    },
+    {
+      "path": "runtime/builds/3/phase.jsonl",
+      "bytes": 3249,
+      "sha256": "57fd0cb8c8c75969f42fc97aaa1ed04b11e5c9c58bf838b06a6c1dff6be875a3",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\3\\phase.jsonl"
+    },
+    {
+      "path": "runtime/builds/3/proposal/artifacts.jsonl",
+      "bytes": 124343,
+      "sha256": "bb022505b49f59ddef4e8cf20214879705d79ddbe7186900c4bce5482b592e94",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\3\\proposal\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/builds/3/proposal/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "6586d74b83c1979a1d918ded3fafdbf9991b71876132b9b07e41fa4ee7ea6da7",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\3\\proposal\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/builds/3/proposal/claims.jsonl",
+      "bytes": 4471,
+      "sha256": "a1d18c25fe31782edadfaf9804293eb9be259fe0f2fbc4a1625f1e3dd9ce2b98",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\3\\proposal\\claims.jsonl"
+    },
+    {
+      "path": "runtime/builds/3/proposal/evidence.jsonl",
+      "bytes": 4899,
+      "sha256": "f68650e3f63f1a3e5b1d9ea00ab26b4160652447d3e671f22570eafa736844cb",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\3\\proposal\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/builds/3/proposal/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\3\\proposal\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/builds/3/proposal/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\3\\proposal\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/builds/3/proposal/trace.jsonl",
+      "bytes": 16593,
+      "sha256": "834e098efd0bf5a103e18ba7baf5c9809d8e6c7fd9f82cf341fe514aa4ed9ed5",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\3\\proposal\\trace.jsonl"
+    },
+    {
+      "path": "runtime/builds/3/source/source-verification.json",
+      "bytes": 9101,
+      "sha256": "18b71d414a01f822b60503d06753c2ea4279cb55487767fb8d634ac2a5ff5183",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\3\\source\\source-verification.json"
+    },
+    {
+      "path": "runtime/builds/4/build-receipt.json",
+      "bytes": 1808,
+      "sha256": "1614bec42312e3a2fdf0b0ab59b699d41c8916a83c188938622271619e989db9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\4\\build-receipt.json"
+    },
+    {
+      "path": "runtime/builds/4/builder-receipt.json",
+      "bytes": 560,
+      "sha256": "ba3e12958ab0dfcb35f833f0879623b1416ba2fa07ffc4730d3713d2aabb5640",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\4\\builder-receipt.json"
+    },
+    {
+      "path": "runtime/builds/4/builder.json",
+      "bytes": 117,
+      "sha256": "6d0c378ff718a098990a56200ca876b4849c3f3aa56b6d55c889c9d7cb017287",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\4\\builder.json"
+    },
+    {
+      "path": "runtime/builds/4/candidate.json",
+      "bytes": 599,
+      "sha256": "66f6a5956231537709f924becfc2882c3256a79e20514f157577aa5af5f64876",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\4\\candidate.json"
+    },
+    {
+      "path": "runtime/builds/4/m9-build-terminal.json",
+      "bytes": 3591,
+      "sha256": "6bf2147de1cc4f8b21244f56a5f8ce24ddcb2bfa8bed882b4879a9aed216e136",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\4\\m9-build-terminal.json"
+    },
+    {
+      "path": "runtime/builds/4/m9-builder-return.json",
+      "bytes": 1254,
+      "sha256": "de7512715c412d5f45b5d5ad9b01dc64f92cb421ae8e66d73239a474e2198761",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\4\\m9-builder-return.json"
+    },
+    {
+      "path": "runtime/builds/4/phase.jsonl",
+      "bytes": 3245,
+      "sha256": "c7b9af5778630a5285b4ab8a1c94e5220489e58e90cd91ea270ce870d1fd8def",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\4\\phase.jsonl"
+    },
+    {
+      "path": "runtime/builds/4/proposal/artifacts.jsonl",
+      "bytes": 50981,
+      "sha256": "2cb95dde80b36c735ff11d456cbf0dc4933e2fee37b679bd492bec609e6c9b3b",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\4\\proposal\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/builds/4/proposal/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "1df2beaafd335c140338c2d1e29be4c6658a7ba5db5d9af82667a2f1563ccf5a",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\4\\proposal\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/builds/4/proposal/claims.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\4\\proposal\\claims.jsonl"
+    },
+    {
+      "path": "runtime/builds/4/proposal/evidence.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\4\\proposal\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/builds/4/proposal/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\4\\proposal\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/builds/4/proposal/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\4\\proposal\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/builds/4/proposal/trace.jsonl",
+      "bytes": 8257,
+      "sha256": "649b2d97750f5be5bd700da761f2a98aa1dbd5ecd2fb30350091d21fbfc1cf12",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\4\\proposal\\trace.jsonl"
+    },
+    {
+      "path": "runtime/builds/4/source/source-verification.json",
+      "bytes": 4682,
+      "sha256": "6fef7af495d2b2773e37647b09d77fb6eeaab42a265cbf323bc82136ebc016f5",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\4\\source\\source-verification.json"
+    },
+    {
+      "path": "runtime/builds/5/build-receipt.json",
+      "bytes": 1812,
+      "sha256": "05a663041b4123988ef7be4739f24938637c7ebb176e69fb5a9e4ccdcfa7bcf3",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\5\\build-receipt.json"
+    },
+    {
+      "path": "runtime/builds/5/builder-receipt.json",
+      "bytes": 560,
+      "sha256": "ba3e12958ab0dfcb35f833f0879623b1416ba2fa07ffc4730d3713d2aabb5640",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\5\\builder-receipt.json"
+    },
+    {
+      "path": "runtime/builds/5/builder.json",
+      "bytes": 117,
+      "sha256": "6d0c378ff718a098990a56200ca876b4849c3f3aa56b6d55c889c9d7cb017287",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\5\\builder.json"
+    },
+    {
+      "path": "runtime/builds/5/candidate.json",
+      "bytes": 599,
+      "sha256": "66f6a5956231537709f924becfc2882c3256a79e20514f157577aa5af5f64876",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\5\\candidate.json"
+    },
+    {
+      "path": "runtime/builds/5/m9-build-terminal.json",
+      "bytes": 3591,
+      "sha256": "6bf2147de1cc4f8b21244f56a5f8ce24ddcb2bfa8bed882b4879a9aed216e136",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\5\\m9-build-terminal.json"
+    },
+    {
+      "path": "runtime/builds/5/m9-builder-return.json",
+      "bytes": 1254,
+      "sha256": "de7512715c412d5f45b5d5ad9b01dc64f92cb421ae8e66d73239a474e2198761",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\5\\m9-builder-return.json"
+    },
+    {
+      "path": "runtime/builds/5/phase.jsonl",
+      "bytes": 3245,
+      "sha256": "fc102cfa51d660b05555ed990bc3003f317647b4cdca7ccd5eb7ec7110b0b8d0",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\5\\phase.jsonl"
+    },
+    {
+      "path": "runtime/builds/5/proposal/artifacts.jsonl",
+      "bytes": 122384,
+      "sha256": "5a0f6c0b61a6d94695d86c84a46687d819b8f2e8e031a95f70baef78b4534aac",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\5\\proposal\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/builds/5/proposal/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "d84bff1aeffbf8af0d4bf05bc6809bc612f4f933e429e7755b3d86da471f40e0",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\5\\proposal\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/builds/5/proposal/claims.jsonl",
+      "bytes": 4471,
+      "sha256": "a1d18c25fe31782edadfaf9804293eb9be259fe0f2fbc4a1625f1e3dd9ce2b98",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\5\\proposal\\claims.jsonl"
+    },
+    {
+      "path": "runtime/builds/5/proposal/evidence.jsonl",
+      "bytes": 4689,
+      "sha256": "a5c6c669adc21987e54ce2a7d2c8f8aba929dd5a2e710e7718520a58ee389662",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\5\\proposal\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/builds/5/proposal/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\5\\proposal\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/builds/5/proposal/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\5\\proposal\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/builds/5/proposal/trace.jsonl",
+      "bytes": 15589,
+      "sha256": "7fd6849bc8d953ef7596230b5e03781f56e561ee17a10ed553fa9f5f8118ab0a",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\5\\proposal\\trace.jsonl"
+    },
+    {
+      "path": "runtime/builds/5/source/source-verification.json",
+      "bytes": 4682,
+      "sha256": "80fcfcca0e20ce413f85da8bb19447916811feb7a2eab211590929fee03c9b1d",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\5\\source\\source-verification.json"
+    },
+    {
+      "path": "runtime/builds/6/build-receipt.json",
+      "bytes": 1817,
+      "sha256": "03a84abbe09cf33ef91785a1c29c257ca46363436fb2b65be6508dd9d198d0fe",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\6\\build-receipt.json"
+    },
+    {
+      "path": "runtime/builds/6/builder-receipt.json",
+      "bytes": 563,
+      "sha256": "d14c76eda91e72a1a9caf6393884ea4bbc853e672dd019748721702527ab9b6c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\6\\builder-receipt.json"
+    },
+    {
+      "path": "runtime/builds/6/builder.json",
+      "bytes": 120,
+      "sha256": "4607bdb0907b97006e582d7c35b111ca901570615282306bb57a6a8bce7eb4f0",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\6\\builder.json"
+    },
+    {
+      "path": "runtime/builds/6/candidate.json",
+      "bytes": 602,
+      "sha256": "46930354c4701a977503fb3eb7f32de55a7058609e6d788409919430105bccbc",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\6\\candidate.json"
+    },
+    {
+      "path": "runtime/builds/6/m9-build-terminal.json",
+      "bytes": 3602,
+      "sha256": "604af30a233e3f6a607a538003dbc39bb957e3a74ed261bc06eacb4610a046bc",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\6\\m9-build-terminal.json"
+    },
+    {
+      "path": "runtime/builds/6/m9-builder-return.json",
+      "bytes": 1260,
+      "sha256": "4145dff0d102b0014cc7bbcb0bab032e2acdcf5344e38fe2d9c72df4fb4f546d",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\6\\m9-builder-return.json"
+    },
+    {
+      "path": "runtime/builds/6/phase.jsonl",
+      "bytes": 3251,
+      "sha256": "c1203a6af97a9e4cf661314f92b78bcbd5f9d84d4979c71b4e7a86e86e11c9ce",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\6\\phase.jsonl"
+    },
+    {
+      "path": "runtime/builds/6/proposal/artifacts.jsonl",
+      "bytes": 122493,
+      "sha256": "f0643da1f023452e898a3699f2a29356fdb26022ec9abb72ed031091ca7178d6",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\6\\proposal\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/builds/6/proposal/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "7500200b5f5a727fe1739b923b9ab9c6ab4696d557b2c76c64791b0f27f3a832",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\6\\proposal\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/builds/6/proposal/claims.jsonl",
+      "bytes": 4471,
+      "sha256": "a1d18c25fe31782edadfaf9804293eb9be259fe0f2fbc4a1625f1e3dd9ce2b98",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\6\\proposal\\claims.jsonl"
+    },
+    {
+      "path": "runtime/builds/6/proposal/evidence.jsonl",
+      "bytes": 4689,
+      "sha256": "a5c6c669adc21987e54ce2a7d2c8f8aba929dd5a2e710e7718520a58ee389662",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\6\\proposal\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/builds/6/proposal/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\6\\proposal\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/builds/6/proposal/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\6\\proposal\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/builds/6/proposal/trace.jsonl",
+      "bytes": 15594,
+      "sha256": "08257782b340283e5b95d33a87f7a29663cb673931777f878271321e611b0c2e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\6\\proposal\\trace.jsonl"
+    },
+    {
+      "path": "runtime/builds/6/source/source-verification.json",
+      "bytes": 4682,
+      "sha256": "5971d570e60fb2fd11a6e4b52518ed334911662d967f3b59df6d745ff10a8720",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\6\\source\\source-verification.json"
+    },
+    {
+      "path": "runtime/builds/7/build-receipt.json",
+      "bytes": 1812,
+      "sha256": "5b45baac9ce35b4cc604c93dea0f6be18ae1747f8facde1f32fc84015ab78a96",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\7\\build-receipt.json"
+    },
+    {
+      "path": "runtime/builds/7/builder-receipt.json",
+      "bytes": 560,
+      "sha256": "ba3e12958ab0dfcb35f833f0879623b1416ba2fa07ffc4730d3713d2aabb5640",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\7\\builder-receipt.json"
+    },
+    {
+      "path": "runtime/builds/7/builder.json",
+      "bytes": 117,
+      "sha256": "6d0c378ff718a098990a56200ca876b4849c3f3aa56b6d55c889c9d7cb017287",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\7\\builder.json"
+    },
+    {
+      "path": "runtime/builds/7/candidate.json",
+      "bytes": 599,
+      "sha256": "66f6a5956231537709f924becfc2882c3256a79e20514f157577aa5af5f64876",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\7\\candidate.json"
+    },
+    {
+      "path": "runtime/builds/7/m9-build-terminal.json",
+      "bytes": 3591,
+      "sha256": "6bf2147de1cc4f8b21244f56a5f8ce24ddcb2bfa8bed882b4879a9aed216e136",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\7\\m9-build-terminal.json"
+    },
+    {
+      "path": "runtime/builds/7/m9-builder-return.json",
+      "bytes": 1254,
+      "sha256": "de7512715c412d5f45b5d5ad9b01dc64f92cb421ae8e66d73239a474e2198761",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\7\\m9-builder-return.json"
+    },
+    {
+      "path": "runtime/builds/7/phase.jsonl",
+      "bytes": 3245,
+      "sha256": "5e8c84598f3ef56d7fa1c37f9ac6890a824542979f6feff9b556ed264c2257cc",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\7\\phase.jsonl"
+    },
+    {
+      "path": "runtime/builds/7/proposal/artifacts.jsonl",
+      "bytes": 122384,
+      "sha256": "a3103ec34bdf3dc9a335b001ff3a135ba897bbdf348f5b60ff69f7b7079d5c1f",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\7\\proposal\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/builds/7/proposal/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "63883addeb45fa70e487479e62e9ffa23c0916eed11cc5c719bdc4ee9d4c4183",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\7\\proposal\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/builds/7/proposal/claims.jsonl",
+      "bytes": 4471,
+      "sha256": "a1d18c25fe31782edadfaf9804293eb9be259fe0f2fbc4a1625f1e3dd9ce2b98",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\7\\proposal\\claims.jsonl"
+    },
+    {
+      "path": "runtime/builds/7/proposal/evidence.jsonl",
+      "bytes": 4689,
+      "sha256": "a5c6c669adc21987e54ce2a7d2c8f8aba929dd5a2e710e7718520a58ee389662",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\7\\proposal\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/builds/7/proposal/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\7\\proposal\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/builds/7/proposal/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\7\\proposal\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/builds/7/proposal/trace.jsonl",
+      "bytes": 15589,
+      "sha256": "561c37978d2679765fd1a74c70a447ae2c024bcac9eb211e96be91411b0ce339",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\7\\proposal\\trace.jsonl"
+    },
+    {
+      "path": "runtime/builds/7/source/source-verification.json",
+      "bytes": 4682,
+      "sha256": "5cff169ff02aa93ba6edea9bbe93a0f4b67e93c7954d3af598ccf2cd7065e6d5",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\7\\source\\source-verification.json"
+    },
+    {
+      "path": "runtime/builds/8/build-receipt.json",
+      "bytes": 1817,
+      "sha256": "85f5a5f5da2513da2350780f201e9b337f99de9df95c0b8e99dedc8f9cc95351",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\8\\build-receipt.json"
+    },
+    {
+      "path": "runtime/builds/8/builder-receipt.json",
+      "bytes": 563,
+      "sha256": "d14c76eda91e72a1a9caf6393884ea4bbc853e672dd019748721702527ab9b6c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\8\\builder-receipt.json"
+    },
+    {
+      "path": "runtime/builds/8/builder.json",
+      "bytes": 120,
+      "sha256": "4607bdb0907b97006e582d7c35b111ca901570615282306bb57a6a8bce7eb4f0",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\8\\builder.json"
+    },
+    {
+      "path": "runtime/builds/8/candidate.json",
+      "bytes": 602,
+      "sha256": "46930354c4701a977503fb3eb7f32de55a7058609e6d788409919430105bccbc",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\8\\candidate.json"
+    },
+    {
+      "path": "runtime/builds/8/m9-build-terminal.json",
+      "bytes": 3602,
+      "sha256": "604af30a233e3f6a607a538003dbc39bb957e3a74ed261bc06eacb4610a046bc",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\8\\m9-build-terminal.json"
+    },
+    {
+      "path": "runtime/builds/8/m9-builder-return.json",
+      "bytes": 1260,
+      "sha256": "4145dff0d102b0014cc7bbcb0bab032e2acdcf5344e38fe2d9c72df4fb4f546d",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\8\\m9-builder-return.json"
+    },
+    {
+      "path": "runtime/builds/8/phase.jsonl",
+      "bytes": 3251,
+      "sha256": "337b66b9d595726f7bb14d4cdd8f3f2056c819827c41495e4e6e68c570d40e7c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\8\\phase.jsonl"
+    },
+    {
+      "path": "runtime/builds/8/proposal/artifacts.jsonl",
+      "bytes": 122493,
+      "sha256": "c11240c6344e88024df922a7a3ee042f94d5bb19f930784686a10cf7584a5eca",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\8\\proposal\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/builds/8/proposal/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "dcd24d5b6827e689b8af8598437a4764be5e9b5d96231aaa7f1956e258f7f838",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\8\\proposal\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/builds/8/proposal/claims.jsonl",
+      "bytes": 4471,
+      "sha256": "a1d18c25fe31782edadfaf9804293eb9be259fe0f2fbc4a1625f1e3dd9ce2b98",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\8\\proposal\\claims.jsonl"
+    },
+    {
+      "path": "runtime/builds/8/proposal/evidence.jsonl",
+      "bytes": 4689,
+      "sha256": "a5c6c669adc21987e54ce2a7d2c8f8aba929dd5a2e710e7718520a58ee389662",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\8\\proposal\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/builds/8/proposal/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\8\\proposal\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/builds/8/proposal/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\8\\proposal\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/builds/8/proposal/trace.jsonl",
+      "bytes": 15594,
+      "sha256": "c52ff68a2f50a7a5bf11bf2367cc3320d1b65d01976dae57243bc5cad42b8720",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\8\\proposal\\trace.jsonl"
+    },
+    {
+      "path": "runtime/builds/8/source/source-verification.json",
+      "bytes": 4682,
+      "sha256": "791cb2f075866813ec282debd56bbe76af0c8eb8938dd4dfcb66607e7ff9b242",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\8\\source\\source-verification.json"
+    },
+    {
+      "path": "runtime/builds/9/build-receipt.json",
+      "bytes": 1817,
+      "sha256": "a9e1641ad3adc8d9d620eea1232877db3eeaa838e291b214986712e5ee025160",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\9\\build-receipt.json"
+    },
+    {
+      "path": "runtime/builds/9/builder-receipt.json",
+      "bytes": 560,
+      "sha256": "ba3e12958ab0dfcb35f833f0879623b1416ba2fa07ffc4730d3713d2aabb5640",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\9\\builder-receipt.json"
+    },
+    {
+      "path": "runtime/builds/9/builder.json",
+      "bytes": 117,
+      "sha256": "6d0c378ff718a098990a56200ca876b4849c3f3aa56b6d55c889c9d7cb017287",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\9\\builder.json"
+    },
+    {
+      "path": "runtime/builds/9/candidate.json",
+      "bytes": 599,
+      "sha256": "66f6a5956231537709f924becfc2882c3256a79e20514f157577aa5af5f64876",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\9\\candidate.json"
+    },
+    {
+      "path": "runtime/builds/9/m9-build-terminal.json",
+      "bytes": 3591,
+      "sha256": "6bf2147de1cc4f8b21244f56a5f8ce24ddcb2bfa8bed882b4879a9aed216e136",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\9\\m9-build-terminal.json"
+    },
+    {
+      "path": "runtime/builds/9/m9-builder-return.json",
+      "bytes": 1254,
+      "sha256": "de7512715c412d5f45b5d5ad9b01dc64f92cb421ae8e66d73239a474e2198761",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\9\\m9-builder-return.json"
+    },
+    {
+      "path": "runtime/builds/9/phase.jsonl",
+      "bytes": 3246,
+      "sha256": "425c6af85debfb9deb6f54ec0c7aa6db27cdc4eebd90de33d7302047fabdcd6c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\9\\phase.jsonl"
+    },
+    {
+      "path": "runtime/builds/9/proposal/artifacts.jsonl",
+      "bytes": 134839,
+      "sha256": "6333b14cbf3bd21035a35c6be394b65ec26338907afd9a4c8f5acca9af6ab3b5",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\9\\proposal\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/builds/9/proposal/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "67e8076007cbafe4a02170387cd22be151437f5ad8327a10dfac48607594c1ea",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\9\\proposal\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/builds/9/proposal/claims.jsonl",
+      "bytes": 4471,
+      "sha256": "a1d18c25fe31782edadfaf9804293eb9be259fe0f2fbc4a1625f1e3dd9ce2b98",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\9\\proposal\\claims.jsonl"
+    },
+    {
+      "path": "runtime/builds/9/proposal/evidence.jsonl",
+      "bytes": 4689,
+      "sha256": "a5c6c669adc21987e54ce2a7d2c8f8aba929dd5a2e710e7718520a58ee389662",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\9\\proposal\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/builds/9/proposal/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\9\\proposal\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/builds/9/proposal/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\9\\proposal\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/builds/9/proposal/trace.jsonl",
+      "bytes": 22530,
+      "sha256": "6c21ecaa6685ff53a4b41afde700eeae5605101c7a928617a1cb917a5972f087",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\9\\proposal\\trace.jsonl"
+    },
+    {
+      "path": "runtime/builds/9/source/source-verification.json",
+      "bytes": 4682,
+      "sha256": "d3264d0d69087148ac0b6f0e7ec8b8f2ebff6616df9f0cf7349050055eb2778b",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\builds\\9\\source\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08/runtime/analysis-1.py",
+      "bytes": 203,
+      "sha256": "addbc040cbb6f8ebd078373d09855f970a89a97a2d85fad928bce80c8752beb9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08/runtime/artifacts.jsonl",
+      "bytes": 155600,
+      "sha256": "217aa2e33cddaddd5be8bdcbf3f556c755b317fc2f7df7a2b98acd97709d373a",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "e2bcd4724d1748a1102b947a32c310d910871ac7910e7c49a781aa1e360176bf",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08/runtime/claims.jsonl",
+      "bytes": 4978,
+      "sha256": "b198af4d51d1186be4545cfdf4c0c6dd6b42a413e3213731494ca275e5024219",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08/runtime/evidence.jsonl",
+      "bytes": 5079,
+      "sha256": "d577e5cd213d7d9cc89dbd926e36beee98d2fa1f9395b7934d837a7f024f8906",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08/runtime/trace.jsonl",
+      "bytes": 29818,
+      "sha256": "7407649d1bd9c8004679103b82956b4d7fbbda15db4af35a7d66d61e0c56c08c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08/source-verification.json",
+      "bytes": 9047,
+      "sha256": "186dce87569108a9e02a3ff22d4adf513b82211b7b03a3267d1913e947a518e4",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\198250f3ef6fa2b0ec6279e64b6142e207fd716f3586caa0d955d68d47b64f08\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31/runtime/analysis-1.py",
+      "bytes": 203,
+      "sha256": "addbc040cbb6f8ebd078373d09855f970a89a97a2d85fad928bce80c8752beb9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31/runtime/artifacts.jsonl",
+      "bytes": 152730,
+      "sha256": "a32525e74099052d56f3e8c94198bb7b1487ec834b9759778b24afcb27780447",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "5568ebde2edff0f258ac1700389fb480bc729424c446d3ce482299e055d9cb18",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31/runtime/claims.jsonl",
+      "bytes": 4732,
+      "sha256": "bb245f0a6de1d1062e14852c4a67aea70dd63c07876057093053595867e742bf",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31/runtime/evidence.jsonl",
+      "bytes": 4904,
+      "sha256": "60f95704eb00a345efd6a28b4a9de5a8d19df2d3dc8ceee3371c660e9655abd9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31/runtime/trace.jsonl",
+      "bytes": 29363,
+      "sha256": "676014c8e05c255882623631e9bef41242914deebb2941b4e791fea8b77d865f",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31/source-verification.json",
+      "bytes": 8932,
+      "sha256": "295b7f310c40281169d504469d37a919422c81a8bdc211c3d53d53a920f4dd43",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\3f6213daed231b3a800bffaabb604bca6cf567ad6f3b79a5240b2b2c12be7d31\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631/runtime/analysis-1.py",
+      "bytes": 205,
+      "sha256": "96f08866a792caf5a5029a43227e1582fc888319cd383df009212d0a33a84582",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631/runtime/artifacts.jsonl",
+      "bytes": 153910,
+      "sha256": "ae9b11f8eb962ac0e2b0b9cc72a417fc4043a4b1c96f072d1e18a524d0d5121a",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "c5b20d24ca7c7c4b03407ba82b8d5bcaf8bf1ae9f5f346e6c2f3e448e7913a83",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631/runtime/claims.jsonl",
+      "bytes": 4978,
+      "sha256": "b198af4d51d1186be4545cfdf4c0c6dd6b42a413e3213731494ca275e5024219",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631/runtime/evidence.jsonl",
+      "bytes": 4869,
+      "sha256": "d0219a801223c132f634c55bbc9f4075ba9efafde0b0d2cd79014981e3f9c998",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631/runtime/trace.jsonl",
+      "bytes": 29012,
+      "sha256": "ea4a1de35de577d48a7b6c54c6604a0ec071d8c149ec92ec4e022c3ea638175b",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631/source-verification.json",
+      "bytes": 4628,
+      "sha256": "8be53f2b48d569a0dd0519edccfb48ea18c9c30b7151d3f80613028e3790453f",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\536be888125e651f0a8c312a0c0b926709a84a503e9acee83cdcfa338e1ea631\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94/runtime/analysis-1.py",
+      "bytes": 205,
+      "sha256": "2c1927b26a3f44190fd3d1dc9925111f72f37249ffa910375750bb1ab92e90e2",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94/runtime/artifacts.jsonl",
+      "bytes": 73005,
+      "sha256": "b815d306999b763734fdfd18ca2aea366ceab279875358612f08370df9304ba2",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "d41724406fe5c43a5136670738be24aca95a56305c6c17cf9c4dc057047fba1e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94/runtime/claims.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94/runtime/evidence.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94/runtime/trace.jsonl",
+      "bytes": 21389,
+      "sha256": "a5016a637cc4c7e913790667b10e9ab45c699c30f6970f28bce8fb8dafbba5d4",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94/source-verification.json",
+      "bytes": 4628,
+      "sha256": "81e0e2fd8197759b269801da66032cce6df3dd49f24b28b51f13d6b1ed89a6fb",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5b1dd78d62b9a468754c88f8f0a500fd3e9b85516f74d7c5d2bea1319d3d4e94\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26/runtime/analysis-1.py",
+      "bytes": 203,
+      "sha256": "2d5f4fd702e9e160be1ab9f8960ec359d3779311d12c62443b75a076fc556cb9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26/runtime/artifacts.jsonl",
+      "bytes": 155446,
+      "sha256": "376ab4d55f111c07c43b086e6c851b0543a1cdfae6435f77f4ae8129fb3aaf05",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "803fb1c1088f961dcaec797d91400ed1cd8df10aafed0ed2c20580146dcc76cd",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26/runtime/claims.jsonl",
+      "bytes": 4978,
+      "sha256": "b198af4d51d1186be4545cfdf4c0c6dd6b42a413e3213731494ca275e5024219",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26/runtime/evidence.jsonl",
+      "bytes": 5079,
+      "sha256": "d577e5cd213d7d9cc89dbd926e36beee98d2fa1f9395b7934d837a7f024f8906",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26/runtime/trace.jsonl",
+      "bytes": 29807,
+      "sha256": "baecc10f8cedc97050acc457291e962779c633ba6d9138a9c51d5a627f5e4d58",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26/source-verification.json",
+      "bytes": 9047,
+      "sha256": "4a1c9e11b2f9f30a988a47e7d13478bdc0244e9cfc76dc06d2abb1f4f09fbaa8",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\5edc3e4e90383db634f4eb04b32390329c3fdefb47ad4e6997b20fb5965b5a26\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186/runtime/analysis-1.py",
+      "bytes": 207,
+      "sha256": "9d492e9429b14ec70c43715276eff96d0f454249b9547c237751d3e8fe02e50e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186/runtime/artifacts.jsonl",
+      "bytes": 154090,
+      "sha256": "703bff76dd95cd23042fe50a40f4881b482fbbee4f37fdaab0ba6a8dd92a1ef2",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "bc520ccaaf9124347acb2de82620b7de7733ee0319143a3a31c0212cb8493b68",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186/runtime/claims.jsonl",
+      "bytes": 4978,
+      "sha256": "b198af4d51d1186be4545cfdf4c0c6dd6b42a413e3213731494ca275e5024219",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186/runtime/evidence.jsonl",
+      "bytes": 4869,
+      "sha256": "d0219a801223c132f634c55bbc9f4075ba9efafde0b0d2cd79014981e3f9c998",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186/runtime/trace.jsonl",
+      "bytes": 29040,
+      "sha256": "5cf60574c6fb38d713872cd022f70a77e67545e0d827c298ba455bd33db93202",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186/source-verification.json",
+      "bytes": 4628,
+      "sha256": "50bcba941b4d03ee016ac73e4d918618e3376930446baf78a72ff7ce3e007926",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6ae0c1c5f3a147f1911924d33b7cf64116e4dabeae9b756433c8b8b853f1a186\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5/runtime/analysis-1.py",
+      "bytes": 205,
+      "sha256": "2c1927b26a3f44190fd3d1dc9925111f72f37249ffa910375750bb1ab92e90e2",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5/runtime/artifacts.jsonl",
+      "bytes": 72161,
+      "sha256": "7e37b4e0360bb3add6cab498936a913b0394e494d014dce2e8d4e57cce8044c3",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "b11195e1bd23d29c954d89d8af0dd98466e43bea1b819cd74172b5b675d01db2",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5/runtime/claims.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5/runtime/evidence.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5/runtime/trace.jsonl",
+      "bytes": 21213,
+      "sha256": "1992d442a191034693cd3ed723b2a164968480224acade4049a4353bfda8a329",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5/source-verification.json",
+      "bytes": 4513,
+      "sha256": "05940963377042145e6068318ace6a4444088d5c6f57c470c64ad4cd76c4c054",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\6d13694001c9d4776f6d9809acc1046890c169b575b5ba92cb038d7b3511a9d5\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7/runtime/analysis-1.py",
+      "bytes": 206,
+      "sha256": "45e4e301684f450b2fca014e790f03e9137e3a176efdce90ecfa789e5d977cfd",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7/runtime/artifacts.jsonl",
+      "bytes": 170106,
+      "sha256": "7333ce649feb4b16dc4f27772d59fe2a7f0415f9ae82b3ac26f9594e47a76da9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "93ced1729ad5fda580d31d47f7a55a1e5262c7147d7bd036b52db3fd6943ff98",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7/runtime/claims.jsonl",
+      "bytes": 4732,
+      "sha256": "bb245f0a6de1d1062e14852c4a67aea70dd63c07876057093053595867e742bf",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7/runtime/evidence.jsonl",
+      "bytes": 4694,
+      "sha256": "2b13c3e97b332c1c5803cef870e8bda1551e7df1cc7e59d63923b3e7f3b75654",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7/runtime/trace.jsonl",
+      "bytes": 37863,
+      "sha256": "e0d0a2b7f0faf5953ac7ebb1cb32d40c0f7cab74d2f4ebe169ccff55f537a6d2",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7/source-verification.json",
+      "bytes": 4513,
+      "sha256": "3a33dc8f82978d133035aeffe10f45797394f8a8ebb2eceb2b008b152debb76f",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7309ae71b822a6e5db3252baa7aa7b0e0b94fa927dae95daa4d7464402a9f8c7\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593/runtime/analysis-1.py",
+      "bytes": 203,
+      "sha256": "2d5f4fd702e9e160be1ab9f8960ec359d3779311d12c62443b75a076fc556cb9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593/runtime/artifacts.jsonl",
+      "bytes": 152576,
+      "sha256": "5a62b0d933f78c5d0d2cb487b0141d3d69f30e7813dbece226371f306fde9925",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "c5a61591b1478a030e3dca013e1b00d1c98dc287a2c74a4d60a9954c0f03beef",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593/runtime/claims.jsonl",
+      "bytes": 4732,
+      "sha256": "bb245f0a6de1d1062e14852c4a67aea70dd63c07876057093053595867e742bf",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593/runtime/evidence.jsonl",
+      "bytes": 4904,
+      "sha256": "60f95704eb00a345efd6a28b4a9de5a8d19df2d3dc8ceee3371c660e9655abd9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593/runtime/trace.jsonl",
+      "bytes": 29352,
+      "sha256": "2158f1b802fa78dd835804752bc065cbd95b0980218956a2b561fdade16f0491",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593/source-verification.json",
+      "bytes": 8932,
+      "sha256": "bc9ff18471e88c2d87143cad19909f65bba1e0b8778466d0ae38f7d34fd30aed",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7a2e03e09802509f92d55329dd642dd5ad0163718a99c0c3e313955a92f0f593\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2/runtime/analysis-1.py",
+      "bytes": 205,
+      "sha256": "eace010652fd08e0d38774fbad854b5245c36294ef616929119c12ddfe346783",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2/runtime/artifacts.jsonl",
+      "bytes": 169928,
+      "sha256": "371d49d5d46f8de67118b9e227136cb714e041a75bf73091729f42435bac91d8",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "1b2037c1ba2f96ef0b13ce14b5aa1c9a26d1edc012096817a9b3898c585c04a5",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2/runtime/claims.jsonl",
+      "bytes": 4732,
+      "sha256": "bb245f0a6de1d1062e14852c4a67aea70dd63c07876057093053595867e742bf",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2/runtime/evidence.jsonl",
+      "bytes": 4694,
+      "sha256": "2b13c3e97b332c1c5803cef870e8bda1551e7df1cc7e59d63923b3e7f3b75654",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2/runtime/trace.jsonl",
+      "bytes": 37837,
+      "sha256": "3257e1e5c63d862051ed5202beb7d966cd1b162a4a1649aafd0df8d91be0c6fb",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2/source-verification.json",
+      "bytes": 4513,
+      "sha256": "bf6a7062fc37c7bbef2e09a60aa0dbdcd58ab7a5305abb4ab326050f5382dafe",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\7fd2f68d08b1476b204404c76156bb27f3730cf800d7fca01040c1883fa5c3c2\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5/runtime/analysis-1.py",
+      "bytes": 205,
+      "sha256": "96f08866a792caf5a5029a43227e1582fc888319cd383df009212d0a33a84582",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5/runtime/artifacts.jsonl",
+      "bytes": 151040,
+      "sha256": "44ff65ebca3e4860f4ddfdbfae4f3af35fe2a66ed9f483485b6416649968919b",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "00a9099042d10acf23ce8f68189ecff7a03c015a7670596d34bfc147a55ff07c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5/runtime/claims.jsonl",
+      "bytes": 4732,
+      "sha256": "bb245f0a6de1d1062e14852c4a67aea70dd63c07876057093053595867e742bf",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5/runtime/evidence.jsonl",
+      "bytes": 4694,
+      "sha256": "2b13c3e97b332c1c5803cef870e8bda1551e7df1cc7e59d63923b3e7f3b75654",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5/runtime/trace.jsonl",
+      "bytes": 28557,
+      "sha256": "31251290ddaf2dafd4ae1b5a19606be1f279a41e24c01c62012f8d30caa94053",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5/source-verification.json",
+      "bytes": 4513,
+      "sha256": "e921101cdfc93af1c4dbfdec322635b64e0b4a601736b81c2b0cd36a4ef3be5f",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9b9b28f0e15c6869bba710f97dfd9c3540dc5f8f52eb0961e6b834d6465368a5\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446/runtime/analysis-1.py",
+      "bytes": 207,
+      "sha256": "9d492e9429b14ec70c43715276eff96d0f454249b9547c237751d3e8fe02e50e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446/runtime/artifacts.jsonl",
+      "bytes": 154090,
+      "sha256": "182fe661df4733a3a0a4f8e5764a670398fd59cd3a3b2a1ab8bf01a1b86a20a4",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "ef2fa9856df042a4217fd908721c99707d9c3389115017606cd378b972f44895",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446/runtime/claims.jsonl",
+      "bytes": 4978,
+      "sha256": "b198af4d51d1186be4545cfdf4c0c6dd6b42a413e3213731494ca275e5024219",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446/runtime/evidence.jsonl",
+      "bytes": 4869,
+      "sha256": "d0219a801223c132f634c55bbc9f4075ba9efafde0b0d2cd79014981e3f9c998",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446/runtime/trace.jsonl",
+      "bytes": 29040,
+      "sha256": "0c05aa20fec7ec99f5a2a4477966b2adbafa41f2b30698ae385c6de36fa0d8d5",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446/source-verification.json",
+      "bytes": 4628,
+      "sha256": "8fc81c0cf9be28bb6b26fd3633260765efbb0653d386bea35aa57acd34287b48",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\9cbcf71683ff244657563626866c02f735c741bbb94c2aceab873606755a5446\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233/runtime/analysis-1.py",
+      "bytes": 207,
+      "sha256": "9d492e9429b14ec70c43715276eff96d0f454249b9547c237751d3e8fe02e50e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233/runtime/artifacts.jsonl",
+      "bytes": 151220,
+      "sha256": "95a9ccbcd2a654da8f3a2d7e3bb45217dff4fa71ee60ab7bb52225eb85b16a60",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "c5f2efcf4649deaf03fdbd9c08858a0ddd15bff5a93671cf32c044ece1f2168d",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233/runtime/claims.jsonl",
+      "bytes": 4732,
+      "sha256": "bb245f0a6de1d1062e14852c4a67aea70dd63c07876057093053595867e742bf",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233/runtime/evidence.jsonl",
+      "bytes": 4694,
+      "sha256": "2b13c3e97b332c1c5803cef870e8bda1551e7df1cc7e59d63923b3e7f3b75654",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233/runtime/trace.jsonl",
+      "bytes": 28585,
+      "sha256": "71667db26ac51be482d0f28742915df3c40c2d2295e803eda89729676b15e1ab",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233/source-verification.json",
+      "bytes": 4513,
+      "sha256": "6f57bfa12c2687e0a53d11766af9be8fc119b3c5b1f4e03f6ec94ac7876aca68",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\af55eabb478d5c554bdf2cf7cc6f7e6c6c22eb33f2497f48f9339c1fa425d233\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d/runtime/analysis-1.py",
+      "bytes": 205,
+      "sha256": "2326a5a11965940d7197373c58539ce6f991119fe3c90d80e1b983258547b0cf",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d/runtime/artifacts.jsonl",
+      "bytes": 140262,
+      "sha256": "7b5e959736d2a8fbe39de87359e937de917691a5c8486ee5bf4edc286756c1aa",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "24fa1d1200e2f6262d9f713bca19d20cc3b862e5dfb0364c01630dcdc3252ae4",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d/runtime/claims.jsonl",
+      "bytes": 2685,
+      "sha256": "5dd525b3f179dcb766a2a5e2b572f52aec5a001c32a8a95eb0719b278e18ce2c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d/runtime/evidence.jsonl",
+      "bytes": 4573,
+      "sha256": "c3a3fc9d85c63b478130ad23f459e31572b9957994bec46fc46e282db22a9934",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d/runtime/trace.jsonl",
+      "bytes": 30303,
+      "sha256": "1bb3d08d441631a042c3f804ed17bac60c07f5f9d5570dd25f361316d4976784",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d/source-verification.json",
+      "bytes": 9047,
+      "sha256": "f575759f0a9e5a28c207a19bd7e2522a5bf4c1729bd764721fa91ef7226f4a67",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c0728147de4343f36fbd4e52f673ce57d28fa4f561a858401d77578602ff6f0d\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0/runtime/analysis-1.py",
+      "bytes": 207,
+      "sha256": "9d492e9429b14ec70c43715276eff96d0f454249b9547c237751d3e8fe02e50e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0/runtime/artifacts.jsonl",
+      "bytes": 151220,
+      "sha256": "1a9f907da86c2af4060c7706dcb2878a4c854976e32ed713b347ee94f5037e25",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "e7def9b2297054b4606da4d43a7c61d5ab22b916f435777288c2fc064f4c8d5b",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0/runtime/claims.jsonl",
+      "bytes": 4732,
+      "sha256": "bb245f0a6de1d1062e14852c4a67aea70dd63c07876057093053595867e742bf",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0/runtime/evidence.jsonl",
+      "bytes": 4694,
+      "sha256": "2b13c3e97b332c1c5803cef870e8bda1551e7df1cc7e59d63923b3e7f3b75654",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0/runtime/trace.jsonl",
+      "bytes": 28585,
+      "sha256": "a516144dce56aa2b61e2750775f09e3ae1e8664e4ba1c222d10718c543183b1a",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0/source-verification.json",
+      "bytes": 4513,
+      "sha256": "2aff137c6f3e01186b4f0bdea6dc22ad6804bb3e5c3a60633ba94cc4f65fbf13",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\c6a02cd5ac420f622254d5e0a54648a629d47b2b551d190f3b2652e7e32ed0f0\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8/runtime/analysis-1.py",
+      "bytes": 206,
+      "sha256": "7556d8267b786083734628386a64f5e0a505e076d1f87134d7d2923eaa2a620c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8/runtime/artifacts.jsonl",
+      "bytes": 137851,
+      "sha256": "5c747e8767c4e3a4273fd0c29f2194712a96ed88f5305ad2dde0df2f69c9da46",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "67754c68aa1afb0cf5b02e9b9b004f5d99ebc1a046d2478577d2cfd6dafdc8ec",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8/runtime/claims.jsonl",
+      "bytes": 2541,
+      "sha256": "caf649641318131a73884a283771884da5791f1d07db2d8cc96d2374d07f6ab2",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8/runtime/evidence.jsonl",
+      "bytes": 4418,
+      "sha256": "eab54ba3ada8e18cbeb8602afc2dbe4aad2d43a4b445e35c7b84752fa6fcaf3f",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8/runtime/trace.jsonl",
+      "bytes": 29869,
+      "sha256": "3f062c79d23cc52ce12a3bebaa770ef172aa689364b844f770ae5da7a6fefd47",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8/source-verification.json",
+      "bytes": 8932,
+      "sha256": "7a7126b1145bd6346375739aaa1c4f8ae823b863d884b97d29b1d6e2e87d4073",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\cbacd3049cd794b0aa677aff1b8c83d35d1db61164c3f727d07b9f56578862a8\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c/runtime/analysis-1.py",
+      "bytes": 206,
+      "sha256": "7556d8267b786083734628386a64f5e0a505e076d1f87134d7d2923eaa2a620c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c/runtime/artifacts.jsonl",
+      "bytes": 140417,
+      "sha256": "0355b3c2a50e80d0f623e615268aac572412e3971b3b37d64a01634672ecacc1",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "ab8a4f7e62c215486de32dc417dc46d708c44adcb279d9c77e5dc47fef04044a",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c/runtime/claims.jsonl",
+      "bytes": 2685,
+      "sha256": "5dd525b3f179dcb766a2a5e2b572f52aec5a001c32a8a95eb0719b278e18ce2c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c/runtime/evidence.jsonl",
+      "bytes": 4573,
+      "sha256": "c3a3fc9d85c63b478130ad23f459e31572b9957994bec46fc46e282db22a9934",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c/runtime/trace.jsonl",
+      "bytes": 30324,
+      "sha256": "c92eb75c39ed8b94e48426aecad5e1e0f4e90e290d9a559c915ea459fe470f0e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c/source-verification.json",
+      "bytes": 9047,
+      "sha256": "2e18f5aafd8753fc1eb7e1b5955c6c5dcbd4fef5839f7173e0ae8d11917ce279",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\d7f4e9336b544cd2ff00aa1af4945d7f45c94b331f5ee31da8f96583fd33c05c\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a/runtime/analysis-1.py",
+      "bytes": 205,
+      "sha256": "96f08866a792caf5a5029a43227e1582fc888319cd383df009212d0a33a84582",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a/runtime/artifacts.jsonl",
+      "bytes": 151040,
+      "sha256": "f79b1c0904d28662c8425c5a59a0c3afc63f99b58f7019f2b1b3ad55e256c3c6",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "1eef0621109eccc8a3ea26ce91fa08f5dd232eb0ef82c26f080f038dac0bcc09",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a/runtime/claims.jsonl",
+      "bytes": 4732,
+      "sha256": "bb245f0a6de1d1062e14852c4a67aea70dd63c07876057093053595867e742bf",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a/runtime/evidence.jsonl",
+      "bytes": 4694,
+      "sha256": "2b13c3e97b332c1c5803cef870e8bda1551e7df1cc7e59d63923b3e7f3b75654",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a/runtime/trace.jsonl",
+      "bytes": 28557,
+      "sha256": "be0677894c11dbfc3e7d07db061738ce4af8d62c6ec7b765c076d1f040a7ebc3",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a/source-verification.json",
+      "bytes": 4513,
+      "sha256": "a6fc6f4cb2c394ab8845f4676d9c5558645dd4ab7ab34811b09a367eea7e513d",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\e3eac30303924dda9f387e5dc93c4da057571a6beb8275e12b733ce02f99556a\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd/runtime/analysis-1.py",
+      "bytes": 205,
+      "sha256": "2326a5a11965940d7197373c58539ce6f991119fe3c90d80e1b983258547b0cf",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd/runtime/artifacts.jsonl",
+      "bytes": 137696,
+      "sha256": "53d246ed8afd1a4055a2d27032e0ab80600c454d333d285acd09cd131a429ad4",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "68642049f7a01f9282ef976ad4333bf7b082e0e8e70b41332772cf9663ecb560",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd/runtime/claims.jsonl",
+      "bytes": 2541,
+      "sha256": "caf649641318131a73884a283771884da5791f1d07db2d8cc96d2374d07f6ab2",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd/runtime/evidence.jsonl",
+      "bytes": 4418,
+      "sha256": "eab54ba3ada8e18cbeb8602afc2dbe4aad2d43a4b445e35c7b84752fa6fcaf3f",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd/runtime/trace.jsonl",
+      "bytes": 29848,
+      "sha256": "54dfddfdd9c11f5b3c8f40980fbd5e4c40e509ee4da62938e66b6ac594b7cb55",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd/source-verification.json",
+      "bytes": 8932,
+      "sha256": "5be5cb076d7924f84d3f484010421d88af215affd7e1128f6c34eb73aafc4387",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\eeac088bbe5e738b26fda92b8e46eea35b9897e218697940be4a415a0d2dedbd\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb/runtime/analysis-1.py",
+      "bytes": 206,
+      "sha256": "45e4e301684f450b2fca014e790f03e9137e3a176efdce90ecfa789e5d977cfd",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb/runtime/artifacts.jsonl",
+      "bytes": 173339,
+      "sha256": "ccd4775480151750b380ae1104b6d617436dabc3a67710ddff3fc8db96b05646",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "9789911a839b1dcd9f895fe83f30b9722c531df9d660fd17422fecc8975335a1",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb/runtime/claims.jsonl",
+      "bytes": 4978,
+      "sha256": "b198af4d51d1186be4545cfdf4c0c6dd6b42a413e3213731494ca275e5024219",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb/runtime/evidence.jsonl",
+      "bytes": 4869,
+      "sha256": "d0219a801223c132f634c55bbc9f4075ba9efafde0b0d2cd79014981e3f9c998",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb/runtime/trace.jsonl",
+      "bytes": 38505,
+      "sha256": "3860873dd349d01e6c830f8fe4c87aa71c26b0934341307f8f851a524824943e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb/source-verification.json",
+      "bytes": 4628,
+      "sha256": "b3ff977dd66c50cfb9ec059090a78bcd41347ac4856a783da72f9e0d94550424",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f00e820cad62294b1de2f8af40585b52e6745839b07490f195c53791f5a145eb\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4/runtime/analysis-1.py",
+      "bytes": 205,
+      "sha256": "eace010652fd08e0d38774fbad854b5245c36294ef616929119c12ddfe346783",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4/runtime/artifacts.jsonl",
+      "bytes": 173161,
+      "sha256": "04f44fb8bd375a16329d2cd4385126e8f18e01689ae1d5cabdc43fc14b5c85e2",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "c7715955a07f878fca4bfe22686504b3409192b352956a8734be7a3d1150609c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4/runtime/claims.jsonl",
+      "bytes": 4978,
+      "sha256": "b198af4d51d1186be4545cfdf4c0c6dd6b42a413e3213731494ca275e5024219",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4/runtime/evidence.jsonl",
+      "bytes": 4869,
+      "sha256": "d0219a801223c132f634c55bbc9f4075ba9efafde0b0d2cd79014981e3f9c998",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4/runtime/trace.jsonl",
+      "bytes": 38479,
+      "sha256": "d5bb84327c8a9fd7029ec6852fd036787bab19bb90ae536c0354eaf5ebc369a9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4/source-verification.json",
+      "bytes": 4628,
+      "sha256": "aa9211dee54d1bcc1b11e0da0d03431f28b855466b5e8ec0f517eaa7eefdcbea",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\f117025f4556b9fb0354af8738f32e143dff6b751a80d7d3c223097775a53cd4\\source-verification.json"
+    },
+    {
+      "path": "runtime/targets/fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15/runtime/analysis-1.py",
+      "bytes": 205,
+      "sha256": "96f08866a792caf5a5029a43227e1582fc888319cd383df009212d0a33a84582",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15\\runtime\\analysis-1.py"
+    },
+    {
+      "path": "runtime/targets/fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15/runtime/artifacts.jsonl",
+      "bytes": 153910,
+      "sha256": "b9ead1134188dc27ce0d42d9a9badcd8a4b89a7ab33711270110aea80a9e8ff0",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15\\runtime\\artifacts.jsonl"
+    },
+    {
+      "path": "runtime/targets/fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15/runtime/artifacts.jsonl.seal.json",
+      "bytes": 283,
+      "sha256": "996490b154cc9dc4f6b475f330336325aeedeb9a48724894de2f1f8d08f1c1b0",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15\\runtime\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "runtime/targets/fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15/runtime/claims.jsonl",
+      "bytes": 4978,
+      "sha256": "b198af4d51d1186be4545cfdf4c0c6dd6b42a413e3213731494ca275e5024219",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15\\runtime\\claims.jsonl"
+    },
+    {
+      "path": "runtime/targets/fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15/runtime/evidence.jsonl",
+      "bytes": 4869,
+      "sha256": "d0219a801223c132f634c55bbc9f4075ba9efafde0b0d2cd79014981e3f9c998",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15\\runtime\\evidence.jsonl"
+    },
+    {
+      "path": "runtime/targets/fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15/runtime/predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15\\runtime\\predictions.jsonl"
+    },
+    {
+      "path": "runtime/targets/fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15/runtime/reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15\\runtime\\reviews.jsonl"
+    },
+    {
+      "path": "runtime/targets/fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15/runtime/trace.jsonl",
+      "bytes": 29012,
+      "sha256": "a77aff79bf9956362ec8d31625bea8108a7c08a41f17bdcd5e3d2951b2dccbed",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15\\runtime\\trace.jsonl"
+    },
+    {
+      "path": "runtime/targets/fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15/source-verification.json",
+      "bytes": 4628,
+      "sha256": "bdb680e78f0c192a995ae80c8cd1ce7fab41c7c69b8e300009d0221cbc83978a",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\targets\\fee79ec878df252889b77b1d1d695fc74a007479f4379e5fc5f882003ba7ba15\\source-verification.json"
+    },
+    {
+      "path": "controller/plan.json",
+      "bytes": 27617,
+      "sha256": "45abca26f5114da7601c29711233f947e0fac156c10cc8ed0411e78a5c1fa245",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\plan.json"
+    },
+    {
+      "path": "controller/candidate-barrier.json",
+      "bytes": 1075,
+      "sha256": "f9aaba9f49f0c997e4c2f7dfe2bdd65bd52b52168a37821c128971cb893181e9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\candidate-barrier.json"
+    },
+    {
+      "path": "controller/controller.jsonl",
+      "bytes": 59504,
+      "sha256": "f27d47f9e6317fc302948e4adb3bdf5a14b076bc02a560cd6187227f15e99a78",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\controller.jsonl"
+    },
+    {
+      "path": "controller/controller-receipt.json",
+      "bytes": 14170,
+      "sha256": "2093fb3288ce8f7b50b1f94f76aeadcb1b4414c3d2adc1a5477ebfd29ff2314f",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-configuration-edges-r1\\state-improvement0\\run\\controller-receipt.json"
+    },
+    {
+      "path": "tools/archive_state_configuration_edges_r1.py",
+      "bytes": 8940,
+      "sha256": "e9f3f960c1a22be31ee4deb2fe41a821f88ae6685930905e636e7526315a279c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\archive_state_configuration_edges_r1.py"
+    }
+  ],
+  "configuration_edges": 22,
+  "new_paid_calls": 0,
+  "scientific_effectiveness_proven": false,
+  "validation_acceptance": false,
+  "all_module_output_coverage_complete": false,
+  "scope": "Complete selected state build and target directories plus controller provenance. Synthetic peers and actual Docker. Provider streams, authority key files and source export roots excluded. Archive readback verifies original bytes and graph references, not complete historical semantic replay."
+}

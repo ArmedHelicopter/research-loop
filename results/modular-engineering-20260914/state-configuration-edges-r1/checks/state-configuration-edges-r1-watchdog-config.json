@@ -1,0 +1,9 @@
+{
+  "root_pid": 68920,
+  "root_creation_utc_ticks": 639249835439571710,
+  "root_command": "\"E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe\" E:/_ryanDev/AI/research-loop-modular/work/run_frozen_checks_with_source.py E:/_ryanDev/AI/research-loop-modular/artifact-evidence-provenance E:/_ryanDev/AI/research-loop-modular/work/state-configuration-edges-r1 tests/test_label_isolation.py tests/test_artifact_catalogue.py tests/test_artifact_subjects.py tests/test_state_configuration_artifacts.py -x",
+  "deadline": "2026-09-14T20:38:04.4757917+08:00",
+  "prefix": "E:/_ryanDev/AI/research-loop-modular/work/state-configuration-edges-r1",
+  "journal": "E:/_ryanDev/AI/research-loop-modular/work/state-configuration-edges-r1-watchdog.json",
+  "expected_cases": "31 existing boundary checks plus 7 graph checks over 11 real builders and 22 Docker targets"
+}
