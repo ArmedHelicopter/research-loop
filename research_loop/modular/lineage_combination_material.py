@@ -213,7 +213,8 @@ class DualMaterialVerifier:
         return self.replay(material, path, cell_binding=cell_binding)
 
     def _write_qualification(self, path, request, rows):
-        if DockerExecutionBroker._has_link_component(path):
+        if (DockerExecutionBroker._has_link_component(path)
+                or DockerExecutionBroker._has_link_component(path.with_suffix(path.suffix + '.tmp'))):
             raise ContractError('material provenance storage path is unsafe')
         _write(path, {'request': request.data(), 'binding': self.binding().data(), 'calls': rows})
 
