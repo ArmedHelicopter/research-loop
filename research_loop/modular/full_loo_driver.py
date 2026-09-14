@@ -116,7 +116,14 @@ def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_mater
     except Exception as exc:
         reason=type(exc).__name__+': '+str(exc)
         if session is not None and not session._terminal:
-            session.controller_failure(driver_id=OBLIGATION,error_type=type(exc).__name__,panel_cell=opaque_panel_cell_binding(cell))
+            try:
+                session.controller_failure(driver_id=OBLIGATION,error_type=type(exc).__name__,panel_cell=opaque_panel_cell_binding(cell))
+            except Exception as journal_error:
+                reason+='; failure_journal:'+type(journal_error).__name__
+                _exclusive(root/'artifact-journal-failure.json',FrozenRecord.from_dict({
+                    'schema':'artifact-journal-failure-v1','original_error_type':type(exc).__name__,
+                    'journal_error_type':type(journal_error).__name__,'trace_path':'runtime/trace.jsonl'}))
+                session._terminal=True
     # Explicit separate success predicates prevent an auxiliary success from
     # promoting a missing common solve or missing restricted build.
     status='succeeded' if (candidate is not None if stage=='history_build' else solver is not None and solver.status=='execution_succeeded') and reason is None else 'failed'
