@@ -94,8 +94,8 @@ class AdmissionMaterialVerifier(DualMaterialVerifier):
             for key, subject in originals.items(): _assessment(values[phase][key], subject)
         return b
 
-    def replay(self, material, path, *, cell_binding):
-        digest = super().replay(material, path, cell_binding=cell_binding)
+    def _verify_receipt(self, material, path, *, cell_binding):
+        digest = super()._verify_receipt(material, path, cell_binding=cell_binding)
         rows = json.loads(path.read_text(encoding='utf-8'))['calls']
         if FrozenRecord.from_dict(rows[0]['response']['body']['assessments']) != FrozenRecord.from_dict(rows[1]['response']['body']['assessments']):
             raise ContractError('two independent qualification observations disagree')
