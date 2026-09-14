@@ -44,6 +44,7 @@ def test_actual_invoke_registers_exact_m3_context_and_request(tmp_path, modules,
     descriptor = _descriptor(session)
     record = FrozenRecord.from_dict(descriptor['payload']['canonical'])
     data = record.data()
+    assert data['schema'] == 'm3-model-context-artifact-v2'
     assert data['mode'] == mode
     assert data['request'] == seen[0].data()
     assert data['final_context'] == seen[0].data()['context']

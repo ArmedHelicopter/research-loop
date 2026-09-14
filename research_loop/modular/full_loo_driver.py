@@ -183,8 +183,8 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
         raise ContractError('trace and catalogue journal transaction differs')
     from research_loop.modular.evidence_artifacts import verify_evidence_artifacts
     evidence_replay = verify_evidence_artifacts(catalogue, root/'runtime').data()
-    invocation_snapshots = {request_digest: {name: FrozenRecord.from_dict(snapshot)
-        for name, snapshot in snapshots.items()}
+    invocation_snapshots = {request_digest: {'evidence': FrozenRecord.from_dict(snapshots['evidence_snapshot']),
+        'claims': FrozenRecord.from_dict(snapshots['claims_snapshot'])}
         for request_digest, snapshots in evidence_replay['model_inputs'].items()}
     verify_session_context_artifacts(task=task, lock=FrozenRecord.from_dict(lock), events=events,
         catalogue=catalogue, invocation_snapshots=invocation_snapshots)

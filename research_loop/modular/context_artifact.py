@@ -49,7 +49,7 @@ def context_artifact(*, task: PublicTask, slot: str, mode: str, m3_enabled: bool
     for snapshot in (evidence, claims, before_projection, final_context):
         if snapshot.data().get('identity') != task.identity.data():
             raise ContractError('M3 context artifact cannot cross task or domain')
-    return FrozenRecord.from_dict({'schema': 'm3-model-context-artifact-v1', 'identity': task.identity.data(),
+    return FrozenRecord.from_dict({'schema': 'm3-model-context-artifact-v2', 'identity': task.identity.data(),
         'slot': slot, 'mode': mode, 'm3_enabled': m3_enabled, 'budget_bytes': budget_bytes,
         'evidence_snapshot': evidence.data(), 'claims_snapshot': claims.data(),
         'before_projection': before_projection.data(), 'final_context': final_context.data(),
@@ -109,7 +109,7 @@ def verify_context_artifact(record: FrozenRecord, *, task: PublicTask, request: 
     data = record.data()
     required = {'schema', 'identity', 'slot', 'mode', 'm3_enabled', 'budget_bytes', 'evidence_snapshot',
                 'claims_snapshot', 'before_projection', 'final_context', 'baseline_summary', 'request_digest', 'request'}
-    if set(data) != required or data['schema'] != 'm3-model-context-artifact-v1':
+    if set(data) != required or data['schema'] != 'm3-model-context-artifact-v2':
         raise ContractError('M3 context artifact schema differs')
     if data['request_digest'] != request.content_hash or data['request'] != request.data():
         raise ContractError('M3 context artifact differs from its model request')
