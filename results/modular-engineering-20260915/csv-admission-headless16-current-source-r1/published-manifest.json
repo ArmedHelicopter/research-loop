@@ -1,0 +1,70 @@
+{
+  "schema": "frozen-module-check-published-files-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "archive-helper.py",
+      "sha256": "3039e4c8aadfb93178ad4734afebe4e6493c37b400e12d02dadad6a8c12277c9",
+      "bytes": 27452
+    },
+    {
+      "path": "headless16-before.json",
+      "sha256": "cd60a93fab6fc4936a10b5e77c92777182e4b5b62463518888e3f47ecc865168",
+      "bytes": 95737
+    },
+    {
+      "path": "headless16-closed.json",
+      "sha256": "48ad70f3dfca45a035962a7dd0ba25a7a8b81a2d2598260c47c5fa42215ceffe",
+      "bytes": 95786
+    },
+    {
+      "path": "headless16-native-join.json",
+      "sha256": "abc9cc83278123191596020931a344fbd3297cc5b9a88615d2ccea43ee77728f",
+      "bytes": 283
+    },
+    {
+      "path": "headless16-native-start.json",
+      "sha256": "77b7c57043325a6530e8b3aed18c419bb89ebe2956c2a392a89a7aba390df7d2",
+      "bytes": 109
+    },
+    {
+      "path": "headless16-source-members.json",
+      "sha256": "117d38243b511c328c77dd8ae61c928e279ec8b1d1d483b63ceea0a6beec4ab4",
+      "bytes": 143120
+    },
+    {
+      "path": "headless16-sources.zip",
+      "sha256": "230eae894e34ccfb645e913ecc4ac5ae39079af554dbe5176b391beeea6a7594",
+      "bytes": 2731346
+    },
+    {
+      "path": "headless16.log",
+      "sha256": "28e6cdaa36c9f87bfa8659f032a64f6564e2d4d762c4f1357f155f62842c5127",
+      "bytes": 668
+    },
+    {
+      "path": "headless16.xml",
+      "sha256": "955a257e4f8bdae9c71b7711f03083f29dbd8f24dcc55d01c11f3cfde45bd55e",
+      "bytes": 421
+    },
+    {
+      "path": "private-retention-manifest.json",
+      "sha256": "01277c9640a2a793f59e76d7acf95bea208ca0f28380fcc5fcff9a9c13a5191f",
+      "bytes": 3920290
+    },
+    {
+      "path": "README.md",
+      "sha256": "85bbec49519711bc04e287e8e76879ac3758d4c59308d9211d944785df85a724",
+      "bytes": 896
+    },
+    {
+      "path": "retention-helper-source.py",
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840
+    }
+  ]
+}
