@@ -1,0 +1,61 @@
+{
+  "context_after": {
+    "context_digest": "111255da89071967cc0535eea44a34b074a01dbc10b3c0231e0ba1fbdfde6367",
+    "direct_model_context_inspection": false,
+    "discovery_sources_absent": true,
+    "ignored_bundle_present": false,
+    "ordinary_skill_filter_applies_to_later_bundles": true,
+    "schema": "grok130-readiness-context-observation-v1"
+  },
+  "context_fault": null,
+  "global_auth_metadata_unchanged": true,
+  "known_model_usage": null,
+  "model_prompt_writes": 0,
+  "native_log": {
+    "bytes": 11385,
+    "exists": true,
+    "mtime_ns": 1789453287470427500,
+    "sha256": "64f512b7f42c5b5017644f7f6ba48867baf62c46d1b699d7e4a2b00b34f6d070"
+  },
+  "result": {
+    "accepted_initialize": false,
+    "elapsed_seconds": 60.25,
+    "faults": [
+      "timeout"
+    ],
+    "initialize_write_attempted": true,
+    "initialize_writes_completed": 1,
+    "known_model_usage": null,
+    "model_account_tools_verified": false,
+    "native_exit_code_after_shutdown": 0,
+    "native_process_id": 47496,
+    "outbound_method_counts": {
+      "_x.ai/auto-topup-rule": 0,
+      "_x.ai/billing": 0,
+      "authenticate": 0,
+      "initialize": 1,
+      "session/new": 0,
+      "session/prompt": 0
+    },
+    "process_tree_closed": true,
+    "response": null,
+    "retry_allowed": false,
+    "schema": "initialize-only-closure-v1",
+    "server_requests_observed": 0,
+    "settled_additional_charge_usd": null,
+    "shutdown_started_seconds": 60.0,
+    "started_utc": "2026-09-15T06:21:19.440713+00:00",
+    "stderr_bytes": 0,
+    "stdout_bytes": 0,
+    "stdout_frames_parsed": 0,
+    "stream_hashes": {
+      "stderr.private.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout.private.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "retry_count": 0,
+  "schema": "private-log-initialize-closure-v1",
+  "scientific_effectiveness_proven": false,
+  "settled_additional_charge_usd": null,
+  "source_unchanged": true
+}

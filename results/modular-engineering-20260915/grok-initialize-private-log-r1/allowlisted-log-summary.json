@@ -1,0 +1,159 @@
+{
+  "schema": "private-startup-log-allowlist-v1",
+  "files": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-private-log-r1\\native-startup.private.log",
+      "sha256": "64f512b7f42c5b5017644f7f6ba48867baf62c46d1b699d7e4a2b00b34f6d070",
+      "bytes": 11385,
+      "mtime_ns": 1789453287470427500,
+      "lines": 66,
+      "phases": [
+        {
+          "line": 5,
+          "timestamp": "2026-09-15T06:21:23.335047Z",
+          "message": "remote_settings"
+        },
+        {
+          "line": 22,
+          "timestamp": "2026-09-15T06:21:23.339900Z",
+          "message": "acp_initialize"
+        },
+        {
+          "line": 22,
+          "timestamp": "2026-09-15T06:21:23.339900Z",
+          "message": "auto worktree gc and session search deferred until remote_settings arrive"
+        },
+        {
+          "line": 22,
+          "timestamp": "2026-09-15T06:21:23.339900Z",
+          "message": "remote_settings"
+        },
+        {
+          "line": 25,
+          "timestamp": "2026-09-15T06:21:23.340258Z",
+          "message": "acp_initialize"
+        },
+        {
+          "line": 26,
+          "timestamp": "2026-09-15T06:21:23.340276Z",
+          "message": "acp_initialize"
+        },
+        {
+          "line": 28,
+          "timestamp": "2026-09-15T06:21:23.340288Z",
+          "message": "acp_initialize"
+        },
+        {
+          "line": 30,
+          "timestamp": "2026-09-15T06:21:23.347938Z",
+          "message": "acp_initialize"
+        },
+        {
+          "line": 41,
+          "timestamp": "2026-09-15T06:21:26.908262Z",
+          "message": "acp_initialize"
+        },
+        {
+          "line": 43,
+          "timestamp": "2026-09-15T06:21:26.908274Z",
+          "message": "acp_initialize"
+        },
+        {
+          "line": 45,
+          "timestamp": "2026-09-15T06:21:26.908294Z",
+          "message": "acp_initialize"
+        },
+        {
+          "line": 46,
+          "timestamp": "2026-09-15T06:21:26.908523Z",
+          "message": "acp_initialize"
+        },
+        {
+          "line": 47,
+          "timestamp": "2026-09-15T06:21:26.908620Z",
+          "message": "acp_initialize"
+        },
+        {
+          "line": 47,
+          "timestamp": "2026-09-15T06:21:26.908620Z",
+          "message": "model_state"
+        }
+      ],
+      "rust_subsystem_counts": {},
+      "recognized_json_field_counts": {}
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-private-log-r1\\home\\logs\\unified.jsonl",
+      "sha256": "366ce1d13052f7679f7117380a94100f885379ec47ad73d3f688b19d59d4e1bc",
+      "bytes": 18256,
+      "mtime_ns": 1789453289600569500,
+      "lines": 61,
+      "phases": [
+        {
+          "line": 20,
+          "timestamp": "2026-09-15T06:21:23.335Z",
+          "message": "remote_settings"
+        },
+        {
+          "line": 29,
+          "timestamp": "2026-09-15T06:21:23.339Z",
+          "message": "agent initialized"
+        },
+        {
+          "line": 32,
+          "timestamp": "2026-09-15T06:21:23.347Z",
+          "message": "auth: initialize() refreshed auth state from disk"
+        },
+        {
+          "line": 49,
+          "timestamp": "2026-09-15T06:21:26.908Z",
+          "message": "auth: initialize() built auth_methods for ACP response"
+        },
+        {
+          "line": 50,
+          "timestamp": "2026-09-15T06:21:26.908Z",
+          "message": "auth method selection"
+        },
+        {
+          "line": 52,
+          "timestamp": "2026-09-15T06:21:27.463Z",
+          "message": "model catalog: fetch succeeded"
+        },
+        {
+          "line": 53,
+          "timestamp": "2026-09-15T06:21:27.463Z",
+          "message": "model catalog: retry succeeded"
+        },
+        {
+          "line": 54,
+          "timestamp": "2026-09-15T06:21:27.463Z",
+          "message": "model catalog: notifying clients"
+        },
+        {
+          "line": 55,
+          "timestamp": "2026-09-15T06:21:27.470Z",
+          "message": "model catalog: fetch succeeded"
+        },
+        {
+          "line": 57,
+          "timestamp": "2026-09-15T06:21:27.470Z",
+          "message": "model catalog: notifying clients"
+        },
+        {
+          "line": 61,
+          "timestamp": "2026-09-15T06:21:29.600Z",
+          "message": "auth update enrichment done"
+        }
+      ],
+      "rust_subsystem_counts": {},
+      "recognized_json_field_counts": {
+        "ts": 61,
+        "src": 61,
+        "lvl": 61,
+        "msg": 61,
+        "ver": 54
+      }
+    }
+  ],
+  "raw_text_published": false
+}

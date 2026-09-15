@@ -3,6 +3,30 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Native startup logging observation (2026-09-15)
+
+The [single initialize with private native logging](../results/modular-engineering-20260915/grok-initialize-private-log-r1/README.md)
+retains its original tool session 59193 and closed process tree. It timed out at
+60.25 seconds with no ACP response; driver exit 0 does not establish startup
+success. Native debug output now contains `model_state` within initialization;
+later model-catalogue/auth-enrichment events completed. This narrows source
+inspection, but does not identify a proven deadlock or binary/source equivalence.
+There was one initialize, no session/prompt RPC and no experiment rerun.
+
+The pinned binary's own help verifies `--debug` and `--debug-file`. The earlier
+read-only report's claimed README support for `GROK_LOG_FILE`/`RUST_LOG` could
+not be established and was not used. Its original report remains unchanged;
+the new archive records the correction and the failed pre-native preparation.
+Sixty noncredential files remain privately retained; public output is restricted
+to source, receipts, hashes and fixed phase summaries. Usage/settlement is unknown.
+
+After actual startup recovery, a fresh bounded M4/M5 TRAIN panel can use the
+existing v6 controller and new exporter/run roots. Formal calibration and VAL
+qualification are not prerequisites for that exploratory TRAIN measurement;
+they remain required for their own acceptance claims. Neither complete C5 nor
+Daybreak is introduced as a prerequisite. All original experiment obligations
+remain in scope, and the original C5 runtime is not restarted by this diagnostic.
+
 ## Scorer observations and sealed M2 relations (2026-09-15)
 
 The [retained frozen attempts](../results/modular-engineering-20260915/admission-headless-evidence-r1/README.md)

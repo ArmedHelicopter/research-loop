@@ -1,0 +1,130 @@
+{
+  "schema": "published-files-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "agent-help.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "agent-help.stdout.txt",
+      "sha256": "056e71951a4badab3948a351143cfc170beb12daf6708ed1bff2e0ed92189079",
+      "bytes": 2096
+    },
+    {
+      "path": "allowlisted-log-summary.json",
+      "sha256": "a757d566d63b90f4908235942cd6508d4edfbfa15b6c5639b1719e0a9681697d",
+      "bytes": 4749
+    },
+    {
+      "path": "archive_grok_private_log_r1.py",
+      "sha256": "fe442c98e829ce9bf10f765f913311609b1bc5d204d13fb851a01314ab8bd1ca",
+      "bytes": 6699
+    },
+    {
+      "path": "closure.json",
+      "sha256": "134cb6aff9c2fac7eb1c29823c807dfa541c9a13fca3379a2f51ea59c62dc2fa",
+      "bytes": 2045
+    },
+    {
+      "path": "driver.py",
+      "sha256": "a5aea698b31213f19c2bd217d8045bf8d534e8f375db76759fc37865f30c6b78",
+      "bytes": 6594
+    },
+    {
+      "path": "envelope.json",
+      "sha256": "e15af0ad177b3c158a49354a10644d56ea483b5112df41df3ac696542352c9ee",
+      "bytes": 2838
+    },
+    {
+      "path": "frozen-source-python.zip",
+      "sha256": "4bdd496c0543256c7e9ccb2aefb884262b455f76bd48c84e057324dd6820869e",
+      "bytes": 21394
+    },
+    {
+      "path": "grok130-initialize-private-log-r1-driver.log",
+      "sha256": "f5f941176c9473d7290b68485a99ee8d6e3b19dcd4ddd2685948b80e08cf4a56",
+      "bytes": 432
+    },
+    {
+      "path": "grok130-initialize-private-log-r1-native-join.json",
+      "sha256": "2f56db931b18298eb9e3606ac4c3940f8d2d9d99ee7909d23c18a16e1ad1fc3e",
+      "bytes": 174
+    },
+    {
+      "path": "grok130-initialize-private-log-r1-native-start.json",
+      "sha256": "aafa2df8e9b3ef0a1e71ab95eac9e5da43e4713c73ac9bab91349ce8e01bdf14",
+      "bytes": 109
+    },
+    {
+      "path": "help-receipt.json",
+      "sha256": "1b8d1187e0a214e06164b565ea09f72d72675343085073e299a6ab5f1145319f",
+      "bytes": 227
+    },
+    {
+      "path": "init_engine.py",
+      "sha256": "2396bfa21457ae89a3a7bf631ab3ea74faf207e15d3587701743f33e7bcb8db3",
+      "bytes": 8802
+    },
+    {
+      "path": "launch-reservation.json",
+      "sha256": "67586df82036ab86f0a822195d4d22f0b718dce67874f6f5b308cadcd850c470",
+      "bytes": 358
+    },
+    {
+      "path": "prepare_grok_private_log_r1.py",
+      "sha256": "68ec19b3739671bfd7bda883fd487d92d8878753a4d9e5e165b2c24d2abbd713",
+      "bytes": 1104
+    },
+    {
+      "path": "prepare_headless_lineage_full4_archive_r1.py",
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840
+    },
+    {
+      "path": "README.md",
+      "sha256": "75bda7495bb17c3aa763231a931f5f0a3f0c5feb9e7631bab949c629f41dad29",
+      "bytes": 1846
+    },
+    {
+      "path": "retention-manifest.json",
+      "sha256": "51ce78930398c2103cf55316ca498a371c16ab93fc6b373b9e51d468f09569c8",
+      "bytes": 51798
+    },
+    {
+      "path": "source-bound-phase-summary.json",
+      "sha256": "7123490896af1a01906b576194cfda1ae478942feea101c96532a6741268828c",
+      "bytes": 1114
+    },
+    {
+      "path": "source-members.json",
+      "sha256": "f09e8b480a265bad2b0dbe3b46da829047570617b4e88a2462cfea18faae0564",
+      "bytes": 1187
+    },
+    {
+      "path": "span-boundary-summary.json",
+      "sha256": "bf5050cfb774db2b2c6a7a4c71d65fd114e6caef89cd809bfefee50e66449d5f",
+      "bytes": 9275
+    },
+    {
+      "path": "summarize_private_logs.py",
+      "sha256": "81f2c8096067bf1253f82cc17e0cb3f28cd3fe75cf98a84fe9f89fe86ee60384",
+      "bytes": 2343
+    },
+    {
+      "path": "summarize_source_bound_phases.py",
+      "sha256": "be1529d74a2b2b423e9d8dfc011e1082f65595282efc93fec888c133e2c6a256",
+      "bytes": 1417
+    },
+    {
+      "path": "summarize_span_boundaries.py",
+      "sha256": "cedd88690e84c64c4ae16234a8b81548d6a64d0a7d1a238195aa4da60cdfe5a0",
+      "bytes": 868
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "public-source-constant-phase-match-v1",
+  "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-startup-source-study-r3\\acp_agent.rs",
+  "source_sha256": "4d4689029cbcaadca67c5c3561698f37f5cb02342098e5a7b9dc8fcc1f2bd56e",
+  "files": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-private-log-r1\\native-startup.private.log",
+      "matched_events": [
+        {
+          "line": 22,
+          "source_constant": "auto worktree gc and session search deferred until remote_settings arrive",
+          "timestamp": "2026-09-15T06:21:23.339900Z"
+        }
+      ],
+      "line_count": 66
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-private-log-r1\\home\\logs\\unified.jsonl",
+      "matched_events": [
+        {
+          "line": 29,
+          "source_constant": "agent initialized",
+          "timestamp": "2026-09-15T06:21:23.339Z"
+        }
+      ],
+      "line_count": 61
+    }
+  ],
+  "binary_source_equivalence_verified": false,
+  "raw_log_values_exposed": false
+}

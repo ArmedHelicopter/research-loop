@@ -1,0 +1,63 @@
+{
+  "before_context": {
+    "context_digest": "111255da89071967cc0535eea44a34b074a01dbc10b3c0231e0ba1fbdfde6367",
+    "direct_model_context_inspection": false,
+    "discovery_sources_absent": true,
+    "ignored_bundle_present": false,
+    "ordinary_skill_filter_applies_to_later_bundles": true,
+    "schema": "grok130-readiness-context-observation-v1"
+  },
+  "command": [
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-cli-1.0.30\\grok.exe",
+    "--cwd",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-private-log-r1\\cwd",
+    "agent",
+    "--debug",
+    "--debug-file",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-private-log-r1\\native-startup.private.log",
+    "stdio"
+  ],
+  "context_digest": "111255da89071967cc0535eea44a34b074a01dbc10b3c0231e0ba1fbdfde6367",
+  "earlier_envvar_report_claim_not_relied_on": true,
+  "executable_sha256": "ca24ea63272ba7881261f4a52498d1f5bd884b01da25845990422a10dd315266",
+  "frozen_files": {
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_acp_transport.py": "f736d68218e49bf90fa6ead447097d8366d3827932bea5565c854e71d07aa855",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_skill_isolation.py": "694def3565b1f7df24fcbc59458eb88e33950cca07e68341080bcc89f1e6205f",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-cli-1.0.30\\grok.exe": "ca24ea63272ba7881261f4a52498d1f5bd884b01da25845990422a10dd315266",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-private-log-r1\\driver.py": "a5aea698b31213f19c2bd217d8045bf8d534e8f375db76759fc37865f30c6b78",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-private-log-r1\\home\\config.toml": "ae33c728e769898ccfaa7655bf1f1c17d820fa1122cad74860a727376c2e8168",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-private-log-r1\\init_engine.py": "2396bfa21457ae89a3a7bf631ab3ea74faf207e15d3587701743f33e7bcb8db3"
+  },
+  "logging_option_authority": "fresh pinned executable agent --help",
+  "native_initialize_launches": 1,
+  "private_env_keys": [
+    "APPDATA",
+    "COMSPEC",
+    "GROK_DISABLE_AUTOUPDATER",
+    "GROK_HOME",
+    "GROK_MEMORY",
+    "GROK_SUBAGENTS",
+    "GROK_TITLE_REFRESH",
+    "GROK_TURN_SUMMARY",
+    "GROK_WORKFLOWS",
+    "HOME",
+    "HOMEDRIVE",
+    "HOMEPATH",
+    "LOCALAPPDATA",
+    "NUMBER_OF_PROCESSORS",
+    "OS",
+    "PATH",
+    "PATHEXT",
+    "PROCESSOR_ARCHITECTURE",
+    "SYSTEMDRIVE",
+    "SYSTEMROOT",
+    "TEMP",
+    "TMP",
+    "USERPROFILE",
+    "WINDIR"
+  ],
+  "schema": "private-log-initialize-envelope-v1",
+  "wall_timeout_seconds": 60,
+  "wire_bytes": 261,
+  "wire_sha256": "4ff2a6301d0f60b08451d890fb2bff5ee7067be81658cd46845e64bc1edac4dd"
+}
