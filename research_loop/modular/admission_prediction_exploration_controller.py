@@ -358,7 +358,8 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
             persist(refresh_usage=False)
         evaluator_gate = finalize_headless_evaluator_gate(binding=evaluator_binding,
             family='admission-prediction-exploration', service=service, panel=compiled.panels[0],
-            scores=scores, scorer_authority_keys=scorer_authority_keys, capture=capture_evaluator_gate)
+            scores=scores, scorer_authority_keys=scorer_authority_keys,
+            scorer_config=ScorerConfig(FrozenRecord.from_dict(b['scorer'])), capture=capture_evaluator_gate)
     final_gate = final_provider_gate(provider_session, root/'final-provider-ledger.json')
     contrasts = []
     for panel in compiled.panels:

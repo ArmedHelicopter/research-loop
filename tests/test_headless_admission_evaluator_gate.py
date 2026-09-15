@@ -8,6 +8,7 @@ from evaluation.modular.scoring_service import ScorerConfig
 from research_loop.modular.ordinary_provider import (
     finalize_headless_evaluator_gate, headless_evaluator_binding,
 )
+from research_loop.modular.train_provider_preflight import native_envelope
 from research_loop.ontology import ContractError
 
 
@@ -62,9 +63,10 @@ def _case(*, partial=False, authority_key=b's' * 32, closure_provider=PROVIDER):
 
 
 def _finish(*, panel, scores, authority, service, capture):
+    frozen = ScorerConfig.create(benchmark='core_pair', evaluator_id='synthetic', version='v1', rubric_digest='c' * 64)
     return finalize_headless_evaluator_gate(binding={'evaluator_usage': dict(USAGE), 'evaluator_provider': dict(PROVIDER)},
         family=FAMILY, service=service, panel=panel, scores=scores,
-        scorer_authority_keys={authority.authority_id: authority.key}, capture=capture)
+        scorer_authority_keys={authority.authority_id: authority.key}, scorer_config=frozen, capture=capture)
 
 
 def test_final_gate_reverifies_real_signed_complete_closure_and_preserves_submission_order():
@@ -122,3 +124,34 @@ def test_declaration_requires_digest_equality_and_legacy_cannot_smuggle_a_pool()
             family=FAMILY, enabled=True)
     with pytest.raises(ContractError):
         headless_evaluator_binding(body, family=FAMILY, enabled=False)
+
+
+def test_missing_schema_is_not_a_native_envelope():
+    assert native_envelope({}, 'admission_prediction_exploration') is False
+    assert native_envelope({'schema': None}, 'admission_prediction_exploration') is False
+
+
+def test_last_capture_failure_cannot_return_an_eligible_gate():
+    panel, scores, _, authority, _, service = _case()
+    captures = []
+    def capture(gate):
+        captures.append(dict(gate))
+        if gate['score_eligible']:
+            raise OSError('journal unavailable')
+    gate = _finish(panel=panel, scores=scores, authority=authority, service=service, capture=capture)
+    assert len(captures) == 3
+    assert gate['status'] == 'inconclusive' and gate['score_eligible'] is False
+    assert gate['failure_reason'] == 'closure_capture_failed'
+
+
+def test_finalize_cannot_swap_service_config_for_the_frozen_scorer_binding():
+    panel, scores, config, authority, _, service = _case()
+    changed = ScorerConfig.create(benchmark='core_pair', evaluator_id='other', version='v1', rubric_digest='c' * 64)
+    changed_closure = _signed_closure(authority=authority, panel=panel, config=changed, scores=scores)
+    def finalize(**_):
+        service.config = changed
+        return changed_closure
+    service.finalize_headless_evaluator = finalize
+    gate = _finish(panel=panel, scores=scores, authority=authority, service=service, capture=lambda _: None)
+    assert config != changed and gate['score_eligible'] is False
+    assert gate['closure'] == changed_closure.data() and gate['known_headless_main_tokens'] is None

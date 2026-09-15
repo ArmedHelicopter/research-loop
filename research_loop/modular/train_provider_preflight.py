@@ -37,7 +37,8 @@ PROGRAM_SLOTS = frozenset({'analysis_program', 'program_1', 'program_2', 'progra
 def native_envelope(body, family):
     if family not in NATIVE_SCHEMAS:
         raise ContractError('unregistered native controller family')
-    return body.get('schema') in {NATIVE_SCHEMAS[family], HEADLESS_EVALUATOR_SCHEMAS.get(family)}
+    return (body.get('schema') == NATIVE_SCHEMAS[family]
+            or headless_evaluator_envelope(body, family))
 
 
 def headless_evaluator_envelope(body, family):

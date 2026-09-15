@@ -44,12 +44,21 @@ def _headless_evaluator_gate(binding, *, family, failure_reason):
             'title_and_all_opportunity_settlement': 'unknown', 'failure_reason': failure_reason, 'error_type': None}
 
 
-def finalize_headless_evaluator_gate(*, binding, family, service, panel, scores, scorer_authority_keys, capture):
+def finalize_headless_evaluator_gate(*, binding, family, service, panel, scores, scorer_authority_keys, scorer_config, capture):
     """Capture a signed closure before checking it; only full coverage is eligible."""
     if (not isinstance(binding, dict) or type(family) is not str or not family
             or not callable(capture)):
         raise ContractError('headless evaluator finalization inputs are malformed')
     gate = _headless_evaluator_gate(binding, family=family, failure_reason=None)
+    def persist_gate():
+        try:
+            capture(gate)
+            return True
+        except Exception as exc:
+            # A failed durable capture cannot be repaired by a later write.
+            gate.update(status='inconclusive', score_eligible=False,
+                        failure_reason='closure_capture_failed', error_type=type(exc).__name__)
+            return False
     digests = []
     try:
         for score in scores:
@@ -59,24 +68,26 @@ def finalize_headless_evaluator_gate(*, binding, family, service, panel, scores,
             digests.append(digest)
     except Exception as exc:
         gate.update(failure_reason='invalid_scorer_receipts', error_type=type(exc).__name__)
-        capture(gate); return gate
+        persist_gate(); return gate
     gate['ordered_receipt_digests'] = digests
     if not scores:
         gate['failure_reason'] = 'no_scorer_receipts'
-        capture(gate); return gate
+        persist_gate(); return gate
     try:
         closure = service.finalize_headless_evaluator(receipts=tuple(scores))
         gate['closure'] = closure.data()
         # This durable callback must not refresh provider usage or close a ledger.
-        capture(gate)
+        if not persist_gate():
+            return gate
         from evaluation.modular.headless_evaluator_closure import verify_closure
         raw = closure.data(); nonce = raw.get('body', {}).get('nonce') if isinstance(raw.get('body'), dict) else None
         if not isinstance(nonce, str) or not nonce:
             raise ContractError('headless evaluator closure nonce is malformed')
         verified = verify_closure(closure, authority_keys=scorer_authority_keys, panel=panel,
-            config=service.config, provider=binding['evaluator_provider'], nonce=nonce, receipt_digests=digests)
+            config=scorer_config, provider=binding['evaluator_provider'], nonce=nonce, receipt_digests=digests)
         body = verified.data(); gate['known_headless_main_tokens'] = body['known_main_tokens']
-        capture(gate)
+        if not persist_gate():
+            return gate
         expected = {tuple(cell.key) for cell in panel.cells}
         receipt_cells = tuple(score.cell_key for score in scores)
         scoped = body['scope'].get('scored_cell_keys')
@@ -86,12 +97,13 @@ def finalize_headless_evaluator_gate(*, binding, family, service, panel, scores,
                 or len(scoped_cells) != len(set(scoped_cells)) or set(scoped_cells) != expected
                 or body['scope'].get('unscored_cell_count') != 0):
             gate['failure_reason'] = 'incomplete_panel_closure'
-            capture(gate); return gate
+            persist_gate(); return gate
         gate.update(status='eligible', score_eligible=True)
-        capture(gate); return gate
+        persist_gate(); return gate
     except Exception as exc:
-        gate.update(failure_reason='closure_verification_failed', error_type=type(exc).__name__)
-        capture(gate); return gate
+        gate.update(status='inconclusive', score_eligible=False,
+                    failure_reason='closure_verification_failed', error_type=type(exc).__name__)
+        persist_gate(); return gate
 
 
 def family_service_preflight(config, model, service, execution_authority, scorer_keys, *, family):
