@@ -1,0 +1,70 @@
+{
+  "schema": "frozen-module-check-published-files-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "archive-helper.py",
+      "sha256": "757493228e00c931b4681c421a6f754226afca9f2da9fe14bef7963c52e02735",
+      "bytes": 28635
+    },
+    {
+      "path": "private-retention-manifest.json",
+      "sha256": "f5b8e87349c40b739a652d989bce9cda0b41f1c01a906fbfce9fc8c197eebe75",
+      "bytes": 1483774
+    },
+    {
+      "path": "README.md",
+      "sha256": "a1fcd8980e80f6d045a5813e75466595a1c255875dbcf59f90e3ce0e4337fb66",
+      "bytes": 927
+    },
+    {
+      "path": "retention-helper-source.py",
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840
+    },
+    {
+      "path": "scheduler8-before.json",
+      "sha256": "47e4bae7460df84312dc0e4467a278cfa75b920b6e0212ceecd4b6e7ba62a26a",
+      "bytes": 95717
+    },
+    {
+      "path": "scheduler8-closed.json",
+      "sha256": "7ea32526a537bee92985dd9097ffeb6204c80f88b770b1c63189fe1151301ff2",
+      "bytes": 95796
+    },
+    {
+      "path": "scheduler8-native-join.json",
+      "sha256": "739c85c6af246877847ea7d5d9d63e22a04250191c3fdc108ae9018a7b1c31f9",
+      "bytes": 228
+    },
+    {
+      "path": "scheduler8-native-start.json",
+      "sha256": "db1c95c7ecb8417a4532d370d908069d0355d99e515c06ea32bda12a05070696",
+      "bytes": 109
+    },
+    {
+      "path": "scheduler8-source-members.json",
+      "sha256": "30bc5557419d7e01fb89f513eec6f382e48b15885df97d0b518cdee47b3c45e3",
+      "bytes": 143120
+    },
+    {
+      "path": "scheduler8-sources.zip",
+      "sha256": "0c479eaf6a9db935a7ea13a913a6630fb108ce711fe1b71be0cb6b64fe9208c6",
+      "bytes": 2731346
+    },
+    {
+      "path": "scheduler8.log",
+      "sha256": "21465949da1c205e6371be0a0cf9b9b09f56efa94d8116568faa2df9794f4111",
+      "bytes": 677
+    },
+    {
+      "path": "scheduler8.xml",
+      "sha256": "ab438953c8dc6526cd5ff55280778312e47bbe993d76fa8ddcde4344f816c25b",
+      "bytes": 399
+    }
+  ]
+}
