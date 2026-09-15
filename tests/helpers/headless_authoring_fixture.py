@@ -9,11 +9,11 @@ from evaluation.modular.diagnostic_subscription import sha
 import research_loop.modular.grok_headless_transport as transport
 
 
-# The complete synthetic C5 controller can exceed two hours.  Keep this
-# fixture-only credential valid for a bounded four-hour integration window
-# plus the production transport's 120-second near-expiry guard.
-SYNTHETIC_FULL_C5_WINDOW = timedelta(hours=4)
-SYNTHETIC_AUTH_VALIDITY = timedelta(hours=6)
+# This is a synthetic-only TTL, deliberately not a C5 duration estimate.  It
+# prevents a fixture credential from becoming the limiting resource in a long
+# integration run while the production transport keeps its expiry guard.
+SYNTHETIC_AUTH_EXERCISE_WINDOW = timedelta(hours=24)
+SYNTHETIC_AUTH_VALIDITY = timedelta(days=7)
 NATIVE_EXPIRY_GUARD = timedelta(seconds=120)
 
 
