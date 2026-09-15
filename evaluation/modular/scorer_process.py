@@ -473,6 +473,86 @@ def _append(path: Path, entry: Mapping[str, object]) -> None:
         stream.write(line); stream.flush(); os.fsync(stream.fileno())
 
 
+def read_headless_client_observations(path: Path) -> tuple[dict, ...]:
+    """Check observed text and append order, without authorizing any score.
+
+    An unfinished final attempt is an inspectable prefix. Without a separately
+    retained final anchor, this reader cannot prove that a whole terminal
+    attempt was not removed or the entire observation history rewritten.
+    """
+    previous = None
+    rows = []
+    active = None
+    status = None
+    attempts = set()
+    metadata = {'schema', 'attempt_id', 'nonce', 'panel_digest', 'scorer_config_digest',
+        'evaluator_provider', 'request_sha256', 'producer_source_sha256', 'text_representation'}
+    extra = {'requested': {'request_text'},
+        'response_received': {'response_text', 'response_sha256', 'response_utf8_bytes'},
+        'authenticated': {'closure_digest', 'response_sha256'},
+        'rejected': {'error_type', 'response_sha256', 'score_eligible'}}
+    try:
+        lines = path.read_text(encoding='utf-8').splitlines() if path.exists() else []
+        for line in lines:
+            row = json.loads(line)
+            if (set(row) != {'schema', 'sequence', 'previous', 'event', 'digest'}
+                    or row['schema'] != 'headless-evaluator-client-journal-v1'
+                    or type(row['sequence']) is not int or row['sequence'] != len(rows) + 1
+                    or row['previous'] != previous
+                    or row['digest'] != FrozenRecord.from_dict({k: v for k, v in row.items() if k != 'digest'}).content_hash):
+                raise ValueError('observation chain differs')
+            event = row['event']; stage = event.get('status')
+            if (stage not in extra or set(event) != metadata | {'status'} | extra[stage]
+                    or event['schema'] != 'headless-evaluator-client-observation-v1'
+                    or event['text_representation'] != 'python_text_write_input_and_decoded_read_output'
+                    or not isinstance(event['attempt_id'], str) or not event['attempt_id']):
+                raise ValueError('observation shape differs')
+            if stage == 'requested':
+                if status not in (None, 'authenticated', 'rejected') or event['attempt_id'] in attempts:
+                    raise ValueError('observation attempt is incomplete or repeated')
+                if _sha(event['request_text']) != event['request_sha256']:
+                    raise ValueError('observed request changed')
+                active = {key: event[key] for key in metadata}
+                attempts.add(event['attempt_id']); response = None
+            else:
+                if active != {key: event[key] for key in metadata}:
+                    raise ValueError('observation attempt binding differs')
+                if stage == 'response_received':
+                    if (status != 'requested' or not isinstance(event['response_text'], str)
+                            or event['response_sha256'] != _sha(event['response_text'])
+                            or type(event['response_utf8_bytes']) is not int
+                            or event['response_utf8_bytes'] != len(event['response_text'].encode('utf-8'))):
+                        raise ValueError('observed response changed')
+                    response = event
+                elif stage == 'authenticated':
+                    if (status != 'response_received' or event['response_sha256'] != response['response_sha256']
+                            or event['closure_digest'] != FrozenRecord.from_dict(json.loads(response['response_text'])['closure']).content_hash):
+                        raise ValueError('observation terminal binding differs')
+                elif (status not in ('requested', 'response_received') or event['score_eligible'] is not False
+                        or not isinstance(event['error_type'], str) or not event['error_type']
+                        or (response is not None and event['response_sha256'] != response['response_sha256'])):
+                    raise ValueError('observation failure binding differs')
+            status = stage; previous = row['digest']; rows.append(row)
+    except (OSError, ValueError, TypeError, KeyError, AttributeError) as exc:
+        raise ContractError('headless evaluator client observations are incomplete or altered') from exc
+    return tuple(rows)
+
+
+def _append_headless_client_observation(client, event):
+    path = Path(str(client.journal_path) + '.headless-evaluator-client.jsonl')
+    rows = read_headless_client_observations(path)
+    anchor = (len(rows), rows[-1]['digest'] if rows else None)
+    if getattr(client, '_headless_observation_anchor', anchor) != anchor:
+        raise ContractError('headless evaluator client observation prefix changed')
+    if event['status'] == 'requested' and rows and rows[-1]['event']['status'] not in ('authenticated', 'rejected'):
+        raise ContractError('headless evaluator client has an unfinished observation attempt')
+    row = {'schema': 'headless-evaluator-client-journal-v1', 'sequence': len(rows) + 1,
+        'previous': anchor[1], 'event': event}
+    row['digest'] = FrozenRecord.from_dict(row).content_hash
+    _append(path, row)
+    client._headless_observation_anchor = (len(rows) + 1, row['digest'])
+
+
 def _journal(path: Path) -> dict[str, dict[str, object]]:
     if not path.exists():
         return {}
@@ -877,9 +957,28 @@ class CombinationScorerProcessClient(LinkedScorerProcessClient):
             nonce = uuid.uuid4().hex
         request = {"schema": "headless-evaluator-finalize-request-v1", "nonce": nonce,
                    "receipt_digests": digests, "evaluator_provider": self.evaluator_provider}
+        # Preserve the Python string handed to the text wrapper and the decoded
+        # string returned by it, not pre-decoding wire bytes. Keep it before
+        # interpretation so malformed or unauthenticated replies remain auditable.
+        request_text = canonical(request) + "\n"
+        evidence = {"schema": "headless-evaluator-client-observation-v1",
+                    "attempt_id": uuid.uuid4().hex, "nonce": nonce,
+                    "panel_digest": self.panel.digest, "scorer_config_digest": self.config.digest,
+                    "evaluator_provider": self.evaluator_provider, "request_sha256": _sha(request_text),
+                    "producer_source_sha256": _sha(Path(__file__).read_bytes()),
+                    "text_representation": "python_text_write_input_and_decoded_read_output"}
+        # Failure here must precede dispatch. An unfinished log is evidence of
+        # an incomplete attempt, never a substitute for a signed closure.
+        _append_headless_client_observation(self, {**evidence, "status": "requested", "request_text": request_text})
+        response_sha256 = None
         try:
-            self.input.write(canonical(request) + "\n"); self.input.flush()
-            response = json.loads(self._readline_bounded())
+            self.input.write(request_text); self.input.flush()
+            response_text = self._readline_bounded()
+            response_sha256 = _sha(response_text)
+            _append_headless_client_observation(self, {**evidence, "status": "response_received",
+                "response_text": response_text, "response_sha256": response_sha256,
+                "response_utf8_bytes": len(response_text.encode("utf-8"))})
+            response = json.loads(response_text)
             if (not isinstance(response, dict) or set(response) != {"schema", "nonce", "closure"}
                     or response.get("schema") != "headless-evaluator-finalize-response-v1" or response.get("nonce") != nonce):
                 raise ContractError("headless evaluator finalization response differs")
@@ -890,9 +989,17 @@ class CombinationScorerProcessClient(LinkedScorerProcessClient):
             if self.final_closure is not None and closure != self.final_closure:
                 raise ContractError("headless evaluator closure changed after finalization")
         except Exception as exc:
+            try:
+                _append_headless_client_observation(self, {**evidence, "status": "rejected", "error_type": type(exc).__name__,
+                    "response_sha256": response_sha256, "score_eligible": False})
+            except Exception as observation_exc:
+                raise ContractError(f"headless evaluator finalization failed ({type(exc).__name__}); "
+                    f"rejection observation unavailable ({type(observation_exc).__name__})") from exc
             if isinstance(exc, ContractError):
                 raise
             raise ContractError("headless evaluator finalization is unavailable") from exc
+        _append_headless_client_observation(self, {**evidence, "status": "authenticated", "closure_digest": closure.content_hash,
+            "response_sha256": response_sha256})
         self.final_closure = closure
         self._final_receipt_digests = digests
         return closure
