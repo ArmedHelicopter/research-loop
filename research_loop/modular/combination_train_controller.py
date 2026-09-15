@@ -51,7 +51,7 @@ _ANALYSIS = {"schema": "frozen-combination-contrast-analysis-v1", "direction": "
 
 
 def _native_schema(body):
-    return body.get('schema') in ('m4-m5-train-controller-config-v4','m4-m5-train-controller-config-v5')
+    return body.get('schema') in ('m4-m5-train-controller-config-v4','m4-m5-train-controller-config-v5','m4-m5-train-controller-config-v6')
 
 
 def _native_model(model):
@@ -106,6 +106,12 @@ class FrozenM4M5TrainConfig:
         normalized = source_contract_body(body)
         if not source_schema_matches(normalized, fields, "m4-m5-train-controller-config-v1") or body["domain"] != "train":
             raise ContractError("controller supports the exact train-only M4/M5 configuration")
+        if body['schema'] == 'm4-m5-train-controller-config-v6':
+            evaluator = body.get('evaluator_provider')
+            if (not isinstance(evaluator, dict) or set(evaluator) != {'kind', 'configuration_digest'}
+                    or evaluator['kind'] != 'grok-headless-frozen-evaluator-v1'
+                    or not _digest(evaluator['configuration_digest'])):
+                raise ContractError('v6 requires an exact frozen headless evaluator provider')
         if not isinstance(body["stage"], str) or not body["stage"].strip() or not _names(body["item_ids"]) or not _names(body["replicates"]):
             raise ContractError("stage, train allowlist and replicates must be nonempty and unique")
         if not _digest(body["baseline_digest"]):
@@ -153,6 +159,8 @@ class FrozenM4M5TrainConfig:
         cells = len(identities) * len(body["replicates"]) * 4
         expected_allocation = {"model_slots_per_cell": list(SLOTS), "docker_attempts_per_cell": 1,
             "scorer_calls_per_cell": 1, "scorer_call_limit": cells, "scorer_token_accounting": "transport_not_provided"}
+        if body['schema'] == 'm4-m5-train-controller-config-v6':
+            expected_allocation['scorer_token_accounting'] = 'signed_headless_main_unknown_title'
         if (not isinstance(body["allocation"], Mapping) or body["allocation"] != expected_allocation
                 or any(type(body["allocation"].get(k)) is not int for k in
                        ("docker_attempts_per_cell", "scorer_calls_per_cell", "scorer_call_limit"))):
@@ -167,7 +175,7 @@ class FrozenM4M5TrainConfig:
                 'possible_initial_title_calls':cells*len(SLOTS),'main_output_caps':{'m4_plan':2048,'m5_mechanism':2048,'m5_measurement':2048,'analysis_program':8192,'final_answer':2048},
                 'input_byte_cap_per_request':262144,'observed_main_token_cap':131072,'title_requested_output_cap':100,
                 'wall_timeout_seconds':60,'max_retries':0,'title_usage_and_all_call_totals':'unknown'}
-            headless=body['schema']=='m4-m5-train-controller-config-v5'
+            headless=body['schema'] in ('m4-m5-train-controller-config-v5','m4-m5-train-controller-config-v6')
             if headless:
                 expected.update(kind='grok-headless-public-train-v1',
                     account_read_recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2})
@@ -256,10 +264,17 @@ def _service_preflight(config, model, service, execution_authority, scorer_keys)
     from evaluation.modular.scorer_process import CombinationScorerProcessClient
     body = config.data()
     grok = _native_schema(body)
-    admitted_model = (type(model) is GrokHeadlessTrainModelPort if body.get('schema')=='m4-m5-train-controller-config-v5'
+    admitted_model = (type(model) is GrokHeadlessTrainModelPort if body.get('schema') in ('m4-m5-train-controller-config-v5','m4-m5-train-controller-config-v6')
         else isinstance(model,GrokTrainModelPort) if grok else isinstance(model,CodexModelPort))
     if not admitted_model or not isinstance(service, (CombinationAdaptedScoringService, CombinationScorerProcessClient)) or not isinstance(execution_authority, LinkedExecutionAuthority):
         raise ContractError("real model port, independent scoring service and execution authority are required")
+    evaluator = body.get('evaluator_provider')
+    if body['schema'] == 'm4-m5-train-controller-config-v6':
+        if (not isinstance(service, CombinationScorerProcessClient)
+                or getattr(service, 'evaluator_provider', None) != evaluator):
+            raise ContractError('v6 requires its frozen headless evaluator process descriptor')
+    elif getattr(service, 'evaluator_provider', None) is not None:
+        raise ContractError('legacy controller does not declare a headless evaluator lifecycle')
     if not grok: _reviewed_model_policy(model)
     if grok:
         declared=body['provider']
@@ -493,15 +508,41 @@ def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStor
                 'missing_policy': 'incomplete_reject', 'scientific_status': 'not_measured'})
         journal['native_final_verification'] = final_gate
         journal['eligible_scored_cells'] = len(scores) if final_gate['score_eligible'] else 0
-    receipt = FrozenRecord.from_dict({"schema": ("m4-m5-train-controller-receipt-v2" if native else "m4-m5-train-controller-receipt-v1"), "config_digest": config.record.content_hash,
+    evaluator_gate = None
+    eligible_scored_cells = len(scores) if not native or final_gate['score_eligible'] else 0
+    if body['schema'] == 'm4-m5-train-controller-config-v6':
+        try:
+            closure = scoring_service.finalize_headless_evaluator(receipts=tuple(scores))
+            from evaluation.modular.headless_evaluator_closure import verify_closure
+            verify_closure(closure, authority_keys=scorer_authority_keys, panel=compiled.panel,
+                config=ScorerConfig(_record(body['scorer'], 'scorer')), provider=body['evaluator_provider'],
+                nonce=closure.data()['body']['nonce'], receipt_digests=[score.receipt.content_hash for score in scores])
+            evaluator_gate = {'schema': 'm4-m5-final-headless-evaluator-v1',
+                'score_eligible': True, 'receipt': closure.data()}
+        except Exception as exc:
+            evaluator_gate = {'schema': 'm4-m5-final-headless-evaluator-v1',
+                'score_eligible': False, 'error_type': type(exc).__name__, 'receipt': None}
+            eligible_scored_cells = 0
+            if contrast.data()['status'] == 'estimated':
+                journal['historical_contrast_before_failed_evaluator_gate'] = contrast.data()
+            contrast = FrozenRecord.from_dict({'schema': 'm4-m5-inconclusive-contrast-v1',
+                'panel_digest': compiled.panel.digest, 'status': 'inconclusive',
+                'reason': 'final_evaluator_evidence_ineligible', 'expected_cells': expected_cells,
+                'scored_cells': len(scores), 'eligible_scored_cells': 0,
+                'missing_policy': 'incomplete_reject', 'scientific_status': 'not_measured'})
+        journal['evaluator_final_verification'] = evaluator_gate
+        journal['eligible_scored_cells'] = eligible_scored_cells
+        journal['scorer_usage'] = 'see_evaluator_final_verification'
+    receipt = FrozenRecord.from_dict({"schema": ("m4-m5-train-controller-receipt-v3" if evaluator_gate is not None else "m4-m5-train-controller-receipt-v2" if native else "m4-m5-train-controller-receipt-v1"), "config_digest": config.record.content_hash,
         "panel_digest": compiled.panel.digest, "expected_cells": expected_cells, "observed_cells": len(journal["cells"]),
         "successful_cells": sum(row["status"] == "succeeded" for row in journal["cells"]), "scored_cells": len(scores),
         "failed_cells": sum(row["status"] == "failed" for row in journal["cells"]),
         "blocked_cells": sum(row["status"] == "blocked" for row in journal["cells"]),
         **({'native_final_verification': final_gate,
-            'eligible_scored_cells': len(scores) if final_gate['score_eligible'] else 0} if native else {}),
+            'eligible_scored_cells': eligible_scored_cells} if native else {}),
+        **({'evaluator_final_verification': evaluator_gate} if evaluator_gate is not None else {}),
         "allocation": body["allocation"], "actual_model_usage": _usage(model), "actual_scorer_calls": journal["actual_scorer_calls"],
-        "scorer_usage": "not_provided_by_transport", "contrast": contrast.data(),
+        "scorer_usage": "see_evaluator_final_verification" if evaluator_gate is not None else "not_provided_by_transport", "contrast": contrast.data(),
         "status": "estimated" if contrast.data()["status"] == "estimated" else "inconclusive",
         "scientific_effectiveness_proven": False, "validation_opened": False, "pruned_cells": []})
     _write(root / "controller-receipt.json", receipt.data())
