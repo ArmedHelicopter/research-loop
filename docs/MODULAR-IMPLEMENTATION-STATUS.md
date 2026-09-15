@@ -23,6 +23,17 @@ This verifies the changed engineering boundaries; it does not establish a
 complete real benchmark run, module effectiveness, or VAL acceptance. The
 separate 34-cell run uses earlier producer source `051b6a82` and must be
 reported with its own final process receipt and source scope.
+The [retained targeted gate](../results/modular-engineering-20260915/headless-lineage-final-gate-r1/README.md)
+includes exact source bytes, JUnit, original run bindings and a manifest for
+328 noncredential artifacts from five test roots. All published Git bytes,
+private archive members and original hashes/mtimes were checked independently.
+
+One separate ACP-initialize-only diagnostic retained no complete process
+receipt. Its orchestrator forwarded only nested command stdout and lost the
+native session return. A yield is not termination: historical wrapper-timeout
+wording is explicitly corrected, with the originals preserved. Cleanup, exit,
+timeout and usage remain unproven. This attempt was not retried and supplied
+no module score; see the [diagnostic and correction](../results/modular-engineering-20260915/actual-m4m5-acp-initialize-diagnostic-r1/README.md).
 
 ## Frozen descriptors and actual M4/M5 attempt (2026-09-15)
 

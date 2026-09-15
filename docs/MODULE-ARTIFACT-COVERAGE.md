@@ -9,6 +9,8 @@
 不会重复求和或把未知填写成零。后续记账失败也不删除已取得的评分回执。
 源码 `8abe622a` 的 20 项定向工程检查通过，778 个源码/文档文件前后字节一致；
 其中模型与账户响应为合成数据，不能据此推断真实模块效果或全部产物覆盖。
+该批次的[源码、检查与逐产物清单](../results/modular-engineering-20260915/headless-lineage-final-gate-r1/README.md)
+已封存，覆盖五个测试目录内的 328 个非凭据原件，并已核对 Git 字节和原件修改时间。
 
 最新封存记录补充了评分器启动前的纯配置摘要，以及一轮真实 M4/M5 TRAIN
 失败记录。[20 项集成检查](../results/modular-engineering-20260915/headless-descriptor-primary-r1/README.md)
