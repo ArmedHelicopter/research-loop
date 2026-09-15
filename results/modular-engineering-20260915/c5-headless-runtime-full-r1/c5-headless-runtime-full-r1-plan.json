@@ -1,0 +1,52 @@
+{
+  "schema": "c5-headless-full-engineering-launch-plan-v1",
+  "source_commit": "15c2088f950994584ffe7c416843eb1d4e21ff53",
+  "worktree": "E:/_ryanDev/AI/research-loop-modular/c5-headless-runtime-integration-r1",
+  "prefix": "E:/_ryanDev/AI/research-loop-modular/work/c5-headless-runtime-full-r1",
+  "test": "tests/test_c5_headless_runtime_controller_full.py::test_full_headless_c5_controller_then_registers_selected_bundle",
+  "opt_in_environment": {"RESEARCH_LOOP_RUN_FULL_C5_HEADLESS": "1"},
+  "scope": "synthetic engineering integration through production runtime, Docker and stdio interfaces",
+  "history_builds": 46,
+  "recipes": 59,
+  "synthetic_train_targets": 2,
+  "target_cells": 118,
+  "solver_main_limit": 930,
+  "evaluator_main_limit": 118,
+  "real_model_calls": 0,
+  "paid_api_calls": 0,
+  "validation_access": false,
+  "restart_or_partial_resume": false,
+  "preflight": {
+    "prefix": "E:/_ryanDev/AI/research-loop-modular/work/c5-headless-runtime-root-preflight-r1",
+    "tests": 2,
+    "passed": 1,
+    "skipped_full_grid": 1,
+    "exit_code": 0,
+    "source_files_unchanged": 785,
+    "junit_sha256": "7ac4c5c53bfab2924760410806ea1ca04f20f787549962185b379d8e882cec1a"
+  },
+  "label_audit": {
+    "prefix": "E:/_ryanDev/AI/research-loop-modular/work/lineage-full5-label-audit-r1",
+    "tests_passed": 10,
+    "source_commit": "0a9ca90abfb16ded9a6d5f312739a56cf18e7bb9",
+    "scope": "separate audit process only; labels remain absent from the execution worktree",
+    "implementation_changes_since_label_audit": "two synthetic test files only; production and label-test source unchanged"
+  },
+  "timing_evidence": {
+    "bounded_probe": "c5-headless-runtime-probe-r4-junit.xml",
+    "testcase_seconds": 80.192,
+    "synthetic_solver_calls": 11,
+    "history_builds": 1,
+    "targets": 1,
+    "limit": "single probe does not establish full-grid duration; cumulative replay and source reads can scale nonlinearly"
+  },
+  "observability": [
+    "original native tool session must be retained and joined; tool yield is not termination",
+    "headless-common-run/checkpoint.json keeps all 46 builds and 118 targets",
+    "common controller journal records builds, target barrier, scoring and closure",
+    "fresh exact source ZIP before execution; before/after source maps and original JUnit after exit",
+    "registration and verify_registration each freshly authenticate the complete run; no extra duplicate full verification pass"
+  ],
+  "failure_policy": "retain original bytes, failed and blocked denominators; do not retry or relabel incomplete execution",
+  "science_limit": "passing this run would not establish any real module effect, complete all 48 research questions, or provide VAL acceptance"
+}

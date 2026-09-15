@@ -1,0 +1,32 @@
+{
+  "schema": "c5-full-terminal-archive-v1",
+  "source_commit": "15c2088f950994584ffe7c416843eb1d4e21ff53",
+  "native_session_id": 94121,
+  "native_exit_code": 1,
+  "status": "closed_inconclusive",
+  "junit_passed": false,
+  "frozen_check_passed": false,
+  "controller_complete": false,
+  "registration_present": false,
+  "frozen_denominator": {
+    "history": 46,
+    "targets": 118
+  },
+  "last_checkpoint_counts": {
+    "history_build:succeeded": 26,
+    "history_build:failed": 1,
+    "history_build:blocked": 19,
+    "target:blocked": 118
+  },
+  "missing_terminal_files": [
+    "c5-headless-runtime-full-r1-native-start.json"
+  ],
+  "retained_noncredential_files": 6283,
+  "actual_synthetic_usage": null,
+  "original_bytes_and_mtimes_unchanged": true,
+  "real_model_calls": 0,
+  "paid_api_calls": 0,
+  "validation_access": false,
+  "scientific_effectiveness_proven": false,
+  "authentication_scope": "original frozen test authenticates runtime; archive helper only verifies stored bytes and outcome fields"
+}

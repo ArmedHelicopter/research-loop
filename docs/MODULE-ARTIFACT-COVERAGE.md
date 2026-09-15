@@ -4,6 +4,12 @@
 每模块出现一条 `covered` 记录不表示该模块的全部输出都已覆盖。
 `covered` 是一条描述符有明确模块归属，完整覆盖须另与实际输出清单对账。
 
+原完整 C5 工程运行现已[以失败终态封存](../results/modular-engineering-20260915/c5-headless-runtime-full-r1/README.md)：
+46 个历史构建中 26 个成功、1 个失败、19 个阻塞，118 个目标均未执行。
+原 native session 94121 返回退出码 1；收尾处还访问了缺失的历史屏障，未产生完整
+控制器与选择回执。6,283 个非凭据原件及 785 份前后不变的源码/文档已保存。
+原始 native-start JSON 缺失也保留为证据缺口。该失败不改变完整 C5 的验收要求。
+
 最新接线补上了[评分封存消费端观察](SCORER-FINALIZATION-OBSERVATIONS.md)与
 [M2 封存关系读取](M2-TYPED-PROJECTION.md)。前者先保留请求及返回文本再解析验签，
 日志写失败不使评分获准消费；后者重放原 ledger 后仅投影已有类型化关系，保留

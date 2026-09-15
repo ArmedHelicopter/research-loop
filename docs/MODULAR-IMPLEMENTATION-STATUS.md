@@ -3,6 +3,23 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Original C5 full-runtime failure closed (2026-09-15)
+
+The [original full C5 runtime](../results/modular-engineering-20260915/c5-headless-runtime-full-r1/README.md)
+has now natively joined session 94121 with exit 1 after 7,908.547 seconds. Its
+785 source/document files remained unchanged. Twenty-six of 46 history builds
+succeeded; the next history stage failed, 19 later builds and all 118 targets
+remained blocked. The final controller also dereferenced an absent history
+barrier (`barrier.builds`), so no complete controller/selection receipt exists.
+Neither its partial history nor its failure archive completes C5.
+
+All 6,283 noncredential originals, the failed JUnit, exact source archive and
+original native terminal result are retained and byte/mtime checked. The separate
+original native-start JSON was not retained; its absence is explicit. Existing
+known usage remains in the retained prefix, and the missing final usage aggregate
+is not reconstructed as zero. An isolated repair must address both the first
+history failure and robust failure finalization before a new full run is justified.
+
 ## Native startup logging observation (2026-09-15)
 
 The [single initialize with private native logging](../results/modular-engineering-20260915/grok-initialize-private-log-r1/README.md)
