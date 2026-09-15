@@ -1,0 +1,97 @@
+{
+  "auth_metadata_after": {
+    "bytes": 1768,
+    "mtime_ns": 1789419323688446200
+  },
+  "auth_metadata_before": {
+    "bytes": 1768,
+    "mtime_ns": 1789419323688446200
+  },
+  "cdb_stack_capture": {
+    "brief_suspension_possible": true,
+    "child_alive_after_detach": true,
+    "detach_independently_observed": false,
+    "elapsed_seconds": 1.5309999999881256,
+    "exit_code": 0,
+    "frame_count": 400,
+    "frame_count_source": "private_stdout",
+    "module_labels": [],
+    "pid": 13616,
+    "remote_symbol_path_configured": false,
+    "schema": "grok130-cdb-stack-capture-v2",
+    "status": "capture_success_established",
+    "success_established": true,
+    "timed_out": false
+  },
+  "context_after": {
+    "context_digest": "43e04d4dae4b19e0ad2139c192c2dfe9af0254b55d1a915a915dde7a2247880d",
+    "direct_model_context_inspection": false,
+    "discovery_sources_absent": true,
+    "ignored_bundle_present": false,
+    "ordinary_skill_filter_applies_to_later_bundles": true,
+    "schema": "grok130-readiness-context-observation-v1"
+  },
+  "context_fault": null,
+  "global_auth_metadata_unchanged": true,
+  "known_model_usage": null,
+  "model_prompt_writes": 0,
+  "native_log": {
+    "bytes": 14467,
+    "exists": true,
+    "mtime_ns": 1789457515493414500,
+    "sha256": "48f4dc26fe151b89b0b62cc44094537dc4d1d7419ac85f16f9fc3ab4a32b0474"
+  },
+  "result": {
+    "accepted_initialize": false,
+    "elapsed_seconds": 17.594000000011874,
+    "faults": [
+      "extra_captured_frame",
+      "unexpected_notification"
+    ],
+    "initialize_write_attempted": true,
+    "initialize_writes_completed": 1,
+    "known_model_usage": null,
+    "model_account_tools_verified": false,
+    "native_exit_code_after_shutdown": 0,
+    "native_process_id": 13616,
+    "outbound_method_counts": {
+      "_x.ai/auto-topup-rule": 0,
+      "_x.ai/billing": 0,
+      "authenticate": 0,
+      "initialize": 1,
+      "session/new": 0,
+      "session/prompt": 0
+    },
+    "process_tree_closed": true,
+    "response": {
+      "protocol_version": 1,
+      "response_elapsed_seconds": 17.453999999997905,
+      "response_sha256": "48e97ce17c66cee00ddc7e088bf4926ba817b836d0e8e471c850ced58849fd8a",
+      "result_keys": [
+        "_meta",
+        "agentCapabilities",
+        "authMethods",
+        "protocolVersion"
+      ]
+    },
+    "retry_allowed": false,
+    "schema": "initialize-only-closure-v1",
+    "server_requests_observed": 0,
+    "settled_additional_charge_usd": null,
+    "shutdown_started_seconds": 17.453999999997905,
+    "stack_capture_invoked": true,
+    "started_utc": "2026-09-15T07:31:38.038682+00:00",
+    "stderr_bytes": 0,
+    "stdout_bytes": 11201,
+    "stdout_frames_parsed": 2,
+    "stream_hashes": {
+      "stderr.private.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout.private.bin": "750bfcc11ecbb22dec5f775c892a14c9d2524ce5fd4a9fccbc50e6b3e5f033d0"
+    }
+  },
+  "retry_count": 0,
+  "schema": "private-log-initialize-stack-closure-v2",
+  "scientific_effectiveness_proven": false,
+  "settled_additional_charge_usd": null,
+  "source_unchanged": true
+}

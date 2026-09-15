@@ -1,0 +1,42 @@
+{
+  "schema": "grok-initialize-stack-r2-frozen-source-v1",
+  "members": [
+    {
+      "member": "source/grok_acp_transport.py",
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_acp_transport.py",
+      "sha256": "f736d68218e49bf90fa6ead447097d8366d3827932bea5565c854e71d07aa855",
+      "bytes": 53261
+    },
+    {
+      "member": "source/grok_skill_isolation.py",
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_skill_isolation.py",
+      "sha256": "694def3565b1f7df24fcbc59458eb88e33950cca07e68341080bcc89f1e6205f",
+      "bytes": 5045
+    },
+    {
+      "member": "source/driver.py",
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r2\\driver.py",
+      "sha256": "ce2cd2bc65a229092e83e505ff0c813a78040a68178dc8c027e5b7ddedde19a9",
+      "bytes": 9873
+    },
+    {
+      "member": "source/init_engine.py",
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r2\\init_engine.py",
+      "sha256": "73b4d0693ff3ded68a7e8a4f1c710c32c1e4206a06d53e2f28c45a45fc71bdc7",
+      "bytes": 9622
+    },
+    {
+      "member": "source/parser_smoke.py",
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r2\\parser_smoke.py",
+      "sha256": "5fb7ffcc7227beb832aa4adf8253d38925cfe44db76949689fb96169b5e8a22d",
+      "bytes": 200
+    },
+    {
+      "member": "source/stack_capture.py",
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r2\\stack_capture.py",
+      "sha256": "9ff5d0b2ad9c610336d14fec8b2d46e979d4211f504b0aa335480f797fc46944",
+      "bytes": 2262
+    }
+  ],
+  "zip_sha256": "433f4df9e88345f2568469eeea6feb6e5a08452c2a064c1edd513a2abca6f914"
+}

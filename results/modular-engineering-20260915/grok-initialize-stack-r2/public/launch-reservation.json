@@ -1,0 +1,13 @@
+{
+  "additional_paid_api_budget_usd": 0,
+  "at": "2026-09-15T07:31:37.739820+00:00",
+  "authenticate_writes": 0,
+  "billing_rpc_writes": 0,
+  "cdb_stack_capture_max": 1,
+  "difference": "agent --debug --debug-file plus a conditional private stack-only CDB capture after 15 seconds; fresh paths remain a context difference",
+  "initialize_launches_max": 1,
+  "prompt_writes": 0,
+  "retries": 0,
+  "schema": "private-log-initialize-reservation-v1",
+  "session_new_writes": 0
+}

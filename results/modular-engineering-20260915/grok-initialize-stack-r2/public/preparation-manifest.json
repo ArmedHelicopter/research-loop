@@ -1,0 +1,104 @@
+{
+  "constraints": {
+    "attach_max": 1,
+    "capture_after_seconds": 15,
+    "capture_success_requires": [
+      "cdb_exit_0",
+      "child_sp_frames_positive",
+      "child_alive_after_qd"
+    ],
+    "debugger_mode": "-pv; brief suspension possible",
+    "debugger_timeout_seconds": 20,
+    "initialize_max": 1,
+    "overall_timeout_seconds": 60,
+    "session_prompt_auth_billing_max": 0
+  },
+  "execution_performed": false,
+  "schema": "grok130-initialize-stack-preparation-v3",
+  "source_inputs": [
+    {
+      "bytes": 9873,
+      "mtime_ns": 1789457359113456700,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r2\\driver.py",
+      "sha256": "ce2cd2bc65a229092e83e505ff0c813a78040a68178dc8c027e5b7ddedde19a9"
+    },
+    {
+      "bytes": 9622,
+      "mtime_ns": 1789457089968258100,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r2\\init_engine.py",
+      "sha256": "73b4d0693ff3ded68a7e8a4f1c710c32c1e4206a06d53e2f28c45a45fc71bdc7"
+    },
+    {
+      "bytes": 2262,
+      "mtime_ns": 1789457359113456700,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r2\\stack_capture.py",
+      "sha256": "9ff5d0b2ad9c610336d14fec8b2d46e979d4211f504b0aa335480f797fc46944"
+    },
+    {
+      "bytes": 200,
+      "mtime_ns": 1789457089902011200,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r2\\parser_smoke.py",
+      "sha256": "5fb7ffcc7227beb832aa4adf8253d38925cfe44db76949689fb96169b5e8a22d"
+    },
+    {
+      "bytes": 8039,
+      "mtime_ns": 1789455998955903900,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r2\\cdb-help.txt",
+      "sha256": "7bf314d5f9b53f5d27fb61cbde475638ab1e611f5c13ceffa9630b68b6aef411"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789455998768614500,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r2\\cdb-help.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 216,
+      "mtime_ns": 1789455999740865900,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r2\\cdb-help-result.json",
+      "sha256": "ad69ba7a4ef83c14cfecee1dacdc37b693b90766038790c35d3f4415ef5120fa"
+    },
+    {
+      "bytes": 530,
+      "mtime_ns": 1789457159241289800,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r2\\README.md",
+      "sha256": "88e2b1625d36ee8acb467ba44e6ea6791f7f86f968c73efbdb1ab00bd46b4605"
+    },
+    {
+      "bytes": 2678,
+      "mtime_ns": 1789456980286645000,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r2\\fixture-diagnosis-r2.md",
+      "sha256": "465439be198d4345f255659a7d931d785c8ec86e1ea71c68c90045b47933025b"
+    },
+    {
+      "bytes": 1810,
+      "mtime_ns": 1789456747661268700,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r2\\cdb-argument-diagnosis-r1.md",
+      "sha256": "49160a85ab04fb9f4e80ff05d45c8e201a583597392f053dc87a28a43f63fbed"
+    },
+    {
+      "bytes": 150036808,
+      "mtime_ns": 1789341681647980700,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-cli-1.0.30\\grok.exe",
+      "sha256": "ca24ea63272ba7881261f4a52498d1f5bd884b01da25845990422a10dd315266"
+    },
+    {
+      "bytes": 178536,
+      "mtime_ns": 1769465936000000000,
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x64\\cdb.exe",
+      "sha256": "67c3d1da6a3f2869fee12186d0c27ecb263fd9ed302b3d45d6ab10a32bf586a1"
+    },
+    {
+      "bytes": 53261,
+      "mtime_ns": 1789362812409504700,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_acp_transport.py",
+      "sha256": "f736d68218e49bf90fa6ead447097d8366d3827932bea5565c854e71d07aa855"
+    },
+    {
+      "bytes": 5045,
+      "mtime_ns": 1789362812874194400,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_skill_isolation.py",
+      "sha256": "694def3565b1f7df24fcbc59458eb88e33950cca07e68341080bcc89f1e6205f"
+    }
+  ]
+}
