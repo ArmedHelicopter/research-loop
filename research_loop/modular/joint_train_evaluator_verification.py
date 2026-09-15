@@ -31,7 +31,8 @@ def verify_joint_headless_evaluator_gate(gate, *, authority_keys, panel, scorer_
             or set(evaluator_usage) != {'schema', 'provider_kind', 'usage_contract', 'evaluator_config_digest'}
             or evaluator_usage['schema'] != _USAGE_SCHEMA or evaluator_usage['provider_kind'] != _PROVIDER
             or evaluator_usage['usage_contract'] != _USAGE_CONTRACT
-            or not _digest(evaluator_usage['evaluator_config_digest'])):
+            or not _digest(evaluator_usage['evaluator_config_digest'])
+            or evaluator_usage['evaluator_config_digest'] != evaluator_provider['configuration_digest']):
         raise ContractError('C5 headless evaluator declaration or provider differs')
     expected_cells = {tuple(cell.key) for cell in panel.cells}
     if (not isinstance(ordered_receipt_digests, tuple) or len(ordered_receipt_digests) != len(panel.cells)

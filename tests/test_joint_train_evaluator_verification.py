@@ -9,7 +9,7 @@ from research_loop.ontology import ContractError
 
 DIGESTS = ('a'*64, 'b'*64)
 USAGE = {'schema':'c5-headless-evaluator-usage-declaration-v1', 'provider_kind':'grok-headless-frozen-evaluator-v1',
-         'usage_contract':'grok-headless-c5-usage-v1', 'evaluator_config_digest':'c'*64}
+         'usage_contract':'grok-headless-c5-usage-v1', 'evaluator_config_digest':'d'*64}
 PROVIDER = {'kind':'grok-headless-frozen-evaluator-v1', 'configuration_digest':'d'*64}
 PANEL = SimpleNamespace(digest='e'*64, cells=(SimpleNamespace(key=('blade','z')), SimpleNamespace(key=('discoverybench','a'))))
 
@@ -89,3 +89,13 @@ def test_real_signed_complete_reverse_submission_order_passes_and_tampering_reje
         verifier.verify_joint_headless_evaluator_gate(gate, authority_keys={authority.authority_id:authority.key},
             panel=PANEL, scorer_config=config, evaluator_provider=PROVIDER, evaluator_usage=USAGE,
             ordered_receipt_digests=(DIGESTS[0],))
+
+
+def test_signed_closure_cannot_authenticate_an_unrelated_usage_configuration():
+    authority, gate = _signed_reverse_order_gate()
+    unrelated = {**USAGE, 'evaluator_config_digest': 'c'*64}
+    gate['evaluator_usage'] = unrelated
+    with pytest.raises(ContractError, match='declaration or provider differs'):
+        verifier.verify_joint_headless_evaluator_gate(gate, authority_keys={authority.authority_id:authority.key},
+            panel=PANEL, scorer_config=SimpleNamespace(digest='f'*64), evaluator_provider=PROVIDER,
+            evaluator_usage=unrelated, ordered_receipt_digests=DIGESTS)

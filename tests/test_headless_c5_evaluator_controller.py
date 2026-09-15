@@ -21,7 +21,7 @@ _USAGE = {
     'schema': 'c5-headless-evaluator-usage-declaration-v1',
     'provider_kind': 'grok-headless-frozen-evaluator-v1',
     'usage_contract': 'grok-headless-c5-usage-v1',
-    'evaluator_config_digest': 'a' * 64,
+    'evaluator_config_digest': 'b' * 64,
 }
 _PROVIDER = {'kind': 'grok-headless-frozen-evaluator-v1', 'configuration_digest': 'b' * 64}
 
@@ -43,6 +43,9 @@ def test_c5_protocol_opt_in_freezes_declaration_without_altering_legacy(tmp_path
         altered = dict(body); altered[key] = value
         with pytest.raises(ContractError):
             FrozenJointTrainProtocol(FrozenRecord.from_dict(altered))
+    mismatched = {**body, 'evaluator_usage': {**_USAGE, 'evaluator_config_digest': 'a' * 64}}
+    with pytest.raises(ContractError, match='actual worker configuration'):
+        FrozenJointTrainProtocol(FrozenRecord.from_dict(mismatched))
     assert not logs
 
 

@@ -51,6 +51,11 @@ def _headless_evaluator_binding(usage, provider):
             or provider.get('kind') != _HEADLESS_PROVIDER_KIND):
         raise ContractError('C5 headless evaluator provider descriptor is malformed')
     _digest(provider.get('configuration_digest'), 'C5 evaluator provider descriptor')
+    # C5 names the exact immutable worker configuration already checked by the
+    # startup handshake and authenticated by the signed evaluator closure.
+    # A second unrelated digest would only be an unverified caller assertion.
+    if usage['evaluator_config_digest'] != provider['configuration_digest']:
+        raise ContractError('C5 evaluator usage must bind the actual worker configuration')
     return dict(usage), dict(provider)
 
 

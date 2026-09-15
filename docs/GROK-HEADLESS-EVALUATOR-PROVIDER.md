@@ -61,3 +61,27 @@ lifecycle. Frozen engineering coverage is recorded by source version in the
 implementation status; this contract alone is not a test result.
 Synthetic OS/HTTP checks do not establish real benchmark effects, calibration,
 independent operating-system principals, or VAL acceptance.
+
+The C5 common TRAIN controller opts in through
+`c5-common-joint-train-headless-evaluator-v1`. Its public `evaluator_usage`
+declaration names `grok-headless-c5-usage-v1`; its `evaluator_config_digest`
+must equal `evaluator_provider.configuration_digest`. For this C5 revision,
+that digest identifies the immutable worker material computed by
+`headless_evaluator_descriptor`, not an unrelated caller-supplied config hash.
+Both the process startup handshake and the independently authenticated final
+closure must bind that same provider configuration. The declaration cannot
+silently describe a different evaluator while carrying valid scores.
+
+The controller persists an initial ineligible evaluator gate before execution
+and retains the original signed closure immediately after finalization, before
+worker close and final provider replay. A verified partial closure preserves
+its known MAIN token count and ordered score receipts but remains ineligible.
+Failure before any verified closure leaves unknown usage as unknown. Final
+verification authenticates the closure again before TRAIN selection can use
+the run. Title usage and total settlement are not inferred from known MAIN.
+
+This revision preserves the complete recipe/build/target allocation. It does
+not prune combinations after negative single-module results or reinterpret
+older incomplete C5 runs. Focused signed-envelope and process-seam tests are
+engineering checks; full C5 grid completion and real benchmark effects require
+their own complete run evidence. The legacy C5 schema remains unchanged.
