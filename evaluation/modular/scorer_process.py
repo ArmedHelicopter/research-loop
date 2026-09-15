@@ -366,7 +366,8 @@ def _headless_evaluator_material(spec: Mapping[str, object], *, rubric_mode: str
         RECOVERY, _INPUT_BYTE_CAP, _MAIN_OUTPUT_CAP, _OBSERVED_MAIN_TOKEN_CAP,
         _REQUEST_SCHEMA as headless_request_schema, _source_pins)
     if (not isinstance(spec["account_read_recovery"], Mapping)
-            or dict(spec["account_read_recovery"]) != RECOVERY):
+            or dict(spec["account_read_recovery"]) != RECOVERY
+            or type(spec["account_read_recovery"].get("max_attempts")) is not int):
         raise ContractError("production headless evaluator recovery configuration is invalid")
     generated = _source_pins(rubric_mode)
     if any(path in pins and pins[path] != value for path, value in generated.items()):
@@ -416,8 +417,11 @@ def headless_evaluator_descriptor(spec: Mapping[str, object], *, rubric_mode: st
 def _headless_evaluator(spec: Mapping[str, object], *, rubric_mode: str):
     """Explicit private rubric transport; legacy Codex declarations stay distinct."""
     from evaluation.modular.headless_evaluator_model_port import GrokHeadlessEvaluatorModelPort
-    material, _ = _headless_evaluator_material(spec, rubric_mode=rubric_mode)
-    return GrokHeadlessEvaluatorModelPort(**material)
+    material, configuration = _headless_evaluator_material(spec, rubric_mode=rubric_mode)
+    port = GrokHeadlessEvaluatorModelPort(**material)
+    if port._config_record != configuration:
+        raise ContractError("headless evaluator descriptor construction drift")
+    return port
 
 
 def _production_evaluator(spec: Mapping[str, object], *, rubric_mode: str = "primary_v1"):
