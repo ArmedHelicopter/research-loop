@@ -1,0 +1,35 @@
+F..................................................................      [100%]
+================================== FAILURES ===================================
+_______________ test_actual_producer_reader_and_unknown_totals ________________
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/account-freshness-frozen-r1/test_actual_producer_reader_an0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EAD91B5040>
+
+    def test_actual_producer_reader_and_unknown_totals(tmp_path, monkeypatch):
+        entry, kwargs, spec, directory, calls, gets = prepared(tmp_path, monkeypatch)
+        result = transport.run_headless_diagnostic(**kwargs)
+>       binding = transport.verify_headless_request_binding(result, entry, directory, spec, kwargs['frozen_files']).data()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_grok_headless_transport.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\grok_headless_transport.py:598: in verify_headless_request_binding
+    return _verify_headless_request_binding(result, entry, directory, spec, frozen_files, deployment=deployment)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\grok_headless_transport.py:679: in _verify_headless_request_binding
+    _require(inspect_process == receipt['inspect_process'] and _process_ok(inspect_process), 'native inspect rejected')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'native inspect rejected'
+
+    def _require(condition, message):
+        if not condition:
+>           raise ContractError(message)
+E           research_loop.ontology.ContractError: native inspect rejected
+
+research_loop\modular\grok_headless_transport.py:79: ContractError
+- generated xml file: E:\_ryanDev\AI\research-loop-modular\work\account-freshness-frozen-r1.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_grok_headless_transport.py::test_actual_producer_reader_and_unknown_totals
+{"commit": "62695576080b974d3ebae7a265039f6d761a5aef", "source_unchanged": true, "source_count": 804, "exit_code": 1, "wall_seconds": 247.4529999999795, "new_paid_calls": 0, "report_sha256": "729988d0d6db3117ce639c333607a8c2ed58329e26a8ec3cbb87d212026cdf15", "junit": {"tests": 67, "failures": 1, "errors": 0, "skipped": 0}}
+{"source_archive_matches_frozen_input": true, "source_files": 804, "source_archive_sha256": "e107fdf9e69468d6694e6afef48b53336bb74e869084ccc92513c320c6b4d844"}
