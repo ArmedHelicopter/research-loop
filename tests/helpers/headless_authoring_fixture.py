@@ -33,14 +33,14 @@ def install_synthetic_native(monkeypatch, envelope):
         (Path(slot['private_home']) / 'auth.json').write_text(json.dumps(auth), encoding='utf-8')
     peer = Path(__file__).resolve().parents[1] / 'fixtures' / 'headless_authoring_peer.py'
 
-    def spawn(command, cwd, env, stderr):
+    def spawn(command, cwd, env, stderr, stdout=None):
         assert env['GROK_DISABLE_API_KEY_AUTH'] == '1'
         if 'inspect' in command:
             args = ['inspect']
         else:
             calls.append(command)
             args = [command[command.index('--session-id') + 1], command[command.index('--prompt-file') + 1]]
-        return ProcessTree([sys.executable, str(peer), *args], cwd=cwd, env=env, stderr=stderr)
+        return ProcessTree([sys.executable, str(peer), *args], cwd=cwd, env=env, stderr=stderr, stdout=stdout)
 
     class Response:
         status = 200

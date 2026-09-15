@@ -346,38 +346,42 @@ def _inspect(raw, deployment=None):
 def _child(command, context, environment, directory, timeout):
     directory.mkdir(parents=True, exist_ok=True)
     started = datetime.now(timezone.utc).isoformat()
-    raw = error = b''; tree = None; expired = False; failure = None; closed = False; code = None
+    stdout_path = directory / 'stdout.private.jsonl'
+    stderr_path = directory / 'stderr.private.txt'
+    tree = None; expired = False; failure = None; closed = False; code = None
     try:
-        tree = ProcessTree(command, cwd=context['cwd'], env=environment, stderr=subprocess.PIPE)
-        try:
-            raw, error = tree.process.communicate(timeout=timeout)
-        except subprocess.TimeoutExpired as exc:
-            expired = True; raw, error = exc.stdout or b'', exc.stderr or b''
-            if tree.job is not None:
-                kernel, handle = tree.job; kernel.CloseHandle(handle); tree.job = None
-            else:
-                tree.process.kill()
+        # Owned streams avoid communicate() waiting on a descendant that inherited
+        # the parent's PIPE handles.  They are retained before parsing by callers.
+        with stdout_path.open('xb') as stdout, stderr_path.open('xb') as stderr:
             try:
-                raw, error = tree.process.communicate(timeout=5)
-            except subprocess.TimeoutExpired:
-                failure = 'process_tree_shutdown_failed'
-        code = tree.process.poll()
-    except Exception:
-        failure = 'process_launch_or_io_failed'
-    finally:
-        if tree is not None:
-            try:
-                if os.name == 'nt' and tree.job is None:
-                    tree.process.wait(timeout=5)
-                    for stream in (tree.process.stdin, tree.process.stdout, tree.process.stderr):
-                        if stream is not None: stream.close()
-                else:
-                    tree.close()
-                closed = tree.job is None and tree.process.poll() is not None
+                tree = ProcessTree(command, cwd=context['cwd'], env=environment,
+                                   stdout=stdout, stderr=stderr)
+                try:
+                    tree.process.wait(timeout=timeout)
+                except subprocess.TimeoutExpired:
+                    expired = True
             except Exception:
-                failure = 'process_tree_shutdown_failed'
-        else:
-            closed = None
+                failure = 'process_launch_or_io_failed'
+            finally:
+                if tree is not None:
+                    try:
+                        tree.close()
+                        closed = tree.job is None and tree.process.poll() is not None
+                    except Exception:
+                        failure = 'process_tree_shutdown_failed'
+                    # Query only after the owned tree has been closed.  A timeout
+                    # still has a terminal exit code when closure established one.
+                    code = tree.process.poll()
+                else:
+                    closed = None
+    except OSError:
+        failure = 'process_launch_or_io_failed'
+    try:
+        raw = stdout_path.read_bytes()
+        error = stderr_path.read_bytes()
+    except OSError:
+        raw = error = b''
+        failure = failure or 'process_launch_or_io_failed'
     observation = {'command': command, 'environment': environment, 'cwd': context['cwd'],
         'started_at': started, 'finished_at': datetime.now(timezone.utc).isoformat(),
         'timeout_seconds': timeout, 'timed_out': expired, 'failure': failure,

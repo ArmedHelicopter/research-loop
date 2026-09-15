@@ -21,7 +21,7 @@ def headless_train_provider(root,patch,*,schemas,max_calls,response,wrapped=True
     import research_loop.modular.grok_headless_transport as transport
     peer=Path(__file__).resolve().parents[1]/'fixtures/headless_train_peer.py'
     calls=[]
-    def spawn(command,cwd,env,stderr):
+    def spawn(command,cwd,env,stderr,stdout=None):
         assert env['GROK_DISABLE_API_KEY_AUTH']=='1'
         assert not {'XAI_API_KEY','GROK_API_KEY'} & set(env)
         assert not any(Path(cwd).iterdir())
@@ -37,7 +37,7 @@ def headless_train_provider(root,patch,*,schemas,max_calls,response,wrapped=True
             path.write_text(json.dumps(answer),encoding='utf-8')
             calls.append(request)
             args=[command[command.index('--session-id')+1],str(path)]
-        return ProcessTree([sys.executable,str(peer),*args],cwd=cwd,env=env,stderr=stderr)
+        return ProcessTree([sys.executable,str(peer),*args],cwd=cwd,env=env,stderr=stderr, stdout=stdout)
     patch.setattr(transport,'ProcessTree',spawn)
     backend=GrokHeadlessTrainModelPort(executable=executable,work_root=root/'ledger',
         private_home=home,private_profile=root/'profiles',public_cwd=root/'contexts',

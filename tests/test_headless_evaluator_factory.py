@@ -32,7 +32,7 @@ def native_spec(root, patch, *, deployment_130=False):
     import research_loop.modular.grok_headless_transport as transport
     peer = Path(__file__).parent / 'fixtures/headless_train_peer.py'
     prompts = []
-    def spawn(command, cwd, env, stderr):
+    def spawn(command, cwd, env, stderr, stdout=None):
         assert env['GROK_DISABLE_API_KEY_AUTH'] == '1'
         assert not {'XAI_API_KEY', 'GROK_API_KEY'} & set(env)
         if 'inspect' in command:
@@ -47,7 +47,7 @@ def native_spec(root, patch, *, deployment_130=False):
             path = prompt_path.parent.parent / 'synthetic-answer.json'
             path.write_text(json.dumps(answer), encoding='utf-8')
             args = [command[command.index('--session-id') + 1], str(path)]
-        return ProcessTree([sys.executable, str(peer), *args], cwd=cwd, env=env, stderr=stderr)
+        return ProcessTree([sys.executable, str(peer), *args], cwd=cwd, env=env, stderr=stderr, stdout=stdout)
     patch.setattr(transport, 'ProcessTree', spawn)
     spec = {'provider_kind': 'grok-headless-frozen-evaluator-v1', 'executable': str(exe),
         'work_root': str(root / 'ledger'), 'private_home': str(home),

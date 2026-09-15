@@ -3,10 +3,14 @@ import pytest
 import sys
 import json
 import hashlib
+import os
+import subprocess
+import time
 from datetime import timedelta
 from pathlib import Path
 
 import research_loop.modular.grok_headless_transport as transport
+from research_loop.modular.grok_acp_transport import ProcessTree
 from evaluation.modular.calibration_pilot_process import load_record
 from tests.helpers.headless_authoring_fixture import install_synthetic_native
 from tests.test_headless_material_authoring import prepare_headless
@@ -291,6 +295,37 @@ def test_short_timeout_closes_owned_process_tree(tmp_path):
     raw, process = transport._child([sys.executable, '-c', 'import time; time.sleep(5)'],
         {'cwd': str(tmp_path)}, {}, tmp_path/'timeout', 0.05)
     assert process['timed_out'] and process['owned_tree_closed'] and process['process_exit_code'] is not None
+
+
+def test_timeout_retains_partial_owned_streams_when_descendant_inherits_handles(tmp_path):
+    # The descendant deliberately inherits both files.  PIPE+communicate() can
+    # wait for those inherited handles after the parent is gone; the owned job
+    # closure must bound this child and retain the parent's partial evidence.
+    code = (
+        'import subprocess,sys,time;'
+        'print("partial-stdout",flush=True);'
+        'print("partial-stderr",file=sys.stderr,flush=True);'
+        'subprocess.Popen([sys.executable,"-c","import time; time.sleep(30)"],'
+        'stdout=sys.stdout,stderr=sys.stderr);time.sleep(30)')
+    before = time.monotonic()
+    raw, process = transport._child([sys.executable, '-c', code],
+        {'cwd': str(tmp_path)}, dict(os.environ), tmp_path / 'inherited', 1)
+    elapsed = time.monotonic() - before
+    assert elapsed < 8
+    assert process['timed_out'] and process['owned_tree_closed'] is True
+    assert process['process_exit_code'] is not None
+    assert raw == (tmp_path / 'inherited' / 'stdout.private.jsonl').read_bytes()
+    assert b'partial-stdout' in raw
+    assert b'partial-stderr' in (tmp_path / 'inherited' / 'stderr.private.txt').read_bytes()
+
+
+def test_process_tree_keeps_acp_default_stdout_pipe(tmp_path):
+    tree = ProcessTree([sys.executable, '-c', 'print("acp-pipe")'], str(tmp_path),
+                       dict(os.environ), subprocess.PIPE)
+    assert tree.process.stdout is not None
+    raw, error = tree.process.communicate(timeout=3)
+    tree.close()
+    assert raw == b'acp-pipe\n' and error == b''
 
 
 def test_constructor_failure_does_not_claim_no_launch(tmp_path, monkeypatch):
