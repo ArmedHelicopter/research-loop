@@ -3,6 +3,18 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Independent P0 custody snapshot reader (2026-09-15)
+
+Source `35be4696` passed three synthetic integration checks with 797 unchanged
+source/document files. The [auditor-only reader](P0-CUSTODY-AUDIT-SNAPSHOTS.md)
+parses caller-anchored bytes directly, rejects duplicate JSON keys, replays split
+allocation, and detects state changes before returning. An explicit retained
+receipt is verified against caller-held HMAC secrets and the exact consumed
+lease. The real CLI emits state-only evidence and refuses to overwrite output.
+No actual custody state, private split or VAL data was read. This closes a scoped
+current-snapshot entry, not the entire private history or operating-system access
+boundary; independent custodian and calibration authority remain unverified.
+
 ## C5 failure repair and scorer-observation checks (2026-09-15)
 
 The first original C5 failure is now localized: call 131 was rejected locally

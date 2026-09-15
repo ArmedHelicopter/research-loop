@@ -97,6 +97,10 @@ trace 与目录不一致、跨对象证据替换、VAL 及其索引泄漏，以�
 实际接入范围与未接入项见[产物审计覆盖清单](MODULE-ARTIFACT-COVERAGE.md)，
 具体版本的执行证据见[实施状态](MODULAR-IMPLEMENTATION-STATUS.md)。
 
+P0 另提供[独立 custody 快照审计入口](P0-CUSTODY-AUDIT-SNAPSHOTS.md)，面向审计器
+而非优化器。它核验预先保留的字节锚点、当前划分和显式提供的签名租约回执，不伪造
+混合数据域的单一 TRAIN 身份，也不把缺失回执当成已经签发或已经验收。
+
 可调用的[M2 类型化关系读取器](M2-TYPED-PROJECTION.md)从封存目录和原 ledger
 重放得到撤回目标及明确的后续观察，结果保留读取器源码摘要和完整性范围。
 [评分封存消费端观察](SCORER-FINALIZATION-OBSERVATIONS.md)则保留解析、验签前的
