@@ -4,6 +4,7 @@ import hashlib
 import os
 from pathlib import Path
 import sys
+from types import SimpleNamespace
 
 import pytest
 
@@ -12,10 +13,13 @@ from evaluation.modular.scoring_service import ScorerConfig
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.exploration_scheduler_controller import FrozenExplorationSchedulerTrainConfig, compile_exploration_scheduler_train_panel, run_exploration_scheduler_train_panel
 from research_loop.modular.runtime import AuditVerifier
+from research_loop.modular.ordinary_provider import finalize_headless_evaluator_gate
 from research_loop.ontology import ContractError, canonical
 from test_remaining_prospective_train_sources import prepare_controller
 from test_headless_evaluator_factory import native_spec
 from tests.helpers.headless_train_provider import headless_train_provider
+from evaluation.modular.linked_scoring import LinkedExecutionAuthority
+from test_headless_admission_evaluator_gate import _score, _signed_closure
 
 
 FAMILY = 'exploration-scheduler'
@@ -104,3 +108,33 @@ def test_evaluator_descriptor_mismatch_rejects_before_export_or_model(tmp_path, 
             run_root=tmp_path/'run', model=provider, audit_verifier=AuditVerifier({'a': b'a'*32, 'b': b'b'*32}),
             execution_authority=execution, scoring_service=Service(), scorer_authority_keys={scorer_authority.authority_id: scorer_authority.key})
     assert calls == [] and not setup['exporter'].output_root.exists()
+
+
+def test_signed_tampered_final_closure_keeps_all_eight_historical_scores_ineligible():
+    """Adapter-only final-gate check; the full controller path is covered above.
+
+    This consumes a genuinely signed but provider-mismatched closure.  It does
+    not start a solver, evaluator worker, export, or controller grid.
+    """
+    authority = LinkedExecutionAuthority('scheduler-scorer', b's' * 32)
+    cells = tuple(SimpleNamespace(key=('bench' + str(index), 'cell' + str(index))) for index in range(8))
+    panel = SimpleNamespace(digest='e' * 64, cells=cells)
+    scores = tuple(_score(cell.key, format(index + 1, 'x')) for index, cell in enumerate(cells))
+    config = ScorerConfig.create(benchmark='core_pair', evaluator_id='synthetic', version='v1', rubric_digest='c' * 64)
+    provider = {'kind': 'grok-headless-frozen-evaluator-v1', 'configuration_digest': 'b' * 64}
+    closure = _signed_closure(authority=authority, panel=panel, config=config, scores=scores,
+        provider={**provider, 'configuration_digest': 'a' * 64})
+    class Service:
+        def __init__(self): self.config = config; self.calls = 0
+        def finalize_headless_evaluator(self, *, receipts):
+            self.calls += 1; assert tuple(receipts) == scores; return closure
+    captured = []; service = Service()
+    gate = finalize_headless_evaluator_gate(binding={'evaluator_usage': {
+        'schema': f'{FAMILY}-headless-evaluator-usage-declaration-v1', 'provider_kind': provider['kind'],
+        'usage_contract': f'grok-headless-{FAMILY}-usage-v1', 'evaluator_config_digest': provider['configuration_digest']},
+        'evaluator_provider': provider}, family=FAMILY, service=service, panel=panel, scores=scores,
+        scorer_authority_keys={authority.authority_id: authority.key}, scorer_config=config,
+        capture=lambda value: captured.append(dict(value)))
+    assert service.calls == 1 and len(scores) == 8 and gate['score_eligible'] is False
+    assert gate['closure'] == closure.data() and gate['failure_reason'] == 'closure_verification_failed'
+    assert captured[0]['closure'] == closure.data() and captured[-1]['score_eligible'] is False
