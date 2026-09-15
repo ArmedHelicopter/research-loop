@@ -135,17 +135,36 @@ def _verify_target_in_context(stage: JointTrainStage, *, barrier: JointTrainBarr
 
 
 
+def _headless_c5_evaluator_gate(binding, *, failure_reason):
+    if not isinstance(binding, dict) or set(binding) != {'evaluator_usage', 'evaluator_provider'}:
+        raise ContractError('C5 headless evaluator binding is malformed')
+    return {'schema': 'c5-common-final-headless-evaluator-v1', 'status': 'inconclusive',
+            'score_eligible': False, 'evaluator_usage': binding['evaluator_usage'],
+            'evaluator_provider': binding['evaluator_provider'], 'ordered_receipt_digests': [],
+            'closure': None, 'known_headless_main_tokens': None,
+            'title_and_all_opportunity_settlement': 'unknown', 'failure_reason': failure_reason,
+            'error_type': None}
+
+
+def _controller_attempt_body(*, plan, build_rows, rows, accounting, evaluator_gate):
+    body = {'schema': 'c5-common-train-controller-attempts-v1', 'plan_digest': plan.record.content_hash,
+            'builds': build_rows, 'targets': rows, 'allocation': plan.protocol.record.data()['allocation'],
+            'provider_accounting': accounting, 'complete_history_barrier': False, 'target_provider_sealed': False,
+            'selection_opened': False, 'validation_opened': False}
+    if plan.headless_evaluator_binding is not None:
+        body['evaluator_final_verification'] = evaluator_gate
+    return body
+
+
 def _finalize_headless_c5_evaluator(*, plan, panel, service, scores, scorer_authority_keys):
     """Close the declared C5 evaluator once, retaining any verified partial proof."""
     binding = plan.headless_evaluator_binding
     if binding is None or type(service) is not CombinationScorerProcessClient:
         raise ContractError('headless C5 evaluator finalization requires its exact declared scorer client')
-    usage, provider = binding['evaluator_usage'], binding['evaluator_provider']
+    provider = binding['evaluator_provider']
     digests = [score.receipt.content_hash for score in scores]
-    gate = {'schema': 'c5-common-final-headless-evaluator-v1', 'status': 'inconclusive',
-            'score_eligible': False, 'evaluator_usage': usage, 'evaluator_provider': provider,
-            'ordered_receipt_digests': digests, 'closure': None, 'known_headless_main_tokens': None,
-            'title_and_all_opportunity_settlement': 'unknown', 'failure_reason': None, 'error_type': None}
+    gate = _headless_c5_evaluator_gate(binding, failure_reason=None)
+    gate['ordered_receipt_digests'] = digests
     if not scores:
         gate['failure_reason'] = 'no_scorer_receipts'
         return gate
@@ -154,14 +173,18 @@ def _finalize_headless_c5_evaluator(*, plan, panel, service, scores, scorer_auth
         verified = verify_closure(closure, authority_keys=scorer_authority_keys, panel=panel,
             config=ScorerConfig(R(plan.protocol.record.data()['scorer'])), provider=provider,
             nonce=closure.data()['body']['nonce'], receipt_digests=digests)
-        body = verified.data()['body']
-        gate['closure'] = verified.data()
+        # verify_closure returns the verified *body*; retain the original signed
+        # envelope so a later consumer can independently authenticate it again.
+        body = verified.data()
+        gate['closure'] = closure.data()
         gate['known_headless_main_tokens'] = body['known_main_tokens']
-        expected_cells = tuple(cell.key for cell in panel.cells)
+        expected_cells = {cell.key for cell in panel.cells}
         scoped_cells = tuple(tuple(key) for key in body['scope']['scored_cell_keys'])
         scored_cells = tuple(score.cell_key for score in scores)
-        if (len(scores) != len(panel.cells) or scored_cells != expected_cells
-                or scoped_cells != expected_cells or body['scope']['unscored_cell_count'] != 0):
+        if (len(scores) != len(panel.cells) or len(scored_cells) != len(set(scored_cells))
+                or set(scored_cells) != expected_cells or len(scoped_cells) != len(expected_cells)
+                or len(scoped_cells) != len(set(scoped_cells)) or set(scoped_cells) != expected_cells
+                or body['scope']['unscored_cell_count'] != 0):
             gate['failure_reason'] = 'incomplete_panel_closure'
             return gate
         gate.update(status='eligible', score_eligible=True)
@@ -227,12 +250,13 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
             or allocation['target_cells'] != len(plan.recipes) * len(plan.packets)):
         raise ContractError('common controller grid differs from the frozen recipe and target denominators')
 
+    headless_evaluator = plan.headless_evaluator_binding
+    evaluator_gate = (None if headless_evaluator is None else
+                      _headless_c5_evaluator_gate(headless_evaluator, failure_reason='not_finalized'))
+
     def persist(captured: dict | None = None) -> None:
-        body = {'schema': 'c5-common-train-controller-attempts-v1', 'plan_digest': plan.record.content_hash,
-                'builds': build_rows, 'targets': rows, 'allocation': plan.protocol.record.data()['allocation'],
-                'provider_accounting': _native_accounting(executor) if captured is None else captured,
-                'complete_history_barrier': False, 'target_provider_sealed': False,
-                'selection_opened': False, 'validation_opened': False}
+        body = _controller_attempt_body(plan=plan, build_rows=build_rows, rows=rows,
+            accounting=_native_accounting(executor) if captured is None else captured, evaluator_gate=evaluator_gate)
         path = root / 'common-controller-attempts.json'
         raw = R(body).encoded.encode('utf-8')
         temporary = path.with_suffix('.tmp'); temporary.write_bytes(raw); temporary.replace(path)
@@ -250,8 +274,6 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
     score_inputs: list[FrozenRecord] = []
     process = {'startup_attempts': 0, 'startup_status': 'not_started', 'close_attempts': 0, 'closed': None, 'error': None}
     scorer_provider_terminal = False
-    headless_evaluator = plan.headless_evaluator_binding
-    evaluator_gate = None
 
     for row, recipe in zip(build_rows, plan.builds, strict=True):
         if executor.poisoned or executor.session.terminal():
