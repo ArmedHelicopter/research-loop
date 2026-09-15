@@ -1,0 +1,110 @@
+{
+  "schema": "frozen-module-check-published-files-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "archive-helper.py",
+      "sha256": "d97b3788f61350abf288dd06443f0e26b64a4afbfbb968e9716b22db081ab91f",
+      "bytes": 26298
+    },
+    {
+      "path": "csv-full16-before.json",
+      "sha256": "e05570b4c740d48c507e953c826afff151c891022f6e8d979aa08f7d0bdbe764",
+      "bytes": 95743
+    },
+    {
+      "path": "csv-full16-closed.json",
+      "sha256": "0c71d94c2e89d9427279c4071ee568dacd61d2b0173e7c5d1a1add6c5eae5dc2",
+      "bytes": 95796
+    },
+    {
+      "path": "csv-full16-native-join.json",
+      "sha256": "d780c9c2e2a4695fa7765dd60196fd56fc2f7ad382322e28e5192ed003d4a7b4",
+      "bytes": 233
+    },
+    {
+      "path": "csv-full16-native-start.json",
+      "sha256": "acf64cfc3117f73f160e3bf13d922905b636485df4ffad090b3d6435b4035b61",
+      "bytes": 109
+    },
+    {
+      "path": "csv-full16-source-members.json",
+      "sha256": "2d718455c814669609fc2f3fc0eb64f2a4c37b3026ef6861c0bd08a343dec8ef",
+      "bytes": 143120
+    },
+    {
+      "path": "csv-full16-sources.zip",
+      "sha256": "ee8b4770d31a7a96e5a06b762ab707e0ecfc0918aa92cad694f165dbe8a9836c",
+      "bytes": 2731346
+    },
+    {
+      "path": "csv-full16.log",
+      "sha256": "20a6392949b62c9f3b768d1c506d7bce81337dda718e4a50ef8f9d751d5f2a49",
+      "bytes": 673
+    },
+    {
+      "path": "csv-full16.xml",
+      "sha256": "dc97a98c16d0674e71fc7dbc645702472fa08e9dda22c78d50a9f65431be47f3",
+      "bytes": 425
+    },
+    {
+      "path": "private-retention-manifest.json",
+      "sha256": "2bf36629d8a83642a54c81d326daadf6033a2efa8132d95086f5559c7611a429",
+      "bytes": 1944229
+    },
+    {
+      "path": "README.md",
+      "sha256": "2efb7e1819c3c757922708f33e594acf14efed4fb5da470fdc88cda52851a854",
+      "bytes": 1413
+    },
+    {
+      "path": "retention-helper-source.py",
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840
+    },
+    {
+      "path": "root-before.json",
+      "sha256": "66a0b5966674d51e2db807479eddefbfa4de95845f347a366359c64a56e94141",
+      "bytes": 95693
+    },
+    {
+      "path": "root-closed.json",
+      "sha256": "dc24e6bff849edb0f288cd89d77108ef73fd632084adb37aec42eb9c35af917f",
+      "bytes": 95798
+    },
+    {
+      "path": "root-native-join.json",
+      "sha256": "497d82045c7cd6c73889e61e1ff87f9eb17f09afdc4e4c3422e99f83895e7cfe",
+      "bytes": 233
+    },
+    {
+      "path": "root-native-start.json",
+      "sha256": "053736ea0aa873c5ec95df09f4b4e6112a2f03bcaa7618cb38290e7ec1e9345c",
+      "bytes": 109
+    },
+    {
+      "path": "root-source-members.json",
+      "sha256": "6a76c243aa12d3721fb76bb5a1fb0c01cf3dce8b0b4ca2ad292c04855ba9a74a",
+      "bytes": 143119
+    },
+    {
+      "path": "root-sources.zip",
+      "sha256": "a485b9e556ec8b341712c357e041c7a7d2b3984d4c681293ffdffd2939a039c3",
+      "bytes": 2732472
+    },
+    {
+      "path": "root.log",
+      "sha256": "8ab62ba89c5ebb25918f298449c06209ca6921045a4aff572edcd74cd020faac",
+      "bytes": 674
+    },
+    {
+      "path": "root.xml",
+      "sha256": "d965c43ab1986701fad37f20342259d702194b0ed8c7d97af190ebc2fd254104",
+      "bytes": 3050
+    }
+  ]
+}
