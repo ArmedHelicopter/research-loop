@@ -1,5 +1,7 @@
 import hashlib
+import json
 import shutil
+from base64 import b64decode
 from decimal import Context, localcontext
 
 import pytest
@@ -79,6 +81,54 @@ def test_source_failure_is_retained_as_unknown_not_promoted(tmp_path, monkeypatc
         verifier.qualify(material, sidecar, cell_binding=_binding())
     raw = next((tmp_path / 'receipts' / ('c' * 64)).glob('*.json'))
     assert FrozenRecord(raw.read_text(encoding='utf-8')).data()['executions'][0]['outcome'] == 'unknown'
+
+
+def test_replay_rejects_a_forged_but_authorized_assessment(tmp_path):
+    material, _, verifier = _verifier(tmp_path)
+    sidecar = tmp_path / 'cell' / 'source-verification.json'
+    verifier.qualify(material, sidecar, cell_binding=_binding())
+    body = json.loads(sidecar.read_text(encoding='utf-8'))
+    for authority, call in zip(verifier.authorities, body['calls'], strict=True):
+        forged = call['response']['body']
+        forged['assessments']['before']['sum']['state']['validity'] = 'unknown'
+        call['response'] = authority.authority.issue(forged).data()
+    sidecar.write_text(json.dumps(body, sort_keys=True, separators=(',', ':')), encoding='utf-8')
+    with pytest.raises(ContractError, match='semantic result or cost'):
+        verifier._verify_receipt(material, sidecar, cell_binding=_binding())
+
+
+def test_return_pin_absence_retains_streams_and_remains_unknown(tmp_path, monkeypatch):
+    material, _, verifier = _verifier(tmp_path)
+    import research_loop.modular.csv_measurement_authorities as module
+    request = verifier.request(material, _binding())
+    original_pins = module._read_worker_pins
+    observed = 0
+
+    def pins(dataset, source):
+        nonlocal observed
+        observed += 1
+        if observed == 2:
+            return None, None, 'FileNotFoundError'
+        return original_pins(dataset, source)
+
+    monkeypatch.setattr(module, '_read_worker_pins', pins)
+    launch_csv, launch_worker, process, executions = module._run_worker(request, verifier.datasets['a' * 64], verifier.authorities[0])
+    assert launch_csv is not None and launch_worker is not None
+    assert process['outcome'] == 'unknown' and process['return_pin_error'] == 'FileNotFoundError'
+    assert process['return_pins'] is None and all(row['outcome'] == 'unknown' for row in executions)
+    assert b64decode(process['stdout_b64'], validate=True) and process['cleanup_status'] == 'not_required'
+
+
+def test_dataset_requires_the_materials_unique_csv_byte_parent(tmp_path):
+    material, _, verifier = _verifier(tmp_path)
+    foreign = tmp_path / 'foreign.csv'
+    foreign.write_text('amount,name\n1.20,a\n2.30,\nextra,z\n', encoding='utf-8')
+    dataset = CsvMeasurementDataset(foreign, verifier.datasets['a' * 64].specs)
+    foreign_verifier = build_csv_measurement_admission_verifier(
+        authorities=(LinkedExecutionAuthority('foreign-a', b'f' * 32), LinkedExecutionAuthority('foreign-b', b'g' * 32)),
+        datasets={'a' * 64: dataset}, receipt_root=tmp_path / 'foreign-receipts')
+    with pytest.raises(ContractError, match='unique public CSV byte parent'):
+        foreign_verifier.request(material, _binding())
 
 
 @pytest.mark.parametrize('fault', ['csv', 'code', 'spec', 'raw_receipt'])

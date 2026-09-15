@@ -117,6 +117,10 @@ def _dataset_for_request(datasets: Mapping[str, CsvMeasurementDataset], request:
 
 def _validate_dataset_material(dataset: CsvMeasurementDataset, material: FrozenAdmissionMaterial) -> None:
     originals = {row["key"]: row for row in material.data()["originals"]}
+    public = material.data()['public_artifacts']
+    expected_artifact = {'artifact_id': 'public_csv', 'sha256': _sha(dataset.csv_path), 'byte_count': dataset.csv_path.stat().st_size}
+    if (not isinstance(public, list) or len(public) != 1 or public[0] != {'artifact': expected_artifact, 'container_path': '/input/public_csv'}):
+        raise ContractError('CSV measurement dataset is not the material\'s unique public CSV byte parent')
     if set(dataset.specs) != set(originals):
         raise ContractError("CSV specifications must cover each exact original once")
     for key, spec in dataset.specs.items():
@@ -255,7 +259,14 @@ class CsvMeasurementAdmissionMaterialVerifier(AdmissionMaterialVerifier):
             raw = FrozenRecord(receipt_path.read_text(encoding="utf-8"))
             if raw.content_hash != signed["measurement_receipt_digest"]:
                 raise ContractError("signed qualification does not bind raw CSV worker receipt bytes")
-            self._verify_raw_receipt(raw.data(), request, authority, dataset)
+            raw_data = raw.data()
+            self._verify_raw_receipt(raw_data, request, authority, dataset)
+            executions = raw_data['executions']
+            completed = raw_data['process']['outcome'] == 'completed' and all(row['outcome'] == 'completed' for row in executions)
+            if (signed['assessments'] != _assessments(request, executions)
+                    or signed['verdict'] != ('verified' if completed else 'unknown')
+                    or signed['cost_units'] != (raw_data['cost_units'] if raw_data['cost_unknown'] is False else None)):
+                raise ContractError('signed CSV qualification semantic result or cost differs from raw worker evidence')
         return digest
 
     def _verify_raw_receipt(self, raw: dict, request: FrozenRecord, authority: MaterialAuthority, dataset: CsvMeasurementDataset) -> None:
@@ -276,6 +287,8 @@ class CsvMeasurementAdmissionMaterialVerifier(AdmissionMaterialVerifier):
         fields = {'command', 'pid', 'started_at_ns', 'finished_at_ns', 'timeout_seconds', 'exit_code', 'timed_out',
                   'stdout_b64', 'stdout_sha256', 'stderr_b64', 'stderr_sha256', 'timeout_partial_stdout_b64',
                   'timeout_partial_stdout_sha256', 'timeout_partial_stderr_b64', 'timeout_partial_stderr_sha256',
+                  'cleanup_partial_stdout_b64', 'cleanup_partial_stdout_sha256', 'cleanup_partial_stderr_b64',
+                  'cleanup_partial_stderr_sha256', 'cleanup_status', 'launch_pin_error', 'return_pin_error',
                   'outcome', 'error_type', 'return_pins'}
         bundle = FrozenRecord.from_dict({'specifications': [spec.record.data() for _, spec in sorted(dataset.specs.items())]})
         expected_command = [str(Path(sys.executable)), str(source), '--csv', str(dataset.csv_path), '--specs', bundle.encoded]
@@ -286,17 +299,22 @@ class CsvMeasurementAdmissionMaterialVerifier(AdmissionMaterialVerifier):
                 or type(process['started_at_ns']) is not int or type(process['finished_at_ns']) is not int
                 or process['finished_at_ns'] < process['started_at_ns'] or process['timeout_seconds'] != 20
                 or type(process['timed_out']) is not bool or not _digest(process['stdout_sha256']) or not _digest(process['stderr_sha256'])
-                or process['return_pins'] != expected_pins):
+                or process['cleanup_status'] != 'not_required' or process['launch_pin_error'] is not None
+                or process['return_pin_error'] is not None or process['return_pins'] != expected_pins):
             raise ContractError('raw CSV worker process receipt fields drift')
         try:
             stdout, stderr = b64decode(process['stdout_b64'], validate=True), b64decode(process['stderr_b64'], validate=True)
             partial_stdout = b64decode(process['timeout_partial_stdout_b64'], validate=True)
             partial_stderr = b64decode(process['timeout_partial_stderr_b64'], validate=True)
+            cleanup_partial_stdout = b64decode(process['cleanup_partial_stdout_b64'], validate=True)
+            cleanup_partial_stderr = b64decode(process['cleanup_partial_stderr_b64'], validate=True)
         except Exception as exc:
             raise ContractError('raw CSV worker stream encoding drift') from exc
         if (hashlib.sha256(stdout).hexdigest() != process['stdout_sha256'] or hashlib.sha256(stderr).hexdigest() != process['stderr_sha256']
                 or hashlib.sha256(partial_stdout).hexdigest() != process['timeout_partial_stdout_sha256']
-                or hashlib.sha256(partial_stderr).hexdigest() != process['timeout_partial_stderr_sha256']):
+                or hashlib.sha256(partial_stderr).hexdigest() != process['timeout_partial_stderr_sha256']
+                or hashlib.sha256(cleanup_partial_stdout).hexdigest() != process['cleanup_partial_stdout_sha256']
+                or hashlib.sha256(cleanup_partial_stderr).hexdigest() != process['cleanup_partial_stderr_sha256']):
             raise ContractError('raw CSV worker stream bytes drift')
         executions = raw["executions"]
         if not isinstance(executions, list) or len(executions) != len(dataset.specs):
@@ -318,57 +336,108 @@ class CsvMeasurementAdmissionMaterialVerifier(AdmissionMaterialVerifier):
             raise ContractError("raw CSV worker stdout/result mismatch")
 
 
-def _run_worker(request: FrozenRecord, dataset: CsvMeasurementDataset, authority: MaterialAuthority) -> tuple[dict, dict, dict, list[dict]]:
+def _read_worker_pins(dataset: CsvMeasurementDataset, source: Path) -> tuple[dict | None, dict | None, str | None]:
+    """Read the byte parents without allowing a post-run deletion to erase evidence."""
+    try:
+        return (dataset.binding(),
+                {'source_sha256': _sha(source), 'python_executable_sha256': _sha(Path(sys.executable))},
+                None)
+    except Exception as exc:
+        return None, None, type(exc).__name__
+
+
+def _run_worker(request: FrozenRecord, dataset: CsvMeasurementDataset, authority: MaterialAuthority) -> tuple[dict | None, dict | None, dict, list[dict]]:
     source = _WORKERS[authority.source_group]
     bundle = FrozenRecord.from_dict({'specifications': [spec.record.data() for _, spec in sorted(dataset.specs.items())]})
-    launch_csv = dataset.binding()
-    launch_worker = {'source_sha256': _sha(source), 'python_executable_sha256': _sha(Path(sys.executable))}
+    launch_csv, launch_worker, launch_pin_error = _read_worker_pins(dataset, source)
     command = [str(Path(sys.executable)), str(source), '--csv', str(dataset.csv_path), '--specs', bundle.encoded]
     started = time.time_ns()
     stdout = stderr = b''
     partial_stdout = partial_stderr = b''
+    cleanup_partial_stdout = cleanup_partial_stderr = b''
     exit_code = None
     pid = None
     timed_out = False
     error_type = None
     results = None
-    try:
-        environment = dict(os.environ)
-        environment['PYTHONPATH'] = str(Path(__file__).parents[2]) + os.pathsep + environment.get('PYTHONPATH', '')
-        proc = subprocess.Popen(command, cwd=str(source.parents[2]), env=environment,
-            stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        pid = proc.pid
+    cleanup_status = 'not_required'
+    return_csv = return_worker = None
+    return_pin_error = None
+    proc = None
+    if launch_pin_error is not None:
+        error_type = 'LaunchPinReadError:' + launch_pin_error
+    else:
         try:
-            stdout, stderr = proc.communicate(timeout=20)
-        except subprocess.TimeoutExpired as exc:
-            timed_out = True
-            partial_stdout = exc.output if isinstance(exc.output, bytes) else b''
-            partial_stderr = exc.stderr if isinstance(exc.stderr, bytes) else b''
-            proc.kill()
-            stdout, stderr = proc.communicate()
-            error_type = 'TimeoutExpired'
-        exit_code = proc.returncode
-        if proc.returncode == 0:
-            return_csv = dataset.binding()
-            return_worker = {'source_sha256': _sha(source), 'python_executable_sha256': _sha(Path(sys.executable))}
-            if return_csv != launch_csv or return_worker != launch_worker:
-                error_type = 'InputDrift'
-            else:
-                results = _worker_results(stdout, dataset=dataset, csv_sha256=launch_csv['csv_sha256'], specifications_digest=bundle.content_hash)
-        elif error_type is None:
-            error_type = 'WorkerExit'
-    except Exception as exc:
-        error_type = type(exc).__name__
+            environment = dict(os.environ)
+            environment['PYTHONPATH'] = str(Path(__file__).parents[2]) + os.pathsep + environment.get('PYTHONPATH', '')
+            proc = subprocess.Popen(command, cwd=str(source.parents[2]), env=environment,
+                stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            pid = proc.pid
+            try:
+                stdout, stderr = proc.communicate(timeout=20)
+            except subprocess.TimeoutExpired as exc:
+                timed_out = True
+                partial_stdout = exc.output if isinstance(exc.output, bytes) else b''
+                partial_stderr = exc.stderr if isinstance(exc.stderr, bytes) else b''
+                proc.kill()
+                try:
+                    stdout, stderr = proc.communicate(timeout=5)
+                    cleanup_status = 'closed'
+                except subprocess.TimeoutExpired as cleanup:
+                    cleanup_partial_stdout = cleanup.output if isinstance(cleanup.output, bytes) else b''
+                    cleanup_partial_stderr = cleanup.stderr if isinstance(cleanup.stderr, bytes) else b''
+                    cleanup_status = 'unknown'
+                    error_type = 'TimeoutCleanupUnknown'
+                if error_type is None:
+                    error_type = 'TimeoutExpired'
+            exit_code = proc.returncode
+            # Pin the same byte parents at return even when the child failed.
+            # A deletion or mutation after launch is provenance failure, but its
+            # captured streams and the failed pin observation remain in the raw receipt.
+            if cleanup_status != 'unknown':
+                return_csv, return_worker, return_pin_error = _read_worker_pins(dataset, source)
+                if return_pin_error is not None:
+                    if error_type is None:
+                        error_type = 'ReturnPinReadError:' + return_pin_error
+                elif return_csv != launch_csv or return_worker != launch_worker:
+                    if error_type is None:
+                        error_type = 'InputDrift'
+            if proc.returncode == 0 and error_type is None:
+                if return_csv is not None and return_worker is not None:
+                    results = _worker_results(stdout, dataset=dataset, csv_sha256=launch_csv['csv_sha256'], specifications_digest=bundle.content_hash)
+            elif error_type is None:
+                error_type = 'WorkerExit'
+        except Exception as exc:
+            error_type = type(exc).__name__
+            if proc is not None and proc.poll() is None:
+                try:
+                    proc.kill()
+                    stdout, stderr = proc.communicate(timeout=5)
+                    cleanup_status = 'closed'
+                except subprocess.TimeoutExpired as cleanup:
+                    cleanup_partial_stdout = cleanup.output if isinstance(cleanup.output, bytes) else b''
+                    cleanup_partial_stderr = cleanup.stderr if isinstance(cleanup.stderr, bytes) else b''
+                    cleanup_status = 'unknown'
+                except Exception:
+                    cleanup_status = 'unknown'
     finished = time.time_ns()
     outcome = 'completed' if results is not None else 'unknown'
+    return_pins = None
+    if return_csv is not None and return_worker is not None:
+        return_pins = {'csv_sha256': return_csv['csv_sha256'], 'source_sha256': return_worker['source_sha256'],
+                       'python_executable_sha256': return_worker['python_executable_sha256'], 'specifications_digest': bundle.content_hash}
     process = {'command': command, 'pid': pid, 'started_at_ns': started, 'finished_at_ns': finished, 'timeout_seconds': 20,
                'exit_code': exit_code, 'timed_out': timed_out, 'stdout_b64': b64encode(stdout).decode('ascii'),
                'stdout_sha256': hashlib.sha256(stdout).hexdigest(), 'stderr_b64': b64encode(stderr).decode('ascii'),
                'stderr_sha256': hashlib.sha256(stderr).hexdigest(), 'timeout_partial_stdout_b64': b64encode(partial_stdout).decode('ascii'),
                'timeout_partial_stdout_sha256': hashlib.sha256(partial_stdout).hexdigest(), 'timeout_partial_stderr_b64': b64encode(partial_stderr).decode('ascii'),
-               'timeout_partial_stderr_sha256': hashlib.sha256(partial_stderr).hexdigest(), 'outcome': outcome, 'error_type': error_type,
-               'return_pins': {'csv_sha256': dataset.binding()['csv_sha256'], 'source_sha256': _sha(source),
-                   'python_executable_sha256': _sha(Path(sys.executable)), 'specifications_digest': bundle.content_hash}}
+               'timeout_partial_stderr_sha256': hashlib.sha256(partial_stderr).hexdigest(),
+               'cleanup_partial_stdout_b64': b64encode(cleanup_partial_stdout).decode('ascii'),
+               'cleanup_partial_stdout_sha256': hashlib.sha256(cleanup_partial_stdout).hexdigest(),
+               'cleanup_partial_stderr_b64': b64encode(cleanup_partial_stderr).decode('ascii'),
+               'cleanup_partial_stderr_sha256': hashlib.sha256(cleanup_partial_stderr).hexdigest(),
+               'cleanup_status': cleanup_status, 'launch_pin_error': launch_pin_error, 'return_pin_error': return_pin_error,
+               'outcome': outcome, 'error_type': error_type, 'return_pins': return_pins}
     executions = [{'original_key': key, 'original_observation_digest': spec.record.data()['original_observation_digest'],
                    'spec_digest': spec.record.content_hash, 'outcome': outcome,
                    'result': results[key] if results is not None else None}
@@ -400,9 +469,11 @@ def build_csv_measurement_admission_verifier(*, authorities: tuple[LinkedExecuti
             if receipt_path.parent.is_symlink() or receipt_path.exists() or receipt_path.is_symlink():
                 raise ContractError("CSV worker opportunity already used for this exact cell/request/authority")
             launch_csv, launch_worker, process, executions = _run_worker(request, dataset, material_authority)
+            raw_worker = ({"source_name": _WORKERS[group].name, **launch_worker}
+                          if launch_worker is not None else None)
             raw = FrozenRecord.from_dict({"schema": "admission-csv-measurement-process-receipt-v2", "request_digest": request.content_hash,
                 "material_digest": request.data()["material_digest"], "cell_binding": request.data()["cell_binding"], "authority": authority.authority_id,
-                "source_group": group, "csv": launch_csv, "worker": {"source_name": _WORKERS[group].name, **launch_worker},
+                "source_group": group, "csv": launch_csv, "worker": raw_worker,
                 "process": process, "executions": executions, "cost_units": 1 if process['pid'] is not None else None,
                 "cost_unknown": process['pid'] is None})
             with receipt_path.open("x", encoding="utf-8", newline="\n") as stream:
