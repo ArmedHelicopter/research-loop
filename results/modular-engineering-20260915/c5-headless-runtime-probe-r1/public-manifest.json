@@ -1,0 +1,100 @@
+{
+  "schema": "c5-probe-public-staging-v1",
+  "files": {
+    "c5-headless-runtime-probe-r1-receipt.md": {
+      "sha256": "f710c9d8e2f2f1b2b918a7a74d7cc7134f87cecd31d331a0cfa815aa223efb96",
+      "bytes": 5068,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-probe-r1-receipt.md"
+    },
+    "junit/probe-r1.xml": {
+      "sha256": "75c417c4a82445eed057775254fdcfd10872446e9c4fc2beadb721c6d313ba27",
+      "bytes": 1100,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-probe-r1-junit.xml"
+    },
+    "junit/probe-r2.xml": {
+      "sha256": "006af16d638ee3509ef9514a0b0aafbedf3918f49590c666cc8e91f94e43b5d0",
+      "bytes": 3162,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-probe-r2-junit.xml"
+    },
+    "junit/probe-r3.xml": {
+      "sha256": "75b9e7305e3a47d2262e04ff08e21fd1822796668962b32e82508bbdaea93721",
+      "bytes": 3744,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-probe-r3-junit.xml"
+    },
+    "junit/probe-r4.xml": {
+      "sha256": "a129ab0147287fac05135948365faba0b533bb70936078e1f5e39158dd8cbf4a",
+      "bytes": 381,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-probe-r4-junit.xml"
+    },
+    "junit/preflight-r1.xml": {
+      "sha256": "536d23fa4800e92a9e7b3464c98ebf676740b42f08dda88f6b8b7338f97ae98c",
+      "bytes": 3524,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-controller-preflight-r1-junit.xml"
+    },
+    "junit/preflight-r2.xml": {
+      "sha256": "0a0dd1e45f5059fd77f277265575df8be52c6cd0a89120a6bf499bcbed59e3f2",
+      "bytes": 4066,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-controller-preflight-r2-junit.xml"
+    },
+    "junit/preflight-r3.xml": {
+      "sha256": "dfd081ce31a30616a1a646e2a0a59abc6df448bff39c75ab8a66cd95995a8f0d",
+      "bytes": 4106,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-controller-preflight-r3-junit.xml"
+    },
+    "junit/preflight-r4.xml": {
+      "sha256": "dcdb265a6bccbc46f38f3843715e5b03a3c50f668d3e732f388cae7e04d4764e",
+      "bytes": 908,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-controller-preflight-r4-junit.xml"
+    },
+    "junit/controller-gated-r1.xml": {
+      "sha256": "e6ec6bb1c60015d1889b082ad5ed86ea8ef2a4f30ecde909648798dc3fe43bc5",
+      "bytes": 748,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-controller-gated-r1-junit.xml"
+    },
+    "artifact-view/README.md": {
+      "sha256": "8b9acc735d65b83fc2002df68c6c297aea96a4b90364c7ceb64bbc7b00a6ebbd",
+      "bytes": 3124,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-probe-artifact-view-r1\\README.md"
+    },
+    "artifact-view/graph.json": {
+      "sha256": "d01ee5c27d84beb517d6f2bd9ac5987faa93c8afb0bb24930e4666df8a7fae0b",
+      "bytes": 395310,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-probe-artifact-view-r1\\graph.json"
+    },
+    "artifact-view/input-manifest.json": {
+      "sha256": "49ab9dadb384be3a8928bbabfe8b0f630df1584ab8b4fd663bc4cd7e5241bbd0",
+      "bytes": 2299,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-probe-artifact-view-r1\\input-manifest.json"
+    },
+    "source-postrun/tests/test_c5_headless_runtime_integration.py": {
+      "sha256": "eb5ac56e9900749c284e525b5310b8e11d1479cdae26b7d8ea473fd0cddc2ade",
+      "bytes": 11698,
+      "origin": "git:fad4ed4b2d8d3782f7e0b9366af8b9967ef282c1:tests/test_c5_headless_runtime_integration.py",
+      "snapshot": "postrun_git_object"
+    },
+    "source-postrun/tests/test_c5_headless_runtime_controller_full.py": {
+      "sha256": "a99321b875182469e2ef5591bab93cb710341b220b1691b2a2f57b8cfc4c6077",
+      "bytes": 7724,
+      "origin": "git:d955f5a30d1360360e673e6bb3555f57237b72ab:tests/test_c5_headless_runtime_controller_full.py",
+      "snapshot": "postrun_git_object"
+    },
+    "README.zh-CN.md": {
+      "sha256": "b3925a0d315a53db1ecae9dc9d8c5cf29687525dcdcff0eabc0e4fa31205b56c",
+      "bytes": 1246,
+      "origin": "archive_generated"
+    }
+  },
+  "private_archive_sha256": "ce563d77cc70ee307e27061852ce3ed76cdc0339b1a07114eed34e47f64e4b26",
+  "private_member_count": 2304,
+  "credential_exclusion_count": 57,
+  "pruned_reparse_count": 7,
+  "missing_named_inputs": [
+    {
+      "kind": "probe_basetemp",
+      "run": "r1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-probe-r1-basetemp",
+      "status": "absent_not_claimed"
+    }
+  ],
+  "source_limitations": "r1-r3 probe source originals absent; included source is post-run git-object snapshot only, not whole-run pre/post freeze; fixture producer source is also post-run snapshot only."
+}

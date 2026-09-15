@@ -1,0 +1,57 @@
+{
+  "schema": "c5-probe-artifact-view-input-manifest-v1",
+  "inputs_before": [
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "sha256": "c04d1d3ac397dedbfdc78aedab0134e8647a36780264d246c99579fdbe30a0d9",
+      "bytes": 541237,
+      "mtime_ns": 1789445383989998600
+    },
+    {
+      "path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "sha256": "9636bf6f601f328edabe4967423025a5b97d5e20d68c3260966d4614dc278169",
+      "bytes": 586247,
+      "mtime_ns": 1789445420538049800
+    },
+    {
+      "path": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e-stage.json",
+      "sha256": "e7399e5815aa82605327658b47ac08888c48d6ff160ef0db65f783fcae7c8dcc",
+      "bytes": 1589,
+      "mtime_ns": 1789445385318683300
+    },
+    {
+      "path": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1-stage.json",
+      "sha256": "ad00964d561ff70746361daa2506c53b1697ab918c1067a36321565b6b81eb37",
+      "bytes": 1575,
+      "mtime_ns": 1789445422922806300
+    }
+  ],
+  "inputs_after": [
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "sha256": "c04d1d3ac397dedbfdc78aedab0134e8647a36780264d246c99579fdbe30a0d9",
+      "bytes": 541237,
+      "mtime_ns": 1789445383989998600
+    },
+    {
+      "path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "sha256": "9636bf6f601f328edabe4967423025a5b97d5e20d68c3260966d4614dc278169",
+      "bytes": 586247,
+      "mtime_ns": 1789445420538049800
+    },
+    {
+      "path": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e-stage.json",
+      "sha256": "e7399e5815aa82605327658b47ac08888c48d6ff160ef0db65f783fcae7c8dcc",
+      "bytes": 1589,
+      "mtime_ns": 1789445385318683300
+    },
+    {
+      "path": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1-stage.json",
+      "sha256": "ad00964d561ff70746361daa2506c53b1697ab918c1067a36321565b6b81eb37",
+      "bytes": 1575,
+      "mtime_ns": 1789445422922806300
+    }
+  ],
+  "graph_sha256": "d01ee5c27d84beb517d6f2bd9ac5987faa93c8afb0bb24930e4666df8a7fae0b",
+  "graph_bytes": 395310
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="1" tests="2" time="6.112" timestamp="2026-09-15T12:16:04.401568" hostname="SC-202507131830"><testcase classname="tests.test_c5_headless_runtime_controller_full" name="test_headless_full_controller_factory_preflight_has_no_grid_dispatch" time="4.814"><failure message="FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-controller-preflight-r1-basetemp\\test_headless_full_controller_0\\server\\private-scorer-store'">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/c5-headless-runtime-controller-preflight-r1-basetemp/test_headless_full_controller_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000027180D3C350&gt;
+
+    def test_headless_full_controller_factory_preflight_has_no_grid_dispatch(tmp_path, monkeypatch):
+        """Server serialization, descriptor and exact handles are checked without C5 execution."""
+        setup = prepare_headless_runtime(tmp_path, monkeypatch)
+        plan = setup['common_plan']
+        _, expected_handles, _ = _preflight_headless_scorer_inputs(tmp_path / 'preflight', plan, setup['evaluator'])
+        panel_root = tmp_path / 'panel'; panel_root.mkdir()
+        panel, args, _, _ = panel_fixture(panel_root, monkeypatch)
+        evaluator = dict(setup['evaluator'])
+        scorer_body = args['scorer'].record.data()
+        evaluator.update(evaluator_id=scorer_body['evaluator_id'], evaluator_version=scorer_body['version'])
+&gt;       server, handles = _server(tmp_path / 'server', panel, args, evaluator)
+
+tests\test_c5_headless_runtime_controller_full.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_headless_c5_evaluator_stdio.py:24: in _server
+    store, handles, manifest = _store(root, {"tasks": {task.content_hash: task for task in args["targets"]}})
+tests\test_scorer_process.py:28: in _store
+    root = tmp_path / "private-scorer-store"; root.mkdir()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/c5-headless-runtime-controller-preflight-r1-basetemp/test_headless_full_controller_0/server/private-scorer-store')
+mode = 511, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-controller-preflight-r1-basetemp\\test_headless_full_controller_0\\server\\private-scorer-store'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1311: FileNotFoundError</failure></testcase><testcase classname="tests.test_c5_headless_runtime_controller_full" name="test_full_headless_c5_controller_then_registers_selected_bundle" time="0.000"><skipped type="pytest.skip" message="review-gated: do not launch 930 solver + 118 evaluator full grid without root profiling plan">E:\_ryanDev\AI\research-loop-modular\c5-headless-runtime-integration-r1\tests\test_c5_headless_runtime_controller_full.py:74: review-gated: do not launch 930 solver + 118 evaluator full grid without root profiling plan</skipped></testcase></testsuite></testsuites>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="83.797" timestamp="2026-09-15T12:05:48.936910" hostname="SC-202507131830"><testcase classname="tests.test_c5_headless_runtime_integration" name="test_c5_headless_runtime_probe_freezes_full_controller_denominator" time="82.815"><failure message="KeyError: 'component_digests'">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/c5-headless-runtime-probe-r2-basetemp/test_c5_headless_runtime_probe0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001DD50201A90&gt;
+
+    def test_c5_headless_runtime_probe_freezes_full_controller_denominator(tmp_path, monkeypatch):
+        """One full history and one target are an engineering probe, not C5 qualification."""
+        setup = prepare_headless_runtime(tmp_path, monkeypatch)
+        plan, runner, recipe = setup['common_plan'], executor(setup), full_recipe(setup['common_plan'])
+        allocation = plan.protocol.record.data()['allocation']
+        assert plan.protocol.record.data()['schema'] == HEADLESS_OBLIGATION
+        assert len(plan.recipes) == 59 and len(plan.builds) == 46 and len(plan.packets) == 2
+        assert allocation['model_calls'] == 930 and allocation['target_cells'] == 118 and allocation['scorer_calls'] == 118
+        assert set(plan.protocol.record.data()['component_templates']) == {f'M{index}' for index in range(1, 10)}
+        assert plan.headless_evaluator_binding == {
+            'evaluator_usage': plan.protocol.record.data()['evaluator_usage'],
+            'evaluator_provider': plan.protocol.record.data()['evaluator_provider'],
+        }
+        assert not setup['evaluator_prompts'] and not setup['evaluator_gets']
+    
+        history = runner.execute(recipe_id=recipe['id'], stage='history_build')
+        assert history.record.data()['status'] == 'succeeded', history.inner.record.data()
+        runner.verify(history)
+        with pytest.raises(ContractError, match='complete canonical'):
+            from research_loop.modular.joint_train_runtime import JointTrainBarrier
+            JointTrainBarrier.seal(runner)
+        target = runner.execute(recipe_id=recipe['id'], stage='target', target_digest=plan.packets[0].task.content_hash,
+                                build=history)
+        assert target.record.data()['status'] == 'succeeded', target.inner.record.data()
+        runner.verify(history)
+        runner.verify(target)
+        assert len(setup['common_calls']) == 11
+        assert not setup['evaluator_prompts'] and not setup['evaluator_gets']
+        for stage in (history, target):
+            receipt = stage.inner.record.data()
+            assert receipt['artifact_catalogue_seal']['binding']['experiment_id'] == plan.record.content_hash
+            assert receipt['artifact_catalogue_seal']['count'] &gt; 0
+&gt;           assert set(receipt['component_digests']) == {f'M{index}' for index in range(1, 10)}
+E           KeyError: 'component_digests'
+
+tests\test_c5_headless_runtime_integration.py:175: KeyError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,28 @@
+{
+  "schema": "c5-probe-public-supplement-v1",
+  "base_public_manifest_sha256": "04f50ca3b8b199c83e2f2fd98ac0f607ac4fb41538650e04c9ae63fbe66b4d68",
+  "files": {
+    "producer-source-afterrun.zip": {
+      "sha256": "1bafdedc44b809ede2cd6467706e77b41b4c4330bde8604e6c636fb026050c3a",
+      "bytes": 54853,
+      "origin": "generated from descriptor-matched producer sources"
+    },
+    "producer-source-afterrun-manifest.json": {
+      "sha256": "5c3c90b2004ff4f022c8e9086d7651e7b0a6c286b6e995c814ee2e6c8fb9cb79",
+      "bytes": 25595,
+      "origin": "generated afterrun source manifest"
+    },
+    "retention-manifest.json": {
+      "sha256": "a52d32a06ade70a08b5a4400e5d036b4741a05ef5779bd80ff9c6779d6bc2049",
+      "bytes": 2614842,
+      "origin": "byte-copy of private retention manifest"
+    },
+    "README.supplement.zh-CN.md": {
+      "sha256": "76f90b6a414c8d361bd7169d2548628463dfcc50fc9ba7172949a3ff877d12f3",
+      "bytes": 639,
+      "origin": "archive generated supplement README"
+    }
+  },
+  "source_scope": "only unique producer_source paths referenced by graph nodes; no whole-repository snapshot",
+  "limitation": "after-run source matching only; no whole-run pre/post freeze claim."
+}

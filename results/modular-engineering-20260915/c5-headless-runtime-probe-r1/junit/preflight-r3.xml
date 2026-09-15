@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="1" tests="2" time="6.256" timestamp="2026-09-15T12:16:54.041030" hostname="SC-202507131830"><testcase classname="tests.test_c5_headless_runtime_controller_full" name="test_headless_full_controller_factory_preflight_has_no_grid_dispatch" time="5.225"><failure message="AssertionError: assert {'2abccd0b67e...000000000002'} == {'2abccd0b67e...7efd6f5ce0ad'}&#10;  Differing items:&#10;  {'2abccd0b67ee7038381ca77927e87fcb0c8dd21a6f1bf03975f19d6ca7d2e894': '0000000000000000000000000000000000000000000000000000000000000001'} != {'2abccd0b67ee7038381ca77927e87fcb0c8dd21a6f1bf03975f19d6ca7d2e894': 'c386d8e8d07342f2e39e189c8e6c57bb205bb373fe4e3a6f69404a8bb767b417'}&#10;  {'67eadbb7eddc216cdeb84776f232f6c29ed7d5b5a6c417ff033bfc4a4b620e47': '0000000000000000000000000000000000000000000000000000000000000002'} != {'67eadbb7eddc216cdeb84776f232f6c29ed7d5b5a6c417ff033bfc4a4b620e47': '68e4d75d23e31bd23f43266f769567b2588d9f3d3010fa7cacae7efd6f5ce0ad'}&#10;  Use -v t...&#10;  &#10;  ...Full output truncated (1 line hidden), use '-vv' to show">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/c5-headless-runtime-controller-preflight-r3-basetemp/test_headless_full_controller_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002551770C230&gt;
+
+    def test_headless_full_controller_factory_preflight_has_no_grid_dispatch(tmp_path, monkeypatch):
+        """Server serialization, descriptor and exact handles are checked without C5 execution."""
+        setup = prepare_headless_runtime(tmp_path, monkeypatch)
+        plan = setup['common_plan']
+        _, expected_handles, _ = _preflight_headless_scorer_inputs(tmp_path / 'preflight', plan, setup['evaluator'])
+        panel_root = tmp_path / 'panel'; panel_root.mkdir()
+        panel, args, _, _ = panel_fixture(panel_root, monkeypatch)
+        evaluator = dict(setup['evaluator'])
+        scorer_body = args['scorer'].record.data()
+        evaluator.update(evaluator_id=scorer_body['evaluator_id'], evaluator_version=scorer_body['version'])
+        server_root = tmp_path / 'server'; server_root.mkdir()
+        server, handles = _server(server_root, panel, args, evaluator)
+        server_body = json.loads(server.read_text(encoding='utf-8'))
+        # This synthetic 177-cell panel is deliberately separate from the frozen
+        # 118-cell C5 plan; it checks serializer shape without spending that plan.
+        assert handles and server_body['task_handles'] == handles
+&gt;       assert expected_handles == plan.data()['scorer_handle_bindings']
+E       AssertionError: assert {'2abccd0b67e...000000000002'} == {'2abccd0b67e...7efd6f5ce0ad'}
+E         Differing items:
+E         {'2abccd0b67ee7038381ca77927e87fcb0c8dd21a6f1bf03975f19d6ca7d2e894': '0000000000000000000000000000000000000000000000000000000000000001'} != {'2abccd0b67ee7038381ca77927e87fcb0c8dd21a6f1bf03975f19d6ca7d2e894': 'c386d8e8d07342f2e39e189c8e6c57bb205bb373fe4e3a6f69404a8bb767b417'}
+E         {'67eadbb7eddc216cdeb84776f232f6c29ed7d5b5a6c417ff033bfc4a4b620e47': '0000000000000000000000000000000000000000000000000000000000000002'} != {'67eadbb7eddc216cdeb84776f232f6c29ed7d5b5a6c417ff033bfc4a4b620e47': '68e4d75d23e31bd23f43266f769567b2588d9f3d3010fa7cacae7efd6f5ce0ad'}
+E         Use -v t...
+E         
+E         ...Full output truncated (1 line hidden), use '-vv' to show
+
+tests\test_c5_headless_runtime_controller_full.py:71: AssertionError</failure></testcase><testcase classname="tests.test_c5_headless_runtime_controller_full" name="test_full_headless_c5_controller_then_registers_selected_bundle" time="0.000"><skipped type="pytest.skip" message="review-gated: do not launch 930 solver + 118 evaluator full grid without root profiling plan">E:\_ryanDev\AI\research-loop-modular\c5-headless-runtime-integration-r1\tests\test_c5_headless_runtime_controller_full.py:77: review-gated: do not launch 930 solver + 118 evaluator full grid without root profiling plan</skipped></testcase></testsuite></testsuites>

@@ -1,0 +1,140 @@
+{
+  "schema": "c5-probe-delivery-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "artifact-view/graph.json",
+      "sha256": "d01ee5c27d84beb517d6f2bd9ac5987faa93c8afb0bb24930e4666df8a7fae0b",
+      "bytes": 395310
+    },
+    {
+      "path": "artifact-view/input-manifest.json",
+      "sha256": "49ab9dadb384be3a8928bbabfe8b0f630df1584ab8b4fd663bc4cd7e5241bbd0",
+      "bytes": 2299
+    },
+    {
+      "path": "artifact-view/README.md",
+      "sha256": "8b9acc735d65b83fc2002df68c6c297aea96a4b90364c7ceb64bbc7b00a6ebbd",
+      "bytes": 3124
+    },
+    {
+      "path": "c5-headless-runtime-probe-r1-receipt.md",
+      "sha256": "f710c9d8e2f2f1b2b918a7a74d7cc7134f87cecd31d331a0cfa815aa223efb96",
+      "bytes": 5068
+    },
+    {
+      "path": "junit/controller-gated-r1.xml",
+      "sha256": "e6ec6bb1c60015d1889b082ad5ed86ea8ef2a4f30ecde909648798dc3fe43bc5",
+      "bytes": 748
+    },
+    {
+      "path": "junit/preflight-r1.xml",
+      "sha256": "536d23fa4800e92a9e7b3464c98ebf676740b42f08dda88f6b8b7338f97ae98c",
+      "bytes": 3524
+    },
+    {
+      "path": "junit/preflight-r2.xml",
+      "sha256": "0a0dd1e45f5059fd77f277265575df8be52c6cd0a89120a6bf499bcbed59e3f2",
+      "bytes": 4066
+    },
+    {
+      "path": "junit/preflight-r3.xml",
+      "sha256": "dfd081ce31a30616a1a646e2a0a59abc6df448bff39c75ab8a66cd95995a8f0d",
+      "bytes": 4106
+    },
+    {
+      "path": "junit/preflight-r4.xml",
+      "sha256": "dcdb265a6bccbc46f38f3843715e5b03a3c50f668d3e732f388cae7e04d4764e",
+      "bytes": 908
+    },
+    {
+      "path": "junit/probe-r1.xml",
+      "sha256": "75c417c4a82445eed057775254fdcfd10872446e9c4fc2beadb721c6d313ba27",
+      "bytes": 1100
+    },
+    {
+      "path": "junit/probe-r2.xml",
+      "sha256": "006af16d638ee3509ef9514a0b0aafbedf3918f49590c666cc8e91f94e43b5d0",
+      "bytes": 3162
+    },
+    {
+      "path": "junit/probe-r3.xml",
+      "sha256": "75b9e7305e3a47d2262e04ff08e21fd1822796668962b32e82508bbdaea93721",
+      "bytes": 3744
+    },
+    {
+      "path": "junit/probe-r4.xml",
+      "sha256": "a129ab0147287fac05135948365faba0b533bb70936078e1f5e39158dd8cbf4a",
+      "bytes": 381
+    },
+    {
+      "path": "producer-source-afterrun-manifest.json",
+      "sha256": "5c3c90b2004ff4f022c8e9086d7651e7b0a6c286b6e995c814ee2e6c8fb9cb79",
+      "bytes": 25595
+    },
+    {
+      "path": "producer-source-afterrun.zip",
+      "sha256": "1bafdedc44b809ede2cd6467706e77b41b4c4330bde8604e6c636fb026050c3a",
+      "bytes": 54853
+    },
+    {
+      "path": "public-manifest.json",
+      "sha256": "04f50ca3b8b199c83e2f2fd98ac0f607ac4fb41538650e04c9ae63fbe66b4d68",
+      "bytes": 4861
+    },
+    {
+      "path": "publish_c5_probe_archive_r1.py",
+      "sha256": "25f6fda9398899f40df3cf8f26d50061ea5caac9360148a19f81359fa5ee66da",
+      "bytes": 8140
+    },
+    {
+      "path": "README.md",
+      "sha256": "406e9a2b61e4e0259b9674cb248ba7895305e02a8ef5fa3ff993278c7fab379f",
+      "bytes": 2202
+    },
+    {
+      "path": "README.supplement.zh-CN.md",
+      "sha256": "76f90b6a414c8d361bd7169d2548628463dfcc50fc9ba7172949a3ff877d12f3",
+      "bytes": 639
+    },
+    {
+      "path": "README.zh-CN.md",
+      "sha256": "b3925a0d315a53db1ecae9dc9d8c5cf29687525dcdcff0eabc0e4fa31205b56c",
+      "bytes": 1246
+    },
+    {
+      "path": "retention-manifest.json",
+      "sha256": "a52d32a06ade70a08b5a4400e5d036b4741a05ef5779bd80ff9c6779d6bc2049",
+      "bytes": 2614842
+    },
+    {
+      "path": "source-postrun/tests/test_c5_headless_runtime_controller_full.py",
+      "sha256": "a99321b875182469e2ef5591bab93cb710341b220b1691b2a2f57b8cfc4c6077",
+      "bytes": 7724
+    },
+    {
+      "path": "source-postrun/tests/test_c5_headless_runtime_integration.py",
+      "sha256": "eb5ac56e9900749c284e525b5310b8e11d1479cdae26b7d8ea473fd0cddc2ade",
+      "bytes": 11698
+    },
+    {
+      "path": "supplement-manifest.json",
+      "sha256": "1f397c99b63536e96124f3a1ce2087e7583713dd9439c45a5496d91fa7c0bcbe",
+      "bytes": 1205
+    }
+  ],
+  "private_archive": "E:\\_ryanDev\\AI\\research-loop-modular\\retained-private-evidence\\c5-headless-runtime-probe-r1\\originals-without-credentials.zip",
+  "private_archive_sha256": "ce563d77cc70ee307e27061852ce3ed76cdc0339b1a07114eed34e47f64e4b26",
+  "private_members_verified": 2304,
+  "original_bytes_and_mtimes_unchanged": true,
+  "producer_sources_bound": 9,
+  "view_nodes": 212,
+  "catalogue_parent_edges": 311,
+  "outer_stage_bindings": 1,
+  "source_scope": "after-run matching snapshot only",
+  "scientific_effectiveness_proven": false
+}

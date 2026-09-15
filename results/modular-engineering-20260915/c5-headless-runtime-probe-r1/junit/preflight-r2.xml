@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="1" tests="2" time="6.215" timestamp="2026-09-15T12:16:33.836921" hostname="SC-202507131830"><testcase classname="tests.test_c5_headless_runtime_controller_full" name="test_headless_full_controller_factory_preflight_has_no_grid_dispatch" time="5.089"><failure message="AssertionError: assert ({'045f19d6440d4bb4adb1ca521b64a89cf97d233711c36177e92d87c96c39e6b4': '000000000000000000000000000000000000000000000000...467588a4df3c8d08d745c277206e3b76e93e72ee2d6ab316b': '0000000000000000000000000000000000000000000000000000000000000001'} and {'045f19d6440...2ee2d6ab316b'} == {'02d0c2a6837...5f5fc5309bb7'}&#10;  Extra items in the left set:&#10;  '045f19d6440d4bb4adb1ca521b64a89cf97d233711c36177e92d87c96c39e6b4'&#10;  '1395d4b69134e50467588a4df3c8d08d745c277206e3b76e93e72ee2d6ab316b'&#10;  '0d0bbe10f085bf0b12d9a4e7d89d865a43e310ff321203c116066a69b86b47c0'&#10;  Extra items in the right set:&#10;  '7dba5e1445878a0416c0b0a323402606e66dd0a4715a986f3d315f5fc5309bb7'&#10;  '02d0c2a6837226c88e599918071d802845ea173ea0d07c9f35bc66b4a1f60740'...&#10;  &#10;  ...Full output truncated (3 lines hidden), use '-vv' to show)">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/c5-headless-runtime-controller-preflight-r2-basetemp/test_headless_full_controller_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002314B0CC440&gt;
+
+    def test_headless_full_controller_factory_preflight_has_no_grid_dispatch(tmp_path, monkeypatch):
+        """Server serialization, descriptor and exact handles are checked without C5 execution."""
+        setup = prepare_headless_runtime(tmp_path, monkeypatch)
+        plan = setup['common_plan']
+        _, expected_handles, _ = _preflight_headless_scorer_inputs(tmp_path / 'preflight', plan, setup['evaluator'])
+        panel_root = tmp_path / 'panel'; panel_root.mkdir()
+        panel, args, _, _ = panel_fixture(panel_root, monkeypatch)
+        evaluator = dict(setup['evaluator'])
+        scorer_body = args['scorer'].record.data()
+        evaluator.update(evaluator_id=scorer_body['evaluator_id'], evaluator_version=scorer_body['version'])
+        server_root = tmp_path / 'server'; server_root.mkdir()
+        server, handles = _server(server_root, panel, args, evaluator)
+        server_body = json.loads(server.read_text(encoding='utf-8'))
+&gt;       assert handles and set(handles) == {task.content_hash for task in args['targets']}
+E       AssertionError: assert ({'045f19d6440d4bb4adb1ca521b64a89cf97d233711c36177e92d87c96c39e6b4': '000000000000000000000000000000000000000000000000...467588a4df3c8d08d745c277206e3b76e93e72ee2d6ab316b': '0000000000000000000000000000000000000000000000000000000000000001'} and {'045f19d6440...2ee2d6ab316b'} == {'02d0c2a6837...5f5fc5309bb7'}
+E         Extra items in the left set:
+E         '045f19d6440d4bb4adb1ca521b64a89cf97d233711c36177e92d87c96c39e6b4'
+E         '1395d4b69134e50467588a4df3c8d08d745c277206e3b76e93e72ee2d6ab316b'
+E         '0d0bbe10f085bf0b12d9a4e7d89d865a43e310ff321203c116066a69b86b47c0'
+E         Extra items in the right set:
+E         '7dba5e1445878a0416c0b0a323402606e66dd0a4715a986f3d315f5fc5309bb7'
+E         '02d0c2a6837226c88e599918071d802845ea173ea0d07c9f35bc66b4a1f60740'...
+E         
+E         ...Full output truncated (3 lines hidden), use '-vv' to show)
+
+tests\test_c5_headless_runtime_controller_full.py:68: AssertionError</failure></testcase><testcase classname="tests.test_c5_headless_runtime_controller_full" name="test_full_headless_c5_controller_then_registers_selected_bundle" time="0.000"><skipped type="pytest.skip" message="review-gated: do not launch 930 solver + 118 evaluator full grid without root profiling plan">E:\_ryanDev\AI\research-loop-modular\c5-headless-runtime-integration-r1\tests\test_c5_headless_runtime_controller_full.py:75: review-gated: do not launch 930 solver + 118 evaluator full grid without root profiling plan</skipped></testcase></testsuite></testsuites>
