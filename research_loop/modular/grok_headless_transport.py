@@ -465,7 +465,13 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
         _require(_process_ok(receipt['inspect_process']), 'context inspection process failed')
         _inspect(raw, deployment)
         version = None if deployment is None else deployment.account_client_version
-        stage = 'account_preflight'; pre = _account_recovered(home, native/'billing-before', recovery, client_version=version) if recovery else _account(home, native/'billing-before', client_version=version)
+        stage = 'account_preflight'
+        if recovery:
+            pre = (_account_recovered(home, native/'billing-before', recovery) if deployment is None
+                   else _account_recovered(home, native/'billing-before', recovery, client_version=version))
+        else:
+            pre = (_account(home, native/'billing-before') if deployment is None
+                   else _account(home, native/'billing-before', client_version=version))
         receipt['account_preflight'] = pre['projection'] if recovery else pre
         if recovery: receipt['account_preflight_attempts_sha256'] = _sha(_read(native/'billing-before/attempts.json'))
         stage = 'prelaunch_guard'; _sources(frozen_files)
@@ -483,7 +489,13 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
         if inspection.response is not None:
             response = inspection.response
             receipt['response_sha256'] = _write(native/'response.private.json', response.data())
-        stage = 'account_postflight'; post = _account_recovered(home, native/'billing-after', recovery, client_version=version) if recovery else _account(home, native/'billing-after', client_version=version)
+        stage = 'account_postflight'
+        if recovery:
+            post = (_account_recovered(home, native/'billing-after', recovery) if deployment is None
+                    else _account_recovered(home, native/'billing-after', recovery, client_version=version))
+        else:
+            post = (_account(home, native/'billing-after') if deployment is None
+                    else _account(home, native/'billing-after', client_version=version))
         receipt['account_postflight'] = post['projection'] if recovery else post
         if recovery: receipt['account_postflight_attempts_sha256'] = _sha(_read(native/'billing-after/attempts.json'))
         _require(receipt['account_preflight']['account_binding'] == receipt['account_postflight']['account_binding'],
