@@ -125,3 +125,13 @@ def test_readback_detects_state_change_after_snapshot_replay(tmp_path: Path, mon
     monkeypatch.setattr(retention, "verify_custody_snapshot", mutate)
     with pytest.raises(ContractError, match="changed during readback"):
         verify_custody_transition_retention(retainer.root)
+
+def test_readback_rejects_reordered_complete_status_pairs(tmp_path: Path) -> None:
+    retainer = CustodyTransitionRetainer(tmp_path / "private-retention")
+    _store(tmp_path / "host", retainer=retainer)
+    statuses = retainer.root / "capture-status.jsonl"
+    lines = statuses.read_text(encoding="utf-8").splitlines()
+    lines[:4] = lines[2:4] + lines[:2]
+    statuses.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+    with pytest.raises(ContractError, match="chronology"):
+        verify_custody_transition_retention(retainer.root)
