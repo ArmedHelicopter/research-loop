@@ -1,0 +1,30 @@
+{
+  "schema": "published-evidence-files-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "manifest.json",
+      "sha256": "a7f39c5f40b074ae55bf9789a7300238049a7bdc5ca424e772ef5f7f71fca57a",
+      "bytes": 7630
+    },
+    {
+      "path": "public-metadata.zip",
+      "sha256": "6b32bee3f03e15e3913c538cd427510140bc64fbf67d758fb67346f134558dcf",
+      "bytes": 1856
+    },
+    {
+      "path": "README.md",
+      "sha256": "e35c7c504199838c8bac561a5ab44c1556072b5a90d4767ceba0bae0fcb66697",
+      "bytes": 810
+    },
+    {
+      "path": "source-exact.zip",
+      "sha256": "06dfb471ed2cfed1f2dc6fdbb7e6099e2edfdb71326e47c5d706f3c9e1eab4f9",
+      "bytes": 25961
+    }
+  ]
+}
