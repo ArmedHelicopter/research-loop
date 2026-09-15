@@ -1100,12 +1100,14 @@ def _exchange(client, *, attempt_id: str, phase: str, cell_key, request_text: st
     _append(path, row)
     if path.read_bytes() != expected_raw:
         raise ContractError('scorer exchange append bytes differ')
-    _exchange_catalogue_anchor(client, row)
-    # Retain exact local bytes as the caller-owned anchor for the synchronous
-    # consumer verification below; later local rehashing cannot replace it.
-    client._exchange_raw_anchor = path.read_bytes()
-    anchor_path = Path(str(client.journal_path)+'.exchange-catalogue-anchors.jsonl')
-    client._exchange_catalogue_anchor_bytes = anchor_path.read_bytes() if anchor_path.exists() else b''
+    appended_anchor = _exchange_catalogue_anchor(client, row)
+    # Hold the bytes the producer intended to write, not whatever a later disk
+    # read returns. Both streams must still match these independent values.
+    client._exchange_raw_anchor = expected_raw
+    client._exchange_catalogue_anchor_bytes = existing_anchors + appended_anchor
+    if (path.read_bytes() != client._exchange_raw_anchor
+            or (anchor_path.read_bytes() if anchor_path.exists() else b'') != client._exchange_catalogue_anchor_bytes):
+        raise ContractError('scorer exchange originals differ after catalogue append')
     if phase in {'authenticated', 'rejected', 'unknown'} and cell_key is not None:
         verify_scorer_exchange_catalogues(client)
 
@@ -1136,11 +1138,11 @@ def read_scorer_exchange_observations(path: Path) -> tuple[dict, ...]:
         raise ContractError('scorer exchange observations are incomplete or altered') from exc
 
 
-def _exchange_catalogue_anchor(client, row: Mapping[str, Any]) -> None:
+def _exchange_catalogue_anchor(client, row: Mapping[str, Any]) -> bytes:
     """Seal one neutral, task-bound metadata projection for a terminal cell event."""
     event = row['event']
     if event['cell_key'] is None or event['phase'] not in {'authenticated', 'rejected', 'unknown'}:
-        return
+        return b''
     from research_loop.modular.artifact_catalogue import ArtifactCatalogue, source_snapshot
     cell = client.cells[tuple(event['cell_key'])]
     base = Path(str(client.journal_path) + '.exchange-artifacts') / row['digest']
@@ -1157,8 +1159,10 @@ def _exchange_catalogue_anchor(client, row: Mapping[str, Any]) -> None:
         checks=({'kind':'raw_exchange_chain_row','digest':FrozenRecord.from_dict({'sequence':row['sequence'],'digest':row['digest'],'previous':row['previous']}).content_hash,
                  'canonical':{'sequence':row['sequence'],'digest':row['digest'],'previous':row['previous']}},))
     seal=catalogue.seal()
-    _append(Path(str(client.journal_path)+'.exchange-catalogue-anchors.jsonl'), {'schema':'ordinary-scorer-exchange-catalogue-anchor-v1',
-        'exchange_digest':row['digest'],'path':str(catalogue.path.resolve()),'descriptor_digest':descriptor.content_hash,'seal':seal.data(),'seal_digest':seal.content_hash})
+    anchor = {'schema':'ordinary-scorer-exchange-catalogue-anchor-v1',
+        'exchange_digest':row['digest'],'path':str(catalogue.path.resolve()),'descriptor_digest':descriptor.content_hash,'seal':seal.data(),'seal_digest':seal.content_hash}
+    _append(Path(str(client.journal_path)+'.exchange-catalogue-anchors.jsonl'), anchor)
+    return canonical(anchor).encode('utf-8') + b'\n'
 
 
 def _exchange_projection(event: Mapping[str, Any], digest: str) -> dict[str, Any]:
@@ -1172,6 +1176,7 @@ def verify_scorer_exchange_catalogues(client) -> None:
     from research_loop.modular.artifact_catalogue import ArtifactCatalogue, source_snapshot
     raw_path=_exchange_path(client); anchor_path=Path(str(client.journal_path)+'.exchange-catalogue-anchors.jsonl')
     raw_before=raw_path.read_bytes(); anchors_before=anchor_path.read_bytes() if anchor_path.exists() else b''
+    legacy_before = client.journal_path.read_bytes() if client.journal_path.exists() else b''
     if (raw_before != getattr(client, '_exchange_raw_anchor', raw_before)
             or anchors_before != getattr(client, '_exchange_catalogue_anchor_bytes', anchors_before)):
         raise ContractError('scorer exchange original or catalogue anchor changed before verification')
@@ -1210,5 +1215,6 @@ def verify_scorer_exchange_catalogues(client) -> None:
                 or descriptor['scientific_validated'] is not False):
             raise ContractError('scorer exchange projection differs')
         catalogue.verify(seal)
-    if raw_path.read_bytes()!=raw_before or (anchor_path.read_bytes() if anchor_path.exists() else b'')!=anchors_before:
+    if (raw_path.read_bytes()!=raw_before or (anchor_path.read_bytes() if anchor_path.exists() else b'')!=anchors_before
+            or (client.journal_path.read_bytes() if client.journal_path.exists() else b'') != legacy_before):
         raise ContractError('scorer exchange originals changed during verification')
