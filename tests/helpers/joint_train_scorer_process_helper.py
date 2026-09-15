@@ -18,8 +18,13 @@ def main() -> int:
     from research_loop.modular.joint_train_panel import JointTrainPanel
     if type(config.panel) is not JointTrainPanel:
         raise AssertionError('common TRAIN worker rejects other combination families')
+    if config.evaluator.get('provider_kind') == 'grok-headless-frozen-evaluator-v1':
+        # The production factory validates and owns the private evaluator; its
+        # descriptor is bound by the parent client before any score request.
+        return serve(ScorerWorker(build_service(config), config.panel,
+                                  _absolute(args.journal, 'journal')))
     if config.evaluator not in ({"synthetic_mode": "normal"}, {"synthetic_mode": "fail"}):
-        raise AssertionError("common TRAIN helper accepts only synthetic evaluator modes")
+        raise AssertionError("common TRAIN helper accepts only synthetic or frozen headless evaluator modes")
 
     def evaluate(request: FrozenRecord) -> FrozenRecord:
         if config.evaluator["synthetic_mode"] == "fail":

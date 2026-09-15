@@ -19,11 +19,13 @@ from evaluation.modular.combination_scoring import (
 )
 from evaluation.modular.linked_scoring import LinkedExecutionAuthority
 from evaluation.modular.scorer_process import CombinationScorerProcessClient
+from evaluation.modular.headless_evaluator_closure import verify_closure
 from evaluation.modular.scoring_service import ScorerConfig
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.full_loo_driver import verify_stage
 from research_loop.modular.full_loo_modules import slots
 from research_loop.modular.joint_train_panel import JointTrainPanel, history_build_id
+from research_loop.modular.joint_train_protocol import HEADLESS_OBLIGATION
 from research_loop.modular.joint_train_runtime import (
     FrozenJointTrainRuntimePlan,
     JointTrainBarrier,
@@ -132,6 +134,42 @@ def _verify_target_in_context(stage: JointTrainStage, *, barrier: JointTrainBarr
                  ledger=ledger, provider_scope_id=_scope(stage), require_provider_eligible=True)
 
 
+
+def _finalize_headless_c5_evaluator(*, plan, panel, service, scores, scorer_authority_keys):
+    """Close the declared C5 evaluator once, retaining any verified partial proof."""
+    binding = plan.headless_evaluator_binding
+    if binding is None or type(service) is not CombinationScorerProcessClient:
+        raise ContractError('headless C5 evaluator finalization requires its exact declared scorer client')
+    usage, provider = binding['evaluator_usage'], binding['evaluator_provider']
+    digests = [score.receipt.content_hash for score in scores]
+    gate = {'schema': 'c5-common-final-headless-evaluator-v1', 'status': 'inconclusive',
+            'score_eligible': False, 'evaluator_usage': usage, 'evaluator_provider': provider,
+            'ordered_receipt_digests': digests, 'closure': None, 'known_headless_main_tokens': None,
+            'title_and_all_opportunity_settlement': 'unknown', 'failure_reason': None, 'error_type': None}
+    if not scores:
+        gate['failure_reason'] = 'no_scorer_receipts'
+        return gate
+    try:
+        closure = service.finalize_headless_evaluator(receipts=tuple(scores))
+        verified = verify_closure(closure, authority_keys=scorer_authority_keys, panel=panel,
+            config=ScorerConfig(R(plan.protocol.record.data()['scorer'])), provider=provider,
+            nonce=closure.data()['body']['nonce'], receipt_digests=digests)
+        body = verified.data()['body']
+        gate['closure'] = verified.data()
+        gate['known_headless_main_tokens'] = body['known_main_tokens']
+        expected_cells = tuple(cell.key for cell in panel.cells)
+        scoped_cells = tuple(tuple(key) for key in body['scope']['scored_cell_keys'])
+        scored_cells = tuple(score.cell_key for score in scores)
+        if (len(scores) != len(panel.cells) or scored_cells != expected_cells
+                or scoped_cells != expected_cells or body['scope']['unscored_cell_count'] != 0):
+            gate['failure_reason'] = 'incomplete_panel_closure'
+            return gate
+        gate.update(status='eligible', score_eligible=True)
+        return gate
+    except Exception as exc:
+        gate.update(failure_reason='closure_verification_failed', error_type=type(exc).__name__)
+        return gate
+
 def _verify_final_targets_in_context(targets, rows, *, barrier, panel, ledger, context, inputs, scores,
                                      execution_authority_keys, scorer_authority_keys, plan):
     """Replay every final target under one active read-only barrier lease."""
@@ -212,6 +250,8 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
     score_inputs: list[FrozenRecord] = []
     process = {'startup_attempts': 0, 'startup_status': 'not_started', 'close_attempts': 0, 'closed': None, 'error': None}
     scorer_provider_terminal = False
+    headless_evaluator = plan.headless_evaluator_binding
+    evaluator_gate = None
 
     for row, recipe in zip(build_rows, plan.builds, strict=True):
         if executor.poisoned or executor.session.terminal():
@@ -277,6 +317,9 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
                                              task_handle_bindings=plan.data()['scorer_handle_bindings'],
                                              execution_authority_keys={execution_authority.authority_id: execution_authority.key},
                                              scorer_authority_keys=scorer_authority_keys)
+                if ((headless_evaluator is not None and service.evaluator_provider != headless_evaluator['evaluator_provider'])
+                        or (headless_evaluator is None and service.evaluator_provider is not None)):
+                    raise ContractError('C5 scorer process and frozen headless evaluator declaration disagree')
                 process['startup_status'] = 'ready'
             except Exception as exc:
                 process.update(startup_status='failed', error=type(exc).__name__ + ': ' + str(exc))
@@ -313,6 +356,12 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
                     except Exception as exc:
                         row.update(status='failed', reason=type(exc).__name__ + ': ' + str(exc))
                     journal.append('scorer_completed', {'arm_id': row['arm_id'], 'task_digest': row['task_digest'], 'status': row['status']}); persist()
+                if headless_evaluator is not None:
+                    evaluator_gate = _finalize_headless_c5_evaluator(plan=plan, panel=panel, service=service,
+                        scores=tuple(scores), scorer_authority_keys=scorer_authority_keys)
+                    journal.append('headless_evaluator_finalized', {'status': evaluator_gate['status'],
+                        'error_type': evaluator_gate['error_type'], 'known_headless_main_tokens': evaluator_gate['known_headless_main_tokens']})
+                    persist()
     finally:
         if service is not None:
             process['close_attempts'] = 1
@@ -339,9 +388,16 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
         except ContractError as exc:
             final_provider_eligible = False
             journal.append('final_provider_replay_failed', {'error_type': type(exc).__name__})
+    if headless_evaluator is not None and (evaluator_gate is None or evaluator_gate['score_eligible'] is not True):
+        for row in rows:
+            if row['status'] == 'scored':
+                row.update(execution_status='scored', status='scoring_ineligible',
+                           reason='final_headless_evaluator_closure')
     if not final_provider_eligible:
         for row in rows:
             if row['status'] == 'scored': row.update(execution_status='scored', status='scoring_ineligible', reason='final_provider_replay')
+    # This contains only captured accounting and final eligibility; it never reopens a provider or scorer.
+    persist(accounting)
     receipt = R({'schema': _SCHEMA, 'plan_digest': plan.record.content_hash, 'allocation': plan.protocol.record.data()['allocation'],
                  'actual': actual, 'unused': {key: (None if value is None else plan.protocol.record.data()['allocation'][key] - value)
                                                 for key, value in actual.items()}, 'builds': build_rows, 'targets': rows,
@@ -350,9 +406,12 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
                  'target_provider_ledger_digest': target_ledger.record.content_hash,
                  'target_provider_ledger_kind': type(target_ledger).__name__, 'native_accounting': accounting,
                  'historical_scorer_calls': len(scores), 'final_provider_eligible': final_provider_eligible,
-                 'scorer_process': process, 'selection_opened': False, 'validation_opened': False,
+                 'scorer_process': process,
+                 **({'evaluator_final_verification': evaluator_gate} if headless_evaluator is not None else {}),
+                 'selection_opened': False, 'validation_opened': False,
                  'candidate_activation': 'none_offline_experiment', 'scientific_effectiveness_proven': False,
-                 'status': 'complete_train_engineering' if (len(scores) == len(rows) and process['closed'] is True and final_provider_eligible) else 'inconclusive'})
+                 'status': 'complete_train_engineering' if (len(scores) == len(rows) and process['closed'] is True
+                    and final_provider_eligible and (headless_evaluator is None or evaluator_gate['score_eligible'] is True)) else 'inconclusive'})
     _exclusive(root / 'common-controller-receipt.json', receipt)
     return JointCommonTrainRun(root, plan, executor, barrier, panel, tuple(builds), tuple(targets), target_ledger,
                                tuple(score_inputs), tuple(scores), receipt)
@@ -386,6 +445,9 @@ def verify_joint_common_train_run(run: JointCommonTrainRun, *, execution_authori
                 'target_provider_ledger_digest', 'target_provider_ledger_kind', 'native_accounting', 'historical_scorer_calls',
                 'final_provider_eligible', 'scorer_process', 'selection_opened', 'validation_opened', 'candidate_activation',
                 'scientific_effectiveness_proven', 'status'}
+    headless_evaluator = run.plan.headless_evaluator_binding
+    if headless_evaluator is not None:
+        required.add('evaluator_final_verification')
     if set(body) != required or body['schema'] != _SCHEMA or body['plan_digest'] != run.plan.record.content_hash or body['allocation'] != allocation:
         raise ContractError('common controller final receipt schema or plan binding differs')
     rows = body['targets']
@@ -397,7 +459,8 @@ def verify_joint_common_train_run(run: JointCommonTrainRun, *, execution_authori
     inputs = {tuple(score_input.data()['body']['cell_key']): score_input for score_input in run.score_inputs}
     scores = {score.cell_key: score for score in run.scores}
     keys = {cell.key for cell in run.panel.cells}
-    if len(inputs) != len(run.score_inputs) or len(scores) != len(run.scores) or set(inputs) != keys or set(scores) != keys:
+    if (len(inputs) != len(run.score_inputs) or len(scores) != len(run.scores) or set(inputs) != keys or set(scores) != keys
+            or tuple(score.cell_key for score in run.scores) != tuple(cell.key for cell in run.panel.cells)):
         raise ContractError('common controller score envelopes do not exactly cover the panel')
     expected_builds = [{'build_id': history_build_id(run.plan.protocol, recipe), 'recipe_id': recipe['id'],
                        'status': 'succeeded', 'receipt_digest': build.record.content_hash}
@@ -429,6 +492,12 @@ def verify_joint_common_train_run(run: JointCommonTrainRun, *, execution_authori
         _verify_final_targets_in_context(run.targets, rows, barrier=run.barrier, panel=run.panel,
             ledger=run.target_ledger, context=context, inputs=inputs, scores=scores,
             execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys, plan=run.plan)
+    if headless_evaluator is not None:
+        from research_loop.modular.joint_train_evaluator_verification import verify_joint_headless_evaluator_gate
+        verify_joint_headless_evaluator_gate(body['evaluator_final_verification'], authority_keys=scorer_authority_keys,
+            panel=run.panel, scorer_config=ScorerConfig(R(run.plan.protocol.record.data()['scorer'])),
+            evaluator_provider=headless_evaluator['evaluator_provider'], evaluator_usage=headless_evaluator['evaluator_usage'],
+            ordered_receipt_digests=tuple(score.receipt.content_hash for score in run.scores))
     if body['final_provider_eligible'] is not True or body['status'] != 'complete_train_engineering':
         raise ContractError('common controller output is not currently provenance eligible')
     return run.receipt

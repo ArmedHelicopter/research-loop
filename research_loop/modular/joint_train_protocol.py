@@ -24,7 +24,34 @@ from evaluation.modular.scoring_service import ScorerConfig
 from research_loop.ontology import ContractError
 
 OBLIGATION = 'c5-common-joint-train-v1'
+HEADLESS_OBLIGATION = 'c5-common-joint-train-headless-evaluator-v1'
+_HEADLESS_PROVIDER_KIND = 'grok-headless-frozen-evaluator-v1'
+_HEADLESS_USAGE_SCHEMA = 'c5-headless-evaluator-usage-declaration-v1'
+_HEADLESS_USAGE_CONTRACT = 'grok-headless-c5-usage-v1'
 R = FrozenRecord.from_dict
+
+
+def _digest(value, field):
+    if not isinstance(value, str) or len(value) != 64 or any(c not in '0123456789abcdef' for c in value):
+        raise ContractError(f'{field} must be a sha256 digest')
+    return value
+
+
+def _headless_evaluator_binding(usage, provider):
+    """Validate the public C5 declaration without constructing a private worker."""
+    usage_fields = {'schema', 'provider_kind', 'usage_contract', 'evaluator_config_digest'}
+    provider_fields = {'kind', 'configuration_digest'}
+    if (not isinstance(usage, dict) or set(usage) != usage_fields
+            or usage.get('schema') != _HEADLESS_USAGE_SCHEMA
+            or usage.get('provider_kind') != _HEADLESS_PROVIDER_KIND
+            or usage.get('usage_contract') != _HEADLESS_USAGE_CONTRACT):
+        raise ContractError('C5 headless evaluator usage declaration is malformed')
+    _digest(usage.get('evaluator_config_digest'), 'C5 evaluator usage declaration')
+    if (not isinstance(provider, dict) or set(provider) != provider_fields
+            or provider.get('kind') != _HEADLESS_PROVIDER_KIND):
+        raise ContractError('C5 headless evaluator provider descriptor is malformed')
+    _digest(provider.get('configuration_digest'), 'C5 evaluator provider descriptor')
+    return dict(usage), dict(provider)
 
 
 def common_recipes(*, baseline_digest, history_binding_digest, builder_digest, context_bytes):
@@ -107,10 +134,14 @@ class FrozenJointTrainProtocol:
                   'history', 'targets', 'builder_digest', 'history_binding_digest', 'component_templates',
                   'context_bytes', 'catalogue', 'allocation', 'provider_config', 'scorer', 'selection_rule',
                   'issue_contracts', 'replicate', 'execution_authorized', 'acceptance_authorized'}
-        if (set(b) != fields or b['schema'] != OBLIGATION or b['domain'] != 'train'
+        headless = b.get('schema') == HEADLESS_OBLIGATION
+        expected_fields = fields | ({'evaluator_usage', 'evaluator_provider'} if headless else set())
+        if (set(b) != expected_fields or b['schema'] not in {OBLIGATION, HEADLESS_OBLIGATION} or b['domain'] != 'train'
                 or b['replicate'] != 'r1' or b['execution_authorized'] is not False
                 or b['acceptance_authorized'] is not False):
             raise ContractError('C5 common protocol schema or authority drift')
+        if headless:
+            _headless_evaluator_binding(b['evaluator_usage'], b['evaluator_provider'])
         for name in ('baseline_digest', 'p0_digest', 'builder_digest', 'history_binding_digest'):
             _hash(b[name], name)
         sources = b['runtime_sources']
@@ -178,18 +209,21 @@ class FrozenJointTrainProtocol:
     @classmethod
     def freeze(cls, *, baseline_digest, p0_digest, runtime_sources, history, targets, public_csv,
                builder_digest, history_binding_digest, component_templates, context_bytes,
-               provider_config, scorer, selection_rule):
+               provider_config, scorer, selection_rule, evaluator_usage=None, evaluator_provider=None):
         targets = tuple(targets)
         if any(type(v) is not JointComponentVersion for v in component_templates.values()):
             raise ContractError('exact independently versioned templates required')
         if type(scorer) is not ScorerConfig or type(selection_rule) is not FrozenTrainSelectionRule:
             raise ContractError('typed scorer and predeclared TRAIN selection rule required')
+        headless = evaluator_usage is not None or evaluator_provider is not None
+        if headless:
+            evaluator_usage, evaluator_provider = _headless_evaluator_binding(evaluator_usage, evaluator_provider)
         tasks = (history, *targets)
         if set(public_csv) != {t.content_hash for t in tasks}:
             raise ContractError('only exact common history/target public CSV inputs permitted')
         catalogue = common_recipes(baseline_digest=baseline_digest, history_binding_digest=history_binding_digest,
                                   builder_digest=builder_digest, context_bytes=context_bytes)
-        return cls(R({'schema': OBLIGATION, 'domain': 'train', 'baseline_digest': baseline_digest,
+        return cls(R({'schema': HEADLESS_OBLIGATION if headless else OBLIGATION, 'domain': 'train', 'baseline_digest': baseline_digest,
             'p0_digest': p0_digest, 'runtime_sources': dict(runtime_sources), 'builder_digest': builder_digest,
             'history_binding_digest': history_binding_digest, 'history': _binding(history, public_csv[history.content_hash]),
             'targets': [_binding(t, public_csv[t.content_hash]) for t in targets], 'context_bytes': context_bytes,
@@ -197,6 +231,7 @@ class FrozenJointTrainProtocol:
             'catalogue': catalogue.data(), 'allocation': derive_allocation(
                 [r['recipe'] for r in catalogue.data()['recipes']], target_count=len(targets)),
             'provider_config': provider_config.data(), 'scorer': scorer.record.data(),
+            **({'evaluator_usage': evaluator_usage, 'evaluator_provider': evaluator_provider} if headless else {}),
             'selection_rule': selection_rule.record.data(), 'replicate': 'r1',
             'issue_contracts': {name: spec.record.data() for name, spec in registry().items()},
             'execution_authorized': False, 'acceptance_authorized': False}))
