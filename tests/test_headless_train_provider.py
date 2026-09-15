@@ -117,9 +117,26 @@ def test_public_headless_binding_rejects_invalid_arguments_before_replay(tmp_pat
         replayed.append(args[1]['id']);return original(*args,**kwargs)
     monkeypatch.setattr(provider_core,'_verify_call',observe)
     invalid=events(REQUEST);invalid[-1]['data']['response']=response.data()
-    with pytest.raises(ContractError):seal.original.bind_events(
+    with pytest.raises(ContractError):seal.bind_events(
         invalid,expected_call_ids=expected_call_ids,require_eligible=require_eligible)
     assert replayed==[] and provider.state['terminal_fault'] is True
+    assert len(dispatches)==1
+
+
+def test_phase_headless_invalid_eligibility_replays_then_poisoned(tmp_path,monkeypatch):
+    backend=port(tmp_path,max_calls=1)
+    dispatches,_=synthetic_native(tmp_path,monkeypatch,backend)
+    provider=wrap_train_provider(backend);session=PhaseProviderSession(provider,tmp_path/'scopes.json')
+    with session.scope('history') as scope: response=scope(REQUEST)
+    seal=session.seal(tmp_path/'seal.json')
+    original=provider_core._verify_call;replayed=[]
+    def observe(*args,**kwargs):
+        replayed.append(args[1]['id']);return original(*args,**kwargs)
+    monkeypatch.setattr(provider_core,'_verify_call',observe)
+    event=events(REQUEST);event[-1]['data']['response']=response.data()
+    with pytest.raises(ContractError):seal.bind_events_with_calls(
+        event,scope_id='history',require_eligible=1)
+    assert replayed==[1,1] and provider.state['terminal_fault'] is True
     assert len(dispatches)==1
 
 

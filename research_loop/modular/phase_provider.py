@@ -14,7 +14,7 @@ from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.grok_acp_transport import TRAIN_OPPORTUNITY_CONTRACT
 from research_loop.modular.train_provider import (
     CodexTrainProvider, GrokTrainProvider, GrokHeadlessTrainProvider, FrozenTrainProviderLedgerV2,
-    _validate_eligibility_mode, _validate_event_binding_arguments)
+    _validate_event_binding_arguments)
 from research_loop.ontology import ContractError
 
 PROVIDERS = (CodexTrainProvider, GrokTrainProvider, GrokHeadlessTrainProvider)
@@ -260,7 +260,6 @@ class PhaseProviderLedger:
         verifying. They are not a reusable verification token or an eligible seal.
         Every invocation still replays current session and original provider files.
         """
-        _validate_eligibility_mode(require_eligible)
         verified=self.verify()
         calls=self._calls_for_scope_after_verified(scope_id)
         try:

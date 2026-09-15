@@ -499,6 +499,7 @@ class FrozenTrainProviderLedgerV2:
         validates arguments and obtains a fresh verification first; the phase
         wrapper does the same before calling this internal matcher.
         """
+        _validate_event_binding_arguments(expected_call_ids,require_eligible)
         _require(type(verified) is FrozenRecord, 'fresh original verification required')
         verified_data=verified.data()
         _require(verified_data.get('schema')=='train-provider-seal-verification-v1'
