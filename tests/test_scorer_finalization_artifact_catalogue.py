@@ -139,3 +139,23 @@ def test_readback_rejects_changed_original_journal(tmp_path):
     with pytest.raises(ContractError):
         verify_admission_headless_scorer_finalization_observation_catalogues(
             root=root, config=config, panel=panel, service=service, receipt=receipt)
+
+
+def test_readback_rejects_original_changed_during_descriptor_reads(tmp_path, monkeypatch):
+    root, config, panel, service, _ = _inputs(tmp_path)
+    receipt = register_admission_headless_scorer_finalization_observations(
+        root=root, config=config, panel=panel, service=service)
+    original = ArtifactCatalogue.records
+    changed = False
+    def racing_records(catalogue):
+        nonlocal changed
+        records = original(catalogue)
+        if not changed:
+            changed = True
+            path = Path(str(service.journal_path) + ".headless-evaluator-client.jsonl")
+            path.write_bytes(path.read_bytes() + b" ")
+        return records
+    monkeypatch.setattr(ArtifactCatalogue, "records", racing_records)
+    with pytest.raises(ContractError):
+        verify_admission_headless_scorer_finalization_observation_catalogues(
+            root=root, config=config, panel=panel, service=service, receipt=receipt)

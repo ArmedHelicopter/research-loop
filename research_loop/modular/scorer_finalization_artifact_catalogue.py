@@ -223,3 +223,9 @@ def verify_admission_headless_scorer_finalization_observation_catalogues(*, root
                     or descriptor["config_refs"] != list(refs) or descriptor["checks"] != [item["check"]]
                     or descriptor["scientific_validated"] is not False):
                 raise ContractError("scorer finalization observation projection differs")
+        # Verify the caller-provided seal again after all descriptor reads.
+        catalogue.verify(seal)
+    if (_snapshot(Path(str(service.journal_path) + ".headless-evaluator-client.jsonl")) != before
+            or _snapshot(root / "scorer-finalization-observations" / "controller-attempt-prefix.json")
+            != attempt["controller_attempt_prefix"]):
+        raise ContractError("scorer finalization originals changed during catalogue verification")
