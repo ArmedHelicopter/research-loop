@@ -38,6 +38,7 @@ _REQUEST_SCHEMA = "linked-scorer-process-request-v1"
 _RESPONSE_SCHEMA = "linked-scorer-process-response-v1"
 _JOURNAL_SCHEMA = "linked-scorer-process-journal-v1"
 _COMBINATION_CONFIG_SCHEMA = "combination-scorer-process-config-v1"
+_HEADLESS_FINALIZATION_SCHEMA = "headless-evaluator-finalization-journal-v1"
 
 
 def _sha(value: bytes | str) -> str:
@@ -344,6 +345,14 @@ def _headless_evaluator(spec: Mapping[str, object], *, rubric_mode: str):
         _text(spec[name], "headless " + name)
     pins = {str(_absolute(path, "headless frozen source")): _digest(value, "headless frozen source")
             for path, value in spec["frozen_files"].items()}
+    # The factory and closure interpreter are themselves part of the private
+    # authority.  A caller may pin them, but may never substitute their bytes.
+    from evaluation.modular import headless_evaluator_closure as closure
+    for path in (Path(__file__).resolve(), Path(closure.__file__).resolve()):
+        actual = _sha(path.read_bytes())
+        if str(path) in pins and pins[str(path)] != actual:
+            raise ContractError("supplied headless factory source pin differs")
+        pins[str(path)] = actual
     return GrokHeadlessEvaluatorModelPort(
         executable=_absolute(spec["executable"], "headless executable"),
         work_root=_absolute(spec["work_root"], "headless work root"),
@@ -387,8 +396,14 @@ def build_service(config: ScorerServerConfig, *, evaluator: Callable[[FrozenReco
     endpoint = FrozenBenchmarkRubricEndpoint(resolver=resolver, evaluator=model,
         evaluator_id=config.scorer.record.data()["evaluator_id"], evaluator_version=config.scorer.record.data()["version"])
     service_type = CombinationAdaptedScoringService if isinstance(config.panel, CombinationPanel) else LinkedAdaptedScoringService
-    return service_type(config=config.scorer, evaluator=FrozenRubricTransport(endpoint),
+    service = service_type(config=config.scorer, evaluator=FrozenRubricTransport(endpoint),
         execution_authority_keys=config.execution_keys, task_handles=config.task_handles, scorer_authority=config.scorer_authority)
+    from evaluation.modular.headless_evaluator_model_port import GrokHeadlessEvaluatorModelPort
+    if isinstance(model, GrokHeadlessEvaluatorModelPort):
+        from evaluation.modular.headless_evaluator_closure import descriptor
+        service.headless_evaluator_port = model
+        service.evaluator_provider = descriptor(model)
+    return service
 
 
 def _append(path: Path, entry: Mapping[str, object]) -> None:
@@ -421,6 +436,58 @@ def _journal(path: Path) -> dict[str, dict[str, object]]:
     return states
 
 
+def _headless_finalization_path(journal_path: Path) -> Path:
+    return Path(str(journal_path) + ".headless-evaluator-finalization.jsonl")
+
+
+def _finalization_request(value: object) -> dict[str, object]:
+    required = {"schema", "nonce", "receipt_digests", "evaluator_provider"}
+    if (not isinstance(value, Mapping) or set(value) != required
+            or value.get("schema") != "headless-evaluator-finalize-request-v1"
+            or not isinstance(value.get("nonce"), str) or not value["nonce"]
+            or not isinstance(value.get("receipt_digests"), list)
+            or not isinstance(value.get("evaluator_provider"), Mapping)):
+        raise ContractError("headless evaluator finalization request is malformed")
+    for receipt in value["receipt_digests"]:
+        _digest(receipt, "headless evaluator closure receipt")
+    provider = value["evaluator_provider"]
+    if (set(provider) != {"kind", "configuration_digest"}
+            or provider.get("kind") != "grok-headless-frozen-evaluator-v1"):
+        raise ContractError("headless evaluator finalization provider is malformed")
+    _digest(provider.get("configuration_digest"), "headless evaluator configuration")
+    return {"schema": value["schema"], "nonce": value["nonce"],
+            "receipt_digests": list(value["receipt_digests"]), "evaluator_provider": dict(provider)}
+
+
+def _finalization_state(path: Path) -> dict[str, object] | None:
+    if not path.exists():
+        return None
+    try:
+        rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+        if len(rows) not in {1, 2}:
+            raise ValueError("unexpected finalization history")
+        attempted = rows[0]
+        if (not isinstance(attempted, Mapping) or set(attempted) != {"schema", "status", "request"}
+                or attempted.get("schema") != _HEADLESS_FINALIZATION_SCHEMA or attempted.get("status") != "attempted"):
+            raise ValueError("invalid finalization attempt")
+        request = _finalization_request(attempted["request"])
+        if len(rows) == 1:
+            return {"status": "attempted", "request": request}
+        terminal = rows[1]
+        if (not isinstance(terminal, Mapping) or terminal.get("schema") != _HEADLESS_FINALIZATION_SCHEMA
+                or terminal.get("request") != request or terminal.get("status") not in {"eligible", "rejected"}):
+            raise ValueError("invalid finalization terminal")
+        if terminal["status"] == "eligible":
+            if set(terminal) != {"schema", "status", "request", "closure"}:
+                raise ValueError("invalid eligible finalization")
+            FrozenRecord.from_dict(terminal["closure"])
+        elif set(terminal) != {"schema", "status", "request", "reason"} or not isinstance(terminal["reason"], str):
+            raise ValueError("invalid rejected finalization")
+        return dict(terminal)
+    except (OSError, TypeError, ValueError, KeyError, json.JSONDecodeError) as exc:
+        raise ContractError("headless evaluator finalization history is not safely recoverable") from exc
+
+
 def _request(value: object, panel: FrozenPanel) -> tuple[str, tuple[str, ...], FrozenRecord, str]:
     required = {"schema", "request_id", "panel_digest", "cell_key", "linked_input", "request_digest"}
     if not isinstance(value, Mapping) or set(value) != required or value.get("schema") != _REQUEST_SCHEMA:
@@ -446,6 +513,10 @@ class ScorerWorker:
         self.service, self.panel, self.journal_path = service, panel, journal_path
         self.states = _journal(journal_path)
         self.cells = {cell.key: cell for cell in panel.cells}
+        self.finalization_path = _headless_finalization_path(journal_path)
+        self.finalization_state = _finalization_state(self.finalization_path)
+        self.final_closure = (FrozenRecord.from_dict(self.finalization_state["closure"])
+                              if self.finalization_state and self.finalization_state["status"] == "eligible" else None)
 
     def respond(self, value: object) -> dict[str, object]:
         if isinstance(value, Mapping) and value.get("schema") == "scorer-process-binding-request-v1":
@@ -457,7 +528,45 @@ class ScorerWorker:
                 scorer_authority_keys={self.service._authority.authority_id: self.service._authority.key})
             if hasattr(self.service, 'lineage_reference_binding'):
                 binding = FrozenRecord.from_dict({**binding.data(), 'lineage_references': self.service.lineage_reference_binding})
+            if hasattr(self.service, 'evaluator_provider'):
+                binding = FrozenRecord.from_dict({**binding.data(), 'evaluator_provider': self.service.evaluator_provider})
             return {"schema": "scorer-process-binding-response-v1", "nonce": value["nonce"], "binding": binding.data()}
+        if isinstance(value, Mapping) and value.get("schema") == "headless-evaluator-finalize-request-v1":
+            request = _finalization_request(value)
+            if not hasattr(self.service, "headless_evaluator_port") or request["evaluator_provider"] != self.service.evaluator_provider:
+                raise ContractError("headless evaluator finalization provider differs")
+            if _finalization_state(self.finalization_path) != self.finalization_state:
+                raise ContractError("headless evaluator finalization history changed")
+            from evaluation.modular.headless_evaluator_closure import finalize
+            if self.finalization_state is not None:
+                if self.finalization_state["request"] != request:
+                    raise ContractError("headless evaluator finalization already differs")
+                if self.finalization_state["status"] != "eligible" or self.final_closure is None:
+                    raise ContractError("headless evaluator finalization is terminally rejected")
+                current = finalize(service=self.service, panel=self.panel, journal_path=self.journal_path,
+                    nonce=request["nonce"], receipt_digests=request["receipt_digests"])
+                if current != self.final_closure:
+                    raise ContractError("headless evaluator finalization differs from the sealed original")
+                return {"schema": "headless-evaluator-finalize-response-v1", "nonce": request["nonce"], "closure": current.data()}
+            attempted = {"schema": _HEADLESS_FINALIZATION_SCHEMA, "status": "attempted", "request": request}
+            _append(self.finalization_path, attempted)
+            self.finalization_state = attempted
+            try:
+                self.final_closure = finalize(service=self.service, panel=self.panel, journal_path=self.journal_path,
+                    nonce=request["nonce"], receipt_digests=request["receipt_digests"])
+            except Exception as exc:
+                terminal = {"schema": _HEADLESS_FINALIZATION_SCHEMA, "status": "rejected", "request": request,
+                            "reason": "provenance_replay_failed"}
+                _append(self.finalization_path, terminal)
+                self.finalization_state = terminal
+                raise ContractError("headless evaluator finalization is terminally rejected") from exc
+            terminal = {"schema": _HEADLESS_FINALIZATION_SCHEMA, "status": "eligible", "request": request,
+                        "closure": self.final_closure.data()}
+            _append(self.finalization_path, terminal)
+            self.finalization_state = terminal
+            return {"schema": "headless-evaluator-finalize-response-v1", "nonce": request["nonce"], "closure": self.final_closure.data()}
+        if self.finalization_state is not None:
+            raise ContractError("headless evaluator scorer is finalized")
         request_id, key, linked, request_digest = _request(value, self.panel)
         state = self.states.get(canonical(list(key)))
         base = {"schema": _RESPONSE_SCHEMA, "request_id": request_id, "request_digest": request_digest, "cell_key": list(key)}
@@ -627,11 +736,17 @@ class CombinationScorerProcessClient(LinkedScorerProcessClient):
                  task_handle_bindings: Mapping[str, str], execution_authority_keys: Mapping[str, bytes],
                  scorer_authority_keys: Mapping[str, bytes], environment: Mapping[str, str] | None = None,
                  response_timeout_seconds: int = 240, retrieval_review: bool = False, admission: bool = False,
-                 exploration_scheduler: bool = False, state_prediction: bool = False, state_retrieval: bool = False, state_exploration: bool = False, state_scheduling: bool = False, state_improvement: bool = False, mechanism_exploration: bool = False, mechanism_scheduling: bool = False, mechanism_improvement: bool = False, admission_prediction_exploration: bool = False, lineage_retrieval_improvement: bool = False, execution_improvement: bool = False, full_loo: bool = False, joint_train: bool = False):
+                 exploration_scheduler: bool = False, state_prediction: bool = False, state_retrieval: bool = False, state_exploration: bool = False, state_scheduling: bool = False, state_improvement: bool = False, mechanism_exploration: bool = False, mechanism_scheduling: bool = False, mechanism_improvement: bool = False, admission_prediction_exploration: bool = False, lineage_retrieval_improvement: bool = False, execution_improvement: bool = False, full_loo: bool = False, joint_train: bool = False, evaluator_provider: Mapping[str, str] | None = None):
         serialize_combination_panel(panel, retrieval_review=retrieval_review, admission=admission,
                                     exploration_scheduler=exploration_scheduler, state_prediction=state_prediction, state_retrieval=state_retrieval, state_exploration=state_exploration, state_scheduling=state_scheduling, state_improvement=state_improvement, mechanism_exploration=mechanism_exploration, mechanism_scheduling=mechanism_scheduling, mechanism_improvement=mechanism_improvement, admission_prediction_exploration=admission_prediction_exploration, lineage_retrieval_improvement=lineage_retrieval_improvement, execution_improvement=execution_improvement, full_loo=full_loo, joint_train=joint_train)
         expected = scorer_process_binding(panel=panel, config=config, task_handle_bindings=task_handle_bindings,
             execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys)
+        if evaluator_provider is not None:
+            if (not isinstance(evaluator_provider, Mapping) or set(evaluator_provider) != {"kind", "configuration_digest"}
+                    or evaluator_provider.get("kind") != "grok-headless-frozen-evaluator-v1"):
+                raise ContractError("headless evaluator provider descriptor is invalid")
+            _digest(evaluator_provider.get("configuration_digest"), "headless evaluator configuration")
+            expected = FrozenRecord.from_dict({**expected.data(), "evaluator_provider": dict(evaluator_provider)})
         self.config, self.state_prediction, self.state_retrieval = config, state_prediction, state_retrieval
         self.state_exploration = state_exploration
         self.state_scheduling = state_scheduling
@@ -644,6 +759,9 @@ class CombinationScorerProcessClient(LinkedScorerProcessClient):
         self.full_loo = full_loo
         self.joint_train = joint_train
         self.execution_improvement = execution_improvement
+        self.evaluator_provider = dict(evaluator_provider) if evaluator_provider is not None else None
+        self._scorer_authority_keys = dict(scorer_authority_keys)
+        self.final_closure = None
         super().__init__(panel=panel, command=command, journal_path=journal_path,
                          environment=environment, response_timeout_seconds=response_timeout_seconds)
         try:
@@ -664,13 +782,60 @@ class CombinationScorerProcessClient(LinkedScorerProcessClient):
                              execution_authority_keys: Mapping[str, bytes], scorer_authority_keys: Mapping[str, bytes]) -> None:
         expected = scorer_process_binding(panel=self.panel, config=config, task_handle_bindings=task_handle_bindings,
             execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys)
+        if getattr(self, "evaluator_provider", None) is not None:
+            expected = FrozenRecord.from_dict({**expected.data(), "evaluator_provider": self.evaluator_provider})
         if self.config != config or self.binding != expected or self.process.poll() is not None:
             raise ContractError("combination scorer configuration or worker state drift")
 
     def score_combination(self, *, panel: CombinationPanel, cell: PanelCell, score_input: FrozenRecord) -> ScientificScorerReceipt:
+        if getattr(self, "final_closure", None) is not None:
+            raise ContractError("headless evaluator scorer is finalized")
         if panel != self.panel or self.cells.get(cell.key) != cell:
             raise ContractError("combination scorer cell differs from the frozen process panel")
-        return super().submit(cell_key=cell.key, linked_input=score_input)
+        return self.submit(cell_key=cell.key, linked_input=score_input)
+
+    def submit(self, *, cell_key: tuple[str, ...], linked_input: FrozenRecord) -> ScientificScorerReceipt:
+        if getattr(self, "final_closure", None) is not None:
+            raise ContractError("headless evaluator scorer is finalized")
+        return super().submit(cell_key=cell_key, linked_input=linked_input)
+
+    def finalize_headless_evaluator(self, *, receipts) -> FrozenRecord:
+        if getattr(self, "evaluator_provider", None) is None:
+            raise ContractError("scorer client has no declared headless evaluator")
+        if not isinstance(receipts, (tuple, list)) or not receipts:
+            raise ContractError("headless evaluator closure needs ordered scorer receipts")
+        digests = []
+        for receipt in receipts:
+            if not isinstance(receipt, ScientificScorerReceipt) or receipt.cell_key not in self.cells:
+                raise ContractError("headless evaluator closure receipt is foreign")
+            digests.append(receipt.receipt.content_hash)
+        if getattr(self, "final_closure", None) is not None:
+            if self._final_receipt_digests != digests:
+                raise ContractError("headless evaluator finalization receipt sequence differs")
+            nonce = self.final_closure.data()["body"]["nonce"]
+        else:
+            nonce = uuid.uuid4().hex
+        request = {"schema": "headless-evaluator-finalize-request-v1", "nonce": nonce,
+                   "receipt_digests": digests, "evaluator_provider": self.evaluator_provider}
+        try:
+            self.input.write(canonical(request) + "\n"); self.input.flush()
+            response = json.loads(self._readline_bounded())
+            if (not isinstance(response, dict) or set(response) != {"schema", "nonce", "closure"}
+                    or response.get("schema") != "headless-evaluator-finalize-response-v1" or response.get("nonce") != nonce):
+                raise ContractError("headless evaluator finalization response differs")
+            from evaluation.modular.headless_evaluator_closure import verify_closure
+            closure = FrozenRecord.from_dict(response["closure"])
+            verify_closure(closure, authority_keys=self._scorer_authority_keys, panel=self.panel, config=self.config,
+                           provider=self.evaluator_provider, nonce=nonce, receipt_digests=digests)
+            if self.final_closure is not None and closure != self.final_closure:
+                raise ContractError("headless evaluator closure changed after finalization")
+        except Exception as exc:
+            if isinstance(exc, ContractError):
+                raise
+            raise ContractError("headless evaluator finalization is unavailable") from exc
+        self.final_closure = closure
+        self._final_receipt_digests = digests
+        return closure
 
 
 def _load(path: Path, expected_sha256: str) -> ScorerServerConfig:

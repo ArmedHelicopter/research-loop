@@ -30,10 +30,23 @@ their schema. The protected TRAIN reference store is checked before creating
 the evaluator, and both benchmark score returns keep only rubric evidence
 digests rather than copying references to the solver.
 
-This implementation establishes the private port and primary factory seam.
-The lineage scorer production factory and a controller-wide final evaluator
-ledger closure are not yet wired. Per-call replay is not a check after the last
-score has already been delivered. An actual scored experiment must separately
-bind its complete scorer lifecycle; this port alone does not complete that work.
+The M4/M5 v6 controller explicitly binds the evaluator configuration digest at
+worker startup. After the last score, its finalization RPC replays every native
+original and matches the ordered calls to the signed scorer receipts. The
+closure binds source pins, ledger bytes, per-call evidence, known MAIN tokens
+and the exact scored versus unscored panel membership. Title usage and total
+settlement remain unknown. A partial scored prefix is never full panel coverage.
+
+A durable finalization attempt closes subsequent scoring even when replay
+fails. A repeated closure request checks the finalization history and replays
+the originals again, including after a worker restart; a cached receipt alone
+cannot pass. The controller retains historical scores and their denominator
+when final replay fails, but marks the contrast ineligible. This RPC makes no
+model or account calls. Earlier controller schemas retain their declared
+provider contracts and do not silently admit this lifecycle.
+
+The lineage scorer production factory and its final lifecycle still require
+separate integration. Frozen engineering coverage is recorded by source
+version in the implementation status; this contract alone is not a test result.
 Synthetic OS/HTTP checks do not establish real benchmark effects, calibration,
 independent operating-system principals, or VAL acceptance.
