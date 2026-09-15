@@ -3,6 +3,34 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Closed full34 lineage and C5 artifact probe (2026-09-15)
+
+The [full5 lineage run](../results/modular-engineering-20260915/headless-lineage-controller-full5-r1/README.md)
+at `0a9ca90a` completed all 34 cells across M2+M3, M2+M5, M3+M5 and M2+M3+M5.
+Four workers returned eligible final closures. It used 136 synthetic solver
+and 34 synthetic evaluator calls with actual Docker and stdio; 6,479
+noncredential originals and both exact source archives were preserved.
+The original command exited 1 because ten label-dependent tests were wrongly
+run in the deliberately label-free execution checkout. Its full controller
+test passed. Those ten tests separately passed in the audit checkout; neither
+the original failure report nor any executed combination cell was replaced.
+Each run preserved 783 unchanged source/document files; the two checkouts
+have 100 line-ending-only byte differences and retain separate source digests.
+The older full4 interruption remains an incomplete attempt with unknown exit.
+
+The [C5 history-to-target probe](../results/modular-engineering-20260915/c5-headless-runtime-probe-r1/README.md)
+retains 212 descriptors, 311 catalogue-parent references and one explicit
+outer build binding, covering the relevant stages of M1–M9. Its 2,304
+noncredential originals and nine descriptor-matched producer files were
+verified and archived. It ran one build and one target with 11 synthetic
+solver calls and no evaluator calls. Earlier missing source snapshots remain
+disclosed; the matching producer snapshot is after-run evidence only.
+The complete headless C5 test is now explicitly runnable and includes
+selection registration/reverification, but the probe and preparation check
+do not establish a complete 46-build/118-target outcome. Real benchmark
+effects, all 48 research questions and independent VAL acceptance remain
+separate obligations; no singleton result prunes a planned combination.
+
 ## Independent lineage final gate (2026-09-15)
 
 At `8abe622acb2417a5008a66466316663e2885972c`, the outer lineage controller
