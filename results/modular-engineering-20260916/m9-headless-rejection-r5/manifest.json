@@ -1,0 +1,37 @@
+{
+  "schema": "m9-headless-rejection-r5",
+  "native_session": 69081,
+  "source_commit": "4520db91fd92d45b3e853f92bbba18372e8101aa",
+  "meaningful_integration": {
+    "passed": 1,
+    "wall_seconds": 905.985,
+    "source_unchanged": 816
+  },
+  "outcome": {
+    "builders": "all6_success",
+    "evaluator_descriptor": "mismatched",
+    "targets": 32,
+    "target_dispatch": 0,
+    "scorer_dispatch": 0,
+    "target_score": 0,
+    "scorer_score": 0,
+    "validation_opened": false
+  },
+  "source_zip_sha256": "589d5d98d5f459f2e7be818bd2db4ae9c5365b3aa7d2a85876242d59428da7ad",
+  "source_member_count": 816,
+  "source_members_match_before": true,
+  "raw_basetemp": {
+    "root": "E:\\_ryanDev\\AI\\research-loop-modular\\WORK\\execution-improvement-headless-rejection-frozen-r5",
+    "total_files": 512,
+    "included_files": 497,
+    "excluded_files": 15,
+    "included_bytes": 3174570,
+    "excluded_bytes": 3314,
+    "exact_snapshot_verified": true,
+    "complete_private_zip": "E:\\_ryanDev\\AI\\research-loop-modular\\retained-private-evidence\\m9-headless-rejection-r5\\retained-private-raw-complete-r5.zip",
+    "complete_private_zip_sha256": "1fa3e8ea9b533c49f046e31f9db0d3b39520540188fda900fbc9f96094eba261",
+    "metadata_only_original_zip": "E:\\_ryanDev\\AI\\research-loop-modular\\retained-private-evidence\\m9-headless-rejection-r5\\retained-private-metadata-only-r5.zip",
+    "metadata_only_original_zip_sha256": "81e5034ab9bad46ae93dd074188a3b2521ca7ddf9e667d41a1f064b71e2c9bcd",
+    "exclusion_manifest": "raw-exclusion-manifest.json"
+  }
+}

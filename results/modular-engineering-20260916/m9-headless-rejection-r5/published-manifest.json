@@ -1,0 +1,65 @@
+{
+  "schema": "m9-headless-rejection-published-v2",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "execution-improvement-headless-rejection-frozen-r5-before.json",
+      "sha256": "88e00b535c02538511b54c3d1a50478e6340fff8151d7dfa1ac174a57cbc13b4",
+      "bytes": 96016
+    },
+    {
+      "path": "execution-improvement-headless-rejection-frozen-r5-closed.json",
+      "sha256": "3bcfa3dea7d3941c6e95267dc9f11c5223086dd75d4a2c0df84bca00c772f19a",
+      "bytes": 96069
+    },
+    {
+      "path": "execution-improvement-headless-rejection-frozen-r5-native-join.json",
+      "sha256": "c666d6169da099f22399e12f4f5a6af85ac623f2268441b6c2eaead3da7aa696",
+      "bytes": 233
+    },
+    {
+      "path": "execution-improvement-headless-rejection-frozen-r5-native-start.json",
+      "sha256": "c3f20cf0c922bc3280d60ce19fc301145eb0ddf048ad5172582e2fc22f1bdecb",
+      "bytes": 109
+    },
+    {
+      "path": "execution-improvement-headless-rejection-frozen-r5-source-members.json",
+      "sha256": "c0f8360b2ce90860b3db6056a307eebb310e41e93a26f6f4c6db30e3e5a20e54",
+      "bytes": 143510
+    },
+    {
+      "path": "execution-improvement-headless-rejection-frozen-r5-sources.zip",
+      "sha256": "589d5d98d5f459f2e7be818bd2db4ae9c5365b3aa7d2a85876242d59428da7ad",
+      "bytes": 2739713
+    },
+    {
+      "path": "execution-improvement-headless-rejection-frozen-r5.log",
+      "sha256": "5f7ba75f2f9581c06681325774e4c5d238539d44b5825cb3fc1bcd44139da348",
+      "bytes": 689
+    },
+    {
+      "path": "execution-improvement-headless-rejection-frozen-r5.xml",
+      "sha256": "93abcffbae3ab3a8d34132a3d400685d04fa117fe5836cd405dc00664f1cb5c9",
+      "bytes": 425
+    },
+    {
+      "path": "manifest.json",
+      "sha256": "1e763b3cfd0fe044bc3ebffd1fc87d1a50386c8e70f33f3329eea2d0313c5e0a",
+      "bytes": 1591
+    },
+    {
+      "path": "raw-exclusion-manifest.json",
+      "sha256": "1e82c3d847892151e2d655859214ebedd10966689c2e311d48f5fbe72ea75374",
+      "bytes": 4337
+    },
+    {
+      "path": "README.md",
+      "sha256": "ad4866c980431b03eb8863ab88d0d09e15ea6ddbffaa5fd2092ee57cd021bc28",
+      "bytes": 616
+    }
+  ]
+}

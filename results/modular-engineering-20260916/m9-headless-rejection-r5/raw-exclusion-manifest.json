@@ -1,0 +1,99 @@
+{
+  "schema": "m9-r5-raw-exclusion-v1",
+  "root": "E:\\_ryanDev\\AI\\research-loop-modular\\WORK\\execution-improvement-headless-rejection-frozen-r5",
+  "total_files": 512,
+  "included_files": 497,
+  "excluded_files": 15,
+  "excluded": [
+    {
+      "path": "test_headless_evaluator_descri0/scorers/execution.key",
+      "bytes": 32,
+      "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+      "reason": "credential-shaped filename excluded"
+    },
+    {
+      "path": "test_headless_evaluator_descri0/scorers/score.key",
+      "bytes": 32,
+      "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+      "reason": "credential-shaped filename excluded"
+    },
+    {
+      "path": "test_headless_evaluator_descri0/evaluators/pair-M7-M9/home/auth.json",
+      "bytes": 250,
+      "sha256": "59a59a9d5e9d45c0470b5e06eb47960427930b662da3e16fc372441430975c9b",
+      "reason": "credential-shaped filename excluded"
+    },
+    {
+      "path": "test_headless_evaluator_descri0/evaluators/pair-M8-M9/home/auth.json",
+      "bytes": 250,
+      "sha256": "fc22765c21ed88c1f5bf75ff6d8a1ce2fd8c5f4660f566dcdec791b6b703f460",
+      "reason": "credential-shaped filename excluded"
+    },
+    {
+      "path": "test_headless_evaluator_descri0/evaluators/runtime-pair-M7-M9/home/auth.json",
+      "bytes": 250,
+      "sha256": "0b997b3921bce985043ff8994dc25bc0eac424cf4e864c6c80d6e81ab9019202",
+      "reason": "credential-shaped filename excluded"
+    },
+    {
+      "path": "test_headless_evaluator_descri0/evaluators/runtime-pair-M8-M9/home/auth.json",
+      "bytes": 250,
+      "sha256": "a0cb60bd9e49a81ca4599fb5856114438d36ded9deb90794d8ee2d01a49aea5c",
+      "reason": "credential-shaped filename excluded"
+    },
+    {
+      "path": "test_headless_evaluator_descri0/evaluators/runtime-triple-M7-M8-M9/home/auth.json",
+      "bytes": 250,
+      "sha256": "8c5567805fbbc4f55f7d71d05b657cad71cca06cfdee5523ba1cc785b26128c2",
+      "reason": "credential-shaped filename excluded"
+    },
+    {
+      "path": "test_headless_evaluator_descri0/evaluators/triple-M7-M8-M9/home/auth.json",
+      "bytes": 250,
+      "sha256": "ab1966418f6c9c753b3e38bb61c64c42bc97ead850d66eaf9db3f64c340ca404",
+      "reason": "credential-shaped filename excluded"
+    },
+    {
+      "path": "test_headless_evaluator_descri0/port/approved-home/auth.json",
+      "bytes": 250,
+      "sha256": "770dc9cca2165cf012acb84beb0a8e40f8c293caf1307f6fb552d1063ddcaa32",
+      "reason": "credential-shaped filename excluded"
+    },
+    {
+      "path": "test_headless_evaluator_descri0/port/ledger/calls/0001-builder_proposal/native-home/auth.json",
+      "bytes": 250,
+      "sha256": "770dc9cca2165cf012acb84beb0a8e40f8c293caf1307f6fb552d1063ddcaa32",
+      "reason": "credential-shaped filename excluded"
+    },
+    {
+      "path": "test_headless_evaluator_descri0/port/ledger/calls/0002-builder_proposal/native-home/auth.json",
+      "bytes": 250,
+      "sha256": "770dc9cca2165cf012acb84beb0a8e40f8c293caf1307f6fb552d1063ddcaa32",
+      "reason": "credential-shaped filename excluded"
+    },
+    {
+      "path": "test_headless_evaluator_descri0/port/ledger/calls/0003-builder_proposal/native-home/auth.json",
+      "bytes": 250,
+      "sha256": "770dc9cca2165cf012acb84beb0a8e40f8c293caf1307f6fb552d1063ddcaa32",
+      "reason": "credential-shaped filename excluded"
+    },
+    {
+      "path": "test_headless_evaluator_descri0/port/ledger/calls/0004-builder_proposal/native-home/auth.json",
+      "bytes": 250,
+      "sha256": "770dc9cca2165cf012acb84beb0a8e40f8c293caf1307f6fb552d1063ddcaa32",
+      "reason": "credential-shaped filename excluded"
+    },
+    {
+      "path": "test_headless_evaluator_descri0/port/ledger/calls/0005-builder_proposal/native-home/auth.json",
+      "bytes": 250,
+      "sha256": "770dc9cca2165cf012acb84beb0a8e40f8c293caf1307f6fb552d1063ddcaa32",
+      "reason": "credential-shaped filename excluded"
+    },
+    {
+      "path": "test_headless_evaluator_descri0/port/ledger/calls/0006-builder_proposal/native-home/auth.json",
+      "bytes": 250,
+      "sha256": "770dc9cca2165cf012acb84beb0a8e40f8c293caf1307f6fb552d1063ddcaa32",
+      "reason": "credential-shaped filename excluded"
+    }
+  ]
+}
