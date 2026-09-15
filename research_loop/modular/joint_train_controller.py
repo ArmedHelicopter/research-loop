@@ -253,13 +253,17 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
     headless_evaluator = plan.headless_evaluator_binding
     evaluator_gate = (None if headless_evaluator is None else
                       _headless_c5_evaluator_gate(headless_evaluator, failure_reason='not_finalized'))
+    last_persisted_accounting = None
 
     def persist(captured: dict | None = None) -> None:
+        nonlocal last_persisted_accounting
+        accounting = _native_accounting(executor) if captured is None else captured
         body = _controller_attempt_body(plan=plan, build_rows=build_rows, rows=rows,
-            accounting=_native_accounting(executor) if captured is None else captured, evaluator_gate=evaluator_gate)
+            accounting=accounting, evaluator_gate=evaluator_gate)
         path = root / 'common-controller-attempts.json'
         raw = R(body).encoded.encode('utf-8')
         temporary = path.with_suffix('.tmp'); temporary.write_bytes(raw); temporary.replace(path)
+        last_persisted_accounting = accounting
 
     journal.append('controller_lock', {'plan_digest': plan.record.content_hash, 'allocation': plan.protocol.record.data()['allocation']})
     persist()
@@ -381,9 +385,12 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
                 if headless_evaluator is not None:
                     evaluator_gate = _finalize_headless_c5_evaluator(plan=plan, panel=panel, service=service,
                         scores=tuple(scores), scorer_authority_keys=scorer_authority_keys)
+                    # No solver call occurs during scoring. Preserve the closure
+                    # against the last recorded solver-accounting snapshot before
+                    # any later journal write, worker close or fresh provider read.
+                    persist(captured=last_persisted_accounting)
                     journal.append('headless_evaluator_finalized', {'status': evaluator_gate['status'],
                         'error_type': evaluator_gate['error_type'], 'known_headless_main_tokens': evaluator_gate['known_headless_main_tokens']})
-                    persist()
     finally:
         if service is not None:
             process['close_attempts'] = 1
