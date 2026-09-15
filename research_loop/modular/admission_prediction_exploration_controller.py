@@ -22,6 +22,7 @@ from evaluation.modular.combination_scoring import verify_combination_adapted_re
 from evaluation.modular.scorer_process import CombinationScorerProcessClient
 from evaluation.modular.scoring_service import FrozenBenchmarkRubricEndpoint
 from research_loop.modular.admission_combination import FrozenAdmissionMaterial, AdmissionMaterialVerifier
+from research_loop.modular.csv_measurement_authorities import CsvMeasurementAdmissionMaterialVerifier, CsvMeasurementSpec
 from research_loop.modular.lineage_combination_controller import admission_qualification_semantics, admission_qualification_drift
 from research_loop.modular.combination_train_controller import _service_preflight, _usage, _ANALYSIS, _digest, _names
 from research_loop.modular.combination_panels import CombinationPanel, CombinationPanelVerifier
@@ -49,8 +50,9 @@ def _material_type(pair):
     return FrozenAdmissionMaterial
 
 
-def _validate_source_binding(source):
-    if (not isinstance(source, dict) or set(source) != {'authorities', 'cost_limit_per_call'}
+def _validate_source_binding(source, *, csv_measurement=False):
+    fields = {'authorities', 'cost_limit_per_call'} | ({'csv_measurement'} if csv_measurement else set())
+    if (not isinstance(source, dict) or set(source) != fields
             or type(source['cost_limit_per_call']) is not int or source['cost_limit_per_call'] < 1
             or not isinstance(source['authorities'], list) or len(source['authorities']) != 2
             or any(not isinstance(a, dict) or set(a) != {'authority', 'source_group', 'key_digest'}
@@ -60,6 +62,23 @@ def _validate_source_binding(source):
             or any(len({a[k] for a in source['authorities']}) != 2
                    for k in ('authority', 'source_group', 'key_digest'))):
         raise ContractError('two frozen independent source authority bindings required')
+    if csv_measurement:
+        measurement = source['csv_measurement']
+        if (not isinstance(measurement, dict) or set(measurement) != {'schema', 'datasets', 'worker_sources', 'receipt_layout'}
+                or measurement['schema'] != 'admission-csv-measurement-authorities-v2'
+                or measurement['receipt_layout'] != 'per-cell-request-authority-v2'
+                or not isinstance(measurement['datasets'], dict) or not measurement['datasets']
+                or any(not _digest(task) or not isinstance(row, dict)
+                       or set(row) != {'csv_sha256', 'csv_byte_count', 'specifications'}
+                       or not _digest(row['csv_sha256']) or type(row['csv_byte_count']) is not int or row['csv_byte_count'] < 0
+                       or not isinstance(row['specifications'], dict) or not row['specifications']
+                       for task, row in measurement['datasets'].items())
+                or not isinstance(measurement['worker_sources'], dict)
+                or set(measurement['worker_sources']) != {'csv-reader-aggregate-v2', 'csv-dictreader-aggregate-v2'}
+                or any(not isinstance(row, dict) or set(row) != {'path_name', 'sha256'}
+                       or not isinstance(row['path_name'], str) or not row['path_name'].endswith('_measurement_worker.py')
+                       or not _digest(row['sha256']) for row in measurement['worker_sources'].values())):
+            raise ContractError('frozen CSV measurement source binding required')
 
 
 @dataclass(frozen=True)
@@ -98,6 +117,7 @@ class FrozenAdmissionPredictionExplorationTrainConfig:
             identities.append(identity); task_digests.append(row['task_digest'])
         if {i.benchmark for i in identities} != {'blade', 'discoverybench'} or len({i.split_id for i in identities}) != 1 or len(set(task_digests)) != len(task_digests):
             raise ContractError('both core benchmarks in one train split required')
+        task_bindings = dict(bindings)
         materials = b['materials_by_pair']
         if not isinstance(materials, dict) or set(materials) != set(DESIGNS):
             raise ContractError('materials must bind the exact required admission prediction exploration triple')
@@ -158,8 +178,27 @@ class FrozenAdmissionPredictionExplorationTrainConfig:
         bindings = b['source_verifier_bindings']
         if not isinstance(bindings, dict) or set(bindings) != set(DESIGNS):
             raise ContractError('source verifiers must cover the exact pairs')
-        for source in bindings.values():
-            _validate_source_binding(source)
+        for pair, source in bindings.items():
+            _validate_source_binding(source, csv_measurement=isinstance(source, dict) and 'csv_measurement' in source)
+        if 'csv_measurement' in bindings['triple:M1+M4+M7']:
+            measured = bindings['triple:M1+M4+M7']['csv_measurement']['datasets']
+            if set(measured) != set(task_digests):
+                raise ContractError('CSV measurement datasets must cover the exact train tasks')
+            for task_digest, dataset in measured.items():
+                task_binding = next(row for row in task_bindings.values() if row['task_digest'] == task_digest)
+                if (dataset['csv_sha256'] != task_binding['csv_sha256']
+                        or dataset['csv_byte_count'] != task_binding['csv_byte_count']):
+                    raise ContractError('CSV measurement dataset bytes differ from frozen task custody')
+                state = FrozenAdmissionPredictionExplorationMaterial(
+                    FrozenRecord.from_dict(materials['triple:M1+M4+M7'][task_digest])).state()
+                originals = {row['key']: row for row in state.data()['originals']}
+                if set(dataset['specifications']) != set(originals):
+                    raise ContractError('CSV measurements must cover exact original observations')
+                for key, value in dataset['specifications'].items():
+                    spec = CsvMeasurementSpec(FrozenRecord.from_dict(value))
+                    if (spec.key != key or spec.record.data()['original_observation_digest']
+                            != FrozenRecord.from_dict(originals[key]).content_hash):
+                        raise ContractError('CSV measurement specification original binding drift')
         if len({s['cost_limit_per_call'] for s in bindings.values()}) != 1:
             raise ContractError('equal source opportunity cost caps required')
 
@@ -241,7 +280,7 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
                                                    enabled=headless_evaluator_envelope(b, 'admission_prediction_exploration'))
     for pair in DESIGNS:
         qualifier = source_verifiers[pair]; service = scoring_services[pair]
-        expected = AdmissionMaterialVerifier
+        expected = CsvMeasurementAdmissionMaterialVerifier if 'csv_measurement' in b['source_verifier_bindings'][pair] else AdmissionMaterialVerifier
         if (type(qualifier) is not expected or qualifier.binding().data() != b['source_verifier_bindings'][pair]
                 or service.admission_prediction_exploration is not True or service.panel.obligation_id != pair):
             raise ContractError('pair-specific material qualifier or scorer process scope differs')

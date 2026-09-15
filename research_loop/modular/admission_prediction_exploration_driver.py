@@ -11,6 +11,7 @@ from research_loop.modular.modules.context import ContextBuilder, ContextCache
 from research_loop.modular.modules.evidence import EvidenceLedger, ClaimLedger
 from research_loop.modular.lineage_combination_material import check_material_inputs
 from research_loop.modular.admission_combination import FrozenAdmissionMaterial, AdmissionMaterialVerifier
+from research_loop.modular.csv_measurement_authorities import CsvMeasurementAdmissionMaterialVerifier
 from research_loop.modular.lineage_combination_driver import _MemoryLog, _read_events, _source_binding, _transition
 from research_loop.modular.exploration_scheduler_combination import (
     FrozenExplorationSchedulerMaterial, check_inputs, selection, _joint as phase_public, _read, _hash)
@@ -94,7 +95,8 @@ def _validate(panel,cell,task,scenario,package,material,source_verifier):
             or panel.design!=registered_design(panel.obligation_id,cell.runtime_arm.data()['baseline_digest'])
             or type(task) is not PublicTask or task.identity!=cell.identity or task.content_hash!=cell.task_digest
             or type(package) is not CandidatePackage or package.digest!=cell.package_digest
-            or type(material) is not FrozenAdmissionPredictionExplorationMaterial or type(source_verifier) is not AdmissionMaterialVerifier
+            or type(material) is not FrozenAdmissionPredictionExplorationMaterial
+            or type(source_verifier) is not (CsvMeasurementAdmissionMaterialVerifier if 'csv_measurement' in source_verifier.binding().data() else AdmissionMaterialVerifier)
             or type(scenario) is not FrozenRecord or scenario.content_hash!=cell.scenario_digest): raise ContractError('exact admission prediction exploration cell dependencies required')
     b=scenario.data();expected={'schema':'admission-prediction-exploration-scenario-v1','obligation_id':panel.obligation_id,
         'design_digest':panel.design.content_hash,'task_digest':task.content_hash,'replicate':cell.replicate,
