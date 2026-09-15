@@ -1,0 +1,50 @@
+{
+  "schema": "published-files-v1",
+  "files": [
+    {
+      "path": "archive_lineage_full4_incomplete_r1.py",
+      "sha256": "00aa05496f97216e1d6c4c8abce9b524256e4fc7a15fffbe325c59638b893d4c",
+      "byte_count": 6187
+    },
+    {
+      "path": "headless-lineage-controller-full4-interruption-audit-r1.json",
+      "sha256": "1c2555b0db84f7f8128f9e0778b61c817f0ab7268d2a262aed0afb5397e4f16a",
+      "byte_count": 1232
+    },
+    {
+      "path": "headless-lineage-controller-full4-interruption-audit-r2.json",
+      "sha256": "21edaca4efa82a8c0fe0944782c35641e62df7076a3c538af2aeefa3fc019d4c",
+      "byte_count": 1608
+    },
+    {
+      "path": "manifest.json",
+      "sha256": "97d120b0bdb1f5276e950a33391c908ef19e5e675898f2c5202de408cee537ce",
+      "byte_count": 8390372
+    },
+    {
+      "path": "public-metadata.zip",
+      "sha256": "e29596540c85c79b9f868c63ba8156a998b97da0122e078bee821d3771c38545",
+      "byte_count": 75150
+    },
+    {
+      "path": "publish_lineage_full4_incomplete_r1.py",
+      "sha256": "1b05be9b2e7b4e834bf3ae644d6a2ce1c7903f3ae2b91a7e7a9d2051ca7e5045",
+      "byte_count": 5939
+    },
+    {
+      "path": "readback-verification.json",
+      "sha256": "aaac004e788d838681526bd577b8558492ea03bb5fccfaec2e166ec797f15558",
+      "byte_count": 1137
+    },
+    {
+      "path": "README.md",
+      "sha256": "03cd6bf2aed51a602cea4a2401191107cd9fe6e15d9b9035e2184653e53a17d1",
+      "byte_count": 2293
+    },
+    {
+      "path": "source-exact.zip",
+      "sha256": "5c97b2d265066c92795799ac47b45ab0349146feddba376cdee8f99dd4ec98a6",
+      "byte_count": 2607123
+    }
+  ]
+}

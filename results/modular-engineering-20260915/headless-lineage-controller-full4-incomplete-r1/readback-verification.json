@@ -1,0 +1,26 @@
+{
+  "schema": "lineage-full4-incomplete-delivery-v1",
+  "status": "preserved_incomplete",
+  "verified_archives": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-controller-full4-incomplete-archive-r1\\source-exact.zip",
+      "sha256": "5c97b2d265066c92795799ac47b45ab0349146feddba376cdee8f99dd4ec98a6",
+      "members": 776
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-controller-full4-incomplete-archive-r1\\public-metadata.zip",
+      "sha256": "e29596540c85c79b9f868c63ba8156a998b97da0122e078bee821d3771c38545",
+      "members": 9
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\retained-private-evidence\\headless-lineage-controller-full4-incomplete-r1\\retained-private.zip",
+      "sha256": "38e58d6a52dd86f4ef91ee9adb38100143f1f37f3badfce2d0de28238e41b388",
+      "members": 6188
+    }
+  ],
+  "original_files_checked": 6973,
+  "original_bytes_and_mtimes_unchanged": true,
+  "semantic_controller_replay": false,
+  "original_process_exit_known": false,
+  "scientific_effectiveness_proven": false
+}

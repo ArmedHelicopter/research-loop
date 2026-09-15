@@ -12,6 +12,13 @@
 该批次的[源码、检查与逐产物清单](../results/modular-engineering-20260915/headless-lineage-final-gate-r1/README.md)
 已封存，覆盖五个测试目录内的 328 个非凭据原件，并已核对 Git 字节和原件修改时间。
 
+随后完整四 panel 的原进程在最终回执产生前消失，最后落盘状态为 34 格中的
+32 格成功、1 格运行中、1 格未启动，不能算作完整通过。该次调用没有重启；
+退出码及原因未知。[未完成运行的原件与核验](../results/modular-engineering-20260915/headless-lineage-controller-full4-incomplete-r1/README.md)
+保留了 6,188 个非凭据运行文件、源码快照、完整分母和观察记录。源码仅有中断后
+快照，未宣称原运行全程源码不变。此记录补充失败前缀的保存范围，不改变完整
+组合实验、真实效果与 VAL 的验收要求。
+
 最新封存记录补充了评分器启动前的纯配置摘要，以及一轮真实 M4/M5 TRAIN
 失败记录。[20 项集成检查](../results/modular-engineering-20260915/headless-descriptor-primary-r1/README.md)
 通过后，[真实八格批次](../results/modular-engineering-20260915/actual-m4m5-headless-r1/README.md)

@@ -1,0 +1,37 @@
+{
+  "schema": "headless-lineage-controller-full4-interruption-audit-v1",
+  "audit_scope": "read_only_filesystem_and_process_presence",
+  "observed_at_local": "2026-09-15T11:20:29+08:00",
+  "target_process": {
+    "pid": 54260,
+    "get_process_present": false,
+    "cim_present": false,
+    "exit_reason": "unknown",
+    "exit_code": null
+  },
+  "owned_worker_processes": {
+    "surviving_non_audit_process_count": 0,
+    "note": "The only matching process observed was this audit shell, started at 11:20:29+08:00."
+  },
+  "run_state": {
+    "attempt_schema": "lineage-train-attempt-v2",
+    "attempt_status": "executing",
+    "cell_count": 34,
+    "cell_status_counts": {
+      "succeeded": 32,
+      "running": 1,
+      "not_started": 1
+    },
+    "actual_scorer_calls": 32,
+    "lineage_evaluator_final_gate_present": false
+  },
+  "terminal_artifacts": {
+    "junit_log_or_join_file_count": 0,
+    "completion_receipt_present": false
+  },
+  "latest_observed_timestamps_utc": {
+    "run_runtime_artifacts": "2026-09-15T03:12:40.609835Z",
+    "worker_3_client_and_server_journals": "2026-09-15T03:03:49.3806456Z"
+  },
+  "conclusion": "incomplete_interrupted_or_terminated_state; no completion claim; exit reason remains unknown"
+}

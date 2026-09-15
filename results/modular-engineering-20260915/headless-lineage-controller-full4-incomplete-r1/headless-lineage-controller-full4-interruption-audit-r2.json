@@ -1,0 +1,35 @@
+{
+  "schema": "headless-lineage-controller-full4-interruption-audit-correction-v1",
+  "corrects": "headless-lineage-controller-full4-interruption-audit-r1.json",
+  "scope_correction": "r1 counted terminal-named artifacts only inside the specimen directory; this correction records relevant WORK-top-level observer artifacts separately.",
+  "work_top_level_artifacts": {
+    "log": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-controller-full4.log",
+      "exists": true,
+      "length": 0,
+      "last_write_utc": "2026-09-15T02:00:29.9869496Z",
+      "meaning": "zero-byte launch log; no terminal result content"
+    },
+    "root_join_r1": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-controller-full4-root-join-r1.json",
+      "exists": true,
+      "schema": "lineage-full4-root-handle-join-v1",
+      "pid": 54260,
+      "process_signaled": false,
+      "process_exit_code": 259,
+      "observer_timeout": true,
+      "test_restarted": false,
+      "test_terminated": false,
+      "meaning": "bounded observer timeout, not a process-closure or completion receipt"
+    },
+    "junit_xml": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-controller-full4.xml",
+      "exists": false
+    },
+    "root_join_r2": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-controller-full4-root-join-r2.json",
+      "exists": false
+    }
+  },
+  "unchanged_conclusion": "no completion claim; original process exit reason remains unknown; the controller specimen remains incomplete."
+}
