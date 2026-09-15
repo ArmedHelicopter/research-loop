@@ -196,8 +196,9 @@ class FrozenAdmissionPredictionExplorationTrainConfig:
                     raise ContractError('CSV measurements must cover exact original observations')
                 for key, value in dataset['specifications'].items():
                     spec = CsvMeasurementSpec(FrozenRecord.from_dict(value))
-                    if (spec.key != key or spec.record.data()['original_observation_digest']
-                            != FrozenRecord.from_dict(originals[key]).content_hash):
+                    frozen = spec.record.data()
+                    if (spec.key != key or frozen['original_observation_digest'] != FrozenRecord.from_dict(originals[key]).content_hash
+                            or originals[key]['content'] != {'measurement': {'operation': frozen['operation'], 'column': frozen['column'], 'expected': frozen['expected']}}):
                         raise ContractError('CSV measurement specification original binding drift')
         if len({s['cost_limit_per_call'] for s in bindings.values()}) != 1:
             raise ContractError('equal source opportunity cost caps required')

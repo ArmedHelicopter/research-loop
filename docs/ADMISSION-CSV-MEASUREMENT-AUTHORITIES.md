@@ -24,10 +24,20 @@ global reusable authority receipt. One owned child process computes all at most
 32 frozen specifications for that authority/request; its timeout is 20 seconds.
 Thus a 16-cell controller has exactly 32 source callbacks and at most 32 child
 processes (40 seconds of child timeout per cell, 640 seconds if serialized).
-The receipt retains stdout, stderr, exit code, timeout status, elapsed time,
-every individual result, exact CSV/spec/worker/Python hashes, and known zero
-local cost. A source execution failure yields an `unknown` signed provenance
-verdict and remains retained evidence; it cannot become accepted provenance.
+The receipt retains byte-exact stdout/stderr (lossless base64 plus hashes),
+partial timeout output, PID, command, launch/return pins, exit code, timeout
+status, wall-clock timing, every individual result, and exact CSV/spec/worker/
+Python hashes. A launched callback consumes one bounded source opportunity;
+failure before a child starts retains unknown cost, while a started child has
+cost one even when its measurement outcome is unknown. A source execution
+failure yields an `unknown` signed provenance verdict and remains retained
+evidence; it cannot become accepted provenance.
+
+`receipt_root/authority-manifest.json` is written before the first callback.
+Later construction may reopen that root only when its canonical binding,
+including authority key digests, task CSV/specification digests, and worker
+source digests, is identical. A changed authority, input, worker, or manifest
+is rejected before it can reuse or overwrite a receipt.
 
 The signed ordinary admission response includes the raw-receipt digest. On
 `qualify`, `replay`, and `assessments`,

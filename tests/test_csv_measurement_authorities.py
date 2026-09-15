@@ -1,3 +1,5 @@
+import hashlib
+import shutil
 from decimal import Context, localcontext
 
 import pytest
@@ -11,14 +13,14 @@ from research_loop.modular.csv_measurement_authorities import (
 from research_loop.ontology import ContractError
 
 
-def _material():
+def _material(csv_bytes, sum_expected):
     identity = {'benchmark': 'blade', 'task_id': 'csv-scope', 'group_id': 'g', 'dataset_version': 'v1', 'split_id': 'train-r1', 'domain': 'train'}
     originals = [
-        {'key': 'sum', 'root_material': {'kind': 'public-csv'}, 'content': {'measurement': 'amount total'}, 'subject_bindings': {'task': 'csv-scope'}},
-        {'key': 'count', 'root_material': {'kind': 'public-csv'}, 'content': {'measurement': 'name presence'}, 'subject_bindings': {'task': 'csv-scope'}},
+        {'key': 'sum', 'root_material': {'kind': 'public-csv-amount'}, 'content': {'measurement': {'operation': 'decimal_sum', 'column': 'amount', 'expected': sum_expected}}, 'subject_bindings': {'task': 'csv-scope'}},
+        {'key': 'count', 'root_material': {'kind': 'public-csv-name'}, 'content': {'measurement': {'operation': 'nonempty_count', 'column': 'name', 'expected': '1'}}, 'subject_bindings': {'task': 'csv-scope'}},
     ]
     body = {'schema': 'admission-combination-material-v1', 'identity': identity, 'task_digest': 'a' * 64,
-        'public_artifacts': [{'artifact': {'artifact_id': 'public_csv', 'sha256': 'b' * 64, 'byte_count': 0}, 'container_path': '/input/public_csv'}],
+        'public_artifacts': [{'artifact': {'artifact_id': 'public_csv', 'sha256': hashlib.sha256(csv_bytes).hexdigest(), 'byte_count': len(csv_bytes)}, 'container_path': '/input/public_csv'}],
         'question': 'What do the public CSV measurements report?', 'context_budget_bytes': 1024,
         'ordinary_summary': 'A public descriptive measurement is available.', 'originals': originals, 'representations': [],
         'claims': [{'key': 'claim', 'statement': 'The public measurement is recorded.', 'subject_bindings': {'task': 'csv-scope'},
@@ -34,9 +36,9 @@ def _spec(row, operation, column, expected):
 
 
 def _verifier(tmp_path, *, expected='3.5'):
-    material = _material()
     csv_path = tmp_path / 'public.csv'
     csv_path.write_text('amount,name\n1.20,a\n2.30,\n', encoding='utf-8')
+    material = _material(csv_path.read_bytes(), expected)
     rows = material.data()['originals']
     dataset = CsvMeasurementDataset(csv_path, {'sum': _spec(rows[0], 'decimal_sum', 'amount', expected),
                                                 'count': _spec(rows[1], 'nonempty_count', 'name', '1')})
@@ -64,14 +66,14 @@ def test_completed_but_wrong_measurement_is_a_legitimate_m1_rejection(tmp_path):
     sidecar = tmp_path / 'cell' / 'source-verification.json'
     verifier.qualify(material, sidecar, cell_binding=_binding())
     assessments = verifier.assessments(material, sidecar, cell_binding=_binding())
-    assert all(row['state']['validity'] == 'unknown' and row['execution_success'] is True
-               for phase in assessments.values() for row in phase.values())
+    assert all(phase['sum']['state']['validity'] == 'unknown' and phase['sum']['execution_success'] is True
+               and phase['count']['state']['validity'] == 'valid' for phase in assessments.values())
 
 
 def test_source_failure_is_retained_as_unknown_not_promoted(tmp_path, monkeypatch):
     material, _, verifier = _verifier(tmp_path)
     import research_loop.modular.csv_measurement_authorities as module
-    monkeypatch.setattr(module.subprocess, 'run', lambda *args, **kwargs: (_ for _ in ()).throw(OSError('offline')))
+    monkeypatch.setattr(module.subprocess, 'Popen', lambda *args, **kwargs: (_ for _ in ()).throw(OSError('offline')))
     sidecar = tmp_path / 'cell' / 'source-verification.json'
     with pytest.raises(ContractError):
         verifier.qualify(material, sidecar, cell_binding=_binding())
@@ -80,13 +82,19 @@ def test_source_failure_is_retained_as_unknown_not_promoted(tmp_path, monkeypatc
 
 
 @pytest.mark.parametrize('fault', ['csv', 'code', 'spec', 'raw_receipt'])
-def test_actual_replay_rejects_csv_code_spec_and_raw_receipt_mutations(tmp_path, fault):
+def test_actual_replay_rejects_csv_code_spec_and_raw_receipt_mutations(tmp_path, monkeypatch, fault):
+    import research_loop.modular.csv_measurement_authorities as module
+    pinned = tmp_path / 'pinned' / 'research_loop' / 'modular'
+    pinned.mkdir(parents=True)
+    for group, source_path in tuple(module._WORKERS.items()):
+        copied = pinned / source_path.name
+        shutil.copy2(source_path, copied)
+        monkeypatch.setitem(module._WORKERS, group, copied)
     material, csv_path, verifier = _verifier(tmp_path)
     sidecar = tmp_path / 'cell' / 'source-verification.json'
     verifier.qualify(material, sidecar, cell_binding=_binding())
     raw = next((tmp_path / 'receipts' / ('c' * 64)).glob('*.json'))
     original_csv = csv_path.read_bytes()
-    import research_loop.modular.csv_measurement_authorities as module
     source = module._WORKERS['csv-reader-aggregate-v2']
     original_source = source.read_bytes()
     try:
@@ -99,7 +107,7 @@ def test_actual_replay_rejects_csv_code_spec_and_raw_receipt_mutations(tmp_path,
             if fault == 'spec':
                 receipt['executions'][0]['spec_digest'] = 'e' * 64
             else:
-                receipt['process']['stdout'] = '{}'
+                receipt['process']['stdout_b64'] = 'e30='
             raw.write_text(FrozenRecord.from_dict(receipt).encoded, encoding='utf-8')
         with pytest.raises(ContractError):
             verifier.assessments(material, sidecar, cell_binding=_binding())

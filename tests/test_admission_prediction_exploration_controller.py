@@ -8,6 +8,7 @@ from dataclasses import replace
 import hashlib
 import json
 import os
+import shutil
 from pathlib import Path
 
 import pytest
@@ -19,12 +20,15 @@ from evaluation.modular.scoring_service import ScorerConfig, FrozenBenchmarkRubr
 from evaluation.modular.train_io import TrainPacketExporter
 from evaluation.modular.admission_prediction_exploration_scoring import issue_admission_prediction_exploration_score_input
 from research_loop.modular.contracts import FrozenRecord
+from research_loop.modular.admission_combination import FrozenAdmissionMaterial
+from research_loop.modular.csv_measurement_authorities import CsvMeasurementDataset, CsvMeasurementSpec, build_csv_measurement_admission_verifier
+from evaluation.modular.linked_scoring import LinkedExecutionAuthority
 from research_loop.modular.admission_attempt_transitions import verify_attempt_transitions
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.modular.admission_prediction_exploration_controller import (
     FrozenAdmissionPredictionExplorationTrainConfig, compile_admission_prediction_exploration_train_panels, run_admission_prediction_exploration_train_panels, _arms)
-from research_loop.modular.admission_prediction_exploration_driver import DESIGNS, SLOTS, freeze_material, verify_admission_prediction_exploration_cell
+from research_loop.modular.admission_prediction_exploration_driver import DESIGNS, SLOTS, freeze_material, verify_admission_prediction_exploration_cell, FrozenAdmissionPredictionExplorationMaterial
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
 from research_loop.modular.combination_train_controller import _ANALYSIS
 from research_loop.ontology import ContractError, canonical
@@ -60,12 +64,16 @@ def job_material(task, state, fault=None):
 
 
 def model(seen):
+    def observed_value(observation):
+        value = next(iter(observation['content'].values()))
+        return float(value['expected']) if isinstance(value, dict) and set(value) == {'operation', 'column', 'expected'} else value
+
     def respond(request):
         b=request.data();seen.append(b);context=b['module_context']
         assert all(marker not in request.encoded for marker in ('"enabled"','"arm_id"','"policy_digest"',
             'qualification_observations','triple:M1','PRIVATE-REFERENCE-SENTINEL'))
         if b['slot']=='proposal':
-            observed=[next(iter(v['content'].values())) for v in context['state_projection']['observations']]
+            observed=[observed_value(v) for v in context['state_projection']['observations']]
             proposal=_plan()
             for h in proposal['branches']:
                 h['intervention']=str(sum(observed)/len(observed))
@@ -73,7 +81,7 @@ def model(seen):
             return FrozenRecord.from_dict(proposal)
         joint=context['joint_mechanism'];mechanism=joint['mechanism']
         if b['slot']=='analysis_program':
-            observations=[next(iter(v['content'].values())) for v in mechanism['state_projection']['observations']]
+            observations=[observed_value(v) for v in mechanism['state_projection']['observations']]
             proposal=mechanism['proposal'];directions=[p['direction'] for h in proposal['branches'] for p in h['predictions']]
             weight=sum({'increase':1,'decrease':-1,'unchanged':0}[v] for v in directions)
             proposed=[float(h['intervention']) for h in proposal['branches']]
@@ -105,7 +113,28 @@ def prepare(root, fault=None):
         materials[pair]={}
         for packet in packets:
             state=state_material(packet.task,packet.csv_path,pair=='triple:M1+M4+M7')
+            if fault == 'csv_authority':
+                body = state.data()
+                expected = str(len(packet.csv_path.read_text(encoding='utf-8').splitlines()) - 1)
+                for index, original in enumerate(body['originals']):
+                    original['root_material'] = {'public_csv_measurement': index}
+                    original['content'] = {'measurement': {'operation': 'row_count', 'column': None, 'expected': expected}}
+                state = FrozenAdmissionMaterial(FrozenRecord.from_dict(body))
             materials[pair][packet.task.content_hash]=freeze_material(packet.task,state,job_material(packet.task,state,fault)).data()
+    if fault == 'csv_authority':
+        datasets = {}
+        for packet in packets:
+            state = FrozenAdmissionPredictionExplorationMaterial(FrozenRecord.from_dict(materials['triple:M1+M4+M7'][packet.task.content_hash])).state()
+            specs = {}
+            for original in state.data()['originals']:
+                claim = original['content']['measurement']
+                specs[original['key']] = CsvMeasurementSpec(FrozenRecord.from_dict({'schema': 'admission-csv-measurement-spec-v2',
+                    'original_key': original['key'], 'original_observation_digest': FrozenRecord.from_dict(original).content_hash,
+                    'operation': claim['operation'], 'column': claim['column'], 'expected': claim['expected']}))
+            datasets[packet.task.content_hash] = CsvMeasurementDataset(packet.csv_path, specs)
+        verifiers['triple:M1+M4+M7'] = build_csv_measurement_admission_verifier(
+            authorities=(LinkedExecutionAuthority('csv-reader-test', b'r' * 32), LinkedExecutionAuthority('csv-dictreader-test', b's' * 32)),
+            datasets=datasets, receipt_root=root/'csv-receipts')
     package=CandidatePackage.create(parent_digest=None,manifest=TrainingManifest.freeze([p.task.identity for p in packets]),
         changes={'prompt':{'instructions':'Analyze the supplied public training observations.'}},search_cost=0)
     store,handles,manifest_sha=_store(root,{'tasks':{p.task.content_hash:p.task for p in packets}})
@@ -250,6 +279,52 @@ def test_full16_prospective_cells_docker_and_independent_primary_scores(grid):
         rows=[json.loads(l) for l in (setup['root']/f'worker-{n}.jsonl').read_text(encoding='utf-8').splitlines()]
         assert [r['status'] for r in rows]==['reserved','succeeded']*16
         assert 'PRIVATE-REFERENCE-SENTINEL' not in (setup['root']/f'client-{n}.jsonl').read_text(encoding='utf-8')
+
+
+def test_csv_authority_binding_is_consumed_by_controller_and_driver_replay(tmp_path, monkeypatch):
+    import research_loop.modular.csv_measurement_authorities as csv_authorities
+    pinned = tmp_path / 'pinned-workers' / 'research_loop' / 'modular'
+    pinned.mkdir(parents=True)
+    for group, source in tuple(csv_authorities._WORKERS.items()):
+        copied = pinned / source.name
+        shutil.copy2(source, copied)
+        monkeypatch.setitem(csv_authorities._WORKERS, group, copied)
+    setup = prepare(tmp_path, 'csv_authority')
+    result, _, _ = invoke(setup, monkeypatch)
+    assert len(result.results) == 16 and len(setup['verifiers']['triple:M1+M4+M7'].datasets) == 2
+    receipt_root = tmp_path / 'csv-receipts'
+    assert len(list(receipt_root.glob('*/*.json'))) == 32
+    executed = result.results[0]
+    args = replay_args(setup, result, executed)
+    verify_admission_prediction_exploration_cell(executed, **args)
+    verifier = setup['verifiers']['triple:M1+M4+M7']
+    from research_loop.modular.lineage_combination_driver import _source_binding
+    request = verifier.request(args['material'].state(), _source_binding(executed.cell))
+    raw = verifier._receipt_path(request, verifier.authorities[0])
+    saved_raw = raw.read_bytes()
+    dataset = verifier.datasets[executed.cell.task_digest]
+    key, saved_spec = next(iter(dataset.specs.items()))
+    source = csv_authorities._WORKERS['csv-reader-aggregate-v2']
+    saved_source = source.read_bytes()
+    try:
+        receipt = FrozenRecord(saved_raw.decode('utf-8')).data()
+        receipt['process']['stdout_b64'] = 'e30='
+        raw.write_text(FrozenRecord.from_dict(receipt).encoded, encoding='utf-8')
+        with pytest.raises(ContractError):
+            verify_admission_prediction_exploration_cell(executed, **args)
+        raw.write_bytes(saved_raw)
+        changed = saved_spec.record.data(); changed['expected'] = '999'
+        dataset.specs[key] = CsvMeasurementSpec(FrozenRecord.from_dict(changed))
+        with pytest.raises(ContractError):
+            verify_admission_prediction_exploration_cell(executed, **args)
+        dataset.specs[key] = saved_spec
+        source.write_bytes(saved_source + b'\n# pinned-copy mutation\n')
+        with pytest.raises(ContractError):
+            verify_admission_prediction_exploration_cell(executed, **args)
+    finally:
+        raw.write_bytes(saved_raw)
+        dataset.specs[key] = saved_spec
+        source.write_bytes(saved_source)
 
 
 @pytest.mark.parametrize('fault',['both','wrong_port','roots','split','validation','swapped_tokens','export_receipt','completion_anchor','source','material'])
