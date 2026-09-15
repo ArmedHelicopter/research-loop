@@ -1,0 +1,60 @@
+{
+  "schema": "normal-train-control-published-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "archive_grok_normal_control_r1.py",
+      "sha256": "4c8017762a38da979aa25ec7543f83e2aca46d7e90a432d7001acf67b16f2136",
+      "bytes": 5698
+    },
+    {
+      "path": "closure.json",
+      "sha256": "9158ce1633213dc34894ea95ab60c4ee3c2a3db3044a0e22ce48901e493e412f",
+      "bytes": 836
+    },
+    {
+      "path": "control.py",
+      "sha256": "a0d07b22a9074e48df85cee610b468e87b783bc26bcc1ca262b3542abb303a77",
+      "bytes": 9798
+    },
+    {
+      "path": "grok-normal-train-control-r1-native-completion.json",
+      "sha256": "a3859ea8dfa02d0d2acbc22ae5236cf5ac8b206ac440e31e38feca5b4eddd801",
+      "bytes": 258
+    },
+    {
+      "path": "grok-normal-train-control-r1-native-start.json",
+      "sha256": "eb239add421ecab0731f45033843b35b550116620dba80f7913ac1a34fbd3713",
+      "bytes": 123
+    },
+    {
+      "path": "grok-normal-train-control-r1-plan.md",
+      "sha256": "25da8dc3c68e1fe121e5838bc6b8f36db95e551909e72d5c2f514eba274f5266",
+      "bytes": 1600
+    },
+    {
+      "path": "grok-normal-train-control-r1-predispatch-diagnosis-r1.md",
+      "sha256": "721d2182657deb75b14940fa588a50392083e2144185e2c2ee3de530f7dc8c15",
+      "bytes": 2686
+    },
+    {
+      "path": "grok-normal-train-control-r1.log",
+      "sha256": "2be2674152be11b9833b5e39a9f354a1d29596fdb9864a9919e4e117f5cbc37f",
+      "bytes": 200
+    },
+    {
+      "path": "prepare_headless_lineage_full4_archive_r1.py",
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840
+    },
+    {
+      "path": "README.md",
+      "sha256": "8f5e35f6a9eb91ae6f98fa9f0c5b26abcf32f71ec99a74bcb96758d41dfd8e79",
+      "bytes": 1513
+    }
+  ]
+}
