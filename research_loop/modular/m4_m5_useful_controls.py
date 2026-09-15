@@ -25,8 +25,10 @@ REVISION_INSTRUCTION = (
 
 def source_contract_body(body):
     """Normalize explicit native versions and the frozen v3 recipe for source custody."""
-    if body.get('schema') in ('m4-m5-train-controller-config-v4','m4-m5-train-controller-config-v5'):
+    if body.get('schema') in ('m4-m5-train-controller-config-v4','m4-m5-train-controller-config-v5','m4-m5-train-controller-config-v6'):
         normalized = dict(body)
+        if body['schema'] == 'm4-m5-train-controller-config-v6':
+            normalized.pop('evaluator_provider', None)
         normalized.pop('provider', None)
         normalized['schema'] = 'm4-m5-train-controller-config-v3'
         return source_contract_body(normalized)
