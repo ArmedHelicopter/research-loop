@@ -1,0 +1,153 @@
+{
+  "schema": "closed-m4m5-train-diagnostic-v1",
+  "source_commit": "62695576080b974d3ebae7a265039f6d761a5aef",
+  "panel_digest": "3bba191a8ad2b02d89fbae7f82dd0159d50c32b4b97d01eb7a52edd5dd3c5903",
+  "cells": [
+    {
+      "benchmark": "discoverybench",
+      "arm": "00",
+      "task_digest": "aaac713bb95a1ade3ca2410ad962663e22446c6c6d5bb99f6f82223ecf803ce3",
+      "status": "failed",
+      "phase": "execution",
+      "reason": "combination_execution_failed",
+      "error_type": null,
+      "scorer_calls": 0
+    },
+    {
+      "benchmark": "discoverybench",
+      "arm": "01",
+      "task_digest": "aaac713bb95a1ade3ca2410ad962663e22446c6c6d5bb99f6f82223ecf803ce3",
+      "status": "blocked",
+      "phase": "model_allocation",
+      "reason": "prior_model_usage_incomplete",
+      "error_type": null,
+      "scorer_calls": 0
+    },
+    {
+      "benchmark": "discoverybench",
+      "arm": "10",
+      "task_digest": "aaac713bb95a1ade3ca2410ad962663e22446c6c6d5bb99f6f82223ecf803ce3",
+      "status": "blocked",
+      "phase": "model_allocation",
+      "reason": "prior_model_usage_incomplete",
+      "error_type": null,
+      "scorer_calls": 0
+    },
+    {
+      "benchmark": "discoverybench",
+      "arm": "11",
+      "task_digest": "aaac713bb95a1ade3ca2410ad962663e22446c6c6d5bb99f6f82223ecf803ce3",
+      "status": "blocked",
+      "phase": "model_allocation",
+      "reason": "prior_model_usage_incomplete",
+      "error_type": null,
+      "scorer_calls": 0
+    },
+    {
+      "benchmark": "blade",
+      "arm": "00",
+      "task_digest": "aa00979db472a775cb18e4f26375b28ac1ba5095299baabd69b88c97442bccf4",
+      "status": "blocked",
+      "phase": "model_allocation",
+      "reason": "prior_model_usage_incomplete",
+      "error_type": null,
+      "scorer_calls": 0
+    },
+    {
+      "benchmark": "blade",
+      "arm": "01",
+      "task_digest": "aa00979db472a775cb18e4f26375b28ac1ba5095299baabd69b88c97442bccf4",
+      "status": "blocked",
+      "phase": "model_allocation",
+      "reason": "prior_model_usage_incomplete",
+      "error_type": null,
+      "scorer_calls": 0
+    },
+    {
+      "benchmark": "blade",
+      "arm": "10",
+      "task_digest": "aa00979db472a775cb18e4f26375b28ac1ba5095299baabd69b88c97442bccf4",
+      "status": "blocked",
+      "phase": "model_allocation",
+      "reason": "prior_model_usage_incomplete",
+      "error_type": null,
+      "scorer_calls": 0
+    },
+    {
+      "benchmark": "blade",
+      "arm": "11",
+      "task_digest": "aa00979db472a775cb18e4f26375b28ac1ba5095299baabd69b88c97442bccf4",
+      "status": "blocked",
+      "phase": "model_allocation",
+      "reason": "prior_model_usage_incomplete",
+      "error_type": null,
+      "scorer_calls": 0
+    }
+  ],
+  "roles": [
+    {
+      "role": "solver",
+      "ledger_sha256": "46959db21c57e1737dbc42155e470a03d4cf74f3c42099d961cff7e08609ce49",
+      "reservations": 1,
+      "statuses": {
+        "unknown_or_failed": 1
+      },
+      "prompt_processes_launched": 1,
+      "known_main_tokens": 0,
+      "usage_incomplete": true,
+      "calls": [
+        {
+          "role": "solver",
+          "reservation_index": 1,
+          "slot": "m4_plan",
+          "ledger_status": "unknown_or_failed",
+          "observer_sha256": "4c444a2ed25d3e7c1767759675a58ccadf0d00ff0c70b27708f2baf8b9ec4383",
+          "prompt_process_launched": true,
+          "accepted": false,
+          "faults": [
+            "runtime_tools_unobserved",
+            "process_failed",
+            "end_count",
+            "prompt_process_failed"
+          ],
+          "account_observation_span_seconds": 2.28223,
+          "frozen_account_prelaunch_max_age_seconds": 35,
+          "known_main_usage": null
+        }
+      ]
+    },
+    {
+      "role": "evaluator",
+      "ledger_sha256": "b33741ea7fb5f6854d925af687064dd5e390926b1429c09bf1b648c0ed170021",
+      "reservations": 0,
+      "statuses": {},
+      "prompt_processes_launched": 0,
+      "known_main_tokens": 0,
+      "usage_incomplete": false,
+      "calls": []
+    }
+  ],
+  "cause": "The first solver MAIN launched after account preflight, timed out with no accepted response, and retained a shutdown-failure record. Seven remaining cells were blocked by incomplete usage.",
+  "main_process_evidence": {
+    "pid": 67464,
+    "started_at": "2026-09-15T09:40:41.533217+00:00",
+    "finished_at": "2026-09-15T09:42:46.582231+00:00",
+    "timeout_seconds": 60,
+    "timed_out": true,
+    "failure": "process_tree_shutdown_failed",
+    "process_exit_code": null,
+    "owned_tree_closed": true,
+    "original_sha256": "8125368e94ac067c327c07652d7832df6d009494a03a6a33daa51ce14d928c5f"
+  },
+  "evidence_limits": [
+    "This is execution diagnosis from retained metadata, not module-effect estimation.",
+    "The frozen controller conservatively marks usage incomplete and final evidence ineligible.",
+    "There were no evaluator reservations; zero known solver tokens does not establish zero consumption.",
+    "The original child record retains a null exit code despite final owned-tree closure; it is not rewritten by this archive.",
+    "No failed or blocked cell is removed from the eight-cell denominator.",
+    "No retry, regrade, data change or validation access is performed by this archive.",
+    "MAIN usage is known only as recorded; title/all-opportunity billing settlement remains unknown."
+  ],
+  "scientific_effectiveness_proven": false,
+  "validation_opened": false
+}

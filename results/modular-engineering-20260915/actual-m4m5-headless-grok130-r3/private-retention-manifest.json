@@ -1,0 +1,1862 @@
+{
+  "schema": "actual-m4m5-grok130-retention-v1",
+  "archive_path": "E:\\_ryanDev\\AI\\research-loop-modular\\retained-private-evidence\\actual-m4m5-headless-grok130-r3\\original-run-preparation-private-without-credentials.zip",
+  "archive_sha256": "7d56253f2f5f8958ab26e04ac8221cb9eb3392aacfcf034af3da5d170445e552",
+  "members": [
+    {
+      "path": "run/controller/cells/4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b/artifacts.jsonl",
+      "sha256": "538b72f746c6d81db1bb1cd092168b8d4df7fc46a808e5f5e083cecf81929017",
+      "byte_count": 42415,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\artifacts.jsonl"
+    },
+    {
+      "path": "run/controller/cells/4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_count": 0,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\claims.jsonl"
+    },
+    {
+      "path": "run/controller/cells/4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_count": 0,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\evidence.jsonl"
+    },
+    {
+      "path": "run/controller/cells/4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_count": 0,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\predictions.jsonl"
+    },
+    {
+      "path": "run/controller/cells/4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_count": 0,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\reviews.jsonl"
+    },
+    {
+      "path": "run/controller/cells/4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b/trace.jsonl",
+      "sha256": "8962add1ed7b3636804711b0e8113582f45ba941d459d3c38de8686e12b0e02f",
+      "byte_count": 12612,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\trace.jsonl"
+    },
+    {
+      "path": "run/controller/controller-attempt.json",
+      "sha256": "3ec8cd6365d34352f926caff1333a655460d4bbeb9b48fcb8b50d875e2dba36d",
+      "byte_count": 15557,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\controller-attempt.json"
+    },
+    {
+      "path": "run/controller/controller-receipt.json",
+      "sha256": "b3da851ab5f6da7d85cb5c497db7bb6e15c284313d1246af8f48be93956574e4",
+      "byte_count": 1679,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\controller-receipt.json"
+    },
+    {
+      "path": "run/controller/panel.json",
+      "sha256": "eb78d25d5ae050fbe82eeccc8ab6b81f1ea264c720c520993d53f35414cba694",
+      "byte_count": 10213,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\panel.json"
+    },
+    {
+      "path": "run/export-audit/exports.jsonl",
+      "sha256": "9772288ac8a3d3fed48ab3c706018165e44c6de57c0fa54c51af911c6b382bb2",
+      "byte_count": 5121,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\export-audit\\exports.jsonl"
+    },
+    {
+      "path": "run/parent-closure.json",
+      "sha256": "638c59ca9114e2cd4e707a163d95c4c1b41a6ef0c7132ca888a918067fc53956",
+      "byte_count": 5003,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\parent-closure.json"
+    },
+    {
+      "path": "run/parent-process/process.json",
+      "sha256": "b6735ed0a1ab31d9aecca70d728fdaa9c294187e8f2955e6f6bc2ad44a6ba18c",
+      "byte_count": 4475,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\parent-process\\process.json"
+    },
+    {
+      "path": "run/parent-process/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_count": 0,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\parent-process\\stderr.private.txt"
+    },
+    {
+      "path": "run/parent-process/stdout.private.jsonl",
+      "sha256": "29c0ddf193ba57f96ca141767e2baf9e908b3b89e599ce7ee3790e4f3ddffb4e",
+      "byte_count": 803,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\parent-process\\stdout.private.jsonl"
+    },
+    {
+      "path": "run/parent-reservation.json",
+      "sha256": "7e5b4da9eed19a5820824ee78c022b3a8c7753761989dd86c01e103f13f36d0c",
+      "byte_count": 722,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\parent-reservation.json"
+    },
+    {
+      "path": "run/public-export/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/artifacts.jsonl",
+      "sha256": "da496002c04f8dbdbc9067cba3040eb092acb31618b8945bef82d277c93283b3",
+      "byte_count": 11573,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl"
+    },
+    {
+      "path": "run/public-export/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/artifacts.jsonl.seal.json",
+      "sha256": "65bb5e6287a053608c7bf938a56069ba0fcf7d2c1396c9ab1930fcb1a525f463",
+      "byte_count": 295,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "run/public-export/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/data.csv",
+      "sha256": "455f1e3df7e93dce381b6adff312e89e6a3b4d3900cf0d6083660cd0a4d53881",
+      "byte_count": 49023,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\data.csv"
+    },
+    {
+      "path": "run/public-export/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/public.json",
+      "sha256": "eb639eb5e482f08d499cce95c5da180339253acb64cbe2f606fcbfdf8dca251f",
+      "byte_count": 4382,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\public.json"
+    },
+    {
+      "path": "run/public-export/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/receipt.json",
+      "sha256": "3fedb235317b1394d796bb16f78bd89ec316498792e7128f23090c1d15d01fb7",
+      "byte_count": 1145,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\receipt.json"
+    },
+    {
+      "path": "run/public-export/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/artifacts.jsonl",
+      "sha256": "62b83e4fd152138b8640ba64b81c5c17eabea52a27eef6351e5f8465c1011366",
+      "byte_count": 11120,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl"
+    },
+    {
+      "path": "run/public-export/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/artifacts.jsonl.seal.json",
+      "sha256": "5bf3e7e544601cf4f071e056da84dbf1257a424cb16807646f90ac99e4c5b323",
+      "byte_count": 295,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "run/public-export/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/data.csv",
+      "sha256": "bcef1bbadbb898bccf71d51e5e619d03ee0e093eb6a3aee553d6688d3d3304ee",
+      "byte_count": 106218,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\data.csv"
+    },
+    {
+      "path": "run/public-export/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/public.json",
+      "sha256": "b623866374d6c0d494317b5faf2b5e9866543afbd14c1333568db447b48a6438",
+      "byte_count": 3203,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\public.json"
+    },
+    {
+      "path": "run/public-export/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/receipt.json",
+      "sha256": "2c8529a9ee2066b2627e733e388627426b0593956f205869809733d95f0cfa79",
+      "byte_count": 947,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\receipt.json"
+    },
+    {
+      "path": "run/public-export/export-receipt.json",
+      "sha256": "05b92e568c14df98d797a2df7eba1c82f5b3cf05d596f8f585c636522d63e73f",
+      "byte_count": 9232,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\export-receipt.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/headless-request.private.json",
+      "sha256": "48f5bebc0bccf4d35a389ce4ef2e5381840fe6df8dbfe30d6e7ad7ad6b572157",
+      "byte_count": 12826,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\headless-request.private.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-after/attempt-000/credits.private.json",
+      "sha256": "604d95a89902f1ed60e4bf3569b60d60ca6c0cae6bbaf8f2bec45314205829b7",
+      "byte_count": 500,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\credits.private.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-after/attempt-000/observation.json",
+      "sha256": "8faad3e82f6e0218dc7fcc1bd561b5360065508cf8c02ecf34ba6500786bc6c6",
+      "byte_count": 694,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\observation.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-after/attempt-000/requests.json",
+      "sha256": "1290eac426d81dea6a5879a30862dbc0419c7112f23c2bef7f63d621b14b6bc2",
+      "byte_count": 1037,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\requests.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-after/attempt-000/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "byte_count": 2,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\topup.private.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-after/attempt-000/user.private.json",
+      "sha256": "19c28e904575909054709212e12d4be0962fb79a327b8df4b131e77545ad2cf5",
+      "byte_count": 618,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\user.private.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-after/attempts.json",
+      "sha256": "435fd84e78df74b543d2a25adfebd1de77d0b01cc737f73e1d18ac566a925dba",
+      "byte_count": 1066,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempts.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-before/attempt-000/credits.private.json",
+      "sha256": "604d95a89902f1ed60e4bf3569b60d60ca6c0cae6bbaf8f2bec45314205829b7",
+      "byte_count": 500,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\credits.private.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-before/attempt-000/observation.json",
+      "sha256": "b4e166e9a4d90b06cdb6f0a40fd388ccdcd1d3f6f7067e39538d6d01f59e8d61",
+      "byte_count": 694,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\observation.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-before/attempt-000/requests.json",
+      "sha256": "98a81936b60e48e5cd26d5d36684fafa1edf53add95507a0b65db6658f177557",
+      "byte_count": 1037,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\requests.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-before/attempt-000/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "byte_count": 2,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\topup.private.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-before/attempt-000/user.private.json",
+      "sha256": "19c28e904575909054709212e12d4be0962fb79a327b8df4b131e77545ad2cf5",
+      "byte_count": 618,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\user.private.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-before/attempts.json",
+      "sha256": "9b780b68896ca7f210bc8cb967f24ef67255e1031d2b56c66f2e38e01ffaaa41",
+      "byte_count": 1066,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempts.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/command.json",
+      "sha256": "7684e27fee5021d322a606ca1a445316b2300bb0427a88f0c3447b5d7478a881",
+      "byte_count": 3225,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\command.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/inspect/process.json",
+      "sha256": "303ebf8e749620efd36154d324b7ca47a68a7d4c82c469989262049df9e3bc4e",
+      "byte_count": 5770,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\inspect\\process.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/inspect/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_count": 0,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\inspect\\stderr.private.txt"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/inspect/stdout.private.jsonl",
+      "sha256": "7e3cf91f9bd875d42d75633f59467c8eb93f967dfe3b61a15ed2651f287d57cf",
+      "byte_count": 3396,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\inspect\\stdout.private.jsonl"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/observer-receipt.json",
+      "sha256": "4c444a2ed25d3e7c1767759675a58ccadf0d00ff0c70b27708f2baf8b9ec4383",
+      "byte_count": 168614,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\observer-receipt.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/process.json",
+      "sha256": "8125368e94ac067c327c07652d7832df6d009494a03a6a33daa51ce14d928c5f",
+      "byte_count": 8769,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\process.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/prompt.private.txt",
+      "sha256": "d45d58066cf6a18f1615126d39306bc8b058502f1f85ae463cd540da580718bd",
+      "byte_count": 10957,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\prompt.private.txt"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/schema.private.json",
+      "sha256": "2183a68b2b05aadc0e2b0002d2622290c6bb5b27fa055a3054652c4fd5f5d93f",
+      "byte_count": 1000,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\schema.private.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_count": 0,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\stderr.private.txt"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native/stdout.private.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_count": 0,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\stdout.private.jsonl"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/.metadata_version",
+      "sha256": "2aa092243667791a5d0de79ef7a43605357e4bf8f6cf329bdf58539fe4b8a3d1",
+      "byte_count": 6,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\.metadata_version"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/active_sessions.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "byte_count": 2,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\active_sessions.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/active_sessions.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_count": 0,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\active_sessions.lock"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/config.toml",
+      "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691",
+      "byte_count": 872,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\config.toml"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/01-getting-started.md",
+      "sha256": "35250196c5e11c7e2c662c465083eac97e01247b0bdeb0e26248fe019d4e659b",
+      "byte_count": 9398,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\01-getting-started.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/02-authentication.md",
+      "sha256": "1dc2f15c7b4ffdd0111db6eec2ce6448b1e55ad81d3900f30500d8ebdfccaaeb",
+      "byte_count": 15778,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\02-authentication.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/03-keyboard-shortcuts.md",
+      "sha256": "a47d32ef471339f10bf412e7a901883aa4208e41a7c0207c4aa2eabe92adbe97",
+      "byte_count": 30410,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\03-keyboard-shortcuts.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/04-slash-commands.md",
+      "sha256": "bc5d49d28ff2ab85c5f8860ae6458a2cf7b03241b635edb6726d5e41d5f61636",
+      "byte_count": 24112,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\04-slash-commands.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/05-configuration.md",
+      "sha256": "cddea213416fbc8f675070aa8eaf8ad268c8f8168a6462cf00b02404425eb1aa",
+      "byte_count": 49630,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\05-configuration.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/06-theming.md",
+      "sha256": "957ccc193782ce9df51bedf2a17125f532d4d4553ffcc2a87aa7537d3097ee1a",
+      "byte_count": 17157,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\06-theming.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/07-mcp-servers.md",
+      "sha256": "18479d040bd4f6190f71a6616732381f3a030adac15efea5188e58f0c8b5d5f2",
+      "byte_count": 17578,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\07-mcp-servers.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/08-skills.md",
+      "sha256": "362f24bbc60c4b1ba45f10719352d533a6b017098433e84e5bdf2fcf73b63284",
+      "byte_count": 13022,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\08-skills.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/09-plugins.md",
+      "sha256": "9fa694f43feebcdbd393f20e0d0d691d3352b2c3e565c13917378eac82a61cd4",
+      "byte_count": 26963,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\09-plugins.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/10-hooks.md",
+      "sha256": "6af6cda5df56a02b194a96a59939f7b18e562983cd6f8c04f8f0c2d22a64a0d9",
+      "byte_count": 57584,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\10-hooks.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/11-custom-models.md",
+      "sha256": "d41d9ff5942eb84d8c8f73f7c0bad82b34d5b9a282b30e687770aa050f36e00a",
+      "byte_count": 15835,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\11-custom-models.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/12-project-rules.md",
+      "sha256": "160380abbee8bb7c0a94809b3f563f9fccde8d9592d1261aff0186b13a2e290b",
+      "byte_count": 10453,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\12-project-rules.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/13-memory.md",
+      "sha256": "ba3d63620ffab820f69f3ecf73f9841f07f4e8b99de96d177a84f94f2b285908",
+      "byte_count": 21162,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\13-memory.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/14-headless-mode.md",
+      "sha256": "2dd1302d88dc39276866e09a7c34501ecbe0e53b34a17f49e6908356ba1c98a9",
+      "byte_count": 41301,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\14-headless-mode.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/15-agent-mode.md",
+      "sha256": "17f6088ffd7ba636e8dff4ba37255d11920865492b9f23b7e1e91f838fafe185",
+      "byte_count": 13067,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\15-agent-mode.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/16-subagents.md",
+      "sha256": "fc376480b3fa90526949874fb58e2c42d1763d7a64a169215b11db7214ba254d",
+      "byte_count": 17172,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\16-subagents.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/17-sessions.md",
+      "sha256": "2e728c7f53201df625582093aa5e626c081d7b51389093f4359b184407e99d61",
+      "byte_count": 20577,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\17-sessions.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/18-sandbox.md",
+      "sha256": "327816d24c153880828b72bc03385f36bccaa369d839d8ad7870cbb409375d84",
+      "byte_count": 17987,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\18-sandbox.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/19-plan-mode.md",
+      "sha256": "7b586678844f5fd8a411c5668610cc50c0021ebc96dab3b987eb94a0028c66f4",
+      "byte_count": 9038,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\19-plan-mode.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/20-background-tasks.md",
+      "sha256": "309e90beaf775e9263be8f4bca7a564f9c4de15834d548ed8c9eb5a455f9fa2f",
+      "byte_count": 10536,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\20-background-tasks.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/21-terminal-support.md",
+      "sha256": "8de7bd258bf9c4b3ecaa00691da8a8e4a409e97b8d73289848b45ed6f0c9a81a",
+      "byte_count": 12434,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\21-terminal-support.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/22-permissions-and-safety.md",
+      "sha256": "918ad092e92261e5c09c46f04c87acccf10b41a2945c97857ce0d5c57c12267d",
+      "byte_count": 33137,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\22-permissions-and-safety.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/23-dashboard.md",
+      "sha256": "a4b4f2a5d48b8f5bf15d1327b9274af51e980405bf5259fc40613a51545e86ed",
+      "byte_count": 15295,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\23-dashboard.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/24-monitoring-usage.md",
+      "sha256": "1518dc540b48fdad9f72d94ac66f589374c14b3b5b148db34f107504e878d1d9",
+      "byte_count": 21172,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\24-monitoring-usage.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/25-status-line.md",
+      "sha256": "3200adfa3740a7bca6e4079a47d1a2a80801813edd7e1818ae4773bb488ab48c",
+      "byte_count": 17348,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\25-status-line.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/26-config-reference.md",
+      "sha256": "832f6b594ed3903edbb52c46c8b8e59344aba43c1507d31f4404804ff4f91bb1",
+      "byte_count": 63732,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\26-config-reference.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/27-grok-clone.md",
+      "sha256": "ac16b286702d135c39d2c1a1d3af1d4a4dbb1d5651047da22f5bff727175b71b",
+      "byte_count": 6027,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\27-grok-clone.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/logs/unified.jsonl",
+      "sha256": "2b43ff8db2a2bbc1bb115bf8840dce8ff658f6a252c5b5bb403de8192123e181",
+      "byte_count": 12500,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\logs\\unified.jsonl"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/managed_config.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_count": 0,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\managed_config.lock"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/memtrace/1789465242-67464.jsonl",
+      "sha256": "884a59b3359f8227cc8ab61c78372e2e49555adb44803744fa17cbacaa647e1d",
+      "byte_count": 110,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\memtrace\\1789465242-67464.jsonl"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/models_cache.json",
+      "sha256": "f6e0168134a247fc377d42f5f9613a666aeb30926353213f7689db0bf1981fca",
+      "byte_count": 4720,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\models_cache.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/README.md",
+      "sha256": "53d251b380bae4d6f5d83ed90de4f987dda152854191d02ade9d4cc9b3a3e1e7",
+      "byte_count": 109662,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\README.md"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/settings_cache.json",
+      "sha256": "6c0bc2dbfb15bbcb3e0a9ade70a8684c4ca5dcaac7da989d15746d9bcd23c747",
+      "byte_count": 7610,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\settings_cache.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/worktrees.db",
+      "sha256": "5d86a54c276b1839d17cd8cb596d71323af4dd72f529b8c61719920e8d73c23f",
+      "byte_count": 40960,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\worktrees.db"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-profile/AppData/Local/Microsoft/Windows/PowerShell/ModuleAnalysisCache",
+      "sha256": "0c6a80eb3cb2c714b04905ba4aa211c7b17f3fa26705b2671c8a3912399df8a5",
+      "byte_count": 10498,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-profile\\AppData\\Local\\Microsoft\\Windows\\PowerShell\\ModuleAnalysisCache"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/native-reservation.json",
+      "sha256": "15800130e89111874786e67b2a652914694409cf645a34c954d81a8a84d853e9",
+      "byte_count": 159986,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-reservation.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/observer-receipt.private.json",
+      "sha256": "4c444a2ed25d3e7c1767759675a58ccadf0d00ff0c70b27708f2baf8b9ec4383",
+      "byte_count": 168614,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\observer-receipt.private.json"
+    },
+    {
+      "path": "run/solver-model/calls/0001-m4_plan/request.private.json",
+      "sha256": "32ee9d30cf20c1dca87cea9a34d05b238ffaa1080bf00cffe15876cd88b53cb2",
+      "byte_count": 10828,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\request.private.json"
+    },
+    {
+      "path": "run/solver-model/ledger.json",
+      "sha256": "46959db21c57e1737dbc42155e470a03d4cf74f3c42099d961cff7e08609ce49",
+      "byte_count": 305967,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\ledger.json"
+    },
+    {
+      "path": "run/summary.json",
+      "sha256": "0bf64740094a6bec1bfdf33e45abe90637cfe51febd03371e9b63e4cb57e25ec",
+      "byte_count": 764,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\summary.json"
+    },
+    {
+      "path": "preparation/compile-export-audit/exports.jsonl",
+      "sha256": "4e22523fa676572e6c7076d70a5413c9bda43b973b7fc3964e75cb5b9ac50427",
+      "byte_count": 5121,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\compile-export-audit\\exports.jsonl"
+    },
+    {
+      "path": "preparation/controller.json",
+      "sha256": "ef631e871480c7916eaf1b7f1cb01b7c2e6379552fcecbf9dc49a2eaffa865b7",
+      "byte_count": 11101,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\controller.json"
+    },
+    {
+      "path": "preparation/preparation.json",
+      "sha256": "927c4e7cdca956e1094875c525a0360c0fe0c15c22feb6be5a81c8ddf88f37e4",
+      "byte_count": 157915,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\preparation.json"
+    },
+    {
+      "path": "preparation/public-for-compile/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/artifacts.jsonl",
+      "sha256": "4688d17026544d9b9224223d56316135911bc3d4ff0f3e916d58baaa8dab37d8",
+      "byte_count": 11573,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl"
+    },
+    {
+      "path": "preparation/public-for-compile/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/artifacts.jsonl.seal.json",
+      "sha256": "2658d6a9bbe846292644bd8400ad60bc1769485ffe4f4c116417a4208e16ce14",
+      "byte_count": 295,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "preparation/public-for-compile/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/data.csv",
+      "sha256": "455f1e3df7e93dce381b6adff312e89e6a3b4d3900cf0d6083660cd0a4d53881",
+      "byte_count": 49023,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\data.csv"
+    },
+    {
+      "path": "preparation/public-for-compile/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/public.json",
+      "sha256": "eb639eb5e482f08d499cce95c5da180339253acb64cbe2f606fcbfdf8dca251f",
+      "byte_count": 4382,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\public.json"
+    },
+    {
+      "path": "preparation/public-for-compile/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/receipt.json",
+      "sha256": "3fedb235317b1394d796bb16f78bd89ec316498792e7128f23090c1d15d01fb7",
+      "byte_count": 1145,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\receipt.json"
+    },
+    {
+      "path": "preparation/public-for-compile/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/artifacts.jsonl",
+      "sha256": "522acacd859c7659932e99784a6af24f46c158a662cf78f2b2cc5177b57f03d5",
+      "byte_count": 11120,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl"
+    },
+    {
+      "path": "preparation/public-for-compile/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/artifacts.jsonl.seal.json",
+      "sha256": "31f591afe55242ffdc1f7528084c746921ec6c01489c0ea426a673838ca5e71a",
+      "byte_count": 295,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl.seal.json"
+    },
+    {
+      "path": "preparation/public-for-compile/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/data.csv",
+      "sha256": "bcef1bbadbb898bccf71d51e5e619d03ee0e093eb6a3aee553d6688d3d3304ee",
+      "byte_count": 106218,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\data.csv"
+    },
+    {
+      "path": "preparation/public-for-compile/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/public.json",
+      "sha256": "b623866374d6c0d494317b5faf2b5e9866543afbd14c1333568db447b48a6438",
+      "byte_count": 3203,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\public.json"
+    },
+    {
+      "path": "preparation/public-for-compile/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/receipt.json",
+      "sha256": "2c8529a9ee2066b2627e733e388627426b0593956f205869809733d95f0cfa79",
+      "byte_count": 947,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\receipt.json"
+    },
+    {
+      "path": "preparation/public-for-compile/export-receipt.json",
+      "sha256": "7b2a3b93010a91003de061fc02fea3cf91e6d78437048d053b62fcccd63c28e8",
+      "byte_count": 9232,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\export-receipt.json"
+    },
+    {
+      "path": "preparation/solver-spec.json",
+      "sha256": "9827ef623d266ecc48b27fd1f2f7347a86c75913c775fba47ac216a4fea24341",
+      "byte_count": 150162,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\solver-spec.json"
+    },
+    {
+      "path": "private/evaluator-model/ledger.json",
+      "sha256": "b33741ea7fb5f6854d925af687064dd5e390926b1429c09bf1b648c0ed170021",
+      "byte_count": 151803,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-m4m5-headless-grok130-r3\\evaluator-model\\ledger.json"
+    },
+    {
+      "path": "private/server-config.json",
+      "sha256": "05c835df02169e4080933556e6dcacd9d74c1127ab9d80470ae8f763eb7e6f0a",
+      "byte_count": 167725,
+      "origin": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-m4m5-headless-grok130-r3\\server-config.json"
+    }
+  ],
+  "excluded_credentials": {
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\auth.json": {
+      "bytes": 1762,
+      "mtime_ns": 1789465234461093900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-m4m5-headless-grok130-r3\\actual-m4m5-grok130-executor-r3.key": {
+      "bytes": 32,
+      "mtime_ns": 1789465008378649700
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-m4m5-headless-grok130-r3\\actual-m4m5-grok130-scorer-r3.key": {
+      "bytes": 32,
+      "mtime_ns": 1789465008379649500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-m4m5-headless-grok130-r3\\unused-a.key": {
+      "bytes": 32,
+      "mtime_ns": 1789465008379649500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-m4m5-headless-grok130-r3\\unused-b.key": {
+      "bytes": 32,
+      "mtime_ns": 1789465008379649500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-m4m5-headless-grok130-r3\\evaluator-home\\auth.json": {
+      "bytes": 1762,
+      "mtime_ns": 1789465008376651600
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-m4m5-headless-grok130-r3\\solver-home\\auth.json": {
+      "bytes": 1762,
+      "mtime_ns": 1789465008295701500
+    }
+  },
+  "pruned_reparse_paths": [],
+  "inputs_before": {
+    "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-m4m5-headless-grok130-r3\\evaluator-model\\ledger.json": {
+      "sha256": "b33741ea7fb5f6854d925af687064dd5e390926b1429c09bf1b648c0ed170021",
+      "bytes": 151803,
+      "mtime_ns": 1789465104542262300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-m4m5-headless-grok130-r3\\server-config.json": {
+      "sha256": "05c835df02169e4080933556e6dcacd9d74c1127ab9d80470ae8f763eb7e6f0a",
+      "bytes": 167725,
+      "mtime_ns": 1789465008976897900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\compile-export-audit\\exports.jsonl": {
+      "sha256": "4e22523fa676572e6c7076d70a5413c9bda43b973b7fc3964e75cb5b9ac50427",
+      "bytes": 5121,
+      "mtime_ns": 1789465007960818300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\controller.json": {
+      "sha256": "ef631e871480c7916eaf1b7f1cb01b7c2e6379552fcecbf9dc49a2eaffa865b7",
+      "bytes": 11101,
+      "mtime_ns": 1789465008974891900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\preparation.json": {
+      "sha256": "927c4e7cdca956e1094875c525a0360c0fe0c15c22feb6be5a81c8ddf88f37e4",
+      "bytes": 157915,
+      "mtime_ns": 1789465009001681600
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl": {
+      "sha256": "4688d17026544d9b9224223d56316135911bc3d4ff0f3e916d58baaa8dab37d8",
+      "bytes": 11573,
+      "mtime_ns": 1789464986345056500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl.seal.json": {
+      "sha256": "2658d6a9bbe846292644bd8400ad60bc1769485ffe4f4c116417a4208e16ce14",
+      "bytes": 295,
+      "mtime_ns": 1789464986528431300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\data.csv": {
+      "sha256": "455f1e3df7e93dce381b6adff312e89e6a3b4d3900cf0d6083660cd0a4d53881",
+      "bytes": 49023,
+      "mtime_ns": 1789464985094456900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\public.json": {
+      "sha256": "eb639eb5e482f08d499cce95c5da180339253acb64cbe2f606fcbfdf8dca251f",
+      "bytes": 4382,
+      "mtime_ns": 1789464984889591400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\receipt.json": {
+      "sha256": "3fedb235317b1394d796bb16f78bd89ec316498792e7128f23090c1d15d01fb7",
+      "bytes": 1145,
+      "mtime_ns": 1789464985278500000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl": {
+      "sha256": "522acacd859c7659932e99784a6af24f46c158a662cf78f2b2cc5177b57f03d5",
+      "bytes": 11120,
+      "mtime_ns": 1789464988693736900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl.seal.json": {
+      "sha256": "31f591afe55242ffdc1f7528084c746921ec6c01489c0ea426a673838ca5e71a",
+      "bytes": 295,
+      "mtime_ns": 1789464989103284900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\data.csv": {
+      "sha256": "bcef1bbadbb898bccf71d51e5e619d03ee0e093eb6a3aee553d6688d3d3304ee",
+      "bytes": 106218,
+      "mtime_ns": 1789464987264657700
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\public.json": {
+      "sha256": "b623866374d6c0d494317b5faf2b5e9866543afbd14c1333568db447b48a6438",
+      "bytes": 3203,
+      "mtime_ns": 1789464987116147500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\receipt.json": {
+      "sha256": "2c8529a9ee2066b2627e733e388627426b0593956f205869809733d95f0cfa79",
+      "bytes": 947,
+      "mtime_ns": 1789464987641963300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\export-receipt.json": {
+      "sha256": "7b2a3b93010a91003de061fc02fea3cf91e6d78437048d053b62fcccd63c28e8",
+      "bytes": 9232,
+      "mtime_ns": 1789464989438459000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\solver-spec.json": {
+      "sha256": "9827ef623d266ecc48b27fd1f2f7347a86c75913c775fba47ac216a4fea24341",
+      "bytes": 150162,
+      "mtime_ns": 1789465008977897200
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\artifacts.jsonl": {
+      "sha256": "538b72f746c6d81db1bb1cd092168b8d4df7fc46a808e5f5e083cecf81929017",
+      "bytes": 42415,
+      "mtime_ns": 1789465369937472300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\claims.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465225216005700
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\evidence.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465224874796800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\predictions.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465229323086100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\reviews.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465229323086100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\trace.jsonl": {
+      "sha256": "8962add1ed7b3636804711b0e8113582f45ba941d459d3c38de8686e12b0e02f",
+      "bytes": 12612,
+      "mtime_ns": 1789465369703816900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\controller-attempt.json": {
+      "sha256": "3ec8cd6365d34352f926caff1333a655460d4bbeb9b48fcb8b50d875e2dba36d",
+      "bytes": 15557,
+      "mtime_ns": 1789465371023505100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\controller-receipt.json": {
+      "sha256": "b3da851ab5f6da7d85cb5c497db7bb6e15c284313d1246af8f48be93956574e4",
+      "bytes": 1679,
+      "mtime_ns": 1789465371022970900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\panel.json": {
+      "sha256": "eb78d25d5ae050fbe82eeccc8ab6b81f1ea264c720c520993d53f35414cba694",
+      "bytes": 10213,
+      "mtime_ns": 1789465220613693000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\export-audit\\exports.jsonl": {
+      "sha256": "9772288ac8a3d3fed48ab3c706018165e44c6de57c0fa54c51af911c6b382bb2",
+      "bytes": 5121,
+      "mtime_ns": 1789465180050433000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\parent-closure.json": {
+      "sha256": "638c59ca9114e2cd4e707a163d95c4c1b41a6ef0c7132ca888a918067fc53956",
+      "bytes": 5003,
+      "mtime_ns": 1789465371432026100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\parent-process\\process.json": {
+      "sha256": "b6735ed0a1ab31d9aecca70d728fdaa9c294187e8f2955e6f6bc2ad44a6ba18c",
+      "bytes": 4475,
+      "mtime_ns": 1789465371269708300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\parent-process\\stderr.private.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465371129860300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\parent-process\\stdout.private.jsonl": {
+      "sha256": "29c0ddf193ba57f96ca141767e2baf9e908b3b89e599ce7ee3790e4f3ddffb4e",
+      "bytes": 803,
+      "mtime_ns": 1789465371129860300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\parent-reservation.json": {
+      "sha256": "7e5b4da9eed19a5820824ee78c022b3a8c7753761989dd86c01e103f13f36d0c",
+      "bytes": 722,
+      "mtime_ns": 1789465100015548600
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl": {
+      "sha256": "da496002c04f8dbdbc9067cba3040eb092acb31618b8945bef82d277c93283b3",
+      "bytes": 11573,
+      "mtime_ns": 1789465155977441800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl.seal.json": {
+      "sha256": "65bb5e6287a053608c7bf938a56069ba0fcf7d2c1396c9ab1930fcb1a525f463",
+      "bytes": 295,
+      "mtime_ns": 1789465156367272000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\data.csv": {
+      "sha256": "455f1e3df7e93dce381b6adff312e89e6a3b4d3900cf0d6083660cd0a4d53881",
+      "bytes": 49023,
+      "mtime_ns": 1789465154599436200
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\public.json": {
+      "sha256": "eb639eb5e482f08d499cce95c5da180339253acb64cbe2f606fcbfdf8dca251f",
+      "bytes": 4382,
+      "mtime_ns": 1789465154199077800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\receipt.json": {
+      "sha256": "3fedb235317b1394d796bb16f78bd89ec316498792e7128f23090c1d15d01fb7",
+      "bytes": 1145,
+      "mtime_ns": 1789465155049701600
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl": {
+      "sha256": "62b83e4fd152138b8640ba64b81c5c17eabea52a27eef6351e5f8465c1011366",
+      "bytes": 11120,
+      "mtime_ns": 1789465159968363600
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl.seal.json": {
+      "sha256": "5bf3e7e544601cf4f071e056da84dbf1257a424cb16807646f90ac99e4c5b323",
+      "bytes": 295,
+      "mtime_ns": 1789465160251520000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\data.csv": {
+      "sha256": "bcef1bbadbb898bccf71d51e5e619d03ee0e093eb6a3aee553d6688d3d3304ee",
+      "bytes": 106218,
+      "mtime_ns": 1789465158273590200
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\public.json": {
+      "sha256": "b623866374d6c0d494317b5faf2b5e9866543afbd14c1333568db447b48a6438",
+      "bytes": 3203,
+      "mtime_ns": 1789465157687480700
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\receipt.json": {
+      "sha256": "2c8529a9ee2066b2627e733e388627426b0593956f205869809733d95f0cfa79",
+      "bytes": 947,
+      "mtime_ns": 1789465158477618900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\export-receipt.json": {
+      "sha256": "05b92e568c14df98d797a2df7eba1c82f5b3cf05d596f8f585c636522d63e73f",
+      "bytes": 9232,
+      "mtime_ns": 1789465160676548800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\headless-request.private.json": {
+      "sha256": "48f5bebc0bccf4d35a389ce4ef2e5381840fe6df8dbfe30d6e7ad7ad6b572157",
+      "bytes": 12826,
+      "mtime_ns": 1789465234398962400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\credits.private.json": {
+      "sha256": "604d95a89902f1ed60e4bf3569b60d60ca6c0cae6bbaf8f2bec45314205829b7",
+      "bytes": 500,
+      "mtime_ns": 1789465367413715900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\observation.json": {
+      "sha256": "8faad3e82f6e0218dc7fcc1bd561b5360065508cf8c02ecf34ba6500786bc6c6",
+      "bytes": 694,
+      "mtime_ns": 1789465368711792100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\requests.json": {
+      "sha256": "1290eac426d81dea6a5879a30862dbc0419c7112f23c2bef7f63d621b14b6bc2",
+      "bytes": 1037,
+      "mtime_ns": 1789465368702257900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\topup.private.json": {
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "bytes": 2,
+      "mtime_ns": 1789465368123449400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\user.private.json": {
+      "sha256": "19c28e904575909054709212e12d4be0962fb79a327b8df4b131e77545ad2cf5",
+      "bytes": 618,
+      "mtime_ns": 1789465368702257900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempts.json": {
+      "sha256": "435fd84e78df74b543d2a25adfebd1de77d0b01cc737f73e1d18ac566a925dba",
+      "bytes": 1066,
+      "mtime_ns": 1789465368721301500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\credits.private.json": {
+      "sha256": "604d95a89902f1ed60e4bf3569b60d60ca6c0cae6bbaf8f2bec45314205829b7",
+      "bytes": 500,
+      "mtime_ns": 1789465239449141000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\observation.json": {
+      "sha256": "b4e166e9a4d90b06cdb6f0a40fd388ccdcd1d3f6f7067e39538d6d01f59e8d61",
+      "bytes": 694,
+      "mtime_ns": 1789465241090763000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\requests.json": {
+      "sha256": "98a81936b60e48e5cd26d5d36684fafa1edf53add95507a0b65db6658f177557",
+      "bytes": 1037,
+      "mtime_ns": 1789465241081553800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\topup.private.json": {
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "bytes": 2,
+      "mtime_ns": 1789465240071953600
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\user.private.json": {
+      "sha256": "19c28e904575909054709212e12d4be0962fb79a327b8df4b131e77545ad2cf5",
+      "bytes": 618,
+      "mtime_ns": 1789465241081553800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempts.json": {
+      "sha256": "9b780b68896ca7f210bc8cb967f24ef67255e1031d2b56c66f2e38e01ffaaa41",
+      "bytes": 1066,
+      "mtime_ns": 1789465241101776500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\command.json": {
+      "sha256": "7684e27fee5021d322a606ca1a445316b2300bb0427a88f0c3447b5d7478a881",
+      "bytes": 3225,
+      "mtime_ns": 1789465235588537900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\inspect\\process.json": {
+      "sha256": "303ebf8e749620efd36154d324b7ca47a68a7d4c82c469989262049df9e3bc4e",
+      "bytes": 5770,
+      "mtime_ns": 1789465238785019700
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\inspect\\stderr.private.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465237956261100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\inspect\\stdout.private.jsonl": {
+      "sha256": "7e3cf91f9bd875d42d75633f59467c8eb93f967dfe3b61a15ed2651f287d57cf",
+      "bytes": 3396,
+      "mtime_ns": 1789465237954755200
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\observer-receipt.json": {
+      "sha256": "4c444a2ed25d3e7c1767759675a58ccadf0d00ff0c70b27708f2baf8b9ec4383",
+      "bytes": 168614,
+      "mtime_ns": 1789465369141378500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\process.json": {
+      "sha256": "8125368e94ac067c327c07652d7832df6d009494a03a6a33daa51ce14d928c5f",
+      "bytes": 8769,
+      "mtime_ns": 1789465366584741700
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\prompt.private.txt": {
+      "sha256": "d45d58066cf6a18f1615126d39306bc8b058502f1f85ae463cd540da580718bd",
+      "bytes": 10957,
+      "mtime_ns": 1789465235461219900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\schema.private.json": {
+      "sha256": "2183a68b2b05aadc0e2b0002d2622290c6bb5b27fa055a3054652c4fd5f5d93f",
+      "bytes": 1000,
+      "mtime_ns": 1789465235462221300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\stderr.private.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465366583735400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\stdout.private.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465366583735400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\.metadata_version": {
+      "sha256": "2aa092243667791a5d0de79ef7a43605357e4bf8f6cf329bdf58539fe4b8a3d1",
+      "bytes": 6,
+      "mtime_ns": 1789465243392513500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\active_sessions.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2,
+      "mtime_ns": 1789465242810348000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\active_sessions.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465237836571400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\config.toml": {
+      "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691",
+      "bytes": 872,
+      "mtime_ns": 1789465234461093900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\01-getting-started.md": {
+      "sha256": "35250196c5e11c7e2c662c465083eac97e01247b0bdeb0e26248fe019d4e659b",
+      "bytes": 9398,
+      "mtime_ns": 1789465242805831700
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\02-authentication.md": {
+      "sha256": "1dc2f15c7b4ffdd0111db6eec2ce6448b1e55ad81d3900f30500d8ebdfccaaeb",
+      "bytes": 15778,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\03-keyboard-shortcuts.md": {
+      "sha256": "a47d32ef471339f10bf412e7a901883aa4208e41a7c0207c4aa2eabe92adbe97",
+      "bytes": 30410,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\04-slash-commands.md": {
+      "sha256": "bc5d49d28ff2ab85c5f8860ae6458a2cf7b03241b635edb6726d5e41d5f61636",
+      "bytes": 24112,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\05-configuration.md": {
+      "sha256": "cddea213416fbc8f675070aa8eaf8ad268c8f8168a6462cf00b02404425eb1aa",
+      "bytes": 49630,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\06-theming.md": {
+      "sha256": "957ccc193782ce9df51bedf2a17125f532d4d4553ffcc2a87aa7537d3097ee1a",
+      "bytes": 17157,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\07-mcp-servers.md": {
+      "sha256": "18479d040bd4f6190f71a6616732381f3a030adac15efea5188e58f0c8b5d5f2",
+      "bytes": 17578,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\08-skills.md": {
+      "sha256": "362f24bbc60c4b1ba45f10719352d533a6b017098433e84e5bdf2fcf73b63284",
+      "bytes": 13022,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\09-plugins.md": {
+      "sha256": "9fa694f43feebcdbd393f20e0d0d691d3352b2c3e565c13917378eac82a61cd4",
+      "bytes": 26963,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\10-hooks.md": {
+      "sha256": "6af6cda5df56a02b194a96a59939f7b18e562983cd6f8c04f8f0c2d22a64a0d9",
+      "bytes": 57584,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\11-custom-models.md": {
+      "sha256": "d41d9ff5942eb84d8c8f73f7c0bad82b34d5b9a282b30e687770aa050f36e00a",
+      "bytes": 15835,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\12-project-rules.md": {
+      "sha256": "160380abbee8bb7c0a94809b3f563f9fccde8d9592d1261aff0186b13a2e290b",
+      "bytes": 10453,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\13-memory.md": {
+      "sha256": "ba3d63620ffab820f69f3ecf73f9841f07f4e8b99de96d177a84f94f2b285908",
+      "bytes": 21162,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\14-headless-mode.md": {
+      "sha256": "2dd1302d88dc39276866e09a7c34501ecbe0e53b34a17f49e6908356ba1c98a9",
+      "bytes": 41301,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\15-agent-mode.md": {
+      "sha256": "17f6088ffd7ba636e8dff4ba37255d11920865492b9f23b7e1e91f838fafe185",
+      "bytes": 13067,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\16-subagents.md": {
+      "sha256": "fc376480b3fa90526949874fb58e2c42d1763d7a64a169215b11db7214ba254d",
+      "bytes": 17172,
+      "mtime_ns": 1789465242808340400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\17-sessions.md": {
+      "sha256": "2e728c7f53201df625582093aa5e626c081d7b51389093f4359b184407e99d61",
+      "bytes": 20577,
+      "mtime_ns": 1789465242808340400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\18-sandbox.md": {
+      "sha256": "327816d24c153880828b72bc03385f36bccaa369d839d8ad7870cbb409375d84",
+      "bytes": 17987,
+      "mtime_ns": 1789465242808340400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\19-plan-mode.md": {
+      "sha256": "7b586678844f5fd8a411c5668610cc50c0021ebc96dab3b987eb94a0028c66f4",
+      "bytes": 9038,
+      "mtime_ns": 1789465242808340400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\20-background-tasks.md": {
+      "sha256": "309e90beaf775e9263be8f4bca7a564f9c4de15834d548ed8c9eb5a455f9fa2f",
+      "bytes": 10536,
+      "mtime_ns": 1789465242808340400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\21-terminal-support.md": {
+      "sha256": "8de7bd258bf9c4b3ecaa00691da8a8e4a409e97b8d73289848b45ed6f0c9a81a",
+      "bytes": 12434,
+      "mtime_ns": 1789465242808340400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\22-permissions-and-safety.md": {
+      "sha256": "918ad092e92261e5c09c46f04c87acccf10b41a2945c97857ce0d5c57c12267d",
+      "bytes": 33137,
+      "mtime_ns": 1789465242809347800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\23-dashboard.md": {
+      "sha256": "a4b4f2a5d48b8f5bf15d1327b9274af51e980405bf5259fc40613a51545e86ed",
+      "bytes": 15295,
+      "mtime_ns": 1789465242809347800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\24-monitoring-usage.md": {
+      "sha256": "1518dc540b48fdad9f72d94ac66f589374c14b3b5b148db34f107504e878d1d9",
+      "bytes": 21172,
+      "mtime_ns": 1789465242809347800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\25-status-line.md": {
+      "sha256": "3200adfa3740a7bca6e4079a47d1a2a80801813edd7e1818ae4773bb488ab48c",
+      "bytes": 17348,
+      "mtime_ns": 1789465242809347800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\26-config-reference.md": {
+      "sha256": "832f6b594ed3903edbb52c46c8b8e59344aba43c1507d31f4404804ff4f91bb1",
+      "bytes": 63732,
+      "mtime_ns": 1789465242809347800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\27-grok-clone.md": {
+      "sha256": "ac16b286702d135c39d2c1a1d3af1d4a4dbb1d5651047da22f5bff727175b71b",
+      "bytes": 6027,
+      "mtime_ns": 1789465242809347800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\logs\\unified.jsonl": {
+      "sha256": "2b43ff8db2a2bbc1bb115bf8840dce8ff658f6a252c5b5bb403de8192123e181",
+      "bytes": 12500,
+      "mtime_ns": 1789465253825696100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\managed_config.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465243391465500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\memtrace\\1789465242-67464.jsonl": {
+      "sha256": "884a59b3359f8227cc8ab61c78372e2e49555adb44803744fa17cbacaa647e1d",
+      "bytes": 110,
+      "mtime_ns": 1789465272807546500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\models_cache.json": {
+      "sha256": "f6e0168134a247fc377d42f5f9613a666aeb30926353213f7689db0bf1981fca",
+      "bytes": 4720,
+      "mtime_ns": 1789465243388861000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\README.md": {
+      "sha256": "53d251b380bae4d6f5d83ed90de4f987dda152854191d02ade9d4cc9b3a3e1e7",
+      "bytes": 109662,
+      "mtime_ns": 1789465243392513500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\settings_cache.json": {
+      "sha256": "6c0bc2dbfb15bbcb3e0a9ade70a8684c4ca5dcaac7da989d15746d9bcd23c747",
+      "bytes": 7610,
+      "mtime_ns": 1789465243385958900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\worktrees.db": {
+      "sha256": "5d86a54c276b1839d17cd8cb596d71323af4dd72f529b8c61719920e8d73c23f",
+      "bytes": 40960,
+      "mtime_ns": 1789465249256155100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-profile\\AppData\\Local\\Microsoft\\Windows\\PowerShell\\ModuleAnalysisCache": {
+      "sha256": "0c6a80eb3cb2c714b04905ba4aa211c7b17f3fa26705b2671c8a3912399df8a5",
+      "bytes": 10498,
+      "mtime_ns": 1789465257744951800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-reservation.json": {
+      "sha256": "15800130e89111874786e67b2a652914694409cf645a34c954d81a8a84d853e9",
+      "bytes": 159986,
+      "mtime_ns": 1789465235083129300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\observer-receipt.private.json": {
+      "sha256": "4c444a2ed25d3e7c1767759675a58ccadf0d00ff0c70b27708f2baf8b9ec4383",
+      "bytes": 168614,
+      "mtime_ns": 1789465369149897900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\request.private.json": {
+      "sha256": "32ee9d30cf20c1dca87cea9a34d05b238ffaa1080bf00cffe15876cd88b53cb2",
+      "bytes": 10828,
+      "mtime_ns": 1789465234398962400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\ledger.json": {
+      "sha256": "46959db21c57e1737dbc42155e470a03d4cf74f3c42099d961cff7e08609ce49",
+      "bytes": 305967,
+      "mtime_ns": 1789465370961822200
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\summary.json": {
+      "sha256": "0bf64740094a6bec1bfdf33e45abe90637cfe51febd03371e9b63e4cb57e25ec",
+      "bytes": 764,
+      "mtime_ns": 1789465371094673400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3-driver.log": {
+      "sha256": "de28067b55b0904b1d765150658249d4ab276ff2181928bac2299873580e0609",
+      "bytes": 119,
+      "mtime_ns": 1789465371437026600
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3-native-join.json": {
+      "sha256": "878f3486d6ab3b5c294a2f9d1031c042bb8388aeb421b9805316e54780706d04",
+      "bytes": 233,
+      "mtime_ns": 1789465490393023100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3-native-start.json": {
+      "sha256": "ece27bd50ffaca0678e9fb6c50e3779a5c706aab7d82d263c23bdd495358c33f",
+      "bytes": 109,
+      "mtime_ns": 1789465109235476800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\archive_actual_m4m5_grok130_r3.py": {
+      "sha256": "8eded212ba2e41a091ba09a0763a437f57bb73e561a89c893900c58e04c87aac",
+      "bytes": 11974,
+      "mtime_ns": 1789466364512771500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prepare_headless_lineage_full4_archive_r1.py": {
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840,
+      "mtime_ns": 1789440505669493900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_actual_m4m5_headless_grok130_r3.py": {
+      "sha256": "c02c65737c2cd41774c647176ed777be53b50a4e21ef1a67e6a0e8103254636f",
+      "bytes": 28820,
+      "mtime_ns": 1789464725074666600
+    }
+  },
+  "inputs_after": {
+    "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-m4m5-headless-grok130-r3\\evaluator-model\\ledger.json": {
+      "sha256": "b33741ea7fb5f6854d925af687064dd5e390926b1429c09bf1b648c0ed170021",
+      "bytes": 151803,
+      "mtime_ns": 1789465104542262300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-m4m5-headless-grok130-r3\\server-config.json": {
+      "sha256": "05c835df02169e4080933556e6dcacd9d74c1127ab9d80470ae8f763eb7e6f0a",
+      "bytes": 167725,
+      "mtime_ns": 1789465008976897900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\compile-export-audit\\exports.jsonl": {
+      "sha256": "4e22523fa676572e6c7076d70a5413c9bda43b973b7fc3964e75cb5b9ac50427",
+      "bytes": 5121,
+      "mtime_ns": 1789465007960818300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\controller.json": {
+      "sha256": "ef631e871480c7916eaf1b7f1cb01b7c2e6379552fcecbf9dc49a2eaffa865b7",
+      "bytes": 11101,
+      "mtime_ns": 1789465008974891900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\preparation.json": {
+      "sha256": "927c4e7cdca956e1094875c525a0360c0fe0c15c22feb6be5a81c8ddf88f37e4",
+      "bytes": 157915,
+      "mtime_ns": 1789465009001681600
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl": {
+      "sha256": "4688d17026544d9b9224223d56316135911bc3d4ff0f3e916d58baaa8dab37d8",
+      "bytes": 11573,
+      "mtime_ns": 1789464986345056500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl.seal.json": {
+      "sha256": "2658d6a9bbe846292644bd8400ad60bc1769485ffe4f4c116417a4208e16ce14",
+      "bytes": 295,
+      "mtime_ns": 1789464986528431300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\data.csv": {
+      "sha256": "455f1e3df7e93dce381b6adff312e89e6a3b4d3900cf0d6083660cd0a4d53881",
+      "bytes": 49023,
+      "mtime_ns": 1789464985094456900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\public.json": {
+      "sha256": "eb639eb5e482f08d499cce95c5da180339253acb64cbe2f606fcbfdf8dca251f",
+      "bytes": 4382,
+      "mtime_ns": 1789464984889591400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\receipt.json": {
+      "sha256": "3fedb235317b1394d796bb16f78bd89ec316498792e7128f23090c1d15d01fb7",
+      "bytes": 1145,
+      "mtime_ns": 1789464985278500000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl": {
+      "sha256": "522acacd859c7659932e99784a6af24f46c158a662cf78f2b2cc5177b57f03d5",
+      "bytes": 11120,
+      "mtime_ns": 1789464988693736900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl.seal.json": {
+      "sha256": "31f591afe55242ffdc1f7528084c746921ec6c01489c0ea426a673838ca5e71a",
+      "bytes": 295,
+      "mtime_ns": 1789464989103284900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\data.csv": {
+      "sha256": "bcef1bbadbb898bccf71d51e5e619d03ee0e093eb6a3aee553d6688d3d3304ee",
+      "bytes": 106218,
+      "mtime_ns": 1789464987264657700
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\public.json": {
+      "sha256": "b623866374d6c0d494317b5faf2b5e9866543afbd14c1333568db447b48a6438",
+      "bytes": 3203,
+      "mtime_ns": 1789464987116147500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\receipt.json": {
+      "sha256": "2c8529a9ee2066b2627e733e388627426b0593956f205869809733d95f0cfa79",
+      "bytes": 947,
+      "mtime_ns": 1789464987641963300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\public-for-compile\\export-receipt.json": {
+      "sha256": "7b2a3b93010a91003de061fc02fea3cf91e6d78437048d053b62fcccd63c28e8",
+      "bytes": 9232,
+      "mtime_ns": 1789464989438459000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-preparation-r3\\solver-spec.json": {
+      "sha256": "9827ef623d266ecc48b27fd1f2f7347a86c75913c775fba47ac216a4fea24341",
+      "bytes": 150162,
+      "mtime_ns": 1789465008977897200
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\artifacts.jsonl": {
+      "sha256": "538b72f746c6d81db1bb1cd092168b8d4df7fc46a808e5f5e083cecf81929017",
+      "bytes": 42415,
+      "mtime_ns": 1789465369937472300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\claims.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465225216005700
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\evidence.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465224874796800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\predictions.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465229323086100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\reviews.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465229323086100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\trace.jsonl": {
+      "sha256": "8962add1ed7b3636804711b0e8113582f45ba941d459d3c38de8686e12b0e02f",
+      "bytes": 12612,
+      "mtime_ns": 1789465369703816900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\controller-attempt.json": {
+      "sha256": "3ec8cd6365d34352f926caff1333a655460d4bbeb9b48fcb8b50d875e2dba36d",
+      "bytes": 15557,
+      "mtime_ns": 1789465371023505100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\controller-receipt.json": {
+      "sha256": "b3da851ab5f6da7d85cb5c497db7bb6e15c284313d1246af8f48be93956574e4",
+      "bytes": 1679,
+      "mtime_ns": 1789465371022970900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\panel.json": {
+      "sha256": "eb78d25d5ae050fbe82eeccc8ab6b81f1ea264c720c520993d53f35414cba694",
+      "bytes": 10213,
+      "mtime_ns": 1789465220613693000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\export-audit\\exports.jsonl": {
+      "sha256": "9772288ac8a3d3fed48ab3c706018165e44c6de57c0fa54c51af911c6b382bb2",
+      "bytes": 5121,
+      "mtime_ns": 1789465180050433000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\parent-closure.json": {
+      "sha256": "638c59ca9114e2cd4e707a163d95c4c1b41a6ef0c7132ca888a918067fc53956",
+      "bytes": 5003,
+      "mtime_ns": 1789465371432026100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\parent-process\\process.json": {
+      "sha256": "b6735ed0a1ab31d9aecca70d728fdaa9c294187e8f2955e6f6bc2ad44a6ba18c",
+      "bytes": 4475,
+      "mtime_ns": 1789465371269708300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\parent-process\\stderr.private.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465371129860300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\parent-process\\stdout.private.jsonl": {
+      "sha256": "29c0ddf193ba57f96ca141767e2baf9e908b3b89e599ce7ee3790e4f3ddffb4e",
+      "bytes": 803,
+      "mtime_ns": 1789465371129860300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\parent-reservation.json": {
+      "sha256": "7e5b4da9eed19a5820824ee78c022b3a8c7753761989dd86c01e103f13f36d0c",
+      "bytes": 722,
+      "mtime_ns": 1789465100015548600
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl": {
+      "sha256": "da496002c04f8dbdbc9067cba3040eb092acb31618b8945bef82d277c93283b3",
+      "bytes": 11573,
+      "mtime_ns": 1789465155977441800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl.seal.json": {
+      "sha256": "65bb5e6287a053608c7bf938a56069ba0fcf7d2c1396c9ab1930fcb1a525f463",
+      "bytes": 295,
+      "mtime_ns": 1789465156367272000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\data.csv": {
+      "sha256": "455f1e3df7e93dce381b6adff312e89e6a3b4d3900cf0d6083660cd0a4d53881",
+      "bytes": 49023,
+      "mtime_ns": 1789465154599436200
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\public.json": {
+      "sha256": "eb639eb5e482f08d499cce95c5da180339253acb64cbe2f606fcbfdf8dca251f",
+      "bytes": 4382,
+      "mtime_ns": 1789465154199077800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\receipt.json": {
+      "sha256": "3fedb235317b1394d796bb16f78bd89ec316498792e7128f23090c1d15d01fb7",
+      "bytes": 1145,
+      "mtime_ns": 1789465155049701600
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl": {
+      "sha256": "62b83e4fd152138b8640ba64b81c5c17eabea52a27eef6351e5f8465c1011366",
+      "bytes": 11120,
+      "mtime_ns": 1789465159968363600
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl.seal.json": {
+      "sha256": "5bf3e7e544601cf4f071e056da84dbf1257a424cb16807646f90ac99e4c5b323",
+      "bytes": 295,
+      "mtime_ns": 1789465160251520000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\data.csv": {
+      "sha256": "bcef1bbadbb898bccf71d51e5e619d03ee0e093eb6a3aee553d6688d3d3304ee",
+      "bytes": 106218,
+      "mtime_ns": 1789465158273590200
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\public.json": {
+      "sha256": "b623866374d6c0d494317b5faf2b5e9866543afbd14c1333568db447b48a6438",
+      "bytes": 3203,
+      "mtime_ns": 1789465157687480700
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\receipt.json": {
+      "sha256": "2c8529a9ee2066b2627e733e388627426b0593956f205869809733d95f0cfa79",
+      "bytes": 947,
+      "mtime_ns": 1789465158477618900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\public-export\\export-receipt.json": {
+      "sha256": "05b92e568c14df98d797a2df7eba1c82f5b3cf05d596f8f585c636522d63e73f",
+      "bytes": 9232,
+      "mtime_ns": 1789465160676548800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\headless-request.private.json": {
+      "sha256": "48f5bebc0bccf4d35a389ce4ef2e5381840fe6df8dbfe30d6e7ad7ad6b572157",
+      "bytes": 12826,
+      "mtime_ns": 1789465234398962400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\credits.private.json": {
+      "sha256": "604d95a89902f1ed60e4bf3569b60d60ca6c0cae6bbaf8f2bec45314205829b7",
+      "bytes": 500,
+      "mtime_ns": 1789465367413715900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\observation.json": {
+      "sha256": "8faad3e82f6e0218dc7fcc1bd561b5360065508cf8c02ecf34ba6500786bc6c6",
+      "bytes": 694,
+      "mtime_ns": 1789465368711792100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\requests.json": {
+      "sha256": "1290eac426d81dea6a5879a30862dbc0419c7112f23c2bef7f63d621b14b6bc2",
+      "bytes": 1037,
+      "mtime_ns": 1789465368702257900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\topup.private.json": {
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "bytes": 2,
+      "mtime_ns": 1789465368123449400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\user.private.json": {
+      "sha256": "19c28e904575909054709212e12d4be0962fb79a327b8df4b131e77545ad2cf5",
+      "bytes": 618,
+      "mtime_ns": 1789465368702257900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempts.json": {
+      "sha256": "435fd84e78df74b543d2a25adfebd1de77d0b01cc737f73e1d18ac566a925dba",
+      "bytes": 1066,
+      "mtime_ns": 1789465368721301500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\credits.private.json": {
+      "sha256": "604d95a89902f1ed60e4bf3569b60d60ca6c0cae6bbaf8f2bec45314205829b7",
+      "bytes": 500,
+      "mtime_ns": 1789465239449141000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\observation.json": {
+      "sha256": "b4e166e9a4d90b06cdb6f0a40fd388ccdcd1d3f6f7067e39538d6d01f59e8d61",
+      "bytes": 694,
+      "mtime_ns": 1789465241090763000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\requests.json": {
+      "sha256": "98a81936b60e48e5cd26d5d36684fafa1edf53add95507a0b65db6658f177557",
+      "bytes": 1037,
+      "mtime_ns": 1789465241081553800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\topup.private.json": {
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "bytes": 2,
+      "mtime_ns": 1789465240071953600
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\user.private.json": {
+      "sha256": "19c28e904575909054709212e12d4be0962fb79a327b8df4b131e77545ad2cf5",
+      "bytes": 618,
+      "mtime_ns": 1789465241081553800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempts.json": {
+      "sha256": "9b780b68896ca7f210bc8cb967f24ef67255e1031d2b56c66f2e38e01ffaaa41",
+      "bytes": 1066,
+      "mtime_ns": 1789465241101776500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\command.json": {
+      "sha256": "7684e27fee5021d322a606ca1a445316b2300bb0427a88f0c3447b5d7478a881",
+      "bytes": 3225,
+      "mtime_ns": 1789465235588537900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\inspect\\process.json": {
+      "sha256": "303ebf8e749620efd36154d324b7ca47a68a7d4c82c469989262049df9e3bc4e",
+      "bytes": 5770,
+      "mtime_ns": 1789465238785019700
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\inspect\\stderr.private.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465237956261100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\inspect\\stdout.private.jsonl": {
+      "sha256": "7e3cf91f9bd875d42d75633f59467c8eb93f967dfe3b61a15ed2651f287d57cf",
+      "bytes": 3396,
+      "mtime_ns": 1789465237954755200
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\observer-receipt.json": {
+      "sha256": "4c444a2ed25d3e7c1767759675a58ccadf0d00ff0c70b27708f2baf8b9ec4383",
+      "bytes": 168614,
+      "mtime_ns": 1789465369141378500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\process.json": {
+      "sha256": "8125368e94ac067c327c07652d7832df6d009494a03a6a33daa51ce14d928c5f",
+      "bytes": 8769,
+      "mtime_ns": 1789465366584741700
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\prompt.private.txt": {
+      "sha256": "d45d58066cf6a18f1615126d39306bc8b058502f1f85ae463cd540da580718bd",
+      "bytes": 10957,
+      "mtime_ns": 1789465235461219900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\schema.private.json": {
+      "sha256": "2183a68b2b05aadc0e2b0002d2622290c6bb5b27fa055a3054652c4fd5f5d93f",
+      "bytes": 1000,
+      "mtime_ns": 1789465235462221300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\stderr.private.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465366583735400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native\\stdout.private.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465366583735400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\.metadata_version": {
+      "sha256": "2aa092243667791a5d0de79ef7a43605357e4bf8f6cf329bdf58539fe4b8a3d1",
+      "bytes": 6,
+      "mtime_ns": 1789465243392513500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\active_sessions.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2,
+      "mtime_ns": 1789465242810348000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\active_sessions.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465237836571400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\config.toml": {
+      "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691",
+      "bytes": 872,
+      "mtime_ns": 1789465234461093900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\01-getting-started.md": {
+      "sha256": "35250196c5e11c7e2c662c465083eac97e01247b0bdeb0e26248fe019d4e659b",
+      "bytes": 9398,
+      "mtime_ns": 1789465242805831700
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\02-authentication.md": {
+      "sha256": "1dc2f15c7b4ffdd0111db6eec2ce6448b1e55ad81d3900f30500d8ebdfccaaeb",
+      "bytes": 15778,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\03-keyboard-shortcuts.md": {
+      "sha256": "a47d32ef471339f10bf412e7a901883aa4208e41a7c0207c4aa2eabe92adbe97",
+      "bytes": 30410,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\04-slash-commands.md": {
+      "sha256": "bc5d49d28ff2ab85c5f8860ae6458a2cf7b03241b635edb6726d5e41d5f61636",
+      "bytes": 24112,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\05-configuration.md": {
+      "sha256": "cddea213416fbc8f675070aa8eaf8ad268c8f8168a6462cf00b02404425eb1aa",
+      "bytes": 49630,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\06-theming.md": {
+      "sha256": "957ccc193782ce9df51bedf2a17125f532d4d4553ffcc2a87aa7537d3097ee1a",
+      "bytes": 17157,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\07-mcp-servers.md": {
+      "sha256": "18479d040bd4f6190f71a6616732381f3a030adac15efea5188e58f0c8b5d5f2",
+      "bytes": 17578,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\08-skills.md": {
+      "sha256": "362f24bbc60c4b1ba45f10719352d533a6b017098433e84e5bdf2fcf73b63284",
+      "bytes": 13022,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\09-plugins.md": {
+      "sha256": "9fa694f43feebcdbd393f20e0d0d691d3352b2c3e565c13917378eac82a61cd4",
+      "bytes": 26963,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\10-hooks.md": {
+      "sha256": "6af6cda5df56a02b194a96a59939f7b18e562983cd6f8c04f8f0c2d22a64a0d9",
+      "bytes": 57584,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\11-custom-models.md": {
+      "sha256": "d41d9ff5942eb84d8c8f73f7c0bad82b34d5b9a282b30e687770aa050f36e00a",
+      "bytes": 15835,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\12-project-rules.md": {
+      "sha256": "160380abbee8bb7c0a94809b3f563f9fccde8d9592d1261aff0186b13a2e290b",
+      "bytes": 10453,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\13-memory.md": {
+      "sha256": "ba3d63620ffab820f69f3ecf73f9841f07f4e8b99de96d177a84f94f2b285908",
+      "bytes": 21162,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\14-headless-mode.md": {
+      "sha256": "2dd1302d88dc39276866e09a7c34501ecbe0e53b34a17f49e6908356ba1c98a9",
+      "bytes": 41301,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\15-agent-mode.md": {
+      "sha256": "17f6088ffd7ba636e8dff4ba37255d11920865492b9f23b7e1e91f838fafe185",
+      "bytes": 13067,
+      "mtime_ns": 1789465242806832400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\16-subagents.md": {
+      "sha256": "fc376480b3fa90526949874fb58e2c42d1763d7a64a169215b11db7214ba254d",
+      "bytes": 17172,
+      "mtime_ns": 1789465242808340400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\17-sessions.md": {
+      "sha256": "2e728c7f53201df625582093aa5e626c081d7b51389093f4359b184407e99d61",
+      "bytes": 20577,
+      "mtime_ns": 1789465242808340400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\18-sandbox.md": {
+      "sha256": "327816d24c153880828b72bc03385f36bccaa369d839d8ad7870cbb409375d84",
+      "bytes": 17987,
+      "mtime_ns": 1789465242808340400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\19-plan-mode.md": {
+      "sha256": "7b586678844f5fd8a411c5668610cc50c0021ebc96dab3b987eb94a0028c66f4",
+      "bytes": 9038,
+      "mtime_ns": 1789465242808340400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\20-background-tasks.md": {
+      "sha256": "309e90beaf775e9263be8f4bca7a564f9c4de15834d548ed8c9eb5a455f9fa2f",
+      "bytes": 10536,
+      "mtime_ns": 1789465242808340400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\21-terminal-support.md": {
+      "sha256": "8de7bd258bf9c4b3ecaa00691da8a8e4a409e97b8d73289848b45ed6f0c9a81a",
+      "bytes": 12434,
+      "mtime_ns": 1789465242808340400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\22-permissions-and-safety.md": {
+      "sha256": "918ad092e92261e5c09c46f04c87acccf10b41a2945c97857ce0d5c57c12267d",
+      "bytes": 33137,
+      "mtime_ns": 1789465242809347800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\23-dashboard.md": {
+      "sha256": "a4b4f2a5d48b8f5bf15d1327b9274af51e980405bf5259fc40613a51545e86ed",
+      "bytes": 15295,
+      "mtime_ns": 1789465242809347800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\24-monitoring-usage.md": {
+      "sha256": "1518dc540b48fdad9f72d94ac66f589374c14b3b5b148db34f107504e878d1d9",
+      "bytes": 21172,
+      "mtime_ns": 1789465242809347800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\25-status-line.md": {
+      "sha256": "3200adfa3740a7bca6e4079a47d1a2a80801813edd7e1818ae4773bb488ab48c",
+      "bytes": 17348,
+      "mtime_ns": 1789465242809347800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\26-config-reference.md": {
+      "sha256": "832f6b594ed3903edbb52c46c8b8e59344aba43c1507d31f4404804ff4f91bb1",
+      "bytes": 63732,
+      "mtime_ns": 1789465242809347800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\27-grok-clone.md": {
+      "sha256": "ac16b286702d135c39d2c1a1d3af1d4a4dbb1d5651047da22f5bff727175b71b",
+      "bytes": 6027,
+      "mtime_ns": 1789465242809347800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\logs\\unified.jsonl": {
+      "sha256": "2b43ff8db2a2bbc1bb115bf8840dce8ff658f6a252c5b5bb403de8192123e181",
+      "bytes": 12500,
+      "mtime_ns": 1789465253825696100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\managed_config.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789465243391465500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\memtrace\\1789465242-67464.jsonl": {
+      "sha256": "884a59b3359f8227cc8ab61c78372e2e49555adb44803744fa17cbacaa647e1d",
+      "bytes": 110,
+      "mtime_ns": 1789465272807546500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\models_cache.json": {
+      "sha256": "f6e0168134a247fc377d42f5f9613a666aeb30926353213f7689db0bf1981fca",
+      "bytes": 4720,
+      "mtime_ns": 1789465243388861000
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\README.md": {
+      "sha256": "53d251b380bae4d6f5d83ed90de4f987dda152854191d02ade9d4cc9b3a3e1e7",
+      "bytes": 109662,
+      "mtime_ns": 1789465243392513500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\settings_cache.json": {
+      "sha256": "6c0bc2dbfb15bbcb3e0a9ade70a8684c4ca5dcaac7da989d15746d9bcd23c747",
+      "bytes": 7610,
+      "mtime_ns": 1789465243385958900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-home\\worktrees.db": {
+      "sha256": "5d86a54c276b1839d17cd8cb596d71323af4dd72f529b8c61719920e8d73c23f",
+      "bytes": 40960,
+      "mtime_ns": 1789465249256155100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-profile\\AppData\\Local\\Microsoft\\Windows\\PowerShell\\ModuleAnalysisCache": {
+      "sha256": "0c6a80eb3cb2c714b04905ba4aa211c7b17f3fa26705b2671c8a3912399df8a5",
+      "bytes": 10498,
+      "mtime_ns": 1789465257744951800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\native-reservation.json": {
+      "sha256": "15800130e89111874786e67b2a652914694409cf645a34c954d81a8a84d853e9",
+      "bytes": 159986,
+      "mtime_ns": 1789465235083129300
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\observer-receipt.private.json": {
+      "sha256": "4c444a2ed25d3e7c1767759675a58ccadf0d00ff0c70b27708f2baf8b9ec4383",
+      "bytes": 168614,
+      "mtime_ns": 1789465369149897900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\calls\\0001-m4_plan\\request.private.json": {
+      "sha256": "32ee9d30cf20c1dca87cea9a34d05b238ffaa1080bf00cffe15876cd88b53cb2",
+      "bytes": 10828,
+      "mtime_ns": 1789465234398962400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\solver-model\\ledger.json": {
+      "sha256": "46959db21c57e1737dbc42155e470a03d4cf74f3c42099d961cff7e08609ce49",
+      "bytes": 305967,
+      "mtime_ns": 1789465370961822200
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\summary.json": {
+      "sha256": "0bf64740094a6bec1bfdf33e45abe90637cfe51febd03371e9b63e4cb57e25ec",
+      "bytes": 764,
+      "mtime_ns": 1789465371094673400
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3-driver.log": {
+      "sha256": "de28067b55b0904b1d765150658249d4ab276ff2181928bac2299873580e0609",
+      "bytes": 119,
+      "mtime_ns": 1789465371437026600
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3-native-join.json": {
+      "sha256": "878f3486d6ab3b5c294a2f9d1031c042bb8388aeb421b9805316e54780706d04",
+      "bytes": 233,
+      "mtime_ns": 1789465490393023100
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3-native-start.json": {
+      "sha256": "ece27bd50ffaca0678e9fb6c50e3779a5c706aab7d82d263c23bdd495358c33f",
+      "bytes": 109,
+      "mtime_ns": 1789465109235476800
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\archive_actual_m4m5_grok130_r3.py": {
+      "sha256": "8eded212ba2e41a091ba09a0763a437f57bb73e561a89c893900c58e04c87aac",
+      "bytes": 11974,
+      "mtime_ns": 1789466364512771500
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prepare_headless_lineage_full4_archive_r1.py": {
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840,
+      "mtime_ns": 1789440505669493900
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_actual_m4m5_headless_grok130_r3.py": {
+      "sha256": "c02c65737c2cd41774c647176ed777be53b50a4e21ef1a67e6a0e8103254636f",
+      "bytes": 28820,
+      "mtime_ns": 1789464725074666600
+    }
+  }
+}
