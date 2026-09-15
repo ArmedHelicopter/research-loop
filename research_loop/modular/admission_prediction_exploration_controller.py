@@ -36,6 +36,7 @@ from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.modular.train_controller import _checked_roots, _write
+from research_loop.modular.admission_attempt_transitions import AttemptTransitions, verify_attempt_transitions
 from research_loop.ontology import ContractError
 
 
@@ -263,10 +264,12 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
     provider_session = PhaseProviderSession(model, root/'provider-scopes.json') if native else None
     journal = {'schema': ('admission-prediction-exploration-train-attempt-v2' if native else 'admission-prediction-exploration-train-attempt-v1'), 'config_digest': config.record.content_hash, 'status': 'exporting',
         'allocation': b['allocation'], **allocation_fields(b, native=native), 'expected_cells': 16, 'cells': [], 'actual_scorer_calls': 0}
+    transitions = AttemptTransitions(root, producer_source=Path(__file__), config_digest=config.record.content_hash)
     def persist(*, refresh_usage=True):
         if refresh_usage:
             journal['actual_model_usage'] = provider_usage(provider_session, model)
         _write(root/'controller-attempt.json', journal)
+        transitions.append_checkpoint(root/'controller-attempt.json')
     persist()
     try:
         packets = source.export()
@@ -425,13 +428,24 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
     eligible_scored_cells = (len(scores) if final_gate is None or final_gate.data()['provider_evidence_eligible'] else 0)
     if evaluator_gate is not None and not evaluator_gate['score_eligible']:
         eligible_scored_cells = 0
+    status = ('complete_train_engineering' if len(scores)==len(results)==16 and (evaluator_gate is None or evaluator_gate['score_eligible'])
+              and all(c.data()['status'] in {'estimated', 'not_identifiable'} for c in contrasts) else 'inconclusive')
+    final_model_usage = final_usage(final_gate, model)
+    # The terminal attempt checkpoint is retained before its tail is anchored in
+    # the controller receipt.  Prefixes remain available if either later write fails.
+    journal.update(status=status, actual_model_usage=final_model_usage)
+    persist(refresh_usage=False)
+    transition_receipt = transitions.receipt(root/'controller-attempt.json')
+    transition_verification = verify_attempt_transitions(root, transition_receipt,
+        producer_source=Path(__file__), config_digest=config.record.content_hash,
+        current_checkpoint=root/'controller-attempt.json', external_tail=transition_receipt.data()['external_tail'])
     receipt = FrozenRecord.from_dict({'schema': ('admission-prediction-exploration-train-receipt-v3' if evaluator_gate is not None else 'admission-prediction-exploration-train-receipt-v2' if native else 'admission-prediction-exploration-train-receipt-v1'), 'config_digest': config.record.content_hash,
         'expected_cells': 16, 'observed_cells': len(results), 'scored_cells': len(scores), **final_score_fields(final_gate, scores),
         **({'evaluator_final_verification': evaluator_gate, 'eligible_scored_cells': eligible_scored_cells,
              'evaluator_observation_catalogues': evaluator_observations,
              'evaluator_observation_catalogue_failure': evaluator_observation_failure} if evaluator_gate is not None else {}),
         'failed_cells': sum(r['status']=='failed' for r in journal['cells']), 'blocked_cells': sum(r['status']=='blocked' for r in journal['cells']),
-        'allocation': b['allocation'], 'actual_model_usage': final_usage(final_gate, model), 'actual_scorer_calls': journal['actual_scorer_calls'],
+        'allocation': b['allocation'], 'actual_model_usage': final_model_usage, 'actual_scorer_calls': journal['actual_scorer_calls'],
         'actual_docker_attempts': sum(r['docker_attempts'] for r in journal['cells']),
         'unused_model_opportunities': final_unused(final_gate, model, b),
         'unused_docker_opportunities': 48 - sum(r['docker_attempts'] for r in journal['cells']),
@@ -441,7 +455,21 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
         'auxiliary_docker_attempts': sum(r.get('auxiliary_docker_attempts', 0) for r in journal['cells']),
         'phase_unknown_cost_attempts': sum(r.get('phase_receipt', {}).get('unknown_cost_attempts', 0) for r in journal['cells']),
         'contrasts': [c.data() for c in contrasts], 'pruned_cells': [], 'scientific_effectiveness_proven': False, 'validation_opened': False,
-        'status': 'complete_train_engineering' if len(scores)==len(results)==16 and (evaluator_gate is None or evaluator_gate['score_eligible'])
-            and all(c.data()['status'] in {'estimated', 'not_identifiable'} for c in contrasts) else 'inconclusive'})
-    _write(root/'controller-receipt.json', receipt.data()); journal['status'] = receipt.data()['status']; journal.update(actual_model_usage=receipt.data()['actual_model_usage']); _write(root/'controller-attempt.json',journal)
+        'attempt_transition_receipt': transition_receipt.data(),
+        'attempt_transition_verification': transition_verification.data(), 'status': status})
+    receipt_path = root/'controller-receipt.json'
+    _write(receipt_path, receipt.data())
+    # The returned record must be exactly the record just persisted.  The stored
+    # anchor must also equal the tail held before this final receipt write.
+    persisted_raw = receipt_path.read_bytes()
+    if persisted_raw != receipt.encoded.encode('utf-8'):
+        raise ContractError('persisted controller receipt bytes differ')
+    persisted = FrozenRecord(persisted_raw.decode('utf-8'))
+    if persisted.data() != receipt.data():
+        raise ContractError('persisted controller receipt differs')
+    anchored = persisted.data()['attempt_transition_receipt']
+    if anchored != transition_receipt.data():
+        raise ContractError('persisted attempt transition anchor differs')
+    verify_attempt_transitions(root, anchored, producer_source=Path(__file__), config_digest=config.record.content_hash,
+                               current_checkpoint=root/'controller-attempt.json', external_tail=transition_receipt.data()['external_tail'])
     return AdmissionPredictionExplorationTrainRun(compiled, tuple(results), tuple(scores), tuple(FrozenRecord.from_dict(r) for r in journal['cells']), tuple(contrasts), receipt)

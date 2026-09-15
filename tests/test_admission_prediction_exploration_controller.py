@@ -12,12 +12,14 @@ from pathlib import Path
 
 import pytest
 
+import research_loop.modular.admission_prediction_exploration_controller as admission_controller
 from evaluation.modular.fresh_airs_custodian import CustodyError
 from evaluation.modular.scorer_process import CombinationScorerProcessClient, serialize_combination_panel, parse_combination_panel, parse_server_config
 from evaluation.modular.scoring_service import ScorerConfig, FrozenBenchmarkRubricEndpoint
 from evaluation.modular.train_io import TrainPacketExporter
 from evaluation.modular.admission_prediction_exploration_scoring import issue_admission_prediction_exploration_score_input
 from research_loop.modular.contracts import FrozenRecord
+from research_loop.modular.admission_attempt_transitions import verify_attempt_transitions
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.modular.admission_prediction_exploration_controller import (
@@ -261,6 +263,62 @@ def test_poisoned_ledger_preserves_all16_opportunities(tmp_path,monkeypatch):
     assert b['actual_docker_attempts']==0 and b['actual_scorer_calls']==0
     assert b['unused_model_opportunities']==47 and b['source_calls']==2 and b['auxiliary_docker_attempts']==0
     assert b['pruned_cells']==[] and all(c.data()['status']=='inconclusive' for c in result.contrasts)
+
+
+def test_poisoned_ledger_retains_and_rechecks_exact_attempt_transitions(tmp_path,monkeypatch):
+    setup=prepare(tmp_path);result,_,_=invoke(setup,monkeypatch,'poison');root=setup['root']/ 'run'
+    transition=result.receipt.data()['attempt_transition_receipt']
+    verified=verify_attempt_transitions(root,transition,producer_source=Path(
+        'research_loop/modular/admission_prediction_exploration_controller.py'),
+        config_digest=setup['config'].record.content_hash,current_checkpoint=root/'controller-attempt.json',
+        external_tail=transition['external_tail'])
+    assert verified.data()['status']=='verified'
+    rows=[FrozenRecord(line).data() for line in (root/'controller-attempt-transitions.jsonl').read_text(encoding='utf-8').splitlines()]
+    assert len(rows)==transition['count'] and rows[-1]['checkpoint']['sha256']==transition['current_checkpoint']['sha256']
+    assert (root/rows[-1]['checkpoint']['path']).read_bytes()==(root/'controller-attempt.json').read_bytes()
+
+
+def test_preflight_failure_retains_honest_transition_prefix(tmp_path,monkeypatch):
+    setup=prepare(tmp_path);assert invoke(setup,monkeypatch,'source') is None;root=setup['root']/ 'run'
+    rows=[FrozenRecord(line).data() for line in (root/'controller-attempt-transitions.jsonl').read_text(encoding='utf-8').splitlines()]
+    assert rows[-1]['checkpoint']['path']==f"controller-attempt-checkpoints/{len(rows):06d}.json"
+    assert (root/rows[-1]['checkpoint']['path']).read_bytes()==(root/'controller-attempt.json').read_bytes()
+    assert not (root/'controller-receipt.json').exists()
+
+
+def test_transition_external_tail_rejects_coherently_rehashed_checkpoint(tmp_path,monkeypatch):
+    setup=prepare(tmp_path);result,_,_=invoke(setup,monkeypatch,'poison');root=setup['root']/ 'run'
+    original=result.receipt.data()['attempt_transition_receipt']; rows=[]; previous='0'*64
+    lines=(root/'controller-attempt-transitions.jsonl').read_text(encoding='utf-8').splitlines()
+    for index,line in enumerate(lines,1):
+        row=FrozenRecord(line).data(); path=root/row['checkpoint']['path']
+        if index==len(lines):
+            mutated=path.read_bytes()+b' '
+            path.write_bytes(mutated);(root/'controller-attempt.json').write_bytes(mutated)
+            row['checkpoint'].update(sha256=hashlib.sha256(mutated).hexdigest(),bytes=len(mutated))
+        row['previous_transition_digest']=previous
+        record=FrozenRecord.from_dict(row);previous=record.content_hash;rows.append(record.encoded)
+    (root/'controller-attempt-transitions.jsonl').write_text('\n'.join(rows)+'\n',encoding='utf-8')
+    forged=dict(original);forged['external_tail']=previous
+    forged['current_checkpoint']={'path':'controller-attempt.json','sha256':hashlib.sha256(mutated).hexdigest(),'bytes':len(mutated)}
+    with pytest.raises(ContractError,match='external tail'):
+        verify_attempt_transitions(root,forged,producer_source=Path(
+            'research_loop/modular/admission_prediction_exploration_controller.py'),
+            config_digest=setup['config'].record.content_hash,current_checkpoint=root/'controller-attempt.json',
+            external_tail=original['external_tail'])
+
+
+def test_return_rejects_tampered_persisted_transition_anchor(tmp_path,monkeypatch):
+    setup=prepare(tmp_path);original_write=admission_controller._write
+    def tampering_write(path,value):
+        original_write(path,value)
+        if Path(path).name=='controller-receipt.json':
+            changed=json.loads(Path(path).read_text(encoding='utf-8'))
+            changed['attempt_transition_receipt']['external_tail']='f'*64
+            original_write(path,changed)
+    monkeypatch.setattr(admission_controller,'_write',tampering_write)
+    with pytest.raises(ContractError,match='persisted controller receipt'):
+        invoke(setup,monkeypatch,'poison')
 
 
 @pytest.mark.parametrize('fault',['source_exception','source_unknown','phase','scorer'])
