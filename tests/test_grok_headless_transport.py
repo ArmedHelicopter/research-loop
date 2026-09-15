@@ -225,10 +225,25 @@ def test_recovered_preflight_stale_snapshot_blocks_main_and_retains_attempt(tmp_
     recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2}; kwargs['account_read_recovery']=recovery
     original=transport._account_recovered
     def stale(*args):
-        result=original(*args); result['projection']=dict(result['projection'],oldest_observed_at=(transport.datetime.now(transport.timezone.utc)-timedelta(seconds=6)).isoformat()); return result
+        result=original(*args); result['projection']=dict(result['projection'],oldest_observed_at=(transport.datetime.now(transport.timezone.utc)-timedelta(seconds=transport.ACCOUNT_PRELAUNCH_MAX_AGE_SECONDS+1)).isoformat()); return result
     monkeypatch.setattr(transport,'_account_recovered',stale)
     result=transport.run_headless_diagnostic(**kwargs)
     assert not result.receipt.data()['accepted'] and not calls and (directory/'native/billing-before/attempts.json').exists()
+
+
+def test_recovered_preflight_sequential_latency_within_frozen_bound_launches_once(tmp_path, monkeypatch):
+    _, kwargs, _, directory, calls, _ = prepared(tmp_path, monkeypatch)
+    recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2}; kwargs['account_read_recovery']=recovery
+    original=transport._account_recovered
+    def delayed(*args, **inner_kwargs):
+        result=original(*args, **inner_kwargs)
+        result['projection']=dict(result['projection'], oldest_observed_at=(transport.datetime.now(transport.timezone.utc)-timedelta(seconds=10)).isoformat())
+        return result
+    monkeypatch.setattr(transport, '_account_recovered', delayed)
+    result=transport.run_headless_diagnostic(**kwargs)
+    assert result.receipt.data()['accepted'] and result.receipt.data()['prompt_process_launched'] and len(calls)==1
+    reservation=json.loads((directory/'native-reservation.json').read_bytes())
+    assert reservation['account_prelaunch_max_age_seconds']==transport.ACCOUNT_PRELAUNCH_MAX_AGE_SECONDS==35
 
 
 @pytest.mark.parametrize('value', [True, 2.0, 1, 3])
