@@ -3,11 +3,12 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import os
 
 import pytest
 
 from evaluation.modular.evaluator_model_port import CodexEvaluatorModelPort
-from evaluation.modular.lineage_scorer_process import LineageScorerProcessClient, LineageScorerWorker, load_lineage_service
+from evaluation.modular.lineage_scorer_process import LineageScorerProcessClient, LineageScorerProcessPool, LineageScorerWorker, load_lineage_service
 from evaluation.modular.headless_lineage_worker_composition import (
     compose_headless_lineage_server_configs, headless_lineage_evaluator_bindings)
 from evaluation.modular.scoring_service import ScorerConfig
@@ -16,7 +17,7 @@ from research_loop.modular.grok_acp_transport import ProcessTree
 from research_loop.ontology import ContractError, canonical, digest
 from test_evaluator_model_port import _probe
 from test_lineage_process_scoring import fixture as legacy_fixture
-from test_lineage_combination_controller import EXECUTION, IMAGE, SCHEMAS, _model
+from test_lineage_combination_controller import EXECUTION, SCORER, IMAGE, SCHEMAS, _model
 from test_modular_train_controller import model_port
 from evaluation.modular.lineage_combination_scoring import issue_lineage_score_input
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
@@ -151,6 +152,39 @@ def test_per_panel_headless_worker_composition_keeps_declarations_and_descriptor
         assert config['base']['evaluator'] == specs[obligation]
         assert config['lineage_references']['evaluator_usage'] == bindings[obligation]['evaluator_usage']
         assert config['lineage_references']['evaluator_usage']['evaluator_config_digest'] == digest(specs[obligation])
+
+
+def test_four_headless_lineage_stdio_workers_bind_their_predeclared_descriptors(tmp_path):
+    """Real child processes; descriptors are derived before any worker starts."""
+    compiled, _, _, server = _configure_headless(tmp_path / 'stdio')
+    template = server['base']['evaluator']; specs = {}
+    for index, panel in enumerate(compiled.panels):
+        root = tmp_path / 'stdio' / f'evaluator-{index}'
+        specs[panel.obligation_id] = {**template, 'work_root': str((root/'ledger').resolve()),
+            'private_profile': str((root/'profile').resolve()), 'public_cwd': str((root/'context').resolve()),
+            'max_calls': len(panel.cells), 'max_tokens': len(panel.cells) * 20}
+    reference = {key: value for key, value in server['lineage_references'].items() if key not in {'root', 'evaluator_usage'}}
+    base = {key: value for key, value in server['base'].items() if key != 'evaluator'}
+    configs, bindings = compose_headless_lineage_server_configs(panels=compiled.panels, base=base,
+        lineage_reference_root=server['lineage_references']['root'], lineage_reference_binding=reference,
+        evaluator_specs=specs, tokens_per_cell=20)
+    clients = []
+    try:
+        for index, panel in enumerate(compiled.panels):
+            worker = tmp_path / 'stdio' / f'worker-{index}'; worker.mkdir(parents=True, exist_ok=True); path = worker / 'server.json'
+            path.write_text(canonical(configs[panel.obligation_id]), encoding='utf-8')
+            clients.append(LineageScorerProcessClient(panel=panel, config=ScorerConfig(FrozenRecord.from_dict(base['scorer_config'])),
+                command=[sys.executable, str(Path(__file__).parent/'helpers'/'lineage_scorer_helper.py'), '--config', str(path),
+                    '--config-sha256', _file_sha(path), '--journal', str(worker/'server.jsonl')], journal_path=worker/'client.jsonl',
+                task_handle_bindings={key: hashlib.sha256(value.encode()).hexdigest()
+                                      for key, value in server['base']['task_handles'].items()},
+                execution_authority_keys={EXECUTION.authority_id: EXECUTION.key}, scorer_authority_keys={SCORER.authority_id: SCORER.key},
+                reference_binding={**reference, 'evaluator_usage': bindings[panel.obligation_id]['evaluator_usage']},
+                evaluator_provider=bindings[panel.obligation_id]['evaluator_provider'], environment={**os.environ, 'PYTHONIOENCODING':'utf-8'}))
+        pool = LineageScorerProcessPool(clients)
+        assert pool.evaluator_providers_by_obligation == {key: value['evaluator_provider'] for key, value in bindings.items()}
+    finally:
+        for client in clients: client.close()
 
 
 def test_headless_lineage_resolver_endpoint_service_and_native_main_contract(tmp_path):
