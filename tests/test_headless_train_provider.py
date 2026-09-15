@@ -64,6 +64,9 @@ def test_phase_headless_binding_uses_two_fresh_passes_and_never_reuses_them(tmp_
     replayed.clear()
     assert seal.original.bind_events(target,expected_call_ids=(2,))==(2,)
     assert replayed==[1,2], 'the public original-ledger entry remains independently fresh'
+    replayed.clear()
+    assert seal.original.bind_events(target,expected_call_ids=(2,))==(2,)
+    assert replayed==[1,2], 'a second public entry must make another fresh pass'
     response=backend.calls_root/'0001-m4_plan'/'response.private.json'
     response.write_bytes(response.read_bytes()+b' ')
     with pytest.raises(ContractError):seal.bind_events_with_calls(target,scope_id='target')
