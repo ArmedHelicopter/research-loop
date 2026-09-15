@@ -1,0 +1,194 @@
+{
+  "cdb_private_stdout": {
+    "known_os_wait_function_counts": {
+      "kernelbase!waitforsingleobjectex": 1,
+      "ntdll!ntwaitforsingleobject": 1
+    },
+    "module_frame_counts": {
+      "grok": 210,
+      "kernel32": 40,
+      "kernelbase": 35,
+      "mswsock": 1,
+      "ntdll": 113
+    },
+    "parsed_stack_frame_lines": 399,
+    "per_thread_wait_classes": {
+      "36": {
+        "single_object_wait": 2
+      }
+    },
+    "recognized_wait_frames": 2,
+    "sha256": "489e2f51157f58f5883038537505ac5106123a64fb34e6860b81df7ab0eab9ec"
+  },
+  "execution_source": "E:\\_ryanDev\\AI\\research-loop-modular\\WORK\\grok130-initialize-stack-r2\\closure.json",
+  "json_rpc_stdout": {
+    "frame_digests": [
+      "94f7383e5864cdb48fe0b58befa8e7f13b0c0ea97ce180d3443a4b7ec0ea8895",
+      "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+      "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+      "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+      "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+      "2992362a559484aae43f59b88dffa481d436fd96c5e199061f9ed10dd5ea2b6b",
+      "75cd1c630504a0e37c6055e58be5efb8cc036c35540d664769eef8c0d531524c"
+    ],
+    "frame_types": {
+      "notification": 6,
+      "response": 1
+    },
+    "frames": [
+      {
+        "ordinal": 1,
+        "result_keys": [
+          "_meta",
+          "agentCapabilities",
+          "authMethods",
+          "protocolVersion"
+        ],
+        "sha256": "94f7383e5864cdb48fe0b58befa8e7f13b0c0ea97ce180d3443a4b7ec0ea8895",
+        "type": "response"
+      },
+      {
+        "method": "_x.ai/models/update",
+        "ordinal": 2,
+        "parameter_keys": [
+          "availableModels",
+          "currentModelId"
+        ],
+        "sha256": "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+        "type": "notification"
+      },
+      {
+        "method": "_x.ai/models/update",
+        "ordinal": 3,
+        "parameter_keys": [
+          "availableModels",
+          "currentModelId"
+        ],
+        "sha256": "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+        "type": "notification"
+      },
+      {
+        "method": "_x.ai/models/update",
+        "ordinal": 4,
+        "parameter_keys": [
+          "availableModels",
+          "currentModelId"
+        ],
+        "sha256": "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+        "type": "notification"
+      },
+      {
+        "method": "_x.ai/models/update",
+        "ordinal": 5,
+        "parameter_keys": [
+          "availableModels",
+          "currentModelId"
+        ],
+        "sha256": "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+        "type": "notification"
+      },
+      {
+        "method": "_x.ai/settings/update",
+        "ordinal": 6,
+        "parameter_keys": [
+          "allow_access",
+          "announcements",
+          "auto_permission_mode_enabled",
+          "campaigns",
+          "collapsed_edit_blocks",
+          "consent_gate",
+          "dock_enabled",
+          "gate_label",
+          "gate_message",
+          "gate_url",
+          "group_tool_verbs",
+          "permission_mode",
+          "privacy_banner_reshow_days",
+          "privacy_notice_rollout",
+          "prompt_suggestions_enabled",
+          "session_picker_grouped",
+          "sharing_enabled",
+          "show_resolved_model",
+          "slash_command_tags",
+          "subscription_tier_display",
+          "subscription_watch_interval_secs",
+          "terminal_theme_enabled",
+          "tips"
+        ],
+        "sha256": "2992362a559484aae43f59b88dffa481d436fd96c5e199061f9ed10dd5ea2b6b",
+        "type": "notification"
+      },
+      {
+        "method": "_x.ai/announcements/update",
+        "ordinal": 7,
+        "parameter_keys": [
+          "announcements",
+          "gen"
+        ],
+        "sha256": "75cd1c630504a0e37c6055e58be5efb8cc036c35540d664769eef8c0d531524c",
+        "type": "notification"
+      }
+    ],
+    "invalid_nonempty_lines": 0,
+    "json_frames": 7,
+    "method_parameter_keys": {
+      "_x.ai/announcements/update": {
+        "announcements": 1,
+        "gen": 1
+      },
+      "_x.ai/models/update": {
+        "availableModels": 4,
+        "currentModelId": 4
+      },
+      "_x.ai/settings/update": {
+        "allow_access": 1,
+        "announcements": 1,
+        "auto_permission_mode_enabled": 1,
+        "campaigns": 1,
+        "collapsed_edit_blocks": 1,
+        "consent_gate": 1,
+        "dock_enabled": 1,
+        "gate_label": 1,
+        "gate_message": 1,
+        "gate_url": 1,
+        "group_tool_verbs": 1,
+        "permission_mode": 1,
+        "privacy_banner_reshow_days": 1,
+        "privacy_notice_rollout": 1,
+        "prompt_suggestions_enabled": 1,
+        "session_picker_grouped": 1,
+        "sharing_enabled": 1,
+        "show_resolved_model": 1,
+        "slash_command_tags": 1,
+        "subscription_tier_display": 1,
+        "subscription_watch_interval_secs": 1,
+        "terminal_theme_enabled": 1,
+        "tips": 1
+      }
+    },
+    "methods": {
+      "_x.ai/announcements/update": 1,
+      "_x.ai/models/update": 4,
+      "_x.ai/settings/update": 1
+    },
+    "response_result_keys": {
+      "_meta": 1,
+      "agentCapabilities": 1,
+      "authMethods": 1,
+      "protocolVersion": 1
+    },
+    "sha256": "750bfcc11ecbb22dec5f775c892a14c9d2524ce5fd4a9fccbc50e6b3e5f033d0",
+    "top_level_keys": {
+      "id": 1,
+      "jsonrpc": 7,
+      "method": 6,
+      "params": 6,
+      "result": 1
+    }
+  },
+  "limits": [
+    "No JSON parameter values, raw JSON, stack addresses, arguments, or raw stack text are emitted.",
+    "CDB function names are emitted only when classified as known OS wait functions."
+  ],
+  "schema": "grok130-initialize-stack-r2-public-metadata-v1"
+}
