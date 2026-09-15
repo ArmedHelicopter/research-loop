@@ -205,7 +205,8 @@ def _writer_lock(path: Path):
 class CustodyStore:
     """Durable custody state with deterministic allocation and one-use leases."""
     def __init__(self, path: Path, *, calibration_keys: dict[str, bytes] | None = None,
-                 signing_authority_id: str | None = None, signing_key: bytes | None = None) -> None:
+                 signing_authority_id: str | None = None, signing_key: bytes | None = None,
+                 audit_retainer: Any | None = None) -> None:
         self.path = path
         # These keys are deployment configuration, never receipt input.  The
         # command-line metadata tool intentionally has none and cannot lease.
@@ -217,6 +218,7 @@ class CustodyStore:
             if not isinstance(signing_key, bytes) or len(signing_key) < 32:
                 raise ContractError("custody signing key must have at least 32 bytes")
         self._signing_authority_id, self._signing_key = signing_authority_id, signing_key
+        self._audit_retainer, self.last_audit_capture = audit_retainer, None
         self.state = self._load()
         self._loaded_digest = digest(self.state) if path.exists() else None
 
@@ -253,6 +255,14 @@ class CustodyStore:
             temporary.replace(self.path)
             self._loaded_digest = digest(self.state)
 
+    def _capture_audit_transition(self, operation: str, receipt: FrozenRecord | None = None) -> None:
+        """Record an opt-in side-channel status after the custody outcome is durable."""
+        if self._audit_retainer is None:
+            return
+        from evaluation.modular.custody_transition_retention import capture_custody_transition
+        self.last_audit_capture = capture_custody_transition(
+            self._audit_retainer, operation, canonical(self.state).encode("utf-8"), receipt)
+
     def inventory(self, items: Iterable[InventoryItem]) -> str:
         rows = sorted((item.data() for item in items), key=lambda row: (row["benchmark"], row["task_id"]))
         for row in rows:
@@ -263,6 +273,7 @@ class CustodyStore:
         self.state["inventory"] = rows
         self.state["inventory_digest"] = inventory_digest
         self._save()
+        self._capture_audit_transition("inventory")
         return inventory_digest
 
     def attest_independent_clean(self, *, item_ids: list[str], custodian_id: str,
@@ -299,6 +310,7 @@ class CustodyStore:
                 raise ContractError("custody attestation drift")
             self.state["attestations"][item_id] = record
         self._save()
+        self._capture_audit_transition("attest")
         return record
 
     def split(self, *, seed: str, validation_percent: int = 30,
@@ -357,6 +369,7 @@ class CustodyStore:
             raise ContractError("split drift or reallocation refused")
         self.state["split"] = {"digest": split_digest, **payload}
         self._save()
+        self._capture_audit_transition("split")
         return self.state["split"]
 
     def export_train(self) -> list[DataIdentity]:
@@ -442,6 +455,7 @@ class CustodyStore:
         lease = {"id": lease_id, **qualification, "panel_validated": False, "status": "active"}
         self.state["leases"][lease_id] = lease
         self._save()
+        self._capture_audit_transition("lease_validation")
         return lease
 
     def lease_panel(self, panel: Any, *, calibration_receipt: FrozenRecord,
@@ -484,6 +498,7 @@ class CustodyStore:
         lease["panel_validated"] = True
         lease["task_identities_digest"] = digest(sorted(identities, key=canonical))
         self._save()
+        self._capture_audit_transition("lease_panel")
         return dict(lease)
 
     def consume_validation(self, lease_id: str, *, panel_digest: str, arm_schedule: list[str]) -> dict[str, Any]:
@@ -494,6 +509,7 @@ class CustodyStore:
             raise ContractError("lease panel or arm schedule mismatch")
         lease["status"] = "consumed"
         self._save()
+        self._capture_audit_transition("consume_validation")
         return dict(lease)
 
     def issued_validation_receipt(self, lease_id: str) -> FrozenRecord:
@@ -518,13 +534,17 @@ class CustodyStore:
                 "required_benchmarks": lease["required_benchmarks"],
                 "task_identities_digest": lease["task_identities_digest"],
                 "status": "consumed", "authority": self._signing_authority_id}
-        return FrozenRecord.from_dict({"body": body, "mac": hmac.new(self._signing_key, canonical(body).encode(), hashlib.sha256).hexdigest()})
+        receipt = FrozenRecord.from_dict({"body": body, "mac": hmac.new(self._signing_key, canonical(body).encode(), hashlib.sha256).hexdigest()})
+        self._capture_audit_transition("issued_validation_receipt", receipt)
+        return receipt
 
 
 
 def _main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--state", type=Path, required=True)
+    parser.add_argument("--audit-retention-root", type=Path,
+                        help="new private auditor-owned transition retention directory")
     sub = parser.add_subparsers(dest="command", required=True)
     inventory = sub.add_parser("inventory")
     inventory.add_argument("--snapshot", type=Path, required=True)
@@ -553,7 +573,11 @@ def _main() -> None:
     attest.add_argument("--exposure-proof", required=True)
     attest.add_argument("--tested-arm", action="append", required=True)
     args = parser.parse_args()
-    store = CustodyStore(args.state)
+    retainer = None
+    if args.audit_retention_root is not None:
+        from evaluation.modular.custody_transition_retention import CustodyTransitionRetainer
+        retainer = CustodyTransitionRetainer(args.audit_retention_root)
+    store = CustodyStore(args.state, audit_retainer=retainer)
     if args.command == "inventory":
         result: Any = {"inventory_digest": store.inventory(build_known_inventory(args.snapshot))}
     elif args.command == "split":
@@ -573,7 +597,11 @@ def _main() -> None:
                                         group_ids=args.group, arm_schedule=args.arm)
     else:
         result = store.consume_validation(args.lease, panel_digest=args.panel_digest, arm_schedule=args.arm)
-    print(canonical(result))
+    if retainer is None:
+        print(canonical(result))
+    else:
+        status = store.last_audit_capture.data() if store.last_audit_capture is not None else {"status": "not_attempted"}
+        print(canonical({"result": result, "audit_capture": status}))
 
 
 if __name__ == "__main__":
