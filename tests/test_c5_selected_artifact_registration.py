@@ -100,6 +100,18 @@ def test_verify_rejects_crlf_registration_bytes_before_reauthentication(tmp_path
     assert len(calls) == 1 and not logs
 
 
+def test_verify_rejects_tampered_retained_selected_registration_original(tmp_path, monkeypatch):
+    run, parent, snapshot, logs = _actual_projection(tmp_path, monkeypatch)
+    _authenticated_snapshot(monkeypatch, snapshot, [])
+    path = tmp_path / "registered.json"
+    register_authenticated_selected_run(path, run, parent=parent, execution_authority_keys={}, scorer_authority_keys={})
+    original = path.with_name(path.name + ".original")
+    original.write_bytes(original.read_bytes() + b" ")
+    with pytest.raises(ContractError, match="original bytes"):
+        verify_registration(path, run, parent=parent, execution_authority_keys={}, scorer_authority_keys={})
+    assert not logs
+
+
 def test_failed_authentication_creates_no_registration(tmp_path, monkeypatch):
     run, parent, _, logs = _actual_projection(tmp_path, monkeypatch)
     def refuse(*args, **kwargs):

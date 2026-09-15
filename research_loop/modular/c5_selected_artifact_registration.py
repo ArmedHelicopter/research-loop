@@ -14,6 +14,7 @@ from research_loop.modular.artifact_subjects import JointBundleSubject
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.joint_deployment import JointDeploymentBundle
 from research_loop.modular.artifact_catalogue import source_snapshot
+import hashlib
 from research_loop.ontology import ContractError
 
 
@@ -69,6 +70,52 @@ def _registration_record(snapshot: FrozenRecord, protocol, parent: JointDeployme
     }))
 
 
+
+def _sha(raw: bytes) -> str:
+    return hashlib.sha256(raw).hexdigest()
+
+
+def _provenance_paths(path: Path) -> tuple[Path, Path]:
+    return path.with_name(path.name + '.original'), path.with_name(path.name + '.provenance.json')
+
+
+def _retain_registration_bytes(path: Path, record: FrozenRecord) -> FrozenRecord:
+    """Retain the task-neutral selected bundle without fabricating one identity."""
+    raw = path.read_bytes(); expected = record.encoded.encode('utf-8') + b'\n'
+    if raw != expected:
+        raise ContractError('selected registration bytes differ before retention')
+    original, sidecar = _provenance_paths(path)
+    with original.open('xb') as stream:
+        stream.write(raw); stream.flush(); os.fsync(stream.fileno())
+    body = {'schema':'c5-selected-registration-provenance-v1',
+        'registration':{'path':str(path.resolve()),'sha256':_sha(raw),'bytes':len(raw)},
+        'original':{'path':str(original.resolve()),'sha256':_sha(raw),'bytes':len(raw)},
+        'registration_digest':record.content_hash,'producer_source':source_snapshot(Path(__file__)),
+        'scope':'task_neutral_cross_task_selected_bundle','authorization':'none','scientific_status':'not_measured'}
+    sealed=FrozenRecord.from_dict(body)
+    with sidecar.open('x',encoding='utf-8',newline='\n') as stream:
+        stream.write(sealed.encoded+'\n'); stream.flush(); os.fsync(stream.fileno())
+    return sealed
+
+
+def _verify_retained_registration(path: Path, record: FrozenRecord) -> FrozenRecord:
+    original, sidecar = _provenance_paths(path)
+    raw=path.read_bytes(); original_raw=original.read_bytes()
+    if raw != record.encoded.encode('utf-8') + b'\n' or original_raw != raw:
+        raise ContractError('selected registration original bytes differ')
+    sealed_raw=sidecar.read_bytes()
+    if not sealed_raw.endswith(b'\n') or sealed_raw.count(b'\n') != 1:
+        raise ContractError('selected registration provenance is incomplete')
+    sealed=FrozenRecord(sealed_raw[:-1].decode('utf-8')).data()
+    expected={'schema':'c5-selected-registration-provenance-v1',
+        'registration':{'path':str(path.resolve()),'sha256':_sha(raw),'bytes':len(raw)},
+        'original':{'path':str(original.resolve()),'sha256':_sha(raw),'bytes':len(raw)},
+        'registration_digest':record.content_hash,'producer_source':source_snapshot(Path(__file__)),
+        'scope':'task_neutral_cross_task_selected_bundle','authorization':'none','scientific_status':'not_measured'}
+    if sealed != expected or path.read_bytes()!=raw or original.read_bytes()!=original_raw or sidecar.read_bytes()!=sealed_raw:
+        raise ContractError('selected registration provenance differs')
+    return FrozenRecord.from_dict(sealed)
+
 def register_authenticated_selected_run(path: Path, run, *, parent: JointDeploymentBundle, execution_authority_keys, scorer_authority_keys) -> RegisteredSelectedBundle:
     """Authenticate a complete run, then preserve its complete selected projection.
 
@@ -87,6 +134,7 @@ def register_authenticated_selected_run(path: Path, run, *, parent: JointDeploym
         stream.write(result.record.encoded + "\n")
         stream.flush()
         os.fsync(stream.fileno())
+    _retain_registration_bytes(target, result.record)
     return result
 
 
@@ -102,4 +150,5 @@ def verify_registration(path: Path, run, *, parent: JointDeploymentBundle, execu
     rebuilt = _registration_record(snapshot, run.plan.protocol, parent, run.plan.data()["timeout_seconds"])
     if persisted != rebuilt:
         raise ContractError("persisted selected artifact registration differs from reauthenticated run")
+    _verify_retained_registration(Path(path), persisted.record)
     return persisted
