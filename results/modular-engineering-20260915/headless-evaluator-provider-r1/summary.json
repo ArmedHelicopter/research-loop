@@ -1,0 +1,19 @@
+{
+  "source_commit": "cb93900360779f066bd68e8c11fe257eaa5026c7",
+  "junit": {
+    "tests": 60,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "wall_seconds": 335.5,
+  "source_files_unchanged": 768,
+  "selected_original_files": 304,
+  "selected_original_roots": 4,
+  "limits": [
+    "No actual Grok, API or VAL calls.",
+    "Primary factory and per-call replay only.",
+    "Controller final scorer closure and lineage factory still need separate integration."
+  ],
+  "preliminary_checks": "First factory check retained 18 passes and 1 test assertion AttributeError; two actual synthetic scores completed. Corrected attribute plus additional source fixes passed 24 checks before this freeze. Preliminary checks are not added to this denominator."
+}

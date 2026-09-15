@@ -1,0 +1,2141 @@
+{
+  "scope": "synthetic OS/HTTP only; no actual Grok/API/VAL; fixture credentials synthetic",
+  "selected_roots": [
+    "test_endpoint_port_native_and_0",
+    "test_postflight_failure_retain0",
+    "test_prelaunch_refusal_retains0",
+    "test_primary_scorer_factory_co0"
+  ],
+  "files": [
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\approved-home\\auth.json",
+      "path": "test_endpoint_port_native_and_0/approved-home/auth.json",
+      "sha256": "08f0b0dc0fe2666e1964e078ae026969701bb8d08da54a9abf12cf05b8e07a65",
+      "bytes": 229,
+      "mtime_ns": 1789431769768174000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\headless-request.private.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/headless-request.private.json",
+      "sha256": "0416c5612bc127b1033536efff51b6dc237c79d0d269afcdbacbb87d2e6d39a0",
+      "bytes": 1941,
+      "mtime_ns": 1789431769918753800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\billing-after\\attempt-000\\credits.private.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/billing-after/attempt-000/credits.private.json",
+      "sha256": "d69a8d89795e61229142ea867012f952a029f8a8846b721eb2f13c207159ddd4",
+      "bytes": 263,
+      "mtime_ns": 1789431770130191300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\billing-after\\attempt-000\\observation.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/billing-after/attempt-000/observation.json",
+      "sha256": "6c3811f51247f8354b4b5eab7e67c6e602ee9e5bcf2dcb44e75698b96ee2e8bd",
+      "bytes": 687,
+      "mtime_ns": 1789431770163605700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\billing-after\\attempt-000\\requests.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/billing-after/attempt-000/requests.json",
+      "sha256": "f77ac107b8bccccffd09fedd12c76871479f111d46a556af9b26b73c5b57f405",
+      "bytes": 959,
+      "mtime_ns": 1789431770158468100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\billing-after\\attempt-000\\topup.private.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/billing-after/attempt-000/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "bytes": 2,
+      "mtime_ns": 1789431770157402600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\billing-after\\attempt-000\\user.private.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/billing-after/attempt-000/user.private.json",
+      "sha256": "dedf5b52f3c16d88493ef5a03f818cb06eaae18a1945e220f095a598efaf6e7b",
+      "bytes": 111,
+      "mtime_ns": 1789431770158468100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\billing-after\\attempts.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/billing-after/attempts.json",
+      "sha256": "81048ee16a2652cbcd8bbcd74a4786cbd58f64dbbb571e69e329e09ad53b9452",
+      "bytes": 1059,
+      "mtime_ns": 1789431770174225000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\billing-before\\attempt-000\\credits.private.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/billing-before/attempt-000/credits.private.json",
+      "sha256": "6d07a188e9f14acf33fb536ce8a6890bea1bbdabca984a8e28fdc8d95e8ddb62",
+      "bytes": 263,
+      "mtime_ns": 1789431770043306000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\billing-before\\attempt-000\\observation.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/billing-before/attempt-000/observation.json",
+      "sha256": "536bfab71623613d9974dd83f44399e4a525603ad44b0485c1b37850a84d1f29",
+      "bytes": 687,
+      "mtime_ns": 1789431770049723800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\billing-before\\attempt-000\\requests.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/billing-before/attempt-000/requests.json",
+      "sha256": "3f0ab488adae904f26f715fcd8be2da4a4a219ff3af30a1027e8213c773ca2dd",
+      "bytes": 959,
+      "mtime_ns": 1789431770044717000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\billing-before\\attempt-000\\topup.private.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/billing-before/attempt-000/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "bytes": 2,
+      "mtime_ns": 1789431770044190800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\billing-before\\attempt-000\\user.private.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/billing-before/attempt-000/user.private.json",
+      "sha256": "dedf5b52f3c16d88493ef5a03f818cb06eaae18a1945e220f095a598efaf6e7b",
+      "bytes": 111,
+      "mtime_ns": 1789431770044717000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\billing-before\\attempts.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/billing-before/attempts.json",
+      "sha256": "b21d60d9bc4c175ecb922f74bee487fead06a2650f504f3c36c85d649531d047",
+      "bytes": 1059,
+      "mtime_ns": 1789431770059068600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\command.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/command.json",
+      "sha256": "8d6f090a49cc8d7986a49529825118572c92ee5d6ff3d121f11b4b4b7cacf76d",
+      "bytes": 2495,
+      "mtime_ns": 1789431769980340300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\inspect\\process.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/inspect/process.json",
+      "sha256": "34ad51fd542177bbd3ff7e2ed714d04e089aa6c3ec9908dab9c18bd3af810901",
+      "bytes": 6087,
+      "mtime_ns": 1789431770041689400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\inspect\\stderr.private.txt",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/inspect/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431770040686300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\inspect\\stdout.private.jsonl",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/inspect/stdout.private.jsonl",
+      "sha256": "4ede3fe5926584428971f55e9d13e23b2f0a08b90a53ef91307d7dbb8d9b6a1a",
+      "bytes": 179,
+      "mtime_ns": 1789431770040686300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\observer-receipt.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/observer-receipt.json",
+      "sha256": "908237eb9bf8136555b545827a190650a39a03d4883c3903af9d6f4340eec83d",
+      "bytes": 20583,
+      "mtime_ns": 1789431770183901000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\process.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/process.json",
+      "sha256": "98db34ddfd949783f3d517077a07f552807d0a04790ca67050f1ce9580f9ed58",
+      "bytes": 8236,
+      "mtime_ns": 1789431770129187100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\prompt.private.txt",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/prompt.private.txt",
+      "sha256": "c5f1c9d6a34e9c84954b741c452fb73e0041d17584e08581ec74263a79ab692e",
+      "bytes": 1581,
+      "mtime_ns": 1789431769978992300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\response.private.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/response.private.json",
+      "sha256": "ec647b81be0626b8402be0d3272728607bc911742a86152bf100495190218d58",
+      "bytes": 56,
+      "mtime_ns": 1789431770130191300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\schema.private.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/schema.private.json",
+      "sha256": "c9982ac58785df4db66894907faa50e5f138e549f925b3bb80b2afe2370a84aa",
+      "bytes": 265,
+      "mtime_ns": 1789431769979836400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\stderr.private.txt",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431770129187100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native\\stdout.private.jsonl",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native/stdout.private.jsonl",
+      "sha256": "333a229c7d09c0026af2c03c916bc321d0204e9a70feebe4c6b36e4d58e289fa",
+      "bytes": 1027,
+      "mtime_ns": 1789431770129187100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native-home\\auth.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native-home/auth.json",
+      "sha256": "08f0b0dc0fe2666e1964e078ae026969701bb8d08da54a9abf12cf05b8e07a65",
+      "bytes": 229,
+      "mtime_ns": 1789431769926089500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native-home\\config.toml",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native-home/config.toml",
+      "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691",
+      "bytes": 872,
+      "mtime_ns": 1789431769926089500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\native-reservation.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/native-reservation.json",
+      "sha256": "119b539d6130186a55372e0bdab4000ef03a740fb4af5854bc959fab283a8b42",
+      "bytes": 11587,
+      "mtime_ns": 1789431769934098500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\observer-receipt.private.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/observer-receipt.private.json",
+      "sha256": "908237eb9bf8136555b545827a190650a39a03d4883c3903af9d6f4340eec83d",
+      "bytes": 20583,
+      "mtime_ns": 1789431770189916900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\request.private.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/request.private.json",
+      "sha256": "69d040df33ddc85eb9746957f4b011bf92059d6cfc1bf9ed3f63708e02061971",
+      "bytes": 2341,
+      "mtime_ns": 1789431769918753800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\response.private.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/response.private.json",
+      "sha256": "ec647b81be0626b8402be0d3272728607bc911742a86152bf100495190218d58",
+      "bytes": 56,
+      "mtime_ns": 1789431770358161100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\calls\\0001-blade\\synthetic-peer-answer.json",
+      "path": "test_endpoint_port_native_and_0/ledger/calls/0001-blade/synthetic-peer-answer.json",
+      "sha256": "b7f649142533d5d526a8760cca8f85d75546dfbd246a82919bbd12aa22938a1c",
+      "bytes": 63,
+      "mtime_ns": 1789431770069084400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\ledger\\ledger.json",
+      "path": "test_endpoint_port_native_and_0/ledger/ledger.json",
+      "sha256": "9f532bb24f0d59575eb8cd096ec0b21af36f2e0a38e799ebcb60c24bba701a20",
+      "bytes": 11312,
+      "mtime_ns": 1789431770358161100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_endpoint_port_native_and_0\\synthetic-headless.exe",
+      "path": "test_endpoint_port_native_and_0/synthetic-headless.exe",
+      "sha256": "ea4f07f2e1c5e4927bd9d68ee8f377796416f0a0ce2685ff8fa5c0648b430c3b",
+      "bytes": 41,
+      "mtime_ns": 1789431769768174000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\approved-home\\auth.json",
+      "path": "test_postflight_failure_retain0/approved-home/auth.json",
+      "sha256": "72f9d8f0c017b44b733e523ddd1fbe5331dfbca96bf5be3a38a77fd0327f1632",
+      "bytes": 229,
+      "mtime_ns": 1789431770390720800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\headless-request.private.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/headless-request.private.json",
+      "sha256": "0416c5612bc127b1033536efff51b6dc237c79d0d269afcdbacbb87d2e6d39a0",
+      "bytes": 1941,
+      "mtime_ns": 1789431770520548200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\billing-before\\attempt-000\\credits.private.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/billing-before/attempt-000/credits.private.json",
+      "sha256": "725f854839f90b915138b174784e0c5bd093bac1096bf4d3279e7ba300b7ec1e",
+      "bytes": 263,
+      "mtime_ns": 1789431770759044900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\billing-before\\attempt-000\\observation.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/billing-before/attempt-000/observation.json",
+      "sha256": "82b92a02957cffd34b4192fc5f677ed8e3812207aa8679a3709e215118fd6fa3",
+      "bytes": 687,
+      "mtime_ns": 1789431770765841100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\billing-before\\attempt-000\\requests.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/billing-before/attempt-000/requests.json",
+      "sha256": "49dc873e929d9c7b2d4b34d9e6732028009877f678418f3be018fd543e9465b4",
+      "bytes": 959,
+      "mtime_ns": 1789431770760620600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\billing-before\\attempt-000\\topup.private.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/billing-before/attempt-000/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "bytes": 2,
+      "mtime_ns": 1789431770760092300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\billing-before\\attempt-000\\user.private.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/billing-before/attempt-000/user.private.json",
+      "sha256": "dedf5b52f3c16d88493ef5a03f818cb06eaae18a1945e220f095a598efaf6e7b",
+      "bytes": 111,
+      "mtime_ns": 1789431770760620600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\billing-before\\attempts.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/billing-before/attempts.json",
+      "sha256": "0e6077803babc38a01a39475217fc7af36fa5b8379e6b7255a466700ee9e3f67",
+      "bytes": 1059,
+      "mtime_ns": 1789431770777679300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\command.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/command.json",
+      "sha256": "55c2298eb030af4816eef99df1df199e39acefa76b8a3b5889a2d53b5d00535e",
+      "bytes": 2495,
+      "mtime_ns": 1789431770690150500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\inspect\\process.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/inspect/process.json",
+      "sha256": "aa9b28d4932ea55d0f037ef028b4a5faf2ebc706e259034143b4726f64f7f343",
+      "bytes": 6087,
+      "mtime_ns": 1789431770757998800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\inspect\\stderr.private.txt",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/inspect/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431770756954400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\inspect\\stdout.private.jsonl",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/inspect/stdout.private.jsonl",
+      "sha256": "4ede3fe5926584428971f55e9d13e23b2f0a08b90a53ef91307d7dbb8d9b6a1a",
+      "bytes": 179,
+      "mtime_ns": 1789431770756954400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\observer-receipt.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/observer-receipt.json",
+      "sha256": "215c3195742ab54fe4759c1aaa37444b7cbde0c1688e9e9c358aaf92dcc1984d",
+      "bytes": 19824,
+      "mtime_ns": 1789431770851458000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\process.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/process.json",
+      "sha256": "2491bb3c5fdd45133dcaf857fba8ae0664bded64f377b1377b28495f94ef0b63",
+      "bytes": 8236,
+      "mtime_ns": 1789431770850391000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\prompt.private.txt",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/prompt.private.txt",
+      "sha256": "c5f1c9d6a34e9c84954b741c452fb73e0041d17584e08581ec74263a79ab692e",
+      "bytes": 1581,
+      "mtime_ns": 1789431770689146500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\response.private.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/response.private.json",
+      "sha256": "ec647b81be0626b8402be0d3272728607bc911742a86152bf100495190218d58",
+      "bytes": 56,
+      "mtime_ns": 1789431770850921500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\schema.private.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/schema.private.json",
+      "sha256": "c9982ac58785df4db66894907faa50e5f138e549f925b3bb80b2afe2370a84aa",
+      "bytes": 265,
+      "mtime_ns": 1789431770689146500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\stderr.private.txt",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431770850391000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native\\stdout.private.jsonl",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native/stdout.private.jsonl",
+      "sha256": "60edbf8e73a5f1ef6663b9288d23da4953242307476a0e1cc35b90d96c3aaf2d",
+      "bytes": 1027,
+      "mtime_ns": 1789431770850391000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native-home\\auth.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native-home/auth.json",
+      "sha256": "72f9d8f0c017b44b733e523ddd1fbe5331dfbca96bf5be3a38a77fd0327f1632",
+      "bytes": 229,
+      "mtime_ns": 1789431770636526700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native-home\\config.toml",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native-home/config.toml",
+      "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691",
+      "bytes": 872,
+      "mtime_ns": 1789431770636526700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\native-reservation.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/native-reservation.json",
+      "sha256": "6f501ba2b9afb1d17859a3460ef1e36d832c6d154502b864aaf2ed710c10bde0",
+      "bytes": 11587,
+      "mtime_ns": 1789431770645771600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\observer-receipt.private.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/observer-receipt.private.json",
+      "sha256": "215c3195742ab54fe4759c1aaa37444b7cbde0c1688e9e9c358aaf92dcc1984d",
+      "bytes": 19824,
+      "mtime_ns": 1789431770858311300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\request.private.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/request.private.json",
+      "sha256": "69d040df33ddc85eb9746957f4b011bf92059d6cfc1bf9ed3f63708e02061971",
+      "bytes": 2341,
+      "mtime_ns": 1789431770519552600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\calls\\0001-blade\\synthetic-peer-answer.json",
+      "path": "test_postflight_failure_retain0/ledger/calls/0001-blade/synthetic-peer-answer.json",
+      "sha256": "b7f649142533d5d526a8760cca8f85d75546dfbd246a82919bbd12aa22938a1c",
+      "bytes": 63,
+      "mtime_ns": 1789431770787863800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\ledger\\ledger.json",
+      "path": "test_postflight_failure_retain0/ledger/ledger.json",
+      "sha256": "2561422cfe13d5eb873e4773b84568334acc91add2b368a91264ea07e580928a",
+      "bytes": 8206,
+      "mtime_ns": 1789431770900084000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_postflight_failure_retain0\\synthetic-headless.exe",
+      "path": "test_postflight_failure_retain0/synthetic-headless.exe",
+      "sha256": "ea4f07f2e1c5e4927bd9d68ee8f377796416f0a0ce2685ff8fa5c0648b430c3b",
+      "bytes": 41,
+      "mtime_ns": 1789431770390720800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\approved-home\\auth.json",
+      "path": "test_prelaunch_refusal_retains0/approved-home/auth.json",
+      "sha256": "fdaf5294bb25478f97667f251938cb13ea3acfb5c81259f3f39db2be8bc81015",
+      "bytes": 229,
+      "mtime_ns": 1789431774270673700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\ledger\\calls\\0001-blade\\headless-request.private.json",
+      "path": "test_prelaunch_refusal_retains0/ledger/calls/0001-blade/headless-request.private.json",
+      "sha256": "0416c5612bc127b1033536efff51b6dc237c79d0d269afcdbacbb87d2e6d39a0",
+      "bytes": 1941,
+      "mtime_ns": 1789431774438280600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\ledger\\calls\\0001-blade\\native\\command.json",
+      "path": "test_prelaunch_refusal_retains0/ledger/calls/0001-blade/native/command.json",
+      "sha256": "10a6d4b1670ac418b2df242de6f04cfdbc52ebd8f2c697fb160a33f49c74a630",
+      "bytes": 2495,
+      "mtime_ns": 1789431774493433500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\ledger\\calls\\0001-blade\\native\\inspect\\process.json",
+      "path": "test_prelaunch_refusal_retains0/ledger/calls/0001-blade/native/inspect/process.json",
+      "sha256": "841df8eb87ad073eb5e55d9530b678d14061022bbd12b9d2e205322104a34c08",
+      "bytes": 6087,
+      "mtime_ns": 1789431774551205800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\ledger\\calls\\0001-blade\\native\\inspect\\stderr.private.txt",
+      "path": "test_prelaunch_refusal_retains0/ledger/calls/0001-blade/native/inspect/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431774549699700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\ledger\\calls\\0001-blade\\native\\inspect\\stdout.private.jsonl",
+      "path": "test_prelaunch_refusal_retains0/ledger/calls/0001-blade/native/inspect/stdout.private.jsonl",
+      "sha256": "4ede3fe5926584428971f55e9d13e23b2f0a08b90a53ef91307d7dbb8d9b6a1a",
+      "bytes": 179,
+      "mtime_ns": 1789431774549699700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\ledger\\calls\\0001-blade\\native\\observer-receipt.json",
+      "path": "test_prelaunch_refusal_retains0/ledger/calls/0001-blade/native/observer-receipt.json",
+      "sha256": "902b15e4a376bece9314d64c004fa3fd5056a7ca1b7d396be60e2b350c059d87",
+      "bytes": 9896,
+      "mtime_ns": 1789431774551205800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\ledger\\calls\\0001-blade\\native\\prompt.private.txt",
+      "path": "test_prelaunch_refusal_retains0/ledger/calls/0001-blade/native/prompt.private.txt",
+      "sha256": "c5f1c9d6a34e9c84954b741c452fb73e0041d17584e08581ec74263a79ab692e",
+      "bytes": 1581,
+      "mtime_ns": 1789431774492394300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\ledger\\calls\\0001-blade\\native\\schema.private.json",
+      "path": "test_prelaunch_refusal_retains0/ledger/calls/0001-blade/native/schema.private.json",
+      "sha256": "c9982ac58785df4db66894907faa50e5f138e549f925b3bb80b2afe2370a84aa",
+      "bytes": 265,
+      "mtime_ns": 1789431774492908400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\ledger\\calls\\0001-blade\\native-home\\auth.json",
+      "path": "test_prelaunch_refusal_retains0/ledger/calls/0001-blade/native-home/auth.json",
+      "sha256": "fdaf5294bb25478f97667f251938cb13ea3acfb5c81259f3f39db2be8bc81015",
+      "bytes": 229,
+      "mtime_ns": 1789431774446301100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\ledger\\calls\\0001-blade\\native-home\\config.toml",
+      "path": "test_prelaunch_refusal_retains0/ledger/calls/0001-blade/native-home/config.toml",
+      "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691",
+      "bytes": 872,
+      "mtime_ns": 1789431774446301100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\ledger\\calls\\0001-blade\\native-reservation.json",
+      "path": "test_prelaunch_refusal_retains0/ledger/calls/0001-blade/native-reservation.json",
+      "sha256": "d021177afc2baddc739935963d52717743fef1ac958bb1cad2aae7ea66b66870",
+      "bytes": 11587,
+      "mtime_ns": 1789431774452925100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\ledger\\calls\\0001-blade\\observer-receipt.private.json",
+      "path": "test_prelaunch_refusal_retains0/ledger/calls/0001-blade/observer-receipt.private.json",
+      "sha256": "902b15e4a376bece9314d64c004fa3fd5056a7ca1b7d396be60e2b350c059d87",
+      "bytes": 9896,
+      "mtime_ns": 1789431774558248500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\ledger\\calls\\0001-blade\\request.private.json",
+      "path": "test_prelaunch_refusal_retains0/ledger/calls/0001-blade/request.private.json",
+      "sha256": "69d040df33ddc85eb9746957f4b011bf92059d6cfc1bf9ed3f63708e02061971",
+      "bytes": 2341,
+      "mtime_ns": 1789431774438280600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\ledger\\ledger.json",
+      "path": "test_prelaunch_refusal_retains0/ledger/ledger.json",
+      "sha256": "463947ba44617fa43c6ed39ec09fa829a1721c8dc0d0ff79c0f1e644cb8c6dbe",
+      "bytes": 8068,
+      "mtime_ns": 1789431774591275800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_prelaunch_refusal_retains0\\synthetic-headless.exe",
+      "path": "test_prelaunch_refusal_retains0/synthetic-headless.exe",
+      "sha256": "ea4f07f2e1c5e4927bd9d68ee8f377796416f0a0ce2685ff8fa5c0648b430c3b",
+      "bytes": 41,
+      "mtime_ns": 1789431774270673700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\0\\mechanism\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/0/mechanism/artifacts.jsonl",
+      "sha256": "662615820e6ea820bcac42d52d8b85ea43e02c1f3e70e57d030ee8a5b5c64455",
+      "bytes": 40251,
+      "mtime_ns": 1789431775559986200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\0\\mechanism\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/0/mechanism/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431774840563400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\0\\mechanism\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/0/mechanism/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431774840563400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\0\\mechanism\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/0/mechanism/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431774920394700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\0\\mechanism\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/0/mechanism/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431774920394700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\0\\mechanism\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/0/mechanism/trace.jsonl",
+      "sha256": "3abc6363e6a4c18048f5c57576989a7f3d744a75a889c2cab0f46bb4bcefb5ff",
+      "bytes": 9686,
+      "mtime_ns": 1789431775509265100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\0\\solver\\analysis-1.py",
+      "path": "test_primary_scorer_factory_co0/compiled/0/solver/analysis-1.py",
+      "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756",
+      "bytes": 142,
+      "mtime_ns": 1789431775990545500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\0\\solver\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/0/solver/artifacts.jsonl",
+      "sha256": "e9c67f77179a219e8cc1ef29af921612f909bb073c23c84e5659e829673be060",
+      "bytes": 53967,
+      "mtime_ns": 1789431776391686700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\0\\solver\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/0/solver/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431775610268600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\0\\solver\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/0/solver/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431775609267400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\0\\solver\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/0/solver/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431775695011500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\0\\solver\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/0/solver/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431775695011500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\0\\solver\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/0/solver/trace.jsonl",
+      "sha256": "98ee36ba370dd08e4750a3d9697d208da0491e0f2b6577a851d25772d76f9b32",
+      "bytes": 16530,
+      "mtime_ns": 1789431776340690500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\1\\mechanism\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/1/mechanism/artifacts.jsonl",
+      "sha256": "56ba15f5ed38109a7e1542160b2003d2ad6c338b5b7312be41a1648776956fc8",
+      "bytes": 46363,
+      "mtime_ns": 1789431777337139400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\1\\mechanism\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/1/mechanism/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431776442864000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\1\\mechanism\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/1/mechanism/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431776442864000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\1\\mechanism\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/1/mechanism/predictions.jsonl",
+      "sha256": "d1463b97caf5829eb82d2c7cb18decbdabcca931b1c15c418728c211ed3407be",
+      "bytes": 1253,
+      "mtime_ns": 1789431776780586300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\1\\mechanism\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/1/mechanism/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431776497166800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\1\\mechanism\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/1/mechanism/trace.jsonl",
+      "sha256": "b48a64a191a262b66c6f591db58ab0f5876e84e84a8b39908d4b256c754135c4",
+      "bytes": 10671,
+      "mtime_ns": 1789431777289264700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\1\\solver\\analysis-1.py",
+      "path": "test_primary_scorer_factory_co0/compiled/1/solver/analysis-1.py",
+      "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756",
+      "bytes": 142,
+      "mtime_ns": 1789431777683389700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\1\\solver\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/1/solver/artifacts.jsonl",
+      "sha256": "8e350be6d3c185de84ec03aff7d7c5882f127b6c86a9a66e7ebcc29168447c02",
+      "bytes": 61498,
+      "mtime_ns": 1789431778250003900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\1\\solver\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/1/solver/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431777381866100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\1\\solver\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/1/solver/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431777381866100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\1\\solver\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/1/solver/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431777451695500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\1\\solver\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/1/solver/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431777451695500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\1\\solver\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/1/solver/trace.jsonl",
+      "sha256": "b3770ac165aa53368596f377adf0f8d62c6925201445aff97d87fb4fc99e5e16",
+      "bytes": 20276,
+      "mtime_ns": 1789431778199736900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\10\\mechanism\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/10/mechanism/artifacts.jsonl",
+      "sha256": "a780d75f095eb45d9be2f96ec301b36c14e8efcfaca945677eb592234d7eaf64",
+      "bytes": 41342,
+      "mtime_ns": 1789431791932336400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\10\\mechanism\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/10/mechanism/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431791388078300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\10\\mechanism\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/10/mechanism/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431791387074300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\10\\mechanism\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/10/mechanism/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431791440772500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\10\\mechanism\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/10/mechanism/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431791440772500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\10\\mechanism\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/10/mechanism/trace.jsonl",
+      "sha256": "064224f53456783d10e737eafad0cd2d95cbf698052146114f8ce6ce40311fbd",
+      "bytes": 9872,
+      "mtime_ns": 1789431791895151400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\10\\solver\\analysis-1.py",
+      "path": "test_primary_scorer_factory_co0/compiled/10/solver/analysis-1.py",
+      "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756",
+      "bytes": 142,
+      "mtime_ns": 1789431792236026300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\10\\solver\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/10/solver/artifacts.jsonl",
+      "sha256": "797c24b99c176d15a74fcff4c3b51c2e32f1176f53b5ac72c3290b8daf6eb780",
+      "bytes": 55361,
+      "mtime_ns": 1789431792740934700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\10\\solver\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/10/solver/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431791973666700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\10\\solver\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/10/solver/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431791973666700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\10\\solver\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/10/solver/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431792037086000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\10\\solver\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/10/solver/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431792037086000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\10\\solver\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/10/solver/trace.jsonl",
+      "sha256": "12e5fb452b834752b5457e6d0272f997e5889ad1b84177ab69c070ef583f41a4",
+      "bytes": 16869,
+      "mtime_ns": 1789431792698873600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\11\\mechanism\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/11/mechanism/artifacts.jsonl",
+      "sha256": "d64ede0f8dc22eed3260ac87655cc0cf3f340507f8afcfc903d13e67e4738fe8",
+      "bytes": 47535,
+      "mtime_ns": 1789431793442007200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\11\\mechanism\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/11/mechanism/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431792795421900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\11\\mechanism\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/11/mechanism/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431792795421900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\11\\mechanism\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/11/mechanism/predictions.jsonl",
+      "sha256": "2e96cf27ef2330a0eadec4b9e5b24d7aad14c4796dcb958d77d6e16dbbceb6e6",
+      "bytes": 1280,
+      "mtime_ns": 1789431793056812300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\11\\mechanism\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/11/mechanism/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431792850272500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\11\\mechanism\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/11/mechanism/trace.jsonl",
+      "sha256": "9641f1233bbde6997d08d53921d4a222bba6f56767cdc3236e242c1fd4d01ac9",
+      "bytes": 10857,
+      "mtime_ns": 1789431793403534600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\11\\solver\\analysis-1.py",
+      "path": "test_primary_scorer_factory_co0/compiled/11/solver/analysis-1.py",
+      "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756",
+      "bytes": 142,
+      "mtime_ns": 1789431793882709900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\11\\solver\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/11/solver/artifacts.jsonl",
+      "sha256": "865aa2dcbfb97eb8de1d5df940d2152e2585b0de9fb07e73570b853cb29fda16",
+      "bytes": 62892,
+      "mtime_ns": 1789431794267539300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\11\\solver\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/11/solver/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431793487688700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\11\\solver\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/11/solver/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431793487688700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\11\\solver\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/11/solver/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431793553907800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\11\\solver\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/11/solver/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431793553907800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\11\\solver\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/11/solver/trace.jsonl",
+      "sha256": "9e8d438eaa36a2e1cdd109435db89a36b46da339a8ba9cde752c001dc9bee4a5",
+      "bytes": 20615,
+      "mtime_ns": 1789431794228549400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\2\\mechanism\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/2/mechanism/artifacts.jsonl",
+      "sha256": "ca69a16675f192f23ab09c03923100e6d71928cd1e8e81198f80d62bd3cf0929",
+      "bytes": 40275,
+      "mtime_ns": 1789431778918355700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\2\\mechanism\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/2/mechanism/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431778308720000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\2\\mechanism\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/2/mechanism/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431778308720000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\2\\mechanism\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/2/mechanism/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431778400058100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\2\\mechanism\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/2/mechanism/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431778400581200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\2\\mechanism\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/2/mechanism/trace.jsonl",
+      "sha256": "6917efe446b017eabc271b106bc2c978953b19d8175ee11315a94721f43bc8cb",
+      "bytes": 9698,
+      "mtime_ns": 1789431778876901000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\2\\solver\\analysis-1.py",
+      "path": "test_primary_scorer_factory_co0/compiled/2/solver/analysis-1.py",
+      "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756",
+      "bytes": 142,
+      "mtime_ns": 1789431779333921300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\2\\solver\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/2/solver/artifacts.jsonl",
+      "sha256": "3874c60c70561607398d7096d54f54bc80b775aacb2edbd38e8dba880289420a",
+      "bytes": 53967,
+      "mtime_ns": 1789431779724907700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\2\\solver\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/2/solver/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431778960108200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\2\\solver\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/2/solver/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431778960108200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\2\\solver\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/2/solver/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431779035929200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\2\\solver\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/2/solver/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431779035929200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\2\\solver\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/2/solver/trace.jsonl",
+      "sha256": "fa3532271a69ce2979be22d53942b3614f679459f1843bbc2c5b655a6d88db5f",
+      "bytes": 16530,
+      "mtime_ns": 1789431779674713900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\3\\mechanism\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/3/mechanism/artifacts.jsonl",
+      "sha256": "d695505c0c6917a79b736958cf1369db04e61b833fcd5e2b023b2d489f84d569",
+      "bytes": 46387,
+      "mtime_ns": 1789431780559630700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\3\\mechanism\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/3/mechanism/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431779775028600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\3\\mechanism\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/3/mechanism/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431779775028600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\3\\mechanism\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/3/mechanism/predictions.jsonl",
+      "sha256": "d1463b97caf5829eb82d2c7cb18decbdabcca931b1c15c418728c211ed3407be",
+      "bytes": 1253,
+      "mtime_ns": 1789431780066327500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\3\\mechanism\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/3/mechanism/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431779875847200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\3\\mechanism\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/3/mechanism/trace.jsonl",
+      "sha256": "14cedc96a013a8be82af51a7aa4c84a2e66c0c0c9a06bf7677be34b157232e78",
+      "bytes": 10683,
+      "mtime_ns": 1789431780524101900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\3\\solver\\analysis-1.py",
+      "path": "test_primary_scorer_factory_co0/compiled/3/solver/analysis-1.py",
+      "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756",
+      "bytes": 142,
+      "mtime_ns": 1789431780923850000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\3\\solver\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/3/solver/artifacts.jsonl",
+      "sha256": "83a1d96cf26796945a9c1639953cb541ab24d511f6dae8038031bd6c82be14f3",
+      "bytes": 61498,
+      "mtime_ns": 1789431781436085500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\3\\solver\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/3/solver/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431780599863500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\3\\solver\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/3/solver/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431780599863500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\3\\solver\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/3/solver/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431780690864100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\3\\solver\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/3/solver/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431780691863400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\3\\solver\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/3/solver/trace.jsonl",
+      "sha256": "e0eec89d7c4e56da69ea9e01e40a6b639642d513d2e1fbe457b197c2e9391d88",
+      "bytes": 20276,
+      "mtime_ns": 1789431781380711300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\4\\mechanism\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/4/mechanism/artifacts.jsonl",
+      "sha256": "018c8e141b96d270ed257a157cd529a240257ab45a6686cf70c4bff0fa672428",
+      "bytes": 40275,
+      "mtime_ns": 1789431782307328600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\4\\mechanism\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/4/mechanism/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431781493723500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\4\\mechanism\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/4/mechanism/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431781492722400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\4\\mechanism\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/4/mechanism/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431781598945600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\4\\mechanism\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/4/mechanism/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431781599461100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\4\\mechanism\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/4/mechanism/trace.jsonl",
+      "sha256": "19150f84d654a636b284dec6f4dfcff50d345c242c6dcf67b9458e7df481f03f",
+      "bytes": 9698,
+      "mtime_ns": 1789431782266899500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\4\\solver\\analysis-1.py",
+      "path": "test_primary_scorer_factory_co0/compiled/4/solver/analysis-1.py",
+      "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756",
+      "bytes": 142,
+      "mtime_ns": 1789431782578649500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\4\\solver\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/4/solver/artifacts.jsonl",
+      "sha256": "395f13f6ec34d5528e4ac3f2b2e930f14802dc1b7d270bbae5faada200ea4355",
+      "bytes": 53967,
+      "mtime_ns": 1789431782982317600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\4\\solver\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/4/solver/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431782350210300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\4\\solver\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/4/solver/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431782350210300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\4\\solver\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/4/solver/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431782398505200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\4\\solver\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/4/solver/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431782398505200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\4\\solver\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/4/solver/trace.jsonl",
+      "sha256": "0f46ff09216ac2811de03efb7da5a6f7769934246dc28488e717c7718d470a51",
+      "bytes": 16530,
+      "mtime_ns": 1789431782938675600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\5\\mechanism\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/5/mechanism/artifacts.jsonl",
+      "sha256": "0f3977c98d9828660fe5ef78059b897622725e9bed4dd3c11e9e3512d7a7ae7f",
+      "bytes": 46387,
+      "mtime_ns": 1789431784010795400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\5\\mechanism\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/5/mechanism/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431783029387000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\5\\mechanism\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/5/mechanism/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431783029387000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\5\\mechanism\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/5/mechanism/predictions.jsonl",
+      "sha256": "d1463b97caf5829eb82d2c7cb18decbdabcca931b1c15c418728c211ed3407be",
+      "bytes": 1253,
+      "mtime_ns": 1789431783622227000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\5\\mechanism\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/5/mechanism/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431783392508300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\5\\mechanism\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/5/mechanism/trace.jsonl",
+      "sha256": "6294bf61b83a48da4e2738d80616aa0f6b42e2af6a6539a220e437f67a233d6f",
+      "bytes": 10683,
+      "mtime_ns": 1789431783985710700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\5\\solver\\analysis-1.py",
+      "path": "test_primary_scorer_factory_co0/compiled/5/solver/analysis-1.py",
+      "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756",
+      "bytes": 142,
+      "mtime_ns": 1789431784278649100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\5\\solver\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/5/solver/artifacts.jsonl",
+      "sha256": "35e7f357fe1cc4610660dfdb05dc1f5a1abb702ee2710e43bc86873ccdf53983",
+      "bytes": 61498,
+      "mtime_ns": 1789431784739474400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\5\\solver\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/5/solver/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431784048722700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\5\\solver\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/5/solver/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431784048722700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\5\\solver\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/5/solver/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431784132299400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\5\\solver\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/5/solver/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431784132299400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\5\\solver\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/5/solver/trace.jsonl",
+      "sha256": "0289582e185a37a77c4d896f170acac061ebe82828d5e75817cbb7d17c85e868",
+      "bytes": 20276,
+      "mtime_ns": 1789431784709886800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\6\\mechanism\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/6/mechanism/artifacts.jsonl",
+      "sha256": "320aa1323bbb872089dd851340b70d41ce6ff5d99892234e401ec51bee8f8781",
+      "bytes": 41318,
+      "mtime_ns": 1789431785376285800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\6\\mechanism\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/6/mechanism/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431784783508100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\6\\mechanism\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/6/mechanism/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431784783508100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\6\\mechanism\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/6/mechanism/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431784848128400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\6\\mechanism\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/6/mechanism/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431784848128400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\6\\mechanism\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/6/mechanism/trace.jsonl",
+      "sha256": "29ad39398aae180f0c169f4e16829a5bc6342d55abdf848ec6dc00c65bc3eae1",
+      "bytes": 9860,
+      "mtime_ns": 1789431785225245700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\6\\solver\\analysis-1.py",
+      "path": "test_primary_scorer_factory_co0/compiled/6/solver/analysis-1.py",
+      "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756",
+      "bytes": 142,
+      "mtime_ns": 1789431785596359700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\6\\solver\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/6/solver/artifacts.jsonl",
+      "sha256": "8826c036c88078ad62e9b8a1dab0785469418a1d11be0c4109012ed3dcf2a873",
+      "bytes": 55358,
+      "mtime_ns": 1789431785999896200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\6\\solver\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/6/solver/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431785430096400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\6\\solver\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/6/solver/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431785430096400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\6\\solver\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/6/solver/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431785478066800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\6\\solver\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/6/solver/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431785478066800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\6\\solver\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/6/solver/trace.jsonl",
+      "sha256": "ab6be0d50b8983d72fb4baf563dc8a81adb6568f3d2e523e014c96274cb7ba64",
+      "bytes": 16866,
+      "mtime_ns": 1789431785963676100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\7\\mechanism\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/7/mechanism/artifacts.jsonl",
+      "sha256": "4c01480f96115d18dfd110974976f382ce09acc090daa18c7aa21adbb50f513f",
+      "bytes": 47511,
+      "mtime_ns": 1789431786675099500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\7\\mechanism\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/7/mechanism/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431786050872300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\7\\mechanism\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/7/mechanism/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431786050872300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\7\\mechanism\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/7/mechanism/predictions.jsonl",
+      "sha256": "2e96cf27ef2330a0eadec4b9e5b24d7aad14c4796dcb958d77d6e16dbbceb6e6",
+      "bytes": 1280,
+      "mtime_ns": 1789431786304688000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\7\\mechanism\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/7/mechanism/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431786171834000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\7\\mechanism\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/7/mechanism/trace.jsonl",
+      "sha256": "b462b55d5b896fc599db90308fb2aade759a3e08eee0ba1e6f1c486b28df9b7a",
+      "bytes": 10845,
+      "mtime_ns": 1789431786638381700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\7\\solver\\analysis-1.py",
+      "path": "test_primary_scorer_factory_co0/compiled/7/solver/analysis-1.py",
+      "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756",
+      "bytes": 142,
+      "mtime_ns": 1789431787123577000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\7\\solver\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/7/solver/artifacts.jsonl",
+      "sha256": "617fb95b40b9fe813fbdfb7d8f328999a0988abc413c96a157cd4376b6e61c51",
+      "bytes": 62889,
+      "mtime_ns": 1789431787699168600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\7\\solver\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/7/solver/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431786727847400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\7\\solver\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/7/solver/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431786726850200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\7\\solver\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/7/solver/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431786819060200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\7\\solver\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/7/solver/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431786819060200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\7\\solver\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/7/solver/trace.jsonl",
+      "sha256": "4dd0f2a1f62f3e317993b9caa9493e5cfb8517f4386e9e0fc1c5f34bdddb2060",
+      "bytes": 20612,
+      "mtime_ns": 1789431787650798000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\8\\mechanism\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/8/mechanism/artifacts.jsonl",
+      "sha256": "c5da12fc7231974ed1956f76d51cfa80ebdf7f60b9b3b8f5e163456dab43e5ca",
+      "bytes": 41342,
+      "mtime_ns": 1789431788622114300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\8\\mechanism\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/8/mechanism/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431787785601300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\8\\mechanism\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/8/mechanism/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431787785601300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\8\\mechanism\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/8/mechanism/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431787871515400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\8\\mechanism\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/8/mechanism/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431787871515400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\8\\mechanism\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/8/mechanism/trace.jsonl",
+      "sha256": "dcc68cc2a31c6c008edcb8e2417419c37672e35fd5f497326e868ac4e485a65c",
+      "bytes": 9872,
+      "mtime_ns": 1789431788570553700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\8\\solver\\analysis-1.py",
+      "path": "test_primary_scorer_factory_co0/compiled/8/solver/analysis-1.py",
+      "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756",
+      "bytes": 142,
+      "mtime_ns": 1789431789061743400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\8\\solver\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/8/solver/artifacts.jsonl",
+      "sha256": "8a9f8194f996c5e07bed9707f56b3703c644ff7c820072d5e0ef0da006ed6bbe",
+      "bytes": 55358,
+      "mtime_ns": 1789431789721683600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\8\\solver\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/8/solver/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431788702666200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\8\\solver\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/8/solver/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431788702142000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\8\\solver\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/8/solver/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431788813452400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\8\\solver\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/8/solver/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431788813452400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\8\\solver\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/8/solver/trace.jsonl",
+      "sha256": "5e33bbec2d56a794313bc3787a27917432b62f846a8a90efed37df7981f5afc5",
+      "bytes": 16866,
+      "mtime_ns": 1789431789566965500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\9\\mechanism\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/9/mechanism/artifacts.jsonl",
+      "sha256": "06731b894989c9e205458bda5b212f55c3db0020d5faa705fbf83b1713d6f398",
+      "bytes": 47535,
+      "mtime_ns": 1789431790408770200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\9\\mechanism\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/9/mechanism/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431789809745100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\9\\mechanism\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/9/mechanism/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431789808744800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\9\\mechanism\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/9/mechanism/predictions.jsonl",
+      "sha256": "2e96cf27ef2330a0eadec4b9e5b24d7aad14c4796dcb958d77d6e16dbbceb6e6",
+      "bytes": 1280,
+      "mtime_ns": 1789431790078447800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\9\\mechanism\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/9/mechanism/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431789887200000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\9\\mechanism\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/9/mechanism/trace.jsonl",
+      "sha256": "85a13925022d0d555bc4ed3232047d37ab841e9844d141eab73b10a8ffba52f5",
+      "bytes": 10857,
+      "mtime_ns": 1789431790373607600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\9\\solver\\analysis-1.py",
+      "path": "test_primary_scorer_factory_co0/compiled/9/solver/analysis-1.py",
+      "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756",
+      "bytes": 142,
+      "mtime_ns": 1789431790731512700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\9\\solver\\artifacts.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/9/solver/artifacts.jsonl",
+      "sha256": "71cefb81e368130604406f7762bf9380715f18cf45f65e743fd7243f53bd7a35",
+      "bytes": 62889,
+      "mtime_ns": 1789431791326129300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\9\\solver\\claims.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/9/solver/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431790479519800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\9\\solver\\evidence.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/9/solver/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431790479519800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\9\\solver\\predictions.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/9/solver/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431790546178900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\9\\solver\\reviews.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/9/solver/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431790546178900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\9\\solver\\trace.jsonl",
+      "path": "test_primary_scorer_factory_co0/compiled/9/solver/trace.jsonl",
+      "sha256": "b2b677ff1a693ec6aefd9610883b179b04cf98e7824cfe00d7b6e6a70ecdc350",
+      "bytes": 20612,
+      "mtime_ns": 1789431791286705300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\compiled\\public.csv",
+      "path": "test_primary_scorer_factory_co0/compiled/public.csv",
+      "sha256": "32c98466717fcc371714b0727d1126c235df6f18eea870eb63cc48f109734ab4",
+      "bytes": 9,
+      "mtime_ns": 1789431774830328600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\executor.key",
+      "path": "test_primary_scorer_factory_co0/executor.key",
+      "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+      "bytes": 32,
+      "mtime_ns": 1789431794321531600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\home\\auth.json",
+      "path": "test_primary_scorer_factory_co0/native/home/auth.json",
+      "sha256": "5ac1664340b810cb4e79c8f67e7c3f4bba5c6422e8991db1e648c8727038ec1f",
+      "bytes": 250,
+      "mtime_ns": 1789431794323615800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\headless-request.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/headless-request.private.json",
+      "sha256": "ec1ee72ceb374999958566df9f7f94aa02980041b89d6b2db1019e01d8a30ff7",
+      "bytes": 1991,
+      "mtime_ns": 1789431794458198000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempt-000\\credits.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/billing-after/attempt-000/credits.private.json",
+      "sha256": "c8eda85fd607516984419c84b1a745d42a3486cfb5dcc571da34930e4252afda",
+      "bytes": 263,
+      "mtime_ns": 1789431794673627100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempt-000\\observation.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/billing-after/attempt-000/observation.json",
+      "sha256": "ba0259b29310de14ee0a281b1cb34ccef97d71baab2276b40d50f7fb4918b725",
+      "bytes": 692,
+      "mtime_ns": 1789431794682252600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempt-000\\requests.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/billing-after/attempt-000/requests.json",
+      "sha256": "95b84f84760d9881be60786b4ebe53204293c9d9239faa4c0ca5c238ff9e56aa",
+      "bytes": 959,
+      "mtime_ns": 1789431794675628900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempt-000\\topup.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/billing-after/attempt-000/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "bytes": 2,
+      "mtime_ns": 1789431794674628300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempt-000\\user.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/billing-after/attempt-000/user.private.json",
+      "sha256": "56cc03df8899f89c9059fe8db7c12c1e10015b5abf8b882b8bd87221c2954762",
+      "bytes": 142,
+      "mtime_ns": 1789431794675628900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempts.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/billing-after/attempts.json",
+      "sha256": "e1ed40bdf6cc33520c959e57568ab5e1097e31f92de48db1242c9002e66c77b9",
+      "bytes": 1064,
+      "mtime_ns": 1789431794693350800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempt-000\\credits.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/billing-before/attempt-000/credits.private.json",
+      "sha256": "9964859824f10a0b007cfe3537f7e5b2bf64110b81179c3775da96d4103e2ab0",
+      "bytes": 263,
+      "mtime_ns": 1789431794584759700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempt-000\\observation.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/billing-before/attempt-000/observation.json",
+      "sha256": "def6820a3bcdd824d9afbae57352e7c647cd36bb07f6428d42110ad52a96ac27",
+      "bytes": 692,
+      "mtime_ns": 1789431794591761500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempt-000\\requests.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/billing-before/attempt-000/requests.json",
+      "sha256": "340a64a6dc92f1a71ef24ff9c0c58100d1532e5686607e43c9685fe6b2433476",
+      "bytes": 959,
+      "mtime_ns": 1789431794585760700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempt-000\\topup.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/billing-before/attempt-000/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "bytes": 2,
+      "mtime_ns": 1789431794584759700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempt-000\\user.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/billing-before/attempt-000/user.private.json",
+      "sha256": "56cc03df8899f89c9059fe8db7c12c1e10015b5abf8b882b8bd87221c2954762",
+      "bytes": 142,
+      "mtime_ns": 1789431794585760700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempts.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/billing-before/attempts.json",
+      "sha256": "bf5102b849bff33cdff3c7fff1024d08fbf7cf6f516554ee2a4a50395cee20e2",
+      "bytes": 1064,
+      "mtime_ns": 1789431794601527700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\command.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/command.json",
+      "sha256": "7deaf045e4578133c37730158d4b6ce18efe8992bc9bbf09e043c613f169525f",
+      "bytes": 2553,
+      "mtime_ns": 1789431794525603000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\inspect\\process.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/inspect/process.json",
+      "sha256": "15364695fe82fc30ea4715006bee5f67b59864a0a9dcad97fbc269b66d6183bd",
+      "bytes": 6256,
+      "mtime_ns": 1789431794582750700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\inspect\\stderr.private.txt",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/inspect/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431794581750700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\inspect\\stdout.private.jsonl",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/inspect/stdout.private.jsonl",
+      "sha256": "4ede3fe5926584428971f55e9d13e23b2f0a08b90a53ef91307d7dbb8d9b6a1a",
+      "bytes": 179,
+      "mtime_ns": 1789431794581750700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\observer-receipt.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/observer-receipt.json",
+      "sha256": "92e113fde17b95c888193ceb6a9d64ee3320f4e047a80b93287d23fcd30a7af2",
+      "bytes": 21056,
+      "mtime_ns": 1789431794703350100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\process.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/process.json",
+      "sha256": "5e470cf168d2c473a9bfd9a10fddface238089587879451879a1a47e7b35a9de",
+      "bytes": 8447,
+      "mtime_ns": 1789431794672627900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\prompt.private.txt",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/prompt.private.txt",
+      "sha256": "bd9dc64027547596d126d348cd161b044588dcfba86caa8a37fd8619c26b1737",
+      "bytes": 1582,
+      "mtime_ns": 1789431794524603100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\response.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/response.private.json",
+      "sha256": "972ab046ff70bdddf69b51fab001e22c6444cdb2a04d8536dc5ffab269b0c4c1",
+      "bytes": 63,
+      "mtime_ns": 1789431794672627900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\schema.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/schema.private.json",
+      "sha256": "e6582ee19e714857063fce4b6828bf8bff202e32c5a8d7d26937fdaa27c86e57",
+      "bytes": 288,
+      "mtime_ns": 1789431794524603100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\stderr.private.txt",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431794671622100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native\\stdout.private.jsonl",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native/stdout.private.jsonl",
+      "sha256": "f588a4fbf335dc91da0d0b14cb0072cfc6528e6af414ce31fdd517abed9cece7",
+      "bytes": 1041,
+      "mtime_ns": 1789431794671622100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native-home\\auth.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native-home/auth.json",
+      "sha256": "5ac1664340b810cb4e79c8f67e7c3f4bba5c6422e8991db1e648c8727038ec1f",
+      "bytes": 250,
+      "mtime_ns": 1789431794465302200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native-home\\config.toml",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native-home/config.toml",
+      "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691",
+      "bytes": 872,
+      "mtime_ns": 1789431794465302200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\native-reservation.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/native-reservation.json",
+      "sha256": "16b1685b1c1a866dccfc29113d8239dd8a517e740dc748aa36d7c97d05249426",
+      "bytes": 11880,
+      "mtime_ns": 1789431794473389700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\observer-receipt.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/observer-receipt.private.json",
+      "sha256": "92e113fde17b95c888193ceb6a9d64ee3320f4e047a80b93287d23fcd30a7af2",
+      "bytes": 21056,
+      "mtime_ns": 1789431794710689600
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\request.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/request.private.json",
+      "sha256": "98c68e78d8406da6df6c411b31ffa2674c85dd360d1d41cf5a92454b06c22c6c",
+      "bytes": 2412,
+      "mtime_ns": 1789431794458198000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\response.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/response.private.json",
+      "sha256": "972ab046ff70bdddf69b51fab001e22c6444cdb2a04d8536dc5ffab269b0c4c1",
+      "bytes": 63,
+      "mtime_ns": 1789431794754734500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0001-discoverybench\\synthetic-answer.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0001-discoverybench/synthetic-answer.json",
+      "sha256": "687313059b5ad7326b66673ef7241668f0f6f3739590862fc9e0bb0ef536c074",
+      "bytes": 70,
+      "mtime_ns": 1789431794610527000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\headless-request.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/headless-request.private.json",
+      "sha256": "0ff255e1517d5255a43451aabb20b256777b63d21de501da3c24c0fd2f2d27c2",
+      "bytes": 2473,
+      "mtime_ns": 1789431794880039100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\billing-after\\attempt-000\\credits.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/billing-after/attempt-000/credits.private.json",
+      "sha256": "efcd809b14d0edd70f8d02a1760a261702dbe38db1afee7d6201748d6dc667b1",
+      "bytes": 263,
+      "mtime_ns": 1789431795103668500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\billing-after\\attempt-000\\observation.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/billing-after/attempt-000/observation.json",
+      "sha256": "e608141f9531079def4cb08ec3ac7784fd2521e1be8eb56f3462e0214bb8a643",
+      "bytes": 692,
+      "mtime_ns": 1789431795138219500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\billing-after\\attempt-000\\requests.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/billing-after/attempt-000/requests.json",
+      "sha256": "3195b110341d94a2bfed9edacf14611ec24b5f82e8129997eb7f6a3ae27b5e5f",
+      "bytes": 959,
+      "mtime_ns": 1789431795132218900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\billing-after\\attempt-000\\topup.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/billing-after/attempt-000/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "bytes": 2,
+      "mtime_ns": 1789431795131213400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\billing-after\\attempt-000\\user.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/billing-after/attempt-000/user.private.json",
+      "sha256": "56cc03df8899f89c9059fe8db7c12c1e10015b5abf8b882b8bd87221c2954762",
+      "bytes": 142,
+      "mtime_ns": 1789431795132218900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\billing-after\\attempts.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/billing-after/attempts.json",
+      "sha256": "e28ae07d5f6b0c7ed71d35632b695c9e6215ed7ec47ccbef480695fe1f694421",
+      "bytes": 1064,
+      "mtime_ns": 1789431795148860800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\billing-before\\attempt-000\\credits.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/billing-before/attempt-000/credits.private.json",
+      "sha256": "3c6889459c391e55ba9f1f69a0b5efd77092a47998d9100e91ebffdd8a7bd02d",
+      "bytes": 263,
+      "mtime_ns": 1789431795011595200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\billing-before\\attempt-000\\observation.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/billing-before/attempt-000/observation.json",
+      "sha256": "8e275e328a9c20818b14ae8a23b74ad376ed7d100b76f36807a6eb508dd64a91",
+      "bytes": 692,
+      "mtime_ns": 1789431795018122700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\billing-before\\attempt-000\\requests.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/billing-before/attempt-000/requests.json",
+      "sha256": "049d7f206c352f7e1e99d177bdd72384c2073d0219ba9dda75fff20de09f2066",
+      "bytes": 959,
+      "mtime_ns": 1789431795013117800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\billing-before\\attempt-000\\topup.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/billing-before/attempt-000/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "bytes": 2,
+      "mtime_ns": 1789431795012610500
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\billing-before\\attempt-000\\user.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/billing-before/attempt-000/user.private.json",
+      "sha256": "56cc03df8899f89c9059fe8db7c12c1e10015b5abf8b882b8bd87221c2954762",
+      "bytes": 142,
+      "mtime_ns": 1789431795013117800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\billing-before\\attempts.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/billing-before/attempts.json",
+      "sha256": "2ab65b25f8e0152062a9636637e0aed66d69d2dc1991b64fa75818d18a049a27",
+      "bytes": 1064,
+      "mtime_ns": 1789431795028323300
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\command.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/command.json",
+      "sha256": "11e364129a07c203c2d58711348e4e41d9de6bb5b5c391f4edcb02f4cb4541c7",
+      "bytes": 2510,
+      "mtime_ns": 1789431794952061000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\inspect\\process.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/inspect/process.json",
+      "sha256": "b6a97990af3abf00576fbe11ae8a11c2b331029a7381b9de3d506e10aec3c7b9",
+      "bytes": 6166,
+      "mtime_ns": 1789431795008595000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\inspect\\stderr.private.txt",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/inspect/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431795007596100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\inspect\\stdout.private.jsonl",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/inspect/stdout.private.jsonl",
+      "sha256": "4ede3fe5926584428971f55e9d13e23b2f0a08b90a53ef91307d7dbb8d9b6a1a",
+      "bytes": 179,
+      "mtime_ns": 1789431795007596100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\observer-receipt.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/observer-receipt.json",
+      "sha256": "fb8f1daa0128b3df986ced9bb9555d16841a11e9b2c05f5dc45a034ea468041b",
+      "bytes": 20797,
+      "mtime_ns": 1789431795156864700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\process.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/process.json",
+      "sha256": "50c0d24297877acae12daf29c0c5fb7bccb62a546939c502baf26b0053ce29da",
+      "bytes": 8323,
+      "mtime_ns": 1789431795102507900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\prompt.private.txt",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/prompt.private.txt",
+      "sha256": "c03de293925ef4381c8c584b7c2fb1e23cf018b12cfaa7b507539c45ab0a4678",
+      "bytes": 2061,
+      "mtime_ns": 1789431794951061400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\response.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/response.private.json",
+      "sha256": "0917360f45060ddc1165c2701bc60fb27b70a9eab0fad950caf18ade45e9e765",
+      "bytes": 56,
+      "mtime_ns": 1789431795103150200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\schema.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/schema.private.json",
+      "sha256": "c9982ac58785df4db66894907faa50e5f138e549f925b3bb80b2afe2370a84aa",
+      "bytes": 265,
+      "mtime_ns": 1789431794952061000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\stderr.private.txt",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1789431795102507900
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native\\stdout.private.jsonl",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native/stdout.private.jsonl",
+      "sha256": "f27c5b33d8b7f92529b71ddbfdcf5d8a27b3a7675ccaa0c5951da38731185293",
+      "bytes": 1027,
+      "mtime_ns": 1789431795101981200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native-home\\auth.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native-home/auth.json",
+      "sha256": "5ac1664340b810cb4e79c8f67e7c3f4bba5c6422e8991db1e648c8727038ec1f",
+      "bytes": 250,
+      "mtime_ns": 1789431794882601200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native-home\\config.toml",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native-home/config.toml",
+      "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691",
+      "bytes": 872,
+      "mtime_ns": 1789431794882601200
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\native-reservation.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/native-reservation.json",
+      "sha256": "4608f71c97d3a38620ee110a8aa2c227162318b77f8e189fb7d9f1b61ecbe108",
+      "bytes": 11711,
+      "mtime_ns": 1789431794890279800
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\observer-receipt.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/observer-receipt.private.json",
+      "sha256": "fb8f1daa0128b3df986ced9bb9555d16841a11e9b2c05f5dc45a034ea468041b",
+      "bytes": 20797,
+      "mtime_ns": 1789431795162866100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\request.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/request.private.json",
+      "sha256": "7d099a46eb2c477492678c798bf39320bc4fb362ef151caf2245b88d474509dd",
+      "bytes": 2885,
+      "mtime_ns": 1789431794879536100
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\response.private.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/response.private.json",
+      "sha256": "0917360f45060ddc1165c2701bc60fb27b70a9eab0fad950caf18ade45e9e765",
+      "bytes": 56,
+      "mtime_ns": 1789431795208779000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\calls\\0002-blade\\synthetic-answer.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/calls/0002-blade/synthetic-answer.json",
+      "sha256": "df322d4c18b91f59f7e6985960720a54ef109e8931c94162f9bc321eaf8c864f",
+      "bytes": 63,
+      "mtime_ns": 1789431795038327700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\ledger\\ledger.json",
+      "path": "test_primary_scorer_factory_co0/native/ledger/ledger.json",
+      "sha256": "3087a82dc804176f9ade7fc40d24e4c2bc8b1f57a2b4a2c440f79ab28234df9a",
+      "bytes": 19294,
+      "mtime_ns": 1789431795208779000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\native\\synthetic.exe",
+      "path": "test_primary_scorer_factory_co0/native/synthetic.exe",
+      "sha256": "bb8a889030287382e4fd1059a84121a563cb68cbe96056b8322ccadb33e9559c",
+      "bytes": 36,
+      "mtime_ns": 1789431794322577400
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\private-scorer-store\\0000000000000000000000000000000000000000000000000000000000000001.json",
+      "path": "test_primary_scorer_factory_co0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+      "sha256": "24bea7b093766a9339807855dc3dab23eb461830e09b0f860e13a62a04d62944",
+      "bytes": 553,
+      "mtime_ns": 1789431794320495000
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\private-scorer-store\\0000000000000000000000000000000000000000000000000000000000000002.json",
+      "path": "test_primary_scorer_factory_co0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+      "sha256": "afeeaa42598d36361663a4c43202f39750163202f18679eedb889a0c043f1af7",
+      "bytes": 564,
+      "mtime_ns": 1789431794321012700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\private-scorer-store\\manifest.json",
+      "path": "test_primary_scorer_factory_co0/private-scorer-store/manifest.json",
+      "sha256": "ae2397b6e553df756e9d9d57e55552f9a207afeb05b7c53d8c23ef695e5d9bac",
+      "bytes": 1756,
+      "mtime_ns": 1789431794321012700
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-evaluator-provider-root-r1\\test_primary_scorer_factory_co0\\scorer.key",
+      "path": "test_primary_scorer_factory_co0/scorer.key",
+      "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+      "bytes": 32,
+      "mtime_ns": 1789431794321531600
+    }
+  ],
+  "zip_sha256": "6a68c8e18e12e4cfe07003eef9ff2d5d6d52c9ac483f001dd90e9c11a874a407",
+  "original_bytes_and_mtime_unchanged": true
+}

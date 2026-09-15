@@ -1973,3 +1973,22 @@ provider 用量和所有原有磁盘/依赖核验。合入后的两项冻结检�
 原始关闭回执、独立重放和分配见
 [真实评审 r2](../results/modular-engineering-20260915/actual-headless-review-r2/README.md)。
 这不提供模块效果、正式校准或 VAL 资格，不改变原问题与组合实验范围。
+
+## 2026-09-15：私有 headless evaluator 与 primary 工厂
+
+`cb939003` 接入独立私有 evaluator 请求，绑定固定 rubric、身份、模式、
+完整模板、实际参考材料摘要、原始调用与 typed response 字节。primary
+评分工厂显式选择 headless，旧 Codex 格式保留；逐调用、后续调用与重新
+打开账本时均重读原件。MAIN 前拒绝可保留完整回执；后置拒绝保留已知用量
+和未被消费的原始返回；类型化 response 增加空白也会被拒绝。
+
+60/60 主工作树冻结检查通过，335.5 秒，768 份源码/文档字节一致；包含
+两个合成 benchmark 的实际 factory→endpoint→native→签名评分、故障及
+既有 scorer stdio/组合和标签隔离。四个完整用例共 304 份原件字节及 mtime
+归档前后一致。见 [私有 evaluator 检查](../results/modular-engineering-20260915/headless-evaluator-provider-r1/README.md)
+和 [接口边界](GROK-HEADLESS-EVALUATOR-PROVIDER.md)。
+
+独立复核确认：逐调用重放不能检查最后一次评分返回之后发生的篡改。
+版本化的私有 scorer 终结 RPC 和 controller 消费关口正在独立工作树实现，
+此时尚未集成；lineage 工厂也未在本轮接入。没有将本轮检查扩张为完整
+scorer 生命周期或实际模块效果验收，未调用真实模型、付费 API 或读取 VAL。
