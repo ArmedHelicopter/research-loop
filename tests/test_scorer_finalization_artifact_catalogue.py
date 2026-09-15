@@ -90,11 +90,14 @@ def _inputs(tmp_path, *, provider=_PROVIDER):
 def test_registers_per_identity_non_authorizing_text_observations(tmp_path):
     root, config, panel, service, rows = _inputs(tmp_path)
     receipt = register_admission_headless_scorer_finalization_observations(
-        root=root, config=config, panel=panel, service=service, evaluator_gate=_gate(rows))
+        root=root, config=config, panel=panel, service=service,
+        evaluator_gate=_gate(rows, score_eligible=True))
     assert receipt.data()["authorization"] == "none"
     assert len(receipt.data()["catalogues"]) == 2
     verify_admission_headless_scorer_finalization_observation_catalogues(
-        root=root, config=config, panel=panel, service=service, evaluator_gate=_gate(rows), receipt=receipt)
+        root=root, config=config, panel=panel, service=service,
+        evaluator_gate=_gate(rows, score_eligible=True), receipt=receipt)
+    assert receipt.data()["closure_binding"]["score_eligible"] is True
     run_id = FrozenRecord.from_dict(receipt.data()["attempt"]).content_hash
     for anchor in receipt.data()["catalogues"]:
         catalogue = ArtifactCatalogue(Path(anchor["path"]), identity=DataIdentity.parse(anchor["identity"]),
@@ -175,7 +178,7 @@ def test_readback_rejects_original_changed_during_descriptor_reads(tmp_path, mon
         verify_admission_headless_scorer_finalization_observation_catalogues(
             root=root, config=config, panel=panel, service=service, evaluator_gate=_gate(rows), receipt=receipt)
 
-def test_rejects_valid_but_different_gate_closure_before_projection(tmp_path):
+def test_rejects_different_frozen_record_gate_closure_before_projection(tmp_path):
     root, config, panel, service, rows = _inputs(tmp_path)
     different = FrozenRecord.from_dict({"body": {"nonce": "z" * 32}, "mac": "different"}).data()
     gate = {**_gate(rows), "closure": different}
@@ -183,6 +186,19 @@ def test_rejects_valid_but_different_gate_closure_before_projection(tmp_path):
         register_admission_headless_scorer_finalization_observations(
             root=root, config=config, panel=panel, service=service, evaluator_gate=gate)
     assert not (root / "scorer-finalization-observations").exists()
+
+
+def test_readback_rejects_different_frozen_record_gate_with_unchanged_originals(tmp_path):
+    root, config, panel, service, rows = _inputs(tmp_path)
+    gate = _gate(rows, score_eligible=True)
+    receipt = register_admission_headless_scorer_finalization_observations(
+        root=root, config=config, panel=panel, service=service, evaluator_gate=gate)
+    different_gate = {**gate, "closure": FrozenRecord.from_dict(
+        {"body": {"nonce": "z" * 32}, "mac": "different"}).data()}
+    with pytest.raises(ContractError):
+        verify_admission_headless_scorer_finalization_observation_catalogues(
+            root=root, config=config, panel=panel, service=service,
+            evaluator_gate=different_gate, receipt=receipt)
 
 
 def test_success_gate_cannot_bind_a_rejected_journal_terminal(tmp_path):
