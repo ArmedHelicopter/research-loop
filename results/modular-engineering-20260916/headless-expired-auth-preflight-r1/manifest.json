@@ -1,0 +1,28 @@
+{
+  "schema": "headless-expired-auth-preflight-r1",
+  "scope": {
+    "scheduler_native_session": 24678,
+    "admission_native_session": 90835,
+    "both_account_preflight_failed": true,
+    "prompt_process_launched": false,
+    "native_process": null,
+    "scheduler_cells": {
+      "failed": 1,
+      "blocked": 7,
+      "total": 8,
+      "scores": 0
+    },
+    "evaluator": 0,
+    "known_main_tokens": 0,
+    "settlement": "unknown",
+    "validation_opened": false
+  },
+  "credential_exclusions": "auth/key/credential/secret/authority/token shaped files excluded from private ZIP",
+  "source_hashes": {
+    "scheduler_r2": "99beb6de3b6bd2bb2633f2cafdf57dd2f6df99a494efdfeaf167f020501a7140",
+    "admission_r3": "00435f9ee24ba3f3a6e6b5b70749454a8215e27ce5f67b5a96b9f250e6fe1050",
+    "classification": "3c4a37ed4aa9c191bed7bb9a2d9104160404d2edfee25eadcd6072892981046a"
+  },
+  "private_member_count": 195,
+  "private_zip_sha256": "2456c25d1d14e7f167366cfbb1f44ae3818dd99aaa2650056304b011d126e7d3"
+}
