@@ -1,0 +1,258 @@
+FFFFFFFFFF.                                                              [100%]
+================================== FAILURES ===================================
+_________________________ test_every_task_has_a_label _________________________
+
+    def test_every_task_has_a_label():
+        task_ids = {p.stem for p in TASKS.glob("T*.json")}
+        label_ids = {p.stem for p in LABELS.glob("T*.json")}
+>       assert task_ids == label_ids
+E       AssertionError: assert {'T001', 'T00..., 'T006', ...} == set()
+E         
+E         Extra items in the left set:
+E         'T026'
+E         'T029'
+E         'T033'
+E         'T004'
+E         'T025'...
+E         
+E         ...Full output truncated (36 lines hidden), use '-vv' to show
+
+tests\test_label_isolation.py:42: AssertionError
+_________________ test_prompts_do_not_contain_label_payloads __________________
+
+    def test_prompts_do_not_contain_label_payloads():
+        for task_path in TASKS.glob("T*.json"):
+            task = load_task(task_path)
+>           label = (LABELS / task_path.name).read_text(encoding="utf-8")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_label_isolation.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/headless-lineage-complete-r5/data/labels/pilot/T001.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\headless-lineage-complete-r5\\data\\labels\\pilot\\T001.json'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1013: FileNotFoundError
+_________________ test_error_catching_every_task_has_a_label __________________
+
+    def test_error_catching_every_task_has_a_label():
+        task_ids = {p.stem for p in EC_TASKS.glob("EC*.json")}
+        label_ids = {p.stem for p in EC_LABELS.glob("EC*.json")}
+>       assert task_ids == label_ids
+E       AssertionError: assert {'EC001', 'EC...003', 'EC004'} == set()
+E         
+E         Extra items in the left set:
+E         'EC003'
+E         'EC004'
+E         'EC002'
+E         'EC001'
+E         Use -v to get more diff
+
+tests\test_label_isolation.py:75: AssertionError
+__________ test_error_catching_prompts_do_not_contain_label_payloads __________
+
+    def test_error_catching_prompts_do_not_contain_label_payloads():
+        for task_path in EC_TASKS.glob("EC*.json"):
+            task = load_error_catching_task(task_path)
+>           label = (EC_LABELS / task_path.name).read_text(encoding="utf-8")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_label_isolation.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/headless-lineage-complete-r5/data/labels/error_catching/EC001.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\headless-lineage-complete-r5\\data\\labels\\error_catching\\EC001.json'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1013: FileNotFoundError
+____________________ test_iteration_every_task_has_a_label ____________________
+
+    def test_iteration_every_task_has_a_label():
+        task_ids = {p.stem for p in IT_TASKS.glob("I*.json")}
+        label_ids = {p.stem for p in IT_LABELS.glob("I*.json")}
+>       assert task_ids == label_ids
+E       AssertionError: assert {'I001', 'I00...I004', 'I005'} == set()
+E         
+E         Extra items in the left set:
+E         'I003'
+E         'I002'
+E         'I001'
+E         'I004'
+E         'I005'
+E         Use -v to get more diff
+
+tests\test_label_isolation.py:103: AssertionError
+____________ test_iteration_prompts_do_not_contain_label_payloads _____________
+
+    def test_iteration_prompts_do_not_contain_label_payloads():
+        for task_path in IT_TASKS.glob("I*.json"):
+            task = load_iteration_task(task_path)
+>           label = (IT_LABELS / task_path.name).read_text(encoding="utf-8")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_label_isolation.py:110: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/headless-lineage-complete-r5/data/labels/iteration/I001.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\headless-lineage-complete-r5\\data\\labels\\iteration\\I001.json'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1013: FileNotFoundError
+_________________ test_audit_contrast_every_task_has_a_label __________________
+
+    def test_audit_contrast_every_task_has_a_label():
+        task_ids = {p.stem for p in AC_TASKS.glob("A*.json")}
+        label_ids = {p.stem for p in AC_LABELS.glob("A*.json")}
+>       assert task_ids == label_ids
+E       AssertionError: assert {'A001', 'A00..., 'A006', ...} == set()
+E         
+E         Extra items in the left set:
+E         'A013'
+E         'A008'
+E         'A006'
+E         'A009'
+E         'A011'...
+E         
+E         ...Full output truncated (12 lines hidden), use '-vv' to show
+
+tests\test_label_isolation.py:130: AssertionError
+__________ test_audit_contrast_prompts_do_not_contain_label_payloads __________
+
+    def test_audit_contrast_prompts_do_not_contain_label_payloads():
+        for task_path in AC_TASKS.glob("A*.json"):
+            task = load_audit_task(task_path)
+>           label = (AC_LABELS / task_path.name).read_text(encoding="utf-8")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_label_isolation.py:137: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/headless-lineage-complete-r5/data/labels/audit_contrast/A001.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\headless-lineage-complete-r5\\data\\labels\\audit_contrast\\A001.json'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1013: FileNotFoundError
+____________________ test_true_lock_every_task_has_a_label ____________________
+
+    def test_true_lock_every_task_has_a_label():
+        task_ids = {p.stem for p in TL_TASKS.glob("LCK*.json")}
+        label_ids = {p.stem for p in TL_LABELS.glob("LCK*.json")}
+>       assert task_ids == label_ids
+E       AssertionError: assert {'LCK001', 'L...'LCK006', ...} == set()
+E         
+E         Extra items in the left set:
+E         'LCK001'
+E         'LCK007'
+E         'LCK006'
+E         'LCK016'
+E         'LCK005'...
+E         
+E         ...Full output truncated (12 lines hidden), use '-vv' to show
+
+tests\test_label_isolation.py:148: AssertionError
+____________________ test_true_lock_prompts_omit_gold_rule ____________________
+
+    def test_true_lock_prompts_omit_gold_rule():
+        for task_path in TL_TASKS.glob("LCK*.json"):
+            task = load_true_lock_task(task_path)
+>           label_text = (TL_LABELS / task_path.name).read_text(encoding="utf-8")
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_label_isolation.py:155: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/headless-lineage-complete-r5/data/labels/true_lock/LCK001.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\headless-lineage-complete-r5\\data\\labels\\true_lock\\LCK001.json'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1013: FileNotFoundError
+- generated xml file: E:\_ryanDev\AI\research-loop-modular\work\headless-lineage-controller-full5.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_label_isolation.py::test_every_task_has_a_label - Assertion...
+FAILED tests/test_label_isolation.py::test_prompts_do_not_contain_label_payloads
+FAILED tests/test_label_isolation.py::test_error_catching_every_task_has_a_label
+FAILED tests/test_label_isolation.py::test_error_catching_prompts_do_not_contain_label_payloads
+FAILED tests/test_label_isolation.py::test_iteration_every_task_has_a_label
+FAILED tests/test_label_isolation.py::test_iteration_prompts_do_not_contain_label_payloads
+FAILED tests/test_label_isolation.py::test_audit_contrast_every_task_has_a_label
+FAILED tests/test_label_isolation.py::test_audit_contrast_prompts_do_not_contain_label_payloads
+FAILED tests/test_label_isolation.py::test_true_lock_every_task_has_a_label
+FAILED tests/test_label_isolation.py::test_true_lock_prompts_omit_gold_rule
+{"commit": "0a9ca90abfb16ded9a6d5f312739a56cf18e7bb9", "source_unchanged": true, "source_count": 783, "exit_code": 1, "wall_seconds": 2355.9529999999795, "new_paid_calls": 0, "report_sha256": "6f5608a9266ff0939175188515a062c7ff0987b498d5d035c267a3b2da702cc0", "junit": {"tests": 11, "failures": 10, "errors": 0, "skipped": 0}}
+{"source_archive_matches_frozen_input": true, "source_files": 783, "source_archive_sha256": "d64fc60c46fd8562c01d3206c850fc5e86a184278b91167e58c369c4c966f4d4"}
