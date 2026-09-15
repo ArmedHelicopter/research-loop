@@ -1,6 +1,5 @@
 """Synthetic native peer around the production M7xM8 scorer stdio worker."""
 import argparse
-import inspect
 import json
 from pathlib import Path
 import subprocess
@@ -42,10 +41,8 @@ def main() -> int:
                 answer = prompt.parent.parent / 'synthetic-answer.json'
                 answer.write_text(json.dumps({key: ('synthetic' if key == 'reason' else 1) for key in schema['properties']}), encoding='utf-8')
                 peer_args = [command[command.index('--session-id') + 1], str(answer)]
-            kwargs = {'cwd': cwd, 'env': env, 'stderr': stderr}
-            if 'stdout' in inspect.signature(ProcessTree).parameters:
-                kwargs['stdout'] = stdout
-            return ProcessTree([sys.executable, str(peer), *peer_args], **kwargs)
+            return ProcessTree([sys.executable, str(peer), *peer_args], cwd=cwd, env=env,
+                               stderr=stderr, stdout=stdout)
         patch.setattr(transport, 'ProcessTree', spawn)
         return serve(ScorerWorker(build_service(config), config.panel, _absolute(args.journal, 'journal')))
 

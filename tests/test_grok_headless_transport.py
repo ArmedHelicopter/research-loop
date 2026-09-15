@@ -325,7 +325,7 @@ def test_process_tree_keeps_acp_default_stdout_pipe(tmp_path):
     assert tree.process.stdout is not None
     raw, error = tree.process.communicate(timeout=3)
     tree.close()
-    assert raw == b'acp-pipe\n' and error == b''
+    assert raw.splitlines() == [b'acp-pipe'] and error == b''
 
 
 def test_constructor_failure_does_not_claim_no_launch(tmp_path, monkeypatch):

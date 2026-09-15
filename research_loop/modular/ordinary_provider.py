@@ -113,7 +113,7 @@ def verify_retained_headless_evaluator_gate(path, *, gate, binding, panel, score
     """Read the captured gate from the attempt journal before a controller returns.
 
     The append/write is not evidence by itself.  This binds the returned gate to
-    the exact persisted JSON and rechecks any captured signed closure without
+    the exact persisted JSON and rechecks eligible signed closures without
     starting a worker or finalizing a second time.
     """
     try:
@@ -122,6 +122,14 @@ def verify_retained_headless_evaluator_gate(path, *, gate, binding, panel, score
         raise ContractError('retained evaluator final gate is unavailable') from exc
     if retained != gate:
         raise ContractError('retained evaluator final gate differs before return')
+    def unchanged():
+        if Path(path).read_bytes() != raw:
+            raise ContractError('retained evaluator final gate changed during verification')
+    if gate.get('score_eligible') is not True:
+        # Rejected signed bytes remain evidence; a known mismatch must not erase
+        # the completed denominator by raising again during terminal readback.
+        unchanged()
+        return gate
     closure_body = gate.get('closure') if isinstance(gate, dict) else None
     if closure_body is None:
         if gate.get('score_eligible') is True:
@@ -138,6 +146,7 @@ def verify_retained_headless_evaluator_gate(path, *, gate, binding, panel, score
         raise ContractError('retained evaluator closure no longer verifies') from exc
     if gate.get('score_eligible') is True and verified.data()['scope'].get('unscored_cell_count') != 0:
         raise ContractError('eligible retained evaluator gate has an incomplete scope')
+    unchanged()
     return gate
 
 

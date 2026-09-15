@@ -66,7 +66,8 @@ def validate_configuration(config, *, schemas, main_opportunities, exact=True):
             recovery=native.get('account_read_recovery')
             _require(native.get('provider_kind')==b['provider_kind'] and native.get('reasoning_effort')=='low'
                 and native.get('opportunity_contract')==TRAIN_OPPORTUNITY_CONTRACT
-                and native.get('timeout_seconds')==60 and native.get('paid_fallback') is False
+                and type(native.get('timeout_seconds')) is int and 1 <= native['timeout_seconds'] <= 240
+                and native.get('paid_fallback') is False
                 and (recovery is None or (type(recovery) is dict
                     and recovery=={'schema':'headless-account-read-recovery-v1','max_attempts':2}
                     and type(recovery['max_attempts']) is int)), 'headless phase contract differs')

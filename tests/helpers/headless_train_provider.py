@@ -12,7 +12,7 @@ from research_loop.modular.train_provider_preflight import PROGRAM_SLOTS
 from tests.helpers.headless_authoring_fixture import install_synthetic_native
 
 
-def headless_train_provider(root,patch,*,schemas,max_calls,response,wrapped=True):
+def headless_train_provider(root,patch,*,schemas,max_calls,response,wrapped=True,timeout_seconds=60):
     root=Path(root);root.mkdir(parents=True,exist_ok=True)
     executable=root/'synthetic-headless.exe';executable.write_bytes(b'synthetic native identity; never launched')
     home=root/'approved-home';home.mkdir()
@@ -44,5 +44,6 @@ def headless_train_provider(root,patch,*,schemas,max_calls,response,wrapped=True
         frozen_files={str(p.resolve()):hashlib.sha256(p.read_bytes()).hexdigest() for p in (executable,peer)},
         max_calls=max_calls,schemas=schemas,
         slot_output_caps={slot:8192 if slot in PROGRAM_SLOTS else 2048 for slot in schemas},
-        slot_input_byte_caps={slot:262144 for slot in schemas},observed_main_token_cap=131072)
+        slot_input_byte_caps={slot:262144 for slot in schemas},observed_main_token_cap=131072,
+        timeout_seconds=timeout_seconds)
     return (GrokHeadlessTrainProvider(backend) if wrapped else backend),calls,gets

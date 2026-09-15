@@ -131,7 +131,7 @@ def test_pure_descriptor_matches_constructed_port_without_allocator_side_effects
 
 
 @pytest.mark.parametrize('field,value', [('provider_kind', 'grok-acp-public-train-v1'),
-    ('effort', 'high'), ('timeout_seconds', 61), ('max_calls', True), ('private_home', 'relative')])
+    ('effort', 'high'), ('timeout_seconds', 241), ('max_calls', True), ('private_home', 'relative')])
 def test_headless_factory_rejects_inexact_transport_before_native(tmp_path, monkeypatch, field, value):
     spec, prompts, gets = native_spec(tmp_path / 'native', monkeypatch)
     spec[field] = value

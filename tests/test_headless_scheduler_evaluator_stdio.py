@@ -118,7 +118,7 @@ def test_evaluator_descriptor_mismatch_rejects_before_export_or_model(tmp_path, 
     assert calls == [] and not setup['exporter'].output_root.exists()
 
 
-def test_signed_tampered_final_closure_keeps_all_eight_historical_scores_ineligible():
+def test_signed_tampered_final_closure_keeps_all_eight_historical_scores_ineligible(tmp_path):
     """Adapter-only final-gate check; the full controller path is covered above.
 
     This consumes a genuinely signed but provider-mismatched closure.  It does
@@ -146,6 +146,18 @@ def test_signed_tampered_final_closure_keeps_all_eight_historical_scores_ineligi
     assert service.calls == 1 and len(scores) == 8 and gate['score_eligible'] is False
     assert gate['closure'] == closure.data() and gate['failure_reason'] == 'closure_verification_failed'
     assert captured[0]['closure'] == closure.data() and captured[-1]['score_eligible'] is False
+    path = tmp_path / 'controller-attempt.json'
+    path.write_text(json.dumps({'evaluator_final_verification': gate}), encoding='utf-8')
+    assert verify_retained_headless_evaluator_gate(path, gate=gate, binding={'evaluator_provider': provider},
+        panel=panel, scores=scores, scorer_authority_keys={authority.authority_id: authority.key},
+        scorer_config=config) == gate
+    changed = json.loads(path.read_bytes())
+    changed['evaluator_final_verification']['closure']['signature'] = 'tampered'
+    path.write_text(json.dumps(changed), encoding='utf-8')
+    with pytest.raises(ContractError, match='retained evaluator final gate differs'):
+        verify_retained_headless_evaluator_gate(path, gate=gate, binding={'evaluator_provider': provider},
+            panel=panel, scores=scores, scorer_authority_keys={authority.authority_id: authority.key},
+            scorer_config=config)
 
 
 def test_return_readback_rejects_changed_retained_signed_gate(tmp_path):

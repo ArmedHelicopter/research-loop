@@ -451,4 +451,10 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
     _write(root / "controller-receipt.json", receipt.data())
     journal["status"] = receipt.data()["status"]
     journal.update(actual_model_usage=receipt.data()['actual_model_usage']); _write(root/'controller-attempt.json',journal)
+    if evaluator_gate is not None:
+        verify_retained_headless_evaluator_gate(root/'controller-attempt.json', gate=evaluator_gate,
+            binding=evaluator_binding, panel=compiled.panel, scores=scores,
+            scorer_authority_keys=scorer_authority_keys, scorer_config=ScorerConfig(FrozenRecord.from_dict(body['scorer'])))
+        if json.loads((root/'controller-receipt.json').read_bytes()) != receipt.data():
+            raise ContractError('scheduler terminal receipt differs before return')
     return ExplorationSchedulerTrainRun(compiled, tuple(results), tuple(scores), tuple(FrozenRecord.from_dict(row) for row in journal["cells"]), contrast, receipt)
