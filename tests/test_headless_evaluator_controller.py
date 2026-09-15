@@ -102,7 +102,15 @@ def test_full_v6_factorial_closes_private_evaluator_or_retains_failed_history(tm
             assert body['known_main_tokens'] == 80 and body['scope']['unscored_cell_count'] == 0
             assert len(body['calls']) == 8
             # A second read must traverse the private worker with the same nonce.
-            repeated = service.finalize_headless_evaluator(receipts=tuple(result.scores))
+            reads = []
+            read_response = service._readline_bounded
+            def read_again():
+                reads.append(True)
+                return read_response()
+            with pytest.MonkeyPatch.context() as closure_patch:
+                closure_patch.setattr(service, '_readline_bounded', read_again)
+                repeated = service.finalize_headless_evaluator(receipts=tuple(result.scores))
+            assert reads == [True]
             assert repeated.data() == receipt['evaluator_final_verification']['receipt']
             with pytest.raises(ContractError):
                 service.score_combination(panel=setup['compiled'].panel, cell=setup['compiled'].panel.cells[0],
