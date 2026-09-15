@@ -1,7 +1,8 @@
 """Closed prospective TRAIN controller for the required admission/prediction/exploration triple."""
-from research_loop.modular.train_provider_preflight import (native_envelope, native_source_fields, response_schemas, validate_native_declaration)
+from research_loop.modular.train_provider_preflight import (native_envelope, headless_evaluator_envelope, native_source_fields, response_schemas, validate_native_declaration)
 from research_loop.modular.ordinary_provider import (family_service_preflight, model_root, allocation_fields, provider_usage, provider_terminal, unused_main_opportunities, provider_scope, bind_runtime_originals)
 from research_loop.modular.ordinary_provider import final_provider_gate, final_score_fields, unavailable_provider_contrast, final_usage, final_unused
+from research_loop.modular.ordinary_provider import headless_evaluator_binding, finalize_headless_evaluator_gate
 from research_loop.modular.phase_provider import PhaseProviderSession
 from dataclasses import dataclass
 import hashlib
@@ -63,11 +64,14 @@ class FrozenAdmissionPredictionExplorationTrainConfig:
     def __post_init__(self):
         if not isinstance(self.record, FrozenRecord): raise ContractError('frozen admission prediction exploration train configuration required')
         b = self.data(); native = native_envelope(b, 'admission_prediction_exploration')
+        headless_evaluator = headless_evaluator_envelope(b, 'admission_prediction_exploration')
         designs = DESIGNS
         schema = 'admission-prediction-exploration-combination-train-config-v1'
         required = {'schema', 'domain', 'stage', 'item_ids', 'task_bindings', 'baseline_digest', 'packages_by_arm',
             'scorer', 'scorer_handle_bindings', 'acceptance_criteria', 'replicates', 'model', 'effort', 'max_calls',
             'max_tokens', 'schemas', 'allocation', 'image', 'timeout_seconds', 'materials_by_pair', 'source_verifier_bindings', 'objective'}
+        if headless_evaluator:
+            required |= {'evaluator_usage', 'evaluator_provider'}
         if (type(self) is not FrozenAdmissionPredictionExplorationTrainConfig
                 or not (source_schema_matches(b, required, schema) or native_source_fields(b, required, family='admission_prediction_exploration'))
                 or b.get('export_mode') != 'primary_prospective' or b['domain'] != 'train'
@@ -143,6 +147,7 @@ class FrozenAdmissionPredictionExplorationTrainConfig:
             _validate_schema(schema, _schema_witness(schema))
         if native:
             validate_native_declaration(b, family='admission_prediction_exploration', schemas=schemas, main_opportunities=n*len(SLOTS))
+        headless_evaluator_binding(b, family='admission-prediction-exploration', enabled=headless_evaluator)
         if not isinstance(b['objective'], dict) or not b['objective']:
             raise ContractError('frozen nonempty public objective required')
         bindings = b['source_verifier_bindings']
@@ -227,6 +232,8 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
             or any(type(v) is not CombinationScorerProcessClient for v in scoring_services.values())):
         raise ContractError('exact admission prediction exploration train configuration, verifiers and scorer processes required')
     b = config.data()
+    evaluator_binding = headless_evaluator_binding(b, family='admission-prediction-exploration',
+                                                   enabled=headless_evaluator_envelope(b, 'admission_prediction_exploration'))
     for pair in DESIGNS:
         qualifier = source_verifiers[pair]; service = scoring_services[pair]
         expected = AdmissionMaterialVerifier
@@ -234,6 +241,10 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
                 or service.admission_prediction_exploration is not True or service.panel.obligation_id != pair):
             raise ContractError('pair-specific material qualifier or scorer process scope differs')
         family_service_preflight(config, model, service, execution_authority, scorer_authority_keys, family='admission_prediction_exploration')
+        if ((evaluator_binding is None and service.evaluator_provider is not None)
+                or (evaluator_binding is not None
+                    and service.evaluator_provider != evaluator_binding['evaluator_provider'])):
+            raise ContractError('scorer process and frozen headless evaluator declaration disagree')
         if any(a.authority.key in {execution_authority.key, *scorer_authority_keys.values()}
                or a.authority.authority_id in {execution_authority.authority_id, *scorer_authority_keys}
                for a in qualifier.authorities):
@@ -248,8 +259,10 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
     provider_session = PhaseProviderSession(model, root/'provider-scopes.json') if native else None
     journal = {'schema': ('admission-prediction-exploration-train-attempt-v2' if native else 'admission-prediction-exploration-train-attempt-v1'), 'config_digest': config.record.content_hash, 'status': 'exporting',
         'allocation': b['allocation'], **allocation_fields(b, native=native), 'expected_cells': 16, 'cells': [], 'actual_scorer_calls': 0}
-    def persist():
-        journal['actual_model_usage'] = provider_usage(provider_session, model); _write(root/'controller-attempt.json', journal)
+    def persist(*, refresh_usage=True):
+        if refresh_usage:
+            journal['actual_model_usage'] = provider_usage(provider_session, model)
+        _write(root/'controller-attempt.json', journal)
     persist()
     try:
         packets = source.export()
@@ -336,11 +349,26 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
                 for line in result.runtime.trace_path.read_text(encoding='utf-8').splitlines()) if result else 0)
             row['docker_attempts'] += row['auxiliary_docker_attempts']
             results.append(result); persist()
+    evaluator_gate = None
+    if evaluator_binding is not None:
+        service = scoring_services[compiled.panels[0].obligation_id]
+        def capture_evaluator_gate(gate):
+            journal['evaluator_final_verification'] = gate
+            # Keep a returned signed closure before any provider usage read or close.
+            persist(refresh_usage=False)
+        evaluator_gate = finalize_headless_evaluator_gate(binding=evaluator_binding,
+            family='admission-prediction-exploration', service=service, panel=compiled.panels[0],
+            scores=scores, scorer_authority_keys=scorer_authority_keys,
+            scorer_config=ScorerConfig(FrozenRecord.from_dict(b['scorer'])), capture=capture_evaluator_gate)
     final_gate = final_provider_gate(provider_session, root/'final-provider-ledger.json')
     contrasts = []
     for panel in compiled.panels:
         if native and not final_gate.data()['provider_evidence_eligible']:
             contrasts.append(unavailable_provider_contrast(panel, final_gate)); continue
+        if evaluator_gate is not None and not evaluator_gate['score_eligible']:
+            contrasts.append(FrozenRecord.from_dict({'schema': 'admission-prediction-exploration-inconclusive-contrast-v1',
+                'panel_digest': panel.digest, 'status': 'inconclusive', 'reason': 'final_evaluator_evidence_ineligible',
+                'evaluator_final_verification': evaluator_gate, 'scientific_status': 'not_measured'})); continue
         service = scoring_services[panel.obligation_id]
         source_verifier = source_verifiers[panel.obligation_id]
         def verify_score(score, cell, owner):
@@ -365,8 +393,12 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
         if not final_gate.data()['provider_evidence_eligible']:
             journal['historical_contrasts_before_failed_final_gate'] = [c.data() for c in contrasts]
             contrasts = [unavailable_provider_contrast(panel, final_gate) for panel in compiled.panels]
-    receipt = FrozenRecord.from_dict({'schema': ('admission-prediction-exploration-train-receipt-v2' if native else 'admission-prediction-exploration-train-receipt-v1'), 'config_digest': config.record.content_hash,
+    eligible_scored_cells = (len(scores) if final_gate is None or final_gate.data()['provider_evidence_eligible'] else 0)
+    if evaluator_gate is not None and not evaluator_gate['score_eligible']:
+        eligible_scored_cells = 0
+    receipt = FrozenRecord.from_dict({'schema': ('admission-prediction-exploration-train-receipt-v3' if evaluator_gate is not None else 'admission-prediction-exploration-train-receipt-v2' if native else 'admission-prediction-exploration-train-receipt-v1'), 'config_digest': config.record.content_hash,
         'expected_cells': 16, 'observed_cells': len(results), 'scored_cells': len(scores), **final_score_fields(final_gate, scores),
+        **({'evaluator_final_verification': evaluator_gate, 'eligible_scored_cells': eligible_scored_cells} if evaluator_gate is not None else {}),
         'failed_cells': sum(r['status']=='failed' for r in journal['cells']), 'blocked_cells': sum(r['status']=='blocked' for r in journal['cells']),
         'allocation': b['allocation'], 'actual_model_usage': final_usage(final_gate, model), 'actual_scorer_calls': journal['actual_scorer_calls'],
         'actual_docker_attempts': sum(r['docker_attempts'] for r in journal['cells']),
@@ -378,7 +410,7 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
         'auxiliary_docker_attempts': sum(r.get('auxiliary_docker_attempts', 0) for r in journal['cells']),
         'phase_unknown_cost_attempts': sum(r.get('phase_receipt', {}).get('unknown_cost_attempts', 0) for r in journal['cells']),
         'contrasts': [c.data() for c in contrasts], 'pruned_cells': [], 'scientific_effectiveness_proven': False, 'validation_opened': False,
-        'status': 'complete_train_engineering' if len(scores)==len(results)==16
+        'status': 'complete_train_engineering' if len(scores)==len(results)==16 and (evaluator_gate is None or evaluator_gate['score_eligible'])
             and all(c.data()['status'] in {'estimated', 'not_identifiable'} for c in contrasts) else 'inconclusive'})
     _write(root/'controller-receipt.json', receipt.data()); journal['status'] = receipt.data()['status']; journal.update(actual_model_usage=receipt.data()['actual_model_usage']); _write(root/'controller-attempt.json',journal)
     return AdmissionPredictionExplorationTrainRun(compiled, tuple(results), tuple(scores), tuple(FrozenRecord.from_dict(r) for r in journal['cells']), tuple(contrasts), receipt)

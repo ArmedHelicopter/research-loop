@@ -27,6 +27,9 @@ NATIVE_SCHEMAS = {
     'exploration_scheduler': 'exploration-scheduler-train-controller-config-v3',
     'q32_execution': 'q32-prospective-source-config-v3',
 }
+HEADLESS_EVALUATOR_SCHEMAS = {
+    'admission_prediction_exploration': 'admission-prediction-exploration-combination-train-config-v4',
+}
 LEGACY_TRANSPORT_FIELDS = frozenset({'model', 'effort', 'max_calls', 'max_tokens', 'schemas'})
 PROGRAM_SLOTS = frozenset({'analysis_program', 'program_1', 'program_2', 'program_3'})
 
@@ -34,7 +37,12 @@ PROGRAM_SLOTS = frozenset({'analysis_program', 'program_1', 'program_2', 'progra
 def native_envelope(body, family):
     if family not in NATIVE_SCHEMAS:
         raise ContractError('unregistered native controller family')
-    return body.get('schema') == NATIVE_SCHEMAS[family]
+    return (body.get('schema') == NATIVE_SCHEMAS[family]
+            or headless_evaluator_envelope(body, family))
+
+
+def headless_evaluator_envelope(body, family):
+    return family in HEADLESS_EVALUATOR_SCHEMAS and body.get('schema') == HEADLESS_EVALUATOR_SCHEMAS[family]
 
 
 def native_fields(body, required, *, family, optional=()):
