@@ -1,0 +1,658 @@
+{
+  "schema": "admission-author-startup-failures-archive-r1",
+  "attempts": [
+    {
+      "native_session_id": 9492,
+      "exit_code": 1,
+      "error_category": "AttributeError",
+      "main_dispatched": false
+    },
+    {
+      "native_session_id": 18237,
+      "exit_code": 1,
+      "error_category": "ContractError",
+      "main_dispatched": false
+    }
+  ],
+  "source_commit": "43ccf107186f730884e64c230d3abe4bfa555d65",
+  "scope": {
+    "two_closed_startup_failures_only": true,
+    "actual_main_calls": 0,
+    "authoring_allocation_opportunities": 2,
+    "authoring_allocation_spent": 0,
+    "additional_paid_api_budget": 0,
+    "validation_opened": false,
+    "run_r1_created": false,
+    "gates_completed": "not_claimed",
+    "scientific_effectiveness": "not_measured"
+  },
+  "first_preserved_source": {
+    "helper_sha256": "0f880dff6bb819669eecfdb1b47e0cfed7603efe673c9dc1e54fe871d2f7786f",
+    "descriptor_sha256": "4e0b84b544b6ceed87ba60cc897029a3f342421ec667c7510690a99e291e54ef"
+  },
+  "original_files_before": {
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual-admission-prediction-exploration-grok130-author-r1-native-join.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual-admission-prediction-exploration-grok130-author-r1-native-join.json",
+      "category": "first-preserved",
+      "sha256": "82e1f8c084764057e994c0e2c59891ca72bf423ebdd79eb02320fc60054e3ca4",
+      "byte_count": 232,
+      "mtime_ns": 1789474492838536600,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual-admission-prediction-exploration-grok130-author-r1-native-start.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual-admission-prediction-exploration-grok130-author-r1-native-start.json",
+      "category": "first-preserved",
+      "sha256": "ca4802bd77dcb53509e5842d32d944f0e7e0d5b079cc9b7fbfdaf533d2da852c",
+      "byte_count": 108,
+      "mtime_ns": 1789474386424043600,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual-admission-prediction-exploration-grok130-author-r1.log": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual-admission-prediction-exploration-grok130-author-r1.log",
+      "category": "first-preserved",
+      "sha256": "cbe9c5b5b4cb72eba1c78c0f21c7a87466f75505ac11ac7accf150d78cec8d5a",
+      "byte_count": 1429,
+      "mtime_ns": 1789474406647588100,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual_admission_prediction_exploration_evaluator_descriptor_r1.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual_admission_prediction_exploration_evaluator_descriptor_r1.json",
+      "category": "first-preserved",
+      "sha256": "4e0b84b544b6ceed87ba60cc897029a3f342421ec667c7510690a99e291e54ef",
+      "byte_count": 4028,
+      "mtime_ns": 1789473688541203500,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\run_actual_admission_prediction_exploration_grok130_r1.py": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\run_actual_admission_prediction_exploration_grok130_r1.py",
+      "category": "first-preserved",
+      "sha256": "0f880dff6bb819669eecfdb1b47e0cfed7603efe673c9dc1e54fe871d2f7786f",
+      "byte_count": 57763,
+      "mtime_ns": 1789473687283255500,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\compile-export-audit\\exports.jsonl": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\compile-export-audit\\exports.jsonl",
+      "category": "r1-preparation",
+      "sha256": "aff4a7e5af214b750d64b769c93be57ebe3c7b399f167fc9904814837d388cb1",
+      "byte_count": 5121,
+      "mtime_ns": 1789475359425986400,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\export-receipt.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\export-receipt.json",
+      "category": "r1-preparation",
+      "sha256": "95521bc2b3da19df2f0e19fa03a4587417e1a77be5761df8d409595bf78cb916",
+      "byte_count": 9244,
+      "mtime_ns": 1789475337770721400,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl",
+      "category": "r1-preparation",
+      "sha256": "399d77efd8091e227a9b4722f4bb9ad7f16bf4db1e49cb8398836f3d788e904e",
+      "byte_count": 11589,
+      "mtime_ns": 1789475321774805600,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl.seal.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl.seal.json",
+      "category": "r1-preparation",
+      "sha256": "a7f9e9f12328136e4e8b5e90f5d8caf61b7ea48e5b0ae2d5bce2b22e5d03fbe6",
+      "byte_count": 295,
+      "mtime_ns": 1789475323965398400,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\data.csv": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\data.csv",
+      "category": "r1-preparation",
+      "sha256": "455f1e3df7e93dce381b6adff312e89e6a3b4d3900cf0d6083660cd0a4d53881",
+      "byte_count": 49023,
+      "mtime_ns": 1789475316824133300,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\public.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\public.json",
+      "category": "r1-preparation",
+      "sha256": "eb639eb5e482f08d499cce95c5da180339253acb64cbe2f606fcbfdf8dca251f",
+      "byte_count": 4382,
+      "mtime_ns": 1789475315076173700,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\receipt.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\receipt.json",
+      "category": "r1-preparation",
+      "sha256": "3fedb235317b1394d796bb16f78bd89ec316498792e7128f23090c1d15d01fb7",
+      "byte_count": 1145,
+      "mtime_ns": 1789475318147434700,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl",
+      "category": "r1-preparation",
+      "sha256": "3341954f3b4527501ef2e5dfc5fdb481311d39656084d722d030b84c0afe063d",
+      "byte_count": 11136,
+      "mtime_ns": 1789475334697596900,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl.seal.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl.seal.json",
+      "category": "r1-preparation",
+      "sha256": "0c464d9ea359192d39fdd5f82a75c09a20fcc7da4fc5672225ca55bd0a7dbd42",
+      "byte_count": 295,
+      "mtime_ns": 1789475336142454500,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\data.csv": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\data.csv",
+      "category": "r1-preparation",
+      "sha256": "bcef1bbadbb898bccf71d51e5e619d03ee0e093eb6a3aee553d6688d3d3304ee",
+      "byte_count": 106218,
+      "mtime_ns": 1789475330171775300,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\public.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\public.json",
+      "category": "r1-preparation",
+      "sha256": "b623866374d6c0d494317b5faf2b5e9866543afbd14c1333568db447b48a6438",
+      "byte_count": 3203,
+      "mtime_ns": 1789475329106359000,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\receipt.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\receipt.json",
+      "category": "r1-preparation",
+      "sha256": "2c8529a9ee2066b2627e733e388627426b0593956f205869809733d95f0cfa79",
+      "byte_count": 947,
+      "mtime_ns": 1789475330935094800,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-admission-prediction-exploration-grok130-r1\\author-home\\auth.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-admission-prediction-exploration-grok130-r1\\author-home\\auth.json",
+      "category": "r1-private",
+      "sha256": "63161cfb06defb239e34e44551d98b7c7c0bf461ceedb5b3722c9799dc6361b0",
+      "byte_count": 1762,
+      "mtime_ns": 1789475367391072700,
+      "excluded_from_retained_bytes": true
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_actual_admission_prediction_exploration_grok130_r1.py": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_actual_admission_prediction_exploration_grok130_r1.py",
+      "category": "current-r1-helper",
+      "sha256": "0d89f781aefffb67bc35b89a903318c4669b28850370f5346b66c8a60b7f6fec",
+      "byte_count": 57775,
+      "mtime_ns": 1789474567903438800,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual_admission_prediction_exploration_evaluator_descriptor_r1.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual_admission_prediction_exploration_evaluator_descriptor_r1.json",
+      "category": "current-r1-descriptor",
+      "sha256": "3049074a2d6582ee73cee652e69abcf87f07786841ec687ae46dd05ba5c1900b",
+      "byte_count": 4258,
+      "mtime_ns": 1789474567920284600,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-read-path-repair-r1.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-read-path-repair-r1.json",
+      "category": "repair-receipt",
+      "sha256": "900e44464ecde78e7ee765f560d9f3181f58f386da1e856b6bc19944e068c929",
+      "byte_count": 650,
+      "mtime_ns": 1789474659513857500,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r1.log": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r1.log",
+      "category": "r1-log",
+      "sha256": "cbe9c5b5b4cb72eba1c78c0f21c7a87466f75505ac11ac7accf150d78cec8d5a",
+      "byte_count": 1429,
+      "mtime_ns": 1789474406647588100,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r1-native-start.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r1-native-start.json",
+      "category": "r1-start",
+      "sha256": "ca4802bd77dcb53509e5842d32d944f0e7e0d5b079cc9b7fbfdaf533d2da852c",
+      "byte_count": 108,
+      "mtime_ns": 1789474386424043600,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r1-native-join.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r1-native-join.json",
+      "category": "r1-join",
+      "sha256": "82e1f8c084764057e994c0e2c59891ca72bf423ebdd79eb02320fc60054e3ca4",
+      "byte_count": 232,
+      "mtime_ns": 1789474492838536600,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r2.log": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r2.log",
+      "category": "r2-log",
+      "sha256": "7670a1f0d90d59c46360e7a544f7fbea31143fc7035d25bdacb76f10da600ceb",
+      "byte_count": 2013,
+      "mtime_ns": 1789475367855839700,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r2-native-start.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r2-native-start.json",
+      "category": "r2-start",
+      "sha256": "7342c06c8e875bd80c52f88e6c0e1a5f99095baecc0461f247f10925a3462377",
+      "byte_count": 109,
+      "mtime_ns": 1789474708327659600,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r2-native-join.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r2-native-join.json",
+      "category": "r2-join",
+      "sha256": "86a8dd57c2dbd8da14594736718c13ca473ee982d6ba7a13673fcf3d8b1f2bf7",
+      "byte_count": 228,
+      "mtime_ns": 1789475454932792600,
+      "excluded_from_retained_bytes": false
+    }
+  },
+  "original_files_after": {
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual-admission-prediction-exploration-grok130-author-r1-native-join.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual-admission-prediction-exploration-grok130-author-r1-native-join.json",
+      "category": "first-preserved",
+      "sha256": "82e1f8c084764057e994c0e2c59891ca72bf423ebdd79eb02320fc60054e3ca4",
+      "byte_count": 232,
+      "mtime_ns": 1789474492838536600,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual-admission-prediction-exploration-grok130-author-r1-native-start.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual-admission-prediction-exploration-grok130-author-r1-native-start.json",
+      "category": "first-preserved",
+      "sha256": "ca4802bd77dcb53509e5842d32d944f0e7e0d5b079cc9b7fbfdaf533d2da852c",
+      "byte_count": 108,
+      "mtime_ns": 1789474386424043600,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual-admission-prediction-exploration-grok130-author-r1.log": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual-admission-prediction-exploration-grok130-author-r1.log",
+      "category": "first-preserved",
+      "sha256": "cbe9c5b5b4cb72eba1c78c0f21c7a87466f75505ac11ac7accf150d78cec8d5a",
+      "byte_count": 1429,
+      "mtime_ns": 1789474406647588100,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual_admission_prediction_exploration_evaluator_descriptor_r1.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual_admission_prediction_exploration_evaluator_descriptor_r1.json",
+      "category": "first-preserved",
+      "sha256": "4e0b84b544b6ceed87ba60cc897029a3f342421ec667c7510690a99e291e54ef",
+      "byte_count": 4028,
+      "mtime_ns": 1789473688541203500,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\run_actual_admission_prediction_exploration_grok130_r1.py": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\run_actual_admission_prediction_exploration_grok130_r1.py",
+      "category": "first-preserved",
+      "sha256": "0f880dff6bb819669eecfdb1b47e0cfed7603efe673c9dc1e54fe871d2f7786f",
+      "byte_count": 57763,
+      "mtime_ns": 1789473687283255500,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\compile-export-audit\\exports.jsonl": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\compile-export-audit\\exports.jsonl",
+      "category": "r1-preparation",
+      "sha256": "aff4a7e5af214b750d64b769c93be57ebe3c7b399f167fc9904814837d388cb1",
+      "byte_count": 5121,
+      "mtime_ns": 1789475359425986400,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\export-receipt.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\export-receipt.json",
+      "category": "r1-preparation",
+      "sha256": "95521bc2b3da19df2f0e19fa03a4587417e1a77be5761df8d409595bf78cb916",
+      "byte_count": 9244,
+      "mtime_ns": 1789475337770721400,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl",
+      "category": "r1-preparation",
+      "sha256": "399d77efd8091e227a9b4722f4bb9ad7f16bf4db1e49cb8398836f3d788e904e",
+      "byte_count": 11589,
+      "mtime_ns": 1789475321774805600,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl.seal.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl.seal.json",
+      "category": "r1-preparation",
+      "sha256": "a7f9e9f12328136e4e8b5e90f5d8caf61b7ea48e5b0ae2d5bce2b22e5d03fbe6",
+      "byte_count": 295,
+      "mtime_ns": 1789475323965398400,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\data.csv": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\data.csv",
+      "category": "r1-preparation",
+      "sha256": "455f1e3df7e93dce381b6adff312e89e6a3b4d3900cf0d6083660cd0a4d53881",
+      "byte_count": 49023,
+      "mtime_ns": 1789475316824133300,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\public.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\public.json",
+      "category": "r1-preparation",
+      "sha256": "eb639eb5e482f08d499cce95c5da180339253acb64cbe2f606fcbfdf8dca251f",
+      "byte_count": 4382,
+      "mtime_ns": 1789475315076173700,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\receipt.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\receipt.json",
+      "category": "r1-preparation",
+      "sha256": "3fedb235317b1394d796bb16f78bd89ec316498792e7128f23090c1d15d01fb7",
+      "byte_count": 1145,
+      "mtime_ns": 1789475318147434700,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl",
+      "category": "r1-preparation",
+      "sha256": "3341954f3b4527501ef2e5dfc5fdb481311d39656084d722d030b84c0afe063d",
+      "byte_count": 11136,
+      "mtime_ns": 1789475334697596900,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl.seal.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl.seal.json",
+      "category": "r1-preparation",
+      "sha256": "0c464d9ea359192d39fdd5f82a75c09a20fcc7da4fc5672225ca55bd0a7dbd42",
+      "byte_count": 295,
+      "mtime_ns": 1789475336142454500,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\data.csv": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\data.csv",
+      "category": "r1-preparation",
+      "sha256": "bcef1bbadbb898bccf71d51e5e619d03ee0e093eb6a3aee553d6688d3d3304ee",
+      "byte_count": 106218,
+      "mtime_ns": 1789475330171775300,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\public.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\public.json",
+      "category": "r1-preparation",
+      "sha256": "b623866374d6c0d494317b5faf2b5e9866543afbd14c1333568db447b48a6438",
+      "byte_count": 3203,
+      "mtime_ns": 1789475329106359000,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\receipt.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\receipt.json",
+      "category": "r1-preparation",
+      "sha256": "2c8529a9ee2066b2627e733e388627426b0593956f205869809733d95f0cfa79",
+      "byte_count": 947,
+      "mtime_ns": 1789475330935094800,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-admission-prediction-exploration-grok130-r1\\author-home\\auth.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-admission-prediction-exploration-grok130-r1\\author-home\\auth.json",
+      "category": "r1-private",
+      "sha256": "63161cfb06defb239e34e44551d98b7c7c0bf461ceedb5b3722c9799dc6361b0",
+      "byte_count": 1762,
+      "mtime_ns": 1789475367391072700,
+      "excluded_from_retained_bytes": true
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_actual_admission_prediction_exploration_grok130_r1.py": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_actual_admission_prediction_exploration_grok130_r1.py",
+      "category": "current-r1-helper",
+      "sha256": "0d89f781aefffb67bc35b89a903318c4669b28850370f5346b66c8a60b7f6fec",
+      "byte_count": 57775,
+      "mtime_ns": 1789474567903438800,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual_admission_prediction_exploration_evaluator_descriptor_r1.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual_admission_prediction_exploration_evaluator_descriptor_r1.json",
+      "category": "current-r1-descriptor",
+      "sha256": "3049074a2d6582ee73cee652e69abcf87f07786841ec687ae46dd05ba5c1900b",
+      "byte_count": 4258,
+      "mtime_ns": 1789474567920284600,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-read-path-repair-r1.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-read-path-repair-r1.json",
+      "category": "repair-receipt",
+      "sha256": "900e44464ecde78e7ee765f560d9f3181f58f386da1e856b6bc19944e068c929",
+      "byte_count": 650,
+      "mtime_ns": 1789474659513857500,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r1.log": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r1.log",
+      "category": "r1-log",
+      "sha256": "cbe9c5b5b4cb72eba1c78c0f21c7a87466f75505ac11ac7accf150d78cec8d5a",
+      "byte_count": 1429,
+      "mtime_ns": 1789474406647588100,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r1-native-start.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r1-native-start.json",
+      "category": "r1-start",
+      "sha256": "ca4802bd77dcb53509e5842d32d944f0e7e0d5b079cc9b7fbfdaf533d2da852c",
+      "byte_count": 108,
+      "mtime_ns": 1789474386424043600,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r1-native-join.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r1-native-join.json",
+      "category": "r1-join",
+      "sha256": "82e1f8c084764057e994c0e2c59891ca72bf423ebdd79eb02320fc60054e3ca4",
+      "byte_count": 232,
+      "mtime_ns": 1789474492838536600,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r2.log": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r2.log",
+      "category": "r2-log",
+      "sha256": "7670a1f0d90d59c46360e7a544f7fbea31143fc7035d25bdacb76f10da600ceb",
+      "byte_count": 2013,
+      "mtime_ns": 1789475367855839700,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r2-native-start.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r2-native-start.json",
+      "category": "r2-start",
+      "sha256": "7342c06c8e875bd80c52f88e6c0e1a5f99095baecc0461f247f10925a3462377",
+      "byte_count": 109,
+      "mtime_ns": 1789474708327659600,
+      "excluded_from_retained_bytes": false
+    },
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r2-native-join.json": {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r2-native-join.json",
+      "category": "r2-join",
+      "sha256": "86a8dd57c2dbd8da14594736718c13ca473ee982d6ba7a13673fcf3d8b1f2bf7",
+      "byte_count": 228,
+      "mtime_ns": 1789475454932792600,
+      "excluded_from_retained_bytes": false
+    }
+  },
+  "credential_exclusions": [
+    {
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-admission-prediction-exploration-grok130-r1\\author-home\\auth.json",
+      "category": "r1-private",
+      "sha256": "63161cfb06defb239e34e44551d98b7c7c0bf461ceedb5b3722c9799dc6361b0",
+      "byte_count": 1762,
+      "mtime_ns": 1789475367391072700,
+      "excluded_from_retained_bytes": true
+    }
+  ],
+  "archives": {
+    "source-exact.zip": "18cb4dd64035d4d27af708d3b179d113d791ba25862896b1680dc0998ced29da",
+    "public-metadata.zip": "bb3c547c4494462911de37e0241387a88fb583d10c4cc1f3d416e781eaf828cd",
+    "retained-private-raw.zip": "e24f414c1d8fef137cf764ca29655e3a09ae1c46e415856423b47be08c6448b6"
+  },
+  "source_members": [
+    {
+      "path": "first/run_actual_admission_prediction_exploration_grok130_r1.py",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\run_actual_admission_prediction_exploration_grok130_r1.py",
+      "sha256": "0f880dff6bb819669eecfdb1b47e0cfed7603efe673c9dc1e54fe871d2f7786f",
+      "byte_count": 57763,
+      "mtime_ns": 1789473687283255500
+    },
+    {
+      "path": "first/actual_admission_prediction_exploration_evaluator_descriptor_r1.json",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-before-read-path-repair-r1\\actual_admission_prediction_exploration_evaluator_descriptor_r1.json",
+      "sha256": "4e0b84b544b6ceed87ba60cc897029a3f342421ec667c7510690a99e291e54ef",
+      "byte_count": 4028,
+      "mtime_ns": 1789473688541203500
+    },
+    {
+      "path": "current/run_actual_admission_prediction_exploration_grok130_r1.py",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_actual_admission_prediction_exploration_grok130_r1.py",
+      "sha256": "0d89f781aefffb67bc35b89a903318c4669b28850370f5346b66c8a60b7f6fec",
+      "byte_count": 57775,
+      "mtime_ns": 1789474567903438800
+    },
+    {
+      "path": "current/actual_admission_prediction_exploration_evaluator_descriptor_r1.json",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual_admission_prediction_exploration_evaluator_descriptor_r1.json",
+      "sha256": "3049074a2d6582ee73cee652e69abcf87f07786841ec687ae46dd05ba5c1900b",
+      "byte_count": 4258,
+      "mtime_ns": 1789474567920284600
+    },
+    {
+      "path": "archive/archive_admission_author_startup_failures_r1.py",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\archive_admission_author_startup_failures_r1.py",
+      "sha256": "7aeb99f5327a1726535e8ea022b84f2ad363f213d8e99344c59466c11d18488f",
+      "byte_count": 9879,
+      "mtime_ns": 1789476295861593300
+    }
+  ],
+  "public_members": [
+    {
+      "path": "native/r1-start.json",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r1-native-start.json",
+      "sha256": "ca4802bd77dcb53509e5842d32d944f0e7e0d5b079cc9b7fbfdaf533d2da852c",
+      "byte_count": 108,
+      "mtime_ns": 1789474386424043600
+    },
+    {
+      "path": "native/r1-join.json",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r1-native-join.json",
+      "sha256": "82e1f8c084764057e994c0e2c59891ca72bf423ebdd79eb02320fc60054e3ca4",
+      "byte_count": 232,
+      "mtime_ns": 1789474492838536600
+    },
+    {
+      "path": "native/r2-start.json",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r2-native-start.json",
+      "sha256": "7342c06c8e875bd80c52f88e6c0e1a5f99095baecc0461f247f10925a3462377",
+      "byte_count": 109,
+      "mtime_ns": 1789474708327659600
+    },
+    {
+      "path": "native/r2-join.json",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r2-native-join.json",
+      "sha256": "86a8dd57c2dbd8da14594736718c13ca473ee982d6ba7a13673fcf3d8b1f2bf7",
+      "byte_count": 228,
+      "mtime_ns": 1789475454932792600
+    },
+    {
+      "path": "logs/r1.log",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r1.log",
+      "sha256": "cbe9c5b5b4cb72eba1c78c0f21c7a87466f75505ac11ac7accf150d78cec8d5a",
+      "byte_count": 1429,
+      "mtime_ns": 1789474406647588100
+    },
+    {
+      "path": "logs/r2.log",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-author-r2.log",
+      "sha256": "7670a1f0d90d59c46360e7a544f7fbea31143fc7035d25bdacb76f10da600ceb",
+      "byte_count": 2013,
+      "mtime_ns": 1789475367855839700
+    },
+    {
+      "path": "repair/receipt.json",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-author-read-path-repair-r1.json",
+      "sha256": "900e44464ecde78e7ee765f560d9f3181f58f386da1e856b6bc19944e068c929",
+      "byte_count": 650,
+      "mtime_ns": 1789474659513857500
+    }
+  ],
+  "retained_private_members": [
+    {
+      "path": "preparation/compile-export-audit/exports.jsonl",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\compile-export-audit\\exports.jsonl",
+      "sha256": "aff4a7e5af214b750d64b769c93be57ebe3c7b399f167fc9904814837d388cb1",
+      "byte_count": 5121,
+      "mtime_ns": 1789475359425986400
+    },
+    {
+      "path": "preparation/public-for-compile/export-receipt.json",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\export-receipt.json",
+      "sha256": "95521bc2b3da19df2f0e19fa03a4587417e1a77be5761df8d409595bf78cb916",
+      "byte_count": 9244,
+      "mtime_ns": 1789475337770721400
+    },
+    {
+      "path": "preparation/public-for-compile/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/artifacts.jsonl",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl",
+      "sha256": "399d77efd8091e227a9b4722f4bb9ad7f16bf4db1e49cb8398836f3d788e904e",
+      "byte_count": 11589,
+      "mtime_ns": 1789475321774805600
+    },
+    {
+      "path": "preparation/public-for-compile/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/artifacts.jsonl.seal.json",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl.seal.json",
+      "sha256": "a7f9e9f12328136e4e8b5e90f5d8caf61b7ea48e5b0ae2d5bce2b22e5d03fbe6",
+      "byte_count": 295,
+      "mtime_ns": 1789475323965398400
+    },
+    {
+      "path": "preparation/public-for-compile/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/data.csv",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\data.csv",
+      "sha256": "455f1e3df7e93dce381b6adff312e89e6a3b4d3900cf0d6083660cd0a4d53881",
+      "byte_count": 49023,
+      "mtime_ns": 1789475316824133300
+    },
+    {
+      "path": "preparation/public-for-compile/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/public.json",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\public.json",
+      "sha256": "eb639eb5e482f08d499cce95c5da180339253acb64cbe2f606fcbfdf8dca251f",
+      "byte_count": 4382,
+      "mtime_ns": 1789475315076173700
+    },
+    {
+      "path": "preparation/public-for-compile/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/receipt.json",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\receipt.json",
+      "sha256": "3fedb235317b1394d796bb16f78bd89ec316498792e7128f23090c1d15d01fb7",
+      "byte_count": 1145,
+      "mtime_ns": 1789475318147434700
+    },
+    {
+      "path": "preparation/public-for-compile/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/artifacts.jsonl",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl",
+      "sha256": "3341954f3b4527501ef2e5dfc5fdb481311d39656084d722d030b84c0afe063d",
+      "byte_count": 11136,
+      "mtime_ns": 1789475334697596900
+    },
+    {
+      "path": "preparation/public-for-compile/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/artifacts.jsonl.seal.json",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl.seal.json",
+      "sha256": "0c464d9ea359192d39fdd5f82a75c09a20fcc7da4fc5672225ca55bd0a7dbd42",
+      "byte_count": 295,
+      "mtime_ns": 1789475336142454500
+    },
+    {
+      "path": "preparation/public-for-compile/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/data.csv",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\data.csv",
+      "sha256": "bcef1bbadbb898bccf71d51e5e619d03ee0e093eb6a3aee553d6688d3d3304ee",
+      "byte_count": 106218,
+      "mtime_ns": 1789475330171775300
+    },
+    {
+      "path": "preparation/public-for-compile/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/public.json",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\public.json",
+      "sha256": "b623866374d6c0d494317b5faf2b5e9866543afbd14c1333568db447b48a6438",
+      "byte_count": 3203,
+      "mtime_ns": 1789475329106359000
+    },
+    {
+      "path": "preparation/public-for-compile/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/receipt.json",
+      "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\receipt.json",
+      "sha256": "2c8529a9ee2066b2627e733e388627426b0593956f205869809733d95f0cfa79",
+      "byte_count": 947,
+      "mtime_ns": 1789475330935094800
+    }
+  ]
+}
