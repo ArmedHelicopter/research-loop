@@ -1,0 +1,56 @@
+{
+  "schema": "grok-source-study-delivery-v1",
+  "self_excluding": true,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "acp_agent.rs",
+      "bytes": 137172,
+      "sha256": "4d4689029cbcaadca67c5c3561698f37f5cb02342098e5a7b9dc8fcc1f2bd56e"
+    },
+    {
+      "path": "build_package.py",
+      "bytes": 3247,
+      "sha256": "c4124da48ce2ad90694935a54b169aab4b79fd3f27500becfca87bf60a67e723"
+    },
+    {
+      "path": "grok-post-auth-initialize-readonly-r1.md",
+      "bytes": 2803,
+      "sha256": "a043a91ba7f0b773d68cff704bb27cd0aa934832be649358d11f3df68d20d697"
+    },
+    {
+      "path": "grok-post-auth-model-state-source-r2.md",
+      "bytes": 2933,
+      "sha256": "c168eca7ea29a2f9f4e6e49500c36644f6710b7915024cf44cbde024387c0eec"
+    },
+    {
+      "path": "grok-profile-lifecycle-readonly-r1.md",
+      "bytes": 3982,
+      "sha256": "e911141185ca9273f9292baab2c44ef1d3abefeedb525511314bc069088d0098"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 872,
+      "sha256": "87ed8a7bf7cc68222c918decd7c1dca3870755f1db577f89202a978084047aab"
+    },
+    {
+      "path": "publish-helper.py",
+      "bytes": 1942,
+      "sha256": "cfc1a4c0851e2395f7bf27d17b78018030362957d47489d4db7bd4c892b3a740"
+    },
+    {
+      "path": "README.md",
+      "bytes": 877,
+      "sha256": "05c2667de8ea97ed82f4edb8868bb7da3c5198c7648ad3cba32b3c05036dbf54"
+    },
+    {
+      "path": "source-provenance.json",
+      "bytes": 1103,
+      "sha256": "33d4e14bdca7bd176750ba08a58b9e22cba49a5a8730b95c2733baa06c3280b3"
+    }
+  ]
+}

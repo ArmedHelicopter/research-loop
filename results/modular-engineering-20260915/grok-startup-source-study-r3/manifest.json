@@ -1,0 +1,24 @@
+{
+  "credential_or_raw_log_payloads_included": false,
+  "notes": [
+    {
+      "bytes": 3982,
+      "path": "grok-profile-lifecycle-readonly-r1.md",
+      "sha256": "e911141185ca9273f9292baab2c44ef1d3abefeedb525511314bc069088d0098"
+    },
+    {
+      "bytes": 2803,
+      "path": "grok-post-auth-initialize-readonly-r1.md",
+      "sha256": "a043a91ba7f0b773d68cff704bb27cd0aa934832be649358d11f3df68d20d697"
+    },
+    {
+      "bytes": 2933,
+      "path": "grok-post-auth-model-state-source-r2.md",
+      "sha256": "c168eca7ea29a2f9f4e6e49500c36644f6710b7915024cf44cbde024387c0eec"
+    }
+  ],
+  "readme_sha256": "05c2667de8ea97ed82f4edb8868bb7da3c5198c7648ad3cba32b3c05036dbf54",
+  "schema": "grok-startup-source-study-r3",
+  "self_excluding": true,
+  "source_provenance_sha256": "33d4e14bdca7bd176750ba08a58b9e22cba49a5a8730b95c2733baa06c3280b3"
+}
