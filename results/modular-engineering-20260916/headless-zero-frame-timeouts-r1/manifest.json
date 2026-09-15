@@ -1,0 +1,34 @@
+{
+  "schema": "headless-zero-frame-timeouts-r1",
+  "scope": {
+    "scheduler_native_session": 39301,
+    "admission_native_session": 95260,
+    "valid_auth": true,
+    "prompt_process_launched": true,
+    "zero_frame_timeout": true,
+    "timeout_seconds": 240,
+    "stdout": "empty",
+    "stderr": "empty",
+    "events": "empty",
+    "end": "empty",
+    "known_main_tokens": 0,
+    "usage": "unknown",
+    "settlement": "unknown",
+    "scheduler_denominator": {
+      "total": 8,
+      "failed": 1,
+      "blocked": 7,
+      "evaluated": 0
+    },
+    "admission_authoring_bundle": false,
+    "validation_opened": false
+  },
+  "source_hashes": {
+    "scheduler_r3": "26901b5d3b76a9635efd5e55856472d741cb832f8adb85e418afe24da56f7b99",
+    "admission_r4": "b251da3acfd1db431d84e326ea85770577c795a7152912c274a1a4a8adf4c4e3",
+    "root_correction": "91fb85772456b7c8d0d038895bf97638d652a71bb5c9ce9b5ab1fa2b4baa4ab5",
+    "descriptor_r4": "e3d59df327ee74faa814747bb5ee576e2f2b7d62a434472fa17e2c5769f6e6a6"
+  },
+  "private_member_count": 225,
+  "private_zip_sha256": "df446f266a817106305ff6671f72fbffd190282242d3b2dee508aee3216f78a5"
+}
