@@ -3,6 +3,23 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Actual M4/M5 r2 closed inconclusive (2026-09-15)
+
+The [frozen eight-cell TRAIN run](../results/modular-engineering-20260915/actual-m4m5-headless-grok130-r2/README.md)
+closed native session 90559 and its child tree with exit 0, unchanged source/input
+pins, but an inconclusive research receipt: one scored, three failed, four blocked,
+and zero finally eligible scored cells. All eight planned cells remain recorded.
+There were 17 solver reservations with 16 MAIN launches and two evaluator
+reservations with one MAIN launch. Known MAIN usage is 107,041 plus 5,081 tokens;
+full settlement remains unknown and the original incomplete ledger states remain.
+
+Two retained no-launch failures each have a complete account observation older
+than the runner's five-second guard, caused by three sequential account reads.
+This identifies an execution-path timing mismatch, not a module-effect result.
+All 8,928 noncredential originals were retained and read back; VAL was not opened.
+A subsequent runtime repair must be frozen and checked separately. No combination
+is pruned, no cell is regraded, and no original evidence is rewritten.
+
 ## Actual TRAIN route restored and checkpoint retention merged (2026-09-15)
 
 The explicit 1.0.30 normal-CLI deployment is wired to TRAIN solver and private
@@ -14,7 +31,8 @@ then succeeded and independently replayed, with 6,148 known MAIN tokens and 523
 retained noncredential originals. Title/all-opportunity settlement stays unknown.
 This is invocation evidence, not module efficacy. The fresh actual M4/M5 r2
 batch has eight cells, 40 solver and 8 evaluator opportunities with zero added
-paid-API budget; it is distinct from the original failed batch and awaits closure.
+paid-API budget; it is distinct from the original failed batch. Its subsequent
+inconclusive closure is recorded above.
 
 Source `d71d2db3` also preserves every actual admission controller checkpoint and
 anchors its terminal state before returning. Four bounded checks passed in the

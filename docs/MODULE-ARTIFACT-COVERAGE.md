@@ -4,6 +4,14 @@
 每模块出现一条 `covered` 记录不表示该模块的全部输出都已覆盖。
 `covered` 是一条描述符有明确模块归属，完整覆盖须另与实际输出清单对账。
 
+真实 M4/M5 八格 r2 已[关闭并封存原件](../results/modular-engineering-20260915/actual-m4m5-headless-grok130-r2/README.md)：
+1 格评分完成、3 格失败、4 格阻塞，最终可纳入效果估计的格数为零。
+17 次 solver 预留中启动 16 次 MAIN，2 次 evaluator 预留中启动 1 次；
+已知 MAIN 用量分别为 107,041 与 5,081 tokens，完整结算仍未知。
+两次未启动的失败均留下账户读取原件：三次顺序读取耗时超过原运行器的
+5 秒门槛。8,928 份非凭据原件与原始关闭回执已校验留存；不重写失败、
+不删分母、不据此判定单模块或组合无效。后续运行器修复与本批结果分开记录。
+
 Admission 控制器现已留存每次实际 `persist()` 的精确 checkpoint 副本、配置与
 生产源码，终态先落盘再由最终回执绑定。返回前独立重读，并拒绝持久回执被替换。
 [四项定向及十四项合入检查](../results/modular-engineering-20260915/admission-attempt-transitions-r1/README.md)
@@ -16,7 +24,7 @@ Grok 1.0.30 的显式普通 CLI 部署已接入 TRAIN 求解器和私有评分�
 分别通过 25 项和 53 项，原先一项 fixture 签名失败完整保留。
 随后[一次真实 TRAIN 调用](../results/modular-engineering-20260915/grok130-normal-train-control-r2/README.md)
 成功并重放一致，已知 MAIN 用量 6,148 tokens，523 份非凭据原件已保留。
-这不等于 M4/M5 配对效果；真实八格 r2 与完整 C5 工程运行各自继续取证，VAL 未打开。
+这不等于 M4/M5 配对效果；真实八格 r2 的关闭结果见本页顶部，完整 C5 工程运行仍继续，VAL 未打开。
 
 P0 新增[独立 custody 快照审计](P0-CUSTODY-AUDIT-SNAPSHOTS.md)：只解析调用方
 预先锚定的原始字节，重放分组与划分，并在返回前再次核对文件；另可核验独立保留的
