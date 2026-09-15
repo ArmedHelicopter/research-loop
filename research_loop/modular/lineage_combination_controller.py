@@ -321,14 +321,14 @@ def _assert_headless_lineage_gate_binding(config_data, scoring_service, *, nativ
     return True
 
 
-def _authenticated_headless_usage(client, *, panel, declaration, provider, authority_keys):
+def _authenticated_headless_usage(usage_record, client, *, panel, declaration, provider, authority_keys):
     """Return the signed worker's known MAIN lower bound before finalization.
 
     A late replay or closure failure must not erase an already authenticated
     native receipt.  Its total is a lower bound because incomplete usage is
     still possible.
     """
-    signed_usage = FrozenRecord.from_dict(client.usage())
+    signed_usage = FrozenRecord.from_dict(usage_record)
     body = _signed_body(signed_usage, authority_keys, message='lineage evaluator usage final gate')
     expected = {'schema', 'authority', 'nonce', 'panel_digest', 'scorer_digest', 'ledger_sha256', 'calls',
                 'tokens', 'usage_incomplete', 'limits', 'max_calls', 'max_tokens', 'provider_kind',
@@ -391,12 +391,30 @@ def _finalize_headless_lineage_gate(*, panels, journal_cells, scoring_service, s
                  'receipt_digests': receipt_digests, 'evaluator_usage_declaration': declaration,
                  'evaluator_provider': provider, 'title_and_all_opportunity_settlement': 'unknown',
                  'native_MAIN_completeness': 'unknown'}
+        usage = None
         try:
-            usage = _authenticated_headless_usage(client, panel=panel, declaration=declaration,
+            usage = _authenticated_headless_usage(client.usage(), client, panel=panel, declaration=declaration,
                 provider=provider, authority_keys=scorer_authority_keys)
+        except Exception as usage_exc:
+            # A final IPC refresh can fail after a valid per-cell worker usage
+            # receipt was persisted.  Use the newest independently verified
+            # cumulative snapshot, never a sum of those cumulative receipts.
+            for row in reversed(journal_cells):
+                if (FrozenRecord.from_dict(row['cell']).content_hash not in expected_cells
+                        or 'independent_scorer_usage' not in row):
+                    continue
+                try:
+                    usage = _authenticated_headless_usage(row['independent_scorer_usage'], client, panel=panel,
+                        declaration=declaration, provider=provider, authority_keys=scorer_authority_keys)
+                    entry['usage_refresh_error_type'] = type(usage_exc).__name__
+                    break
+                except Exception:
+                    continue
+        if usage is not None:
             entry.update(authenticated_usage=usage['receipt'], authenticated_usage_digest=usage['receipt_digest'],
                 native_MAIN_known_tokens_lower_bound=usage['known_tokens_lower_bound'],
                 native_MAIN_usage_incomplete=usage['usage_incomplete'])
+        try:
             closure = client.finalize_lineage(nonce=panel.digest, receipt_digests=receipt_digests)
             # This controller-level verification deliberately repeats the
             # client's check with the frozen authority/config/reference tuple.
@@ -404,7 +422,10 @@ def _finalize_headless_lineage_gate(*, panels, journal_cells, scoring_service, s
                 config=client.config, provider=provider, reference_binding=client.reference_binding,
                 nonce=panel.digest, receipt_digests=receipt_digests)
             body = verified_closure.data()
-            if body['known_main_tokens'] != usage['known_tokens_lower_bound'] or usage['usage_incomplete']:
+            scope = body.get('scope')
+            if (not isinstance(scope, dict) or scope.get('unscored_cell_count') != 0
+                    or usage is None or body['known_main_tokens'] != usage['known_tokens_lower_bound']
+                    or usage['usage_incomplete']):
                 raise ContractError('headless lineage closure MAIN accounting is incomplete or inconsistent')
             entry.update(status='eligible', closure=closure.data(), closure_digest=closure.content_hash,
                 native_MAIN=body['known_main_tokens'], native_MAIN_completeness='complete')

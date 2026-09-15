@@ -99,3 +99,32 @@ def test_controller_rejects_a_client_closure_that_only_client_code_claims_to_hav
     assert seen and seen[0]['config'] is client.config and seen[0]['provider'] == PROVIDER
     assert seen[0]['reference_binding'] is client.reference_binding
     assert gate['panels'][0]['status'] == 'inconclusive'
+
+
+def test_controller_rejects_otherwise_verified_partial_closure_scope(monkeypatch):
+    authority = LinkedExecutionAuthority('headless-scorer', b'k' * 32)
+    client = _Client(authority)
+    panel = SimpleNamespace(obligation_id='obligation', digest='a' * 64, cells=(_Cell(),))
+    client.finalize_lineage = lambda **_: FrozenRecord.from_dict({'schema': 'signed-by-client'})
+    monkeypatch.setattr(controller, 'verify_lineage_closure', lambda *args, **kwargs: FrozenRecord.from_dict({
+        'known_main_tokens': 17, 'scope': {'unscored_cell_count': 1}}))
+    gate = controller._finalize_headless_lineage_gate(panels=(panel,), journal_cells=[], scoring_service=_pool(client),
+        scorer_authority_keys={authority.authority_id: authority.key})
+    assert gate['panels'][0]['status'] == 'inconclusive'
+    assert gate['panels'][0]['reason'] == 'closure_unavailable_or_rejected'
+
+
+def test_failed_final_usage_refresh_uses_latest_authenticated_cell_usage_snapshot():
+    authority = LinkedExecutionAuthority('headless-scorer', b'k' * 32)
+    client = _Client(authority)
+    prior_usage = client.usage()
+    client.usage = lambda: (_ for _ in ()).throw(RuntimeError('final IPC unavailable'))
+    panel = SimpleNamespace(obligation_id='obligation', digest='a' * 64, cells=(_Cell(),))
+    gate = controller._finalize_headless_lineage_gate(panels=(panel,), journal_cells=[{
+        'cell': _Cell().data(), 'status': 'failed', 'independent_scorer_usage': prior_usage}],
+        scoring_service=_pool(client), scorer_authority_keys={authority.authority_id: authority.key})
+    entry = gate['panels'][0]
+    assert client.receipt_digests == []  # finalization was still attempted.
+    assert entry['native_MAIN_known_tokens_lower_bound'] == 17
+    assert entry['native_MAIN_completeness'] == 'unknown'
+    assert entry['usage_refresh_error_type'] == 'RuntimeError'
