@@ -1,0 +1,64 @@
+..............F.........                                                 [100%]
+================================== FAILURES ===================================
+__________ test_tampering_stops_before_a_second_native_call[source] ___________
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/grok130-evaluator-runtime-frozen-r1/test_tampering_stops_before_a_1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026BBD0FF080>
+change = 'source'
+
+    @pytest.mark.parametrize("change", ["identity", "source", "executable", "config", "raw", "typed_response"])
+    def test_tampering_stops_before_a_second_native_call(tmp_path, monkeypatch, change):
+        value = port(tmp_path, max_calls=2); calls, _ = _install_native(monkeypatch, value); endpoint(value)(request())
+        row = value.ledger["calls"][0]
+        if change == "identity": value.evaluator_id = "foreign"
+        elif change == "source": monkeypatch.setattr(headless_port, "_source_pins", lambda mode: {"source": "0" * 64})
+        elif change == "executable": Path(value.executable).write_bytes(b"tampered executable")
+        elif change == "config": (value.calls_root / "0001-blade" / "native-home" / "config.toml").write_text("tampered", encoding="utf-8")
+        elif change == "typed_response":
+            path = value.calls_root / "0001-blade" / "response.private.json"
+            path.write_bytes(path.read_bytes() + b"\n")
+        else: (value.calls_root / "0001-blade" / "native" / "stdout.private.jsonl").write_bytes(b"{}\n")
+>       with pytest.raises(ContractError): endpoint(value)(request())
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_headless_evaluator_model_port.py:127: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+evaluation\modular\scoring_service.py:198: in __call__
+    output = self._evaluator(model_request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+evaluation\modular\headless_evaluator_model_port.py:185: in __call__
+    _verify_live_config(self)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+port = <evaluation.modular.headless_evaluator_model_port.GrokHeadlessEvaluatorModelPort object at 0x0000026BBD1A90A0>
+
+    def _verify_live_config(port: GrokHeadlessEvaluatorModelPort) -> dict[str, Any]:
+        frozen = port._config_record.data()
+        expected = {"provider_kind": port.provider_kind, "request_contract": _REQUEST_SCHEMA,
+                    "evaluator_id": port.evaluator_id, "evaluator_version": port.evaluator_version,
+                    "rubric_mode": port.rubric_mode, "rubric_digest": port.rubric_digest, "model": port.model,
+                    "reasoning_effort": port.effort, "max_calls": port.max_calls, "max_tokens": port.max_tokens,
+                    "timeout_seconds": port.timeout_seconds, "account_read_recovery": port.account_read_recovery,
+                    "schemas": port.schemas, "executable": port.executable, "private_home": str(port.private_home),
+                    "private_profile_root": str(port.private_profile), "public_cwd_root": str(port.public_cwd),
+                    "frozen_files": port.frozen_files}
+        if port.native_deployment is None:
+            if "native_deployment" in frozen or "native_deployment_digest" in frozen:
+                raise ContractError("legacy headless evaluator deployment drifted")
+        else:
+            expected.update(native_deployment=port.native_deployment.record.data(),
+                            native_deployment_digest=port.native_deployment.digest)
+        if any(frozen.get(name) != value for name, value in expected.items()):
+            raise ContractError("live headless evaluator configuration drifted")
+        if _sha(Path(port.executable).read_bytes()) != frozen["executable_sha256"]:
+            raise ContractError("live headless evaluator executable drifted")
+>       current_sources = _source_pins(port.rubric_mode, port.native_deployment)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: test_tampering_stops_before_a_second_native_call.<locals>.<lambda>() takes 1 positional argument but 2 were given
+
+evaluation\modular\headless_evaluator_model_port.py:334: TypeError
+- generated xml file: E:\_ryanDev\AI\research-loop-modular\work\grok130-evaluator-runtime-frozen-r1.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_headless_evaluator_model_port.py::test_tampering_stops_before_a_second_native_call[source]
+{"commit": "02420d758312a218d8897c4357224e799043b1f2", "source_unchanged": true, "source_count": 800, "exit_code": 1, "wall_seconds": 39.65700000000652, "new_paid_calls": 0, "report_sha256": "6c378e0d322b0caab7e7760c15f10af466c4ed2208ebd865d98ac49fc506443f", "junit": {"tests": 24, "failures": 1, "errors": 0, "skipped": 0}}
+{"source_archive_matches_frozen_input": true, "source_files": 800, "source_archive_sha256": "467f70b5aa2483d991f68800161508c9bad35ae126c1a08ea7dabc530af57b3b"}
