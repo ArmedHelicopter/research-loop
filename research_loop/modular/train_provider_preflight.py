@@ -29,6 +29,7 @@ NATIVE_SCHEMAS = {
 }
 HEADLESS_EVALUATOR_SCHEMAS = {
     'admission_prediction_exploration': 'admission-prediction-exploration-combination-train-config-v4',
+    'exploration_scheduler': 'exploration-scheduler-train-controller-config-v4',
 }
 LEGACY_TRANSPORT_FIELDS = frozenset({'model', 'effort', 'max_calls', 'max_tokens', 'schemas'})
 PROGRAM_SLOTS = frozenset({'analysis_program', 'program_1', 'program_2', 'program_3'})
