@@ -225,10 +225,31 @@ def test_recovered_preflight_stale_snapshot_blocks_main_and_retains_attempt(tmp_
     recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2}; kwargs['account_read_recovery']=recovery
     original=transport._account_recovered
     def stale(*args):
-        result=original(*args); result['projection']=dict(result['projection'],oldest_observed_at=(transport.datetime.now(transport.timezone.utc)-timedelta(seconds=6)).isoformat()); return result
+        result=original(*args); result['projection']=dict(result['projection'],oldest_observed_at=(transport.datetime.now(transport.timezone.utc)-timedelta(seconds=transport.ACCOUNT_PRELAUNCH_MAX_AGE_SECONDS+1)).isoformat()); return result
     monkeypatch.setattr(transport,'_account_recovered',stale)
     result=transport.run_headless_diagnostic(**kwargs)
     assert not result.receipt.data()['accepted'] and not calls and (directory/'native/billing-before/attempts.json').exists()
+
+
+def test_recovered_preflight_sequential_latency_within_frozen_bound_launches_once(tmp_path, monkeypatch):
+    entry, kwargs, spec, directory, calls, _ = prepared(tmp_path, monkeypatch)
+    recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2}
+    kwargs['account_read_recovery']=recovery; spec['account_read_recovery']=recovery
+    spec['native_context']=dict(spec['native_context'], account_read_recovery=recovery)
+    original=transport.urllib.request.build_opener; opened=0
+    class DelayedPreflight:
+        def open(self, request, timeout):
+            nonlocal opened
+            opened += 1
+            if opened == 1:
+                transport.time.sleep(6)
+            return original().open(request, timeout)
+    monkeypatch.setattr(transport.urllib.request, 'build_opener', lambda *args: DelayedPreflight())
+    result=transport.run_headless_diagnostic(**kwargs)
+    assert result.receipt.data()['accepted'] and result.receipt.data()['prompt_process_launched'] and len(calls)==1
+    assert transport.verify_headless_request_binding(result, entry, directory, spec, kwargs['frozen_files']).data()['accepted']
+    reservation=json.loads((directory/'native-reservation.json').read_bytes())
+    assert reservation['account_prelaunch_max_age_seconds']==transport.ACCOUNT_PRELAUNCH_MAX_AGE_SECONDS==35
 
 
 @pytest.mark.parametrize('value', [True, 2.0, 1, 3])
@@ -281,7 +302,7 @@ def test_constructor_failure_does_not_claim_no_launch(tmp_path, monkeypatch):
     assert process['failure'] == 'process_launch_or_io_failed'
 
 
-@pytest.mark.parametrize('change', ['command', 'environment', 'source_manifest'])
+@pytest.mark.parametrize('change', ['command', 'environment', 'source_manifest', 'account_freshness'])
 def test_rehashed_reservation_cannot_change_frozen_execution_contract(tmp_path, monkeypatch, change):
     entry, kwargs, spec, directory, _, _ = prepared(tmp_path, monkeypatch)
     result = transport.run_headless_diagnostic(**kwargs)
@@ -292,6 +313,8 @@ def test_rehashed_reservation_cannot_change_frozen_execution_contract(tmp_path, 
         transport._write(directory/'native/command.json', bound['command'])
     elif change == 'environment':
         bound['environment']['GROK_DISABLE_API_KEY_AUTH'] = '0'
+    elif change == 'account_freshness':
+        bound['account_prelaunch_max_age_seconds'] = 36
     else:
         bound['frozen_files'] = {}
     transport._write(path, bound)

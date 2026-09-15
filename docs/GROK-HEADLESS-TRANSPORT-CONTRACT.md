@@ -35,7 +35,11 @@ before and after the main call, disables ambient proxies and redirects, and
 uses only the copied native OIDC login. Raw responses stay private. Reader
 verification recomputes the included-pool/zero-paid-fallback projection from
 all six raw responses and their ordered request logs. The oldest preflight GET
-must be at most five seconds before launch; postflight starts after completion.
+must be within the 35-second `account_prelaunch_max_age_seconds` value frozen
+in that attempt's reservation; postflight starts after completion. The earlier
+five-second check was an implementation guard, not an upstream account-policy
+requirement, and conflicted with three sequential GETs that each allow ten
+seconds. Historical r2 receipts and their prelaunch failures remain unchanged.
 Those observations are not an atomic spending lock or proof of settled charges.
 
 Before any process or account GET, the transport exclusively creates and fsyncs

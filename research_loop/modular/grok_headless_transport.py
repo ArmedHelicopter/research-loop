@@ -36,6 +36,13 @@ RECOVERY_RESERVATION_SCHEMA = "grok-headless-reservation-v2"
 ACCOUNT_RECOVERY_SCHEMA = 'headless-account-read-recovery-v1'
 LEGACY_ACCOUNT_CLIENT_VERSION = '1.0.13'
 INSPECT_EMPTY_COLLECTIONS = ('skills', 'hooks', 'plugins', 'mcpServers', 'projectInstructions')
+# The account preflight has three sequential first-party GETs, each with a
+# ten-second transport timeout.  Keep a finite age bound, but do not make a
+# successful, policy-compliant sequential observation impossible to launch.
+# This value is copied into every reservation and checked by the independent
+# rereader, so it is a per-attempt frozen transport policy rather than ambient
+# timing.
+ACCOUNT_PRELAUNCH_MAX_AGE_SECONDS = 35
 
 
 @dataclass(frozen=True)
@@ -441,6 +448,7 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
         'main_output_cap': main_output_cap, 'observed_main_token_cap': observed_main_token_cap,
         'reasoning_effort': reasoning_effort,
         'timeout_seconds': timeout, 'frozen_files': frozen_files, 'retries': 0,
+        'account_prelaunch_max_age_seconds': ACCOUNT_PRELAUNCH_MAX_AGE_SECONDS,
         'reserved_at': datetime.now(timezone.utc).isoformat(), 'command': command,
         'inspect_command': _inspect_command(context), 'inspect_timeout_seconds': 10,
         **({'account_read_recovery': recovery} if recovery else {})}
@@ -476,7 +484,7 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
         if recovery: receipt['account_preflight_attempts_sha256'] = _sha(_read(native/'billing-before/attempts.json'))
         stage = 'prelaunch_guard'; _sources(frozen_files)
         age = (datetime.now(timezone.utc)-_instant(receipt['account_preflight']['oldest_observed_at'])).total_seconds()
-        _require(0 <= age <= 5, 'account snapshot stale')
+        _require(0 <= age <= bound['account_prelaunch_max_age_seconds'], 'account snapshot stale')
         stage = 'prompt_process'
         raw, process = _child(command, context, environment, native, timeout)
         receipt['native_process'] = process; receipt['prompt_process_launched'] = process['launched']
@@ -695,8 +703,10 @@ def _verify_headless_request_binding(result, entry, directory, spec, frozen_file
     _require(_instant(inspect_process['finished_at']) <= _instant(pre['oldest_observed_at'])
         <= _instant(pre['observed_at']) <= _instant(process['started_at'])
         <= _instant(process['finished_at']) <= _instant(post['oldest_observed_at']), 'native account chronology')
-    _require(0 <= (_instant(process['started_at'])-_instant(pre['oldest_observed_at'])).total_seconds() <= 5,
-        'oldest account observation stale')
+    _require(type(bound.get('account_prelaunch_max_age_seconds')) is int
+        and bound['account_prelaunch_max_age_seconds'] == ACCOUNT_PRELAUNCH_MAX_AGE_SECONDS
+        and 0 <= (_instant(process['started_at'])-_instant(pre['oldest_observed_at'])).total_seconds()
+        <= bound['account_prelaunch_max_age_seconds'], 'oldest account observation stale')
     events = [_strict_json(line) for line in raw.splitlines() if line.strip()]
     ends = [row for row in events if row.get('type') == 'end']
     request_id = ends[0].get('requestId') if len(ends) == 1 else None
