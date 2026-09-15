@@ -138,3 +138,26 @@ def test_changed_observation_history_blocks_repeated_finalize_before_dispatch(tm
             client.finalize_headless_evaluator(receipts=(receipt,))
     finally:
         client.close()
+
+
+def test_rejection_log_failure_preserves_original_verification_exception(tmp_path, monkeypatch):
+    client, receipt, _, raw = client_fixture(tmp_path, monkeypatch, 'signature')
+    original_append = process._append
+    def write(path, row):
+        if str(path).endswith('.headless-evaluator-client.jsonl') and row['event']['status'] == 'rejected':
+            raise OSError('synthetic terminal storage failure')
+        return original_append(path, row)
+    monkeypatch.setattr(process, '_append', write)
+    try:
+        with pytest.raises(ContractError, match='rejection observation unavailable') as failure:
+            client.finalize_headless_evaluator(receipts=(receipt,))
+        assert isinstance(failure.value.__cause__, ContractError)
+        assert 'OSError' in str(failure.value) and 'ContractError' in str(failure.value)
+        assert client.final_closure is None
+        rows = observations(client)
+        assert [row['status'] for row in rows] == ['requested', 'response_received']
+        assert rows[-1]['response_text'] == raw
+        with pytest.raises(ContractError, match='unfinished observation attempt'):
+            client.finalize_headless_evaluator(receipts=(receipt,))
+    finally:
+        client.close()

@@ -957,8 +957,8 @@ class CombinationScorerProcessClient(LinkedScorerProcessClient):
             nonce = uuid.uuid4().hex
         request = {"schema": "headless-evaluator-finalize-request-v1", "nonce": nonce,
                    "receipt_digests": digests, "evaluator_provider": self.evaluator_provider}
-        # This is the text actually handed to/read from the UTF-8 text-mode
-        # pipe, not a claim to preserve pre-decoding wire bytes. Keep it before
+        # Preserve the Python string handed to the text wrapper and the decoded
+        # string returned by it, not pre-decoding wire bytes. Keep it before
         # interpretation so malformed or unauthenticated replies remain auditable.
         request_text = canonical(request) + "\n"
         evidence = {"schema": "headless-evaluator-client-observation-v1",
@@ -989,8 +989,12 @@ class CombinationScorerProcessClient(LinkedScorerProcessClient):
             if self.final_closure is not None and closure != self.final_closure:
                 raise ContractError("headless evaluator closure changed after finalization")
         except Exception as exc:
-            _append_headless_client_observation(self, {**evidence, "status": "rejected", "error_type": type(exc).__name__,
-                "response_sha256": response_sha256, "score_eligible": False})
+            try:
+                _append_headless_client_observation(self, {**evidence, "status": "rejected", "error_type": type(exc).__name__,
+                    "response_sha256": response_sha256, "score_eligible": False})
+            except Exception as observation_exc:
+                raise ContractError(f"headless evaluator finalization failed ({type(exc).__name__}); "
+                    f"rejection observation unavailable ({type(observation_exc).__name__})") from exc
             if isinstance(exc, ContractError):
                 raise
             raise ContractError("headless evaluator finalization is unavailable") from exc
