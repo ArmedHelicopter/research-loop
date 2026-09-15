@@ -8,6 +8,8 @@ import pytest
 
 from evaluation.modular.evaluator_model_port import CodexEvaluatorModelPort
 from evaluation.modular.lineage_scorer_process import LineageScorerProcessClient, LineageScorerWorker, load_lineage_service
+from evaluation.modular.headless_lineage_worker_composition import (
+    compose_headless_lineage_server_configs, headless_lineage_evaluator_bindings)
 from evaluation.modular.scoring_service import ScorerConfig
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.grok_acp_transport import ProcessTree
@@ -119,6 +121,36 @@ def _validate_headless_client_view(panel, reference_binding, body):
     client = object.__new__(LineageScorerProcessClient)
     client.panel, client.reference_binding = panel, reference_binding
     client._validate_headless_usage(body)
+
+
+def test_per_panel_headless_worker_composition_keeps_declarations_and_descriptors_separate(tmp_path):
+    compiled, _, _, server = _configure_headless(tmp_path / 'composition')
+    template = server['base']['evaluator']
+    specs = {}
+    for panel in compiled.panels:
+        root = tmp_path / 'composition' / 'per-panel' / panel.obligation_id
+        specs[panel.obligation_id] = {**template, 'work_root': str((root / 'ledger').resolve()),
+                                      'private_profile': str((root / 'profile').resolve()),
+                                      'public_cwd': str((root / 'context').resolve()),
+                                      'max_calls': len(panel.cells), 'max_tokens': len(panel.cells) * 20}
+    reference_binding = {key: value for key, value in server['lineage_references'].items()
+                         if key not in {'root', 'evaluator_usage'}}
+    base = {key: value for key, value in server['base'].items() if key != 'evaluator'}
+    bindings = headless_lineage_evaluator_bindings(panels=compiled.panels, evaluator_specs=specs,
+                                                   tokens_per_cell=20)
+    configs, composed_bindings = compose_headless_lineage_server_configs(
+        panels=compiled.panels, base=base, lineage_reference_root=server['lineage_references']['root'],
+        lineage_reference_binding=reference_binding, evaluator_specs=specs, tokens_per_cell=20)
+    assert composed_bindings == bindings and set(configs) == set(specs)
+    assert len({binding['evaluator_provider']['configuration_digest'] for binding in bindings.values()}) == 4
+    assert len({config['base']['evaluator']['work_root'] for config in configs.values()}) == 4
+    for panel in compiled.panels:
+        obligation = panel.obligation_id
+        config = configs[obligation]
+        assert config['panel']['panel_digest'] == panel.digest
+        assert config['base']['evaluator'] == specs[obligation]
+        assert config['lineage_references']['evaluator_usage'] == bindings[obligation]['evaluator_usage']
+        assert config['lineage_references']['evaluator_usage']['evaluator_config_digest'] == digest(specs[obligation])
 
 
 def test_headless_lineage_resolver_endpoint_service_and_native_main_contract(tmp_path):

@@ -93,3 +93,12 @@ def test_headless_factory_rejects_inexact_transport_before_native(tmp_path, monk
     with pytest.raises(ContractError):
         _production_evaluator(spec)
     assert not prompts and not gets
+
+
+def test_pure_descriptor_rejects_noninteger_recovery_before_allocator(tmp_path, monkeypatch):
+    spec, prompts, gets = native_spec(tmp_path / 'native', monkeypatch)
+    spec['account_read_recovery'] = {'schema': 'headless-account-read-recovery-v1', 'max_attempts': 2.0}
+    with pytest.raises(ContractError):
+        headless_evaluator_descriptor(spec)
+    assert not (Path(spec['work_root']) / 'ledger.json').exists()
+    assert not prompts and not gets
