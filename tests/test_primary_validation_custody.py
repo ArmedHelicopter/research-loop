@@ -221,4 +221,22 @@ def test_missing_score_keeps_consumed_opportunity_and_private_failure(tmp_path):
     root = custodian.root / "runs" / lease_id
     assert custodian.store.state["leases"][lease_id]["status"] == "consumed"
     assert json.loads((root / "failure.json").read_bytes())["retry_permitted"] is False
+    assert json.loads((root / "failure.json").read_bytes())["expected_cells"] == len(panel.cells)
     assert (root / "evidence.json").is_file() and not (root / "aggregate.json").exists()
+    with pytest.raises(ContractError, match="failed attempt"):
+        custodian.replay(panel=panel, lease_id=lease_id, verifier=verifier())
+
+
+def test_verifier_time_mutation_rejected_at_final_readback(tmp_path):
+    custodian, panel, _, buffers, *_ = fixture(tmp_path)
+    lease_id, _, _ = execute(custodian, panel, buffers, tmp_path)
+    trusted = verifier()
+    original_verify = trusted.verify
+    def mutating_verify(*args, **kwargs):
+        result = original_verify(*args, **kwargs)
+        source = custodian.root / "runs" / lease_id / "sources" / next(iter(buffers)) / "data.csv"
+        source.write_bytes(b"mutation after validation")
+        return result
+    trusted.verify = mutating_verify
+    with pytest.raises(ContractError, match="changed during verification"):
+        custodian.replay(panel=panel, lease_id=lease_id, verifier=trusted)

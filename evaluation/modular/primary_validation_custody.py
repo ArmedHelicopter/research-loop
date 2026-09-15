@@ -11,6 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import hashlib
 import json
+import os
 from pathlib import Path
 from typing import Callable, Mapping
 
@@ -40,6 +41,8 @@ def _write(path: Path, raw: bytes) -> None:
     _safe_path(path).parent.mkdir(parents=True, exist_ok=True)
     with path.open("xb") as stream:
         stream.write(raw)
+        stream.flush()
+        os.fsync(stream.fileno())
 
 
 @dataclass(frozen=True)
@@ -107,7 +110,7 @@ class PrimaryValidationCustodian:
         self._check_state()
 
     def _store(self):
-        return CustodyStore(self.root / "custody.json", calibration_keys=self._calibration_keys,
+        return CustodyStore(_safe_path(self.root / "custody.json"), calibration_keys=self._calibration_keys,
                            signing_authority_id=self._custody_authority, signing_key=self._custody_key)
 
     def _input_evidence(self):
@@ -123,6 +126,7 @@ class PrimaryValidationCustodian:
         if primary.partition_primary(audit, groups) != split:
             raise ContractError("primary validation allocation does not replay")
         by_token = {row["token"]: row for row in audit["rows"]}
+        _digests(list(by_token))
         rows = [{"token": token, "group": group["group_sha256"], "domain": group["split"],
                  "source": by_token[token]["source"]} for group in split["groups"] for token in group["member_tokens"]]
         if (len(by_token) != len(audit["rows"]) or len(rows) != len(by_token)
@@ -171,7 +175,7 @@ class PrimaryValidationCustodian:
         self.store = self._store()
         if (self.store.state["inventory"] != self._inventory or self.store.state["split"] != self._allocation
                 or self.store.state["attestations"]
-                or (self.root / "input-evidence.json").read_bytes() != canonical(self._input_evidence()).encode()):
+                or _safe_path(self.root / "input-evidence.json").read_bytes() != canonical(self._input_evidence()).encode()):
             raise ContractError("primary validation retained input/custody drift")
 
     def identities(self) -> tuple[DataIdentity, ...]:
@@ -239,28 +243,37 @@ class PrimaryValidationCustodian:
         except BaseException as exc:
             _write(destination / "failure.json", canonical({"schema": "primary-validation-failure-v1",
                 "status": "failed_after_consumption", "error_type": type(exc).__name__,
-                "panel_digest": panel.digest, "lease_id": lease_id, "retry_permitted": False}).encode())
+                "panel_digest": panel.digest, "lease_id": lease_id, "expected_cells": len(panel.cells),
+                "acceptance": "not_established", "retry_permitted": False}).encode())
             raise
 
     def replay(self, *, panel: FrozenPanel, lease_id: str, verifier: PanelReceiptVerifier) -> FrozenRecord:
         """Recompute acceptance without reopening an execution or source provider."""
         self._panel(panel)
-        destination = self.root / "runs" / lease_id
-        evidence = json.loads(_safe_path(destination / "evidence.json").read_bytes())
+        destination = _safe_path(self.root / "runs" / lease_id)
+        if (destination / "failure.json").exists():
+            raise ContractError("primary validation failed attempt cannot be promoted by replay")
+        pinned = []
+        def retained(path):
+            path = _safe_path(path)
+            raw = path.read_bytes()
+            pinned.append((path, _sha(raw)))
+            return raw
+        evidence = json.loads(retained(destination / "evidence.json"))
         issued = self.store.issued_validation_receipt(lease_id)
         if (evidence["panel_digest"] != panel.digest or evidence["input_evidence_digest"] != digest(self._input_evidence())
                 or evidence["lease"] != issued.data()
-                or json.loads((destination / "consumed-lease.json").read_bytes()) != issued.data()):
+                or json.loads(retained(destination / "consumed-lease.json")) != issued.data()):
             raise ContractError("primary validation retained subject/lease mismatch")
         for identity in {cell.identity for cell in panel.cells}:
             source = self._sources[identity.task_id]
             for filename, field in (("metadata.json", "metadata_sha256"), ("data.csv", "csv_sha256")):
-                if _sha(_safe_path(destination / "sources" / identity.task_id / filename).read_bytes()) != source[field]:
+                if _sha(retained(destination / "sources" / identity.task_id / filename)) != source[field]:
                     raise ContractError("primary validation retained source drift")
         runtime = []
         for row in evidence["runtime"]:
             path = _safe_path(Path(row["trace_path"]))
-            if _sha(path.read_bytes()) != row["trace_sha256"]:
+            if _sha(retained(path)) != row["trace_sha256"]:
                 raise ContractError("primary validation retained runtime drift")
             runtime.append(RuntimeReceipt(tuple(row["cell_key"]), row["status"], path,
                                           row["trace_digest"], row["output_digest"], row["failure_reason"]))
@@ -270,12 +283,15 @@ class PrimaryValidationCustodian:
         verdict = verifier.verify(panel, tuple(runtime), scorer_receipts=scores, validation=validation)
         if verdict.decision not in {"accepted", "rejected", "inconclusive"} or not verdict.scientific_verified:
             raise ContractError("primary validation requires independently verified acceptance")
+        self._panel(panel)
+        if any(_sha(_safe_path(path).read_bytes()) != expected for path, expected in pinned):
+            raise ContractError("primary validation evidence changed during verification")
         aggregate = FrozenRecord.from_dict({"schema": "primary-validation-aggregate-v1", "domain": "validation",
             "role": "acceptance_only", "candidate_digest": panel.candidate_digest, "panel_digest": panel.digest,
             "decision": verdict.decision, "observed_cells": verdict.observed_cells, "failures": verdict.failures,
             "unscored": verdict.unscored, "blocked": verdict.blocked, "private_evidence_digest": digest(evidence),
             "optimization_feedback_permitted": False})
-        output = destination / "aggregate.json"
+        output = _safe_path(destination / "aggregate.json")
         if output.exists():
             if output.read_bytes() != canonical(aggregate.data()).encode():
                 raise ContractError("primary validation retained aggregate drift")
