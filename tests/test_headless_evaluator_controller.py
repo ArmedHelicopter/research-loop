@@ -101,6 +101,9 @@ def test_full_v6_factorial_closes_private_evaluator_or_retains_failed_history(tm
             body = receipt['evaluator_final_verification']['receipt']['body']
             assert body['known_main_tokens'] == 80 and body['scope']['unscored_cell_count'] == 0
             assert len(body['calls']) == 8
+            # A second read must traverse the private worker with the same nonce.
+            repeated = service.finalize_headless_evaluator(receipts=tuple(result.scores))
+            assert repeated.data() == receipt['evaluator_final_verification']['receipt']
             with pytest.raises(ContractError):
                 service.score_combination(panel=setup['compiled'].panel, cell=setup['compiled'].panel.cells[0],
                     score_input=FrozenRecord.from_dict(result.attempts[0].data()['score_input']))
