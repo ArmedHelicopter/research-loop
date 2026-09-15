@@ -27,8 +27,19 @@ or registration completed. Its [8,899 noncredential originals, exact source and
 native terminal evidence](../results/modular-engineering-20260915/c5-headless-runtime-full-r2/README.md)
 are retained and checked byte-for-byte. This source predates d672c274 capture
 repair and the pending selected-registration adapter. The separate `73268bb5`
-successor combines that adapter with d672c274 and is running bounded registration,
-preflight and failed-history closure checks; full successor integration is pending.
+successor combines that adapter with d672c274 and passed all sixteen bounded
+registration, preflight and failed-history closure checks at 810 unchanged source
+files. Its separate full r3 native session 15471 is now running the original
+46-build/118-target/930-solver grid and genuine selected-snapshot registration.
+No completed full result is claimed. [Exact bounded-check originals](../results/modular-engineering-20260915/csv-first-and-c5-successor-checks-r1/README.md)
+are retained independently of the live full run.
+
+The same archive preserves CSV authority source `699bb927`: 39/40 checks passed,
+with 814 unchanged files. Eleven focused measurement/replay checks and the legacy
+full controller passed; the new CSV 16-cell fixture reused the scorer's key and
+was correctly refused before dispatch. `43ccf107` changes only that fixture key;
+its focused 16-cell CSV consumer recheck is live (native 19740). The CSV source
+has not yet been merged or used for real material authoring.
 
 ## Scorer exchanges verified; actual M4/M5 r3 retained (2026-09-15)
 

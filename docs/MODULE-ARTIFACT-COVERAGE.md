@@ -86,7 +86,9 @@ P0 现另接入可选的实际变更留存：库存、证明、划分、租约�
 此版产生终态控制器回执，仍未完成选择与登记；[8,899 份非凭据原件、
 精确源码和原始 native 终态](../results/modular-engineering-20260915/c5-headless-runtime-full-r2/README.md)
 已单独封存并逐成员校验。后继 `73268bb5` 在独立工作树接入选中登记的原件
-留存，正在运行存储适配器及失败收尾检查，尚未完成全量验证。
+留存，[16 项存储适配器及失败收尾检查](../results/modular-engineering-20260915/csv-first-and-c5-successor-checks-r1/README.md)
+已通过，另一个完整 r3 原生进程正在验证全部构建、目标和真实选中快照认证。
+尚未完成全量验证。
 不以局部检查或成功前缀替代完整执行。
 
 评分观察目录的 28/31 项[定向检查原件](../results/modular-engineering-20260915/observation-and-terminal-checks-r1/README.md)

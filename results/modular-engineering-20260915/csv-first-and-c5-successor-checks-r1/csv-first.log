@@ -1,0 +1,63 @@
+...........F............................                                 [100%]
+================================== FAILURES ===================================
+___ test_csv_authority_binding_is_consumed_by_controller_and_driver_replay ____
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/csv-measurement-consumer-frozen-r1/test_csv_authority_binding_is_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000259965D6930>
+
+    def test_csv_authority_binding_is_consumed_by_controller_and_driver_replay(tmp_path, monkeypatch):
+        import research_loop.modular.csv_measurement_authorities as csv_authorities
+        pinned = tmp_path / 'pinned-workers' / 'research_loop' / 'modular'
+        pinned.mkdir(parents=True)
+        for group, source in tuple(csv_authorities._WORKERS.items()):
+            copied = pinned / source.name
+            shutil.copy2(source, copied)
+            monkeypatch.setitem(csv_authorities._WORKERS, group, copied)
+        setup = prepare(tmp_path, 'csv_authority')
+>       result, _, _ = invoke(setup, monkeypatch)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_admission_prediction_exploration_controller.py:293: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_admission_prediction_exploration_controller.py:228: in invoke
+    result=run_admission_prediction_exploration_train_panels(config,**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenAdmissionPredictionExplorationTrainConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"contrast_analysi...d":"case0"},"task_digest":"2adc608d063a8bbe4a8b7f60f78fca25d29ae1c85267b0814856dd8ce3e8672b"}},"timeout_seconds":20}'))
+
+    def run_admission_prediction_exploration_train_panels(config, *, custody, snapshot_root, export_root, run_root, model,
+            audit_verifier, source_verifiers, scoring_services, execution_authority, scorer_authority_keys,
+            prospective_exporter=None):
+        """Execute the complete precompiled TRAIN grid with one fresh shared ledger."""
+        if (type(config) is not FrozenAdmissionPredictionExplorationTrainConfig or not isinstance(audit_verifier, AuditVerifier)
+                or not isinstance(source_verifiers, dict) or set(source_verifiers) != set(DESIGNS)
+                or not isinstance(scoring_services, dict) or set(scoring_services) != set(DESIGNS)
+                or any(type(v) is not CombinationScorerProcessClient for v in scoring_services.values())):
+            raise ContractError('exact admission prediction exploration train configuration, verifiers and scorer processes required')
+        b = config.data()
+        evaluator_binding = headless_evaluator_binding(b, family='admission-prediction-exploration',
+                                                       enabled=headless_evaluator_envelope(b, 'admission_prediction_exploration'))
+        for pair in DESIGNS:
+            qualifier = source_verifiers[pair]; service = scoring_services[pair]
+            expected = CsvMeasurementAdmissionMaterialVerifier if 'csv_measurement' in b['source_verifier_bindings'][pair] else AdmissionMaterialVerifier
+            if (type(qualifier) is not expected or qualifier.binding().data() != b['source_verifier_bindings'][pair]
+                    or service.admission_prediction_exploration is not True or service.panel.obligation_id != pair):
+                raise ContractError('pair-specific material qualifier or scorer process scope differs')
+            family_service_preflight(config, model, service, execution_authority, scorer_authority_keys, family='admission_prediction_exploration')
+            if ((evaluator_binding is None and service.evaluator_provider is not None)
+                    or (evaluator_binding is not None
+                        and service.evaluator_provider != evaluator_binding['evaluator_provider'])):
+                raise ContractError('scorer process and frozen headless evaluator declaration disagree')
+            if any(a.authority.key in {execution_authority.key, *scorer_authority_keys.values()}
+                   or a.authority.authority_id in {execution_authority.authority_id, *scorer_authority_keys}
+                   for a in qualifier.authorities):
+>               raise ContractError('source, execution and scoring authority roles must be independent')
+E               research_loop.ontology.ContractError: source, execution and scoring authority roles must be independent
+
+research_loop\modular\admission_prediction_exploration_controller.py:296: ContractError
+- generated xml file: E:\_ryanDev\AI\research-loop-modular\work\csv-measurement-consumer-frozen-r1.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_admission_prediction_exploration_controller.py::test_csv_authority_binding_is_consumed_by_controller_and_driver_replay
+{"commit": "699bb927b5b6b12eaa3d2a6bf4b34ae24727b1c4", "source_unchanged": true, "source_count": 814, "exit_code": 1, "wall_seconds": 237.48500000001513, "new_paid_calls": 0, "report_sha256": "e4f3e30bdfea5861c0830d12fb278066e9eb1a2dd277f21091397447a7678c05", "junit": {"tests": 40, "failures": 1, "errors": 0, "skipped": 0}}
+{"source_archive_matches_frozen_input": true, "source_files": 814, "source_archive_sha256": "b8376dd5716ec8bd199781e3e2bb2924ce19e8b50b475974c02aeda21ded4feb"}
