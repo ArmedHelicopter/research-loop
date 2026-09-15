@@ -12,11 +12,19 @@ REL = 'results/modular-engineering-20260915/headless-evaluator-controller-r1'
 TARGET = ROOT / REL
 def sha(raw): return hashlib.sha256(raw).hexdigest()
 def read(path): return json.loads(path.read_bytes())
-if '--create-manifest' in sys.argv:
-    with (TARGET / 'manifest.json').open('x', encoding='utf-8') as stream:
-        json.dump({'schema': 'headless-evaluator-controller-archive-v1', 'manifest_self_excluded': True,
-                   'files': [{'path': path.name, 'bytes': path.stat().st_size, 'sha256': sha(path.read_bytes())}
-                             for path in sorted(TARGET.iterdir()) if path.is_file()]}, stream, indent=2)
+if '--create-manifest' in sys.argv or '--repair-manifest' in sys.argv:
+    repair = '--repair-manifest' in sys.argv
+    if repair:
+        previous = read(TARGET / 'manifest.json')
+        assert any(row['path'] == 'manifest.json' and row['bytes'] == 0
+                   and row['sha256'] == sha(b'') for row in previous['files'])
+        with (TARGET / 'manifest.initial-invalid.json').open('xb') as saved:
+            saved.write((TARGET / 'manifest.json').read_bytes())
+    body = {'schema': 'headless-evaluator-controller-archive-v1', 'manifest_self_excluded': True,
+            'files': [{'path': path.name, 'bytes': path.stat().st_size, 'sha256': sha(path.read_bytes())}
+                      for path in sorted(TARGET.iterdir()) if path.is_file() and path.name != 'manifest.json']}
+    with (TARGET / 'manifest.json').open('w' if repair else 'x', encoding='utf-8') as stream:
+        json.dump(body, stream, indent=2)
     sys.exit(0)
 manifest = read(TARGET / 'manifest.json')
 names = list(filter(None, subprocess.check_output(['git', 'ls-files', '-z', '--', REL], cwd=ROOT).decode().split('\0')))
