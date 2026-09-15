@@ -153,6 +153,23 @@ def test_per_panel_headless_worker_composition_keeps_declarations_and_descriptor
         assert config['lineage_references']['evaluator_usage']['evaluator_config_digest'] == digest(specs[obligation])
 
 
+def test_per_panel_headless_worker_composition_rejects_resolved_root_alias(tmp_path):
+    compiled, _, _, server = _configure_headless(tmp_path / 'root-alias')
+    template = server['base']['evaluator']
+    specs = {}
+    for panel in compiled.panels:
+        root = tmp_path / 'root-alias' / 'per-panel' / panel.obligation_id
+        specs[panel.obligation_id] = {**template, 'work_root': str((root / 'ledger').resolve()),
+                                      'private_profile': str((root / 'profile').resolve()),
+                                      'public_cwd': str((root / 'context').resolve()),
+                                      'max_calls': len(panel.cells), 'max_tokens': len(panel.cells) * 20}
+    first, second = (panel.obligation_id for panel in compiled.panels[:2])
+    first_root = Path(specs[first]['work_root'])
+    specs[second]['work_root'] = str(first_root / '..' / first_root.name)
+    with pytest.raises(ContractError, match='non-overlapping'):
+        headless_lineage_evaluator_bindings(panels=compiled.panels, evaluator_specs=specs, tokens_per_cell=20)
+
+
 def test_headless_lineage_resolver_endpoint_service_and_native_main_contract(tmp_path):
     _, _, config_path, server = _configure_headless(tmp_path / 'headless')
     patch = pytest.MonkeyPatch()

@@ -6,6 +6,8 @@ obtaining its immutable descriptor cannot create a ledger or contact a model.
 """
 from __future__ import annotations
 
+import os
+from pathlib import Path
 from typing import Mapping, Sequence
 
 from evaluation.modular.lineage_scorer_process import _lineage_headless_source_pin
@@ -17,6 +19,20 @@ from research_loop.ontology import ContractError, digest
 _USAGE_SCHEMA = "lineage-headless-evaluator-usage-declaration-v1"
 _PROVIDER_KIND = "grok-headless-frozen-evaluator-v1"
 _USAGE_CONTRACT = "grok-headless-lineage-usage-v1"
+
+
+def _normalized_root(value: object) -> str:
+    if not isinstance(value, str) or not value or not Path(value).is_absolute():
+        raise ContractError("headless lineage evaluator work root must be absolute")
+    return os.path.normcase(str(Path(value).resolve()))
+
+
+def _overlapping_root(left: str, right: str) -> bool:
+    try:
+        common = os.path.commonpath((left, right))
+    except ValueError:
+        return False
+    return common == left or common == right
 
 
 def headless_lineage_evaluator_bindings(*, panels: Sequence[object], evaluator_specs: Mapping[str, Mapping[str, object]],
@@ -31,7 +47,7 @@ def headless_lineage_evaluator_bindings(*, panels: Sequence[object], evaluator_s
     if (set(by_obligation) != set(DESIGNS) or len(by_obligation) != len(panels)
             or set(evaluator_specs) != set(DESIGNS) or type(tokens_per_cell) is not int or tokens_per_cell < 1):
         raise ContractError("headless lineage workers need the exact four compiled panels")
-    roots: set[str] = set()
+    roots: list[str] = []
     result = {}
     for obligation in DESIGNS:
         panel, spec = by_obligation[obligation], evaluator_specs[obligation]
@@ -41,9 +57,10 @@ def headless_lineage_evaluator_bindings(*, panels: Sequence[object], evaluator_s
                 or spec.get("max_tokens") != len(panel.cells) * tokens_per_cell
                 or not isinstance(spec.get("work_root"), str) or not spec["work_root"]):
             raise ContractError("headless lineage evaluator allocation differs from its panel")
-        if spec["work_root"] in roots:
-            raise ContractError("headless lineage evaluators need separate work roots")
-        roots.add(spec["work_root"])
+        root = _normalized_root(spec["work_root"])
+        if any(_overlapping_root(root, existing) for existing in roots):
+            raise ContractError("headless lineage evaluators need separate non-overlapping work roots")
+        roots.append(root)
         declaration = dict(spec)
         descriptor = headless_evaluator_descriptor(_lineage_headless_source_pin(declaration), rubric_mode="lineage_v1")
         usage = {"schema": _USAGE_SCHEMA, "provider_kind": _PROVIDER_KIND,
