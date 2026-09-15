@@ -103,6 +103,8 @@ def test_native_v4_controller_runs_16_cells_and_closes_the_declared_evaluator(tm
     assert evaluator_ledger['usage_incomplete'] is False
     attempt = json.loads((tmp_path / 'run' / 'controller-attempt.json').read_text(encoding='utf-8'))
     observation_receipt = FrozenRecord.from_dict(attempt['evaluator_observation_catalogues'])
+    assert result.receipt.data()['evaluator_observation_catalogues'] == observation_receipt.data()
+    assert result.receipt.data()['evaluator_observation_catalogue_failure'] is None
     anchors = observation_receipt.data()['catalogues']
     assert len(anchors) == 2
     assert all(anchor['record_digests'] and FrozenRecord.from_dict(anchor['seal']).content_hash == anchor['seal_digest']

@@ -354,6 +354,8 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
             row['docker_attempts'] += row['auxiliary_docker_attempts']
             results.append(result); persist()
     evaluator_gate = None
+    evaluator_observations = None
+    evaluator_observation_failure = None
     if evaluator_binding is not None:
         service = scoring_services[compiled.panels[0].obligation_id]
         def capture_evaluator_gate(gate):
@@ -373,15 +375,17 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
                 root=root, config=config, panel=compiled.panels[0], service=service)
             verify_admission_headless_scorer_finalization_observation_catalogues(
                 root=root, config=config, panel=compiled.panels[0], service=service, receipt=observations)
-            journal['evaluator_observation_catalogues'] = observations.data()
+            evaluator_observations = observations.data()
+            journal['evaluator_observation_catalogues'] = evaluator_observations
             persist(refresh_usage=False)
         except Exception as exc:
             evaluator_gate.update(status='inconclusive', score_eligible=False,
                 failure_reason='observation_catalogue_failed', error_type=type(exc).__name__)
             journal['evaluator_final_verification'] = evaluator_gate
-            journal['evaluator_observation_catalogue_failure'] = {
+            evaluator_observation_failure = {
                 'status': 'failed', 'error_type': type(exc).__name__,
                 'authorization': 'none', 'scientific_status': 'not_measured'}
+            journal['evaluator_observation_catalogue_failure'] = evaluator_observation_failure
             persist(refresh_usage=False)
     final_gate = final_provider_gate(provider_session, root/'final-provider-ledger.json')
     contrasts = []
@@ -421,7 +425,9 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
         eligible_scored_cells = 0
     receipt = FrozenRecord.from_dict({'schema': ('admission-prediction-exploration-train-receipt-v3' if evaluator_gate is not None else 'admission-prediction-exploration-train-receipt-v2' if native else 'admission-prediction-exploration-train-receipt-v1'), 'config_digest': config.record.content_hash,
         'expected_cells': 16, 'observed_cells': len(results), 'scored_cells': len(scores), **final_score_fields(final_gate, scores),
-        **({'evaluator_final_verification': evaluator_gate, 'eligible_scored_cells': eligible_scored_cells} if evaluator_gate is not None else {}),
+        **({'evaluator_final_verification': evaluator_gate, 'eligible_scored_cells': eligible_scored_cells,
+             'evaluator_observation_catalogues': evaluator_observations,
+             'evaluator_observation_catalogue_failure': evaluator_observation_failure} if evaluator_gate is not None else {}),
         'failed_cells': sum(r['status']=='failed' for r in journal['cells']), 'blocked_cells': sum(r['status']=='blocked' for r in journal['cells']),
         'allocation': b['allocation'], 'actual_model_usage': final_usage(final_gate, model), 'actual_scorer_calls': journal['actual_scorer_calls'],
         'actual_docker_attempts': sum(r['docker_attempts'] for r in journal['cells']),
