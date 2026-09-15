@@ -5,6 +5,7 @@ to test the startup handshake or native evaluator. Full controller tests cover
 those existing seams separately.
 """
 import hashlib
+from itertools import chain, count
 import json
 from pathlib import Path
 import subprocess
@@ -47,7 +48,7 @@ def client_fixture(tmp_path, monkeypatch, fault):
         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
         text=True, encoding="utf-8", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     client.input, client.output = client.process.stdin, client.process.stdout
-    identifiers = iter(("n", "attempt-one", "attempt-two"))
+    identifiers = chain(("n",), (f"attempt-{index}" for index in count()))
     monkeypatch.setattr(process.uuid, "uuid4", lambda: SimpleNamespace(hex=next(identifiers)))
     return client, ScientificScorerReceipt(panel.cells[0].key, receipt), closure, raw.replace("\r\n", "\n")
 
