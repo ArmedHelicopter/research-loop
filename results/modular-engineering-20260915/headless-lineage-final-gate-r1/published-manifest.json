@@ -1,0 +1,116 @@
+{
+  "closed_gate": {
+    "commit": "8abe622acb2417a5008a66466316663e2885972c",
+    "junit": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 20
+    },
+    "source_count": 778,
+    "source_unchanged": true,
+    "wall_seconds": 161.06299999999464
+  },
+  "copied_artifacts": [
+    {
+      "bytes": 91667,
+      "path": "before.json",
+      "sha256": "9a7ebb918d9af0440b258d4fc2dedcd04eaa9b17da097d77572685c27523d2d3"
+    },
+    {
+      "bytes": 91378,
+      "path": "closed.json",
+      "sha256": "c02c15a4d268cf25d9330910eb8fb7e37edf40eb4579f080b30adb63556a5d2c"
+    },
+    {
+      "bytes": 136600,
+      "path": "source-members.json",
+      "sha256": "5930a1be83d69de0135403ba1d92ebd03ffeee18c33e590994bf19055e1d22b1"
+    },
+    {
+      "bytes": 2606933,
+      "path": "sources.zip",
+      "sha256": "27002be0f31947eecbd9a66b36d22b81b23a3e3d82403422b01fadc43c440448"
+    },
+    {
+      "bytes": 2997,
+      "path": "checks.xml",
+      "sha256": "e17746c63ba64a873c9dacf396adde5a997eacff6448d8e750744050613bd0b8"
+    },
+    {
+      "bytes": 1826,
+      "path": "gate-helper.py",
+      "sha256": "71e2e8ba100d264bd5a91be47c40866bda417e6099e21f6e87f284d08cf31c3a"
+    },
+    {
+      "bytes": 1918,
+      "path": "useful-check-helper.py",
+      "sha256": "3d2d958a94b7c0437c93e36ede68f2877c5118a67343faadebc8209b8e5fa3b7"
+    },
+    {
+      "bytes": 6225,
+      "path": "archive-helper.py",
+      "sha256": "59c08fd8bd310b81278c3cee121317f0513f442904eee248cf4cdfeb4f75a0a9"
+    }
+  ],
+  "limits": [
+    "Closed synthetic engineering lineage gate; passing tests are execution evidence only.",
+    "No model, API, Docker, VAL, or ground-truth execution in this archive step.",
+    "Credential/authority files were excluded from retained raw copies."
+  ],
+  "metadata_coverage": [
+    {
+      "excluded_credential_files": 3,
+      "included_bytes": 223815,
+      "included_files": 39,
+      "root": "test_four_headless_lineage_std0"
+    },
+    {
+      "excluded_credential_files": 4,
+      "included_bytes": 565552,
+      "included_files": 120,
+      "root": "test_lineage_closure_rereads_t0"
+    },
+    {
+      "excluded_credential_files": 0,
+      "included_bytes": 43819,
+      "included_files": 18,
+      "root": "test_null_headless_binding_is_0"
+    },
+    {
+      "excluded_credential_files": 4,
+      "included_bytes": 565644,
+      "included_files": 120,
+      "root": "test_partial_signed_native_clo0"
+    },
+    {
+      "excluded_credential_files": 2,
+      "included_bytes": 125492,
+      "included_files": 31,
+      "root": "test_per_panel_headless_worker0"
+    }
+  ],
+  "retained_private": {
+    "excluded_credential_count": 13,
+    "file_count": 328,
+    "links_followed": false,
+    "manifest_sha256": "fbf1801a1876e0c02a9f395803816037ce6976b746a4ec87d9cafa5139ca499a",
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\retained-private-evidence\\headless-lineage-final-gate-r1\\selected-nonlinked-test-roots-without-credentials.zip",
+    "roots": [
+      "test_four_headless_lineage_std0",
+      "test_lineage_closure_rereads_t0",
+      "test_null_headless_binding_is_0",
+      "test_partial_signed_native_clo0",
+      "test_per_panel_headless_worker0"
+    ],
+    "sha256": "3a0338350b39e724b37fddffc8840e37c212a7d14acf3b8efd253ecd9706aa16"
+  },
+  "schema": "headless-lineage-final-gate-archive-v1",
+  "self_excluding": true,
+  "source_zip_verified": {
+    "crc_ok": true,
+    "member_hashes_match_manifest": true,
+    "members": 778,
+    "sha256": "27002be0f31947eecbd9a66b36d22b81b23a3e3d82403422b01fadc43c440448"
+  }
+}

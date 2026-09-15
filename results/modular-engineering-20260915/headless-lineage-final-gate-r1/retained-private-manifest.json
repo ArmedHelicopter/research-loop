@@ -1,0 +1,2414 @@
+{
+  "coverage": [
+    {
+      "excluded_credential_files": 3,
+      "included_bytes": 223815,
+      "included_files": 39,
+      "root": "test_four_headless_lineage_std0"
+    },
+    {
+      "excluded_credential_files": 4,
+      "included_bytes": 565552,
+      "included_files": 120,
+      "root": "test_lineage_closure_rereads_t0"
+    },
+    {
+      "excluded_credential_files": 0,
+      "included_bytes": 43819,
+      "included_files": 18,
+      "root": "test_null_headless_binding_is_0"
+    },
+    {
+      "excluded_credential_files": 4,
+      "included_bytes": 565644,
+      "included_files": 120,
+      "root": "test_partial_signed_native_clo0"
+    },
+    {
+      "excluded_credential_files": 2,
+      "included_bytes": 125492,
+      "included_files": 31,
+      "root": "test_per_panel_headless_worker0"
+    }
+  ],
+  "excluded_credentials": [
+    {
+      "bytes": 32,
+      "mtime_ns": 1789439583472122600,
+      "path": "test_four_headless_lineage_std0/stdio/execute.key"
+    },
+    {
+      "bytes": 250,
+      "mtime_ns": 1789439588561228600,
+      "path": "test_four_headless_lineage_std0/stdio/native/approved-home/auth.json"
+    },
+    {
+      "bytes": 32,
+      "mtime_ns": 1789439583473124600,
+      "path": "test_four_headless_lineage_std0/stdio/score.key"
+    },
+    {
+      "bytes": 32,
+      "mtime_ns": 1789439606121416800,
+      "path": "test_lineage_closure_rereads_t0/headless/execute.key"
+    },
+    {
+      "bytes": 250,
+      "mtime_ns": 1789439606155351200,
+      "path": "test_lineage_closure_rereads_t0/headless/native/approved-home/auth.json"
+    },
+    {
+      "bytes": 250,
+      "mtime_ns": 1789439633915976200,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native-home/auth.json"
+    },
+    {
+      "bytes": 32,
+      "mtime_ns": 1789439606121416800,
+      "path": "test_lineage_closure_rereads_t0/headless/score.key"
+    },
+    {
+      "bytes": 32,
+      "mtime_ns": 1789439545807850300,
+      "path": "test_partial_signed_native_clo0/headless/execute.key"
+    },
+    {
+      "bytes": 250,
+      "mtime_ns": 1789439549628579600,
+      "path": "test_partial_signed_native_clo0/headless/native/approved-home/auth.json"
+    },
+    {
+      "bytes": 250,
+      "mtime_ns": 1789439572512244700,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native-home/auth.json"
+    },
+    {
+      "bytes": 32,
+      "mtime_ns": 1789439545807850300,
+      "path": "test_partial_signed_native_clo0/headless/score.key"
+    },
+    {
+      "bytes": 32,
+      "mtime_ns": 1789439598447780200,
+      "path": "test_per_panel_headless_worker0/root-alias/execute.key"
+    },
+    {
+      "bytes": 32,
+      "mtime_ns": 1789439598447780200,
+      "path": "test_per_panel_headless_worker0/root-alias/score.key"
+    }
+  ],
+  "files": [
+    {
+      "bytes": 1357,
+      "mtime_ns": 1789439576909506300,
+      "path": "test_four_headless_lineage_std0/stdio/custody.json",
+      "sha256": "40525c122b0539569afd1909647d1c74be3f39af66778b1f1c7275140848cc6d",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\custody.json"
+    },
+    {
+      "bytes": 1,
+      "mtime_ns": 1789439576749195100,
+      "path": "test_four_headless_lineage_std0/stdio/custody.json.lock",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\custody.json.lock"
+    },
+    {
+      "bytes": 5373,
+      "mtime_ns": 1789439584974348500,
+      "path": "test_four_headless_lineage_std0/stdio/evaluator-0/ledger/ledger.json",
+      "sha256": "060227cae019332a28dc7fdc244c4119bb29c42f5ea917010a158b05b33723a2",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\evaluator-0\\ledger\\ledger.json"
+    },
+    {
+      "bytes": 5373,
+      "mtime_ns": 1789439586359941400,
+      "path": "test_four_headless_lineage_std0/stdio/evaluator-1/ledger/ledger.json",
+      "sha256": "3e64577bcb1025b38fa985227ec585e02ac0855e0ca2b249a7fff576b6486245",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\evaluator-1\\ledger\\ledger.json"
+    },
+    {
+      "bytes": 5373,
+      "mtime_ns": 1789439588166915800,
+      "path": "test_four_headless_lineage_std0/stdio/evaluator-2/ledger/ledger.json",
+      "sha256": "30e8039f65ad18c9179db4ff93b9da0ad572fea8e70a0e01de6801920135b985",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\evaluator-2\\ledger\\ledger.json"
+    },
+    {
+      "bytes": 5374,
+      "mtime_ns": 1789439588934006800,
+      "path": "test_four_headless_lineage_std0/stdio/evaluator-3/ledger/ledger.json",
+      "sha256": "fd45922743495089a185ea776c8adcc81a9b746b3f1b0bf95cb06f0fbddc94dc",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\evaluator-3\\ledger\\ledger.json"
+    },
+    {
+      "bytes": 1502,
+      "mtime_ns": 1789439583456427400,
+      "path": "test_four_headless_lineage_std0/stdio/lineage-references/blade-reference.json",
+      "sha256": "d1f2444335feea4831547b964d656ba3ab6004a2bba1183082d25e8a94f01794",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\lineage-references\\blade-reference.json"
+    },
+    {
+      "bytes": 960,
+      "mtime_ns": 1789439583455392900,
+      "path": "test_four_headless_lineage_std0/stdio/lineage-references/blade-source.json",
+      "sha256": "1faf0e26291171aa1cf47db772cff0f6f9495e3eb92253b94bacae7311c5efb2",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\lineage-references\\blade-source.json"
+    },
+    {
+      "bytes": 1566,
+      "mtime_ns": 1789439583454352000,
+      "path": "test_four_headless_lineage_std0/stdio/lineage-references/discoverybench-reference.json",
+      "sha256": "7640467fea0c9b8862e2b765a723d6c29d1f4cfdf69f38a9fa85861f4e0c63c8",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\lineage-references\\discoverybench-reference.json"
+    },
+    {
+      "bytes": 1014,
+      "mtime_ns": 1789439583449489800,
+      "path": "test_four_headless_lineage_std0/stdio/lineage-references/discoverybench-source.json",
+      "sha256": "54c473bd3b7b7584eaa64761aac388cec00ee4ad55561d4725382aecf3adbdf9",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\lineage-references\\discoverybench-source.json"
+    },
+    {
+      "bytes": 1103,
+      "mtime_ns": 1789439583456950100,
+      "path": "test_four_headless_lineage_std0/stdio/lineage-references/manifest.json",
+      "sha256": "1550ab7285c8390fcdcfd6fbafa63f17c90317a7296d8f7f530b96f1625aa9a4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\lineage-references\\manifest.json"
+    },
+    {
+      "bytes": 10,
+      "mtime_ns": 1789439581041558800,
+      "path": "test_four_headless_lineage_std0/stdio/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/data.csv",
+      "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\data.csv"
+    },
+    {
+      "bytes": 13211,
+      "mtime_ns": 1789439582266867700,
+      "path": "test_four_headless_lineage_std0/stdio/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/legacy-primary-artifacts.jsonl",
+      "sha256": "ae58d51c0ace1886df622c6acdc18c5aef1a7914abc20d4dddcaef40ff301bf1",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\legacy-primary-artifacts.jsonl"
+    },
+    {
+      "bytes": 304,
+      "mtime_ns": 1789439582550852300,
+      "path": "test_four_headless_lineage_std0/stdio/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/legacy-primary-artifacts.jsonl.seal.json",
+      "sha256": "e08bc3f26a206a5337f6b50ba87c2cebb437a135fb6754fc220bf64b728d23b4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\legacy-primary-artifacts.jsonl.seal.json"
+    },
+    {
+      "bytes": 3149,
+      "mtime_ns": 1789439583111725600,
+      "path": "test_four_headless_lineage_std0/stdio/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/packet-seal.json",
+      "sha256": "5f68d64f0cad2f2bff15eca02244471230567cd75c96b81f77487a03a476439c",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\packet-seal.json"
+    },
+    {
+      "bytes": 1068,
+      "mtime_ns": 1789439581650473700,
+      "path": "test_four_headless_lineage_std0/stdio/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/public.json",
+      "sha256": "a524ea3dc23ac656b0caaf72177d1c821d08c042523254f2fe21e436c6ef119f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\public.json"
+    },
+    {
+      "bytes": 2766,
+      "mtime_ns": 1789439579753281600,
+      "path": "test_four_headless_lineage_std0/stdio/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/reservation.json",
+      "sha256": "f3956818cd8464beb6c93c8468b06664d756cdb9cc70799f0b41ca600bc920ad",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\reservation.json"
+    },
+    {
+      "bytes": 6,
+      "mtime_ns": 1789439577500935300,
+      "path": "test_four_headless_lineage_std0/stdio/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/data.csv",
+      "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\data.csv"
+    },
+    {
+      "bytes": 13662,
+      "mtime_ns": 1789439578648516400,
+      "path": "test_four_headless_lineage_std0/stdio/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/legacy-primary-artifacts.jsonl",
+      "sha256": "5e5ef06b1423ad6c04f1429916ce31d3cb21f64db973cf01f6ad152d379078d5",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\legacy-primary-artifacts.jsonl"
+    },
+    {
+      "bytes": 304,
+      "mtime_ns": 1789439578891404500,
+      "path": "test_four_headless_lineage_std0/stdio/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/legacy-primary-artifacts.jsonl.seal.json",
+      "sha256": "37dd7777e20acfdb2e6d9ba7d45db0dbf71165c6cc2e26a1a235f06cc258f11c",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\legacy-primary-artifacts.jsonl.seal.json"
+    },
+    {
+      "bytes": 3386,
+      "mtime_ns": 1789439579426380400,
+      "path": "test_four_headless_lineage_std0/stdio/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/packet-seal.json",
+      "sha256": "475fb405564d2fe27fd5b66ffa8468cd3d0c4aec3eba1e2a9a66d9c0afad50fe",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\packet-seal.json"
+    },
+    {
+      "bytes": 1347,
+      "mtime_ns": 1789439578322147700,
+      "path": "test_four_headless_lineage_std0/stdio/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/public.json",
+      "sha256": "67f0a164f4b24b02f96fff92ade62ef15ff9b8be28b5dbe9954108cbfef71623",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\public.json"
+    },
+    {
+      "bytes": 3003,
+      "mtime_ns": 1789439577033650500,
+      "path": "test_four_headless_lineage_std0/stdio/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/reservation.json",
+      "sha256": "b992983c3d413aeca0e8f439185d2ed65477495e7cb18a03e1842bdb40f9d982",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\reservation.json"
+    },
+    {
+      "bytes": 62,
+      "mtime_ns": 1789439583503209100,
+      "path": "test_four_headless_lineage_std0/stdio/native/synthetic-grok.exe",
+      "sha256": "a3a814392148b74102a06a43dbea7697e8942652545fe7e3d06159114e7dbae7",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\native\\synthetic-grok.exe"
+    },
+    {
+      "bytes": 555,
+      "mtime_ns": 1789439583445797500,
+      "path": "test_four_headless_lineage_std0/stdio/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+      "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\private-scorer-store\\0000000000000000000000000000000000000000000000000000000000000001.json"
+    },
+    {
+      "bytes": 549,
+      "mtime_ns": 1789439583448449400,
+      "path": "test_four_headless_lineage_std0/stdio/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+      "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\private-scorer-store\\0000000000000000000000000000000000000000000000000000000000000002.json"
+    },
+    {
+      "bytes": 1907,
+      "mtime_ns": 1789439583448449400,
+      "path": "test_four_headless_lineage_std0/stdio/private-scorer-store/manifest.json",
+      "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\private-scorer-store\\manifest.json"
+    },
+    {
+      "bytes": 6,
+      "mtime_ns": 1789439576745716200,
+      "path": "test_four_headless_lineage_std0/stdio/public-snapshot/discovery/upstream/discoverybench/synth/train/family_1_1/data.csv",
+      "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\public-snapshot\\discovery\\upstream\\discoverybench\\synth\\train\\family_1_1\\data.csv"
+    },
+    {
+      "bytes": 120,
+      "mtime_ns": 1789439576744711500,
+      "path": "test_four_headless_lineage_std0/stdio/public-snapshot/discovery/upstream/discoverybench/synth/train/family_1_1/metadata_1.json",
+      "sha256": "2115a649c012d30e5151724fcf6e7255077b299df839a5f6480d2b447092d5d0",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\public-snapshot\\discovery\\upstream\\discoverybench\\synth\\train\\family_1_1\\metadata_1.json"
+    },
+    {
+      "bytes": 10,
+      "mtime_ns": 1789439576745716200,
+      "path": "test_four_headless_lineage_std0/stdio/public-snapshot/scienceagent/work/BLADE/blade_bench/datasets/fish/data.csv",
+      "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\public-snapshot\\scienceagent\\work\\BLADE\\blade_bench\\datasets\\fish\\data.csv"
+    },
+    {
+      "bytes": 109,
+      "mtime_ns": 1789439576745716200,
+      "path": "test_four_headless_lineage_std0/stdio/public-snapshot/scienceagent/work/BLADE/blade_bench/datasets/fish/info.json",
+      "sha256": "b6b6e79cf1fcf1e856a8eb4953a122d9be1610e1b6b6d7b4df30956fa7db6efd",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\public-snapshot\\scienceagent\\work\\BLADE\\blade_bench\\datasets\\fish\\info.json"
+    },
+    {
+      "bytes": 15280,
+      "mtime_ns": 1789439583529348000,
+      "path": "test_four_headless_lineage_std0/stdio/worker-0/server.json",
+      "sha256": "a53c9724f123d45c1ccf93f6ebc69cc785ced49e51cdcc4db5574b9c6204579a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\worker-0\\server.json"
+    },
+    {
+      "bytes": 18344,
+      "mtime_ns": 1789439584978065900,
+      "path": "test_four_headless_lineage_std0/stdio/worker-1/server.json",
+      "sha256": "9d0d1b81245a55165f299ad846e626c98dddd29c2ce06e927816b5159577b3c5",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\worker-1\\server.json"
+    },
+    {
+      "bytes": 18405,
+      "mtime_ns": 1789439586363203500,
+      "path": "test_four_headless_lineage_std0/stdio/worker-2/server.json",
+      "sha256": "14e83a4b3ad17d82401bf265e5e751d8c3225bdd9e17a73c2194d1dff8d43f7a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\worker-2\\server.json"
+    },
+    {
+      "bytes": 24911,
+      "mtime_ns": 1789439588170608200,
+      "path": "test_four_headless_lineage_std0/stdio/worker-3/server.json",
+      "sha256": "11e847f140c26c97ee09b0dbb19a81595b2f53851b41eb26f4f81f785c3d47a0",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\worker-3\\server.json"
+    },
+    {
+      "bytes": 15267,
+      "mtime_ns": 1789439583505442800,
+      "path": "test_four_headless_lineage_std0/stdio/worker0/server.json",
+      "sha256": "85455d6b96f29adb8e0f9602167eed85ddd303eeb9c7590754f27bb2672733b9",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\worker0\\server.json"
+    },
+    {
+      "bytes": 16817,
+      "mtime_ns": 1789439583481812400,
+      "path": "test_four_headless_lineage_std0/stdio/worker1/server.json",
+      "sha256": "572eefa0fdfe0f3eea40ea58605ff6be54972260493df10088ba5a7814a364f4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\worker1\\server.json"
+    },
+    {
+      "bytes": 16878,
+      "mtime_ns": 1789439583489074600,
+      "path": "test_four_headless_lineage_std0/stdio/worker2/server.json",
+      "sha256": "86b601bb9d27e7a3755917c9ccf4511b1a9f24ce8a67a84664b9768c20b66042",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\worker2\\server.json"
+    },
+    {
+      "bytes": 23383,
+      "mtime_ns": 1789439583496923700,
+      "path": "test_four_headless_lineage_std0/stdio/worker3/server.json",
+      "sha256": "cc9e740f55769c09001edb3661100e6e1153ce0d37027692625c20bf1f7025d9",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_four_headless_lineage_std0\\stdio\\worker3\\server.json"
+    },
+    {
+      "bytes": 205,
+      "mtime_ns": 1789439629112827500,
+      "path": "test_lineage_closure_rereads_t0/cell/runtime/analysis-1.py",
+      "sha256": "2a966d978470db14971d69c9b25758ec470506aea24e77230ee753e4fa0fdab5",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\runtime\\analysis-1.py"
+    },
+    {
+      "bytes": 98963,
+      "mtime_ns": 1789439631854642200,
+      "path": "test_lineage_closure_rereads_t0/cell/runtime/artifacts.jsonl",
+      "sha256": "de825959fb631639451c15d4789709b77922965b187c3c1e62341c41479678bd",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\runtime\\artifacts.jsonl"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439622369536300,
+      "path": "test_lineage_closure_rereads_t0/cell/runtime/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\runtime\\claims.jsonl"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439622368031200,
+      "path": "test_lineage_closure_rereads_t0/cell/runtime/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\runtime\\evidence.jsonl"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439622863106500,
+      "path": "test_lineage_closure_rereads_t0/cell/runtime/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\runtime\\predictions.jsonl"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439622864119700,
+      "path": "test_lineage_closure_rereads_t0/cell/runtime/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\runtime\\reviews.jsonl"
+    },
+    {
+      "bytes": 27990,
+      "mtime_ns": 1789439631670215300,
+      "path": "test_lineage_closure_rereads_t0/cell/runtime/trace.jsonl",
+      "sha256": "3f2b3c824df125879b1353354b416b2812e81fab27cae6762bda33d57fc95df4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\runtime\\trace.jsonl"
+    },
+    {
+      "bytes": 4453,
+      "mtime_ns": 1789439612041776200,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json",
+      "sha256": "0558d12054cb7a073320ac33a1297419ac6169564edf921902fb65c373f47a5a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json"
+    },
+    {
+      "bytes": 4738,
+      "mtime_ns": 1789439606720878800,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/attempt.json",
+      "sha256": "1d7cf28a58dca14ca1021d450faec757c7b5bf71c135fa4f754697caf59f47a1",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\attempt.json"
+    },
+    {
+      "bytes": 4453,
+      "mtime_ns": 1789439612045282700,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/blobs/0558d12054cb7a073320ac33a1297419ac6169564edf921902fb65c373f47a5a",
+      "sha256": "0558d12054cb7a073320ac33a1297419ac6169564edf921902fb65c373f47a5a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\blobs\\0558d12054cb7a073320ac33a1297419ac6169564edf921902fb65c373f47a5a"
+    },
+    {
+      "bytes": 1860,
+      "mtime_ns": 1789439607593931200,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/blobs/1245eee83f8010d518cb714978b9ac62424f44f0455d1ba4d17546e75925b700",
+      "sha256": "1245eee83f8010d518cb714978b9ac62424f44f0455d1ba4d17546e75925b700",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\blobs\\1245eee83f8010d518cb714978b9ac62424f44f0455d1ba4d17546e75925b700"
+    },
+    {
+      "bytes": 714,
+      "mtime_ns": 1789439610684463600,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/blobs/3cf6027d666729a20198a95957a0c569781ff2c9fc5e9028ab5e1b943357792c",
+      "sha256": "3cf6027d666729a20198a95957a0c569781ff2c9fc5e9028ab5e1b943357792c",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\blobs\\3cf6027d666729a20198a95957a0c569781ff2c9fc5e9028ab5e1b943357792c"
+    },
+    {
+      "bytes": 13609,
+      "mtime_ns": 1789439608653054200,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/blobs/52ce7f9279c4d2bb791d5faf5948505b16d66d0c268bd97f80ad1df374420834",
+      "sha256": "52ce7f9279c4d2bb791d5faf5948505b16d66d0c268bd97f80ad1df374420834",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\blobs\\52ce7f9279c4d2bb791d5faf5948505b16d66d0c268bd97f80ad1df374420834"
+    },
+    {
+      "bytes": 30044,
+      "mtime_ns": 1789439608099196600,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/blobs/5815ed98ff5ebcd5e35ba876efb02044ce57da9d78f90a03116f77571ef0a196",
+      "sha256": "5815ed98ff5ebcd5e35ba876efb02044ce57da9d78f90a03116f77571ef0a196",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\blobs\\5815ed98ff5ebcd5e35ba876efb02044ce57da9d78f90a03116f77571ef0a196"
+    },
+    {
+      "bytes": 3745,
+      "mtime_ns": 1789439611301277100,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/blobs/5ba39b367b3405a176bcc974908bac7fb01abeca148558954e88c9361216102e",
+      "sha256": "5ba39b367b3405a176bcc974908bac7fb01abeca148558954e88c9361216102e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\blobs\\5ba39b367b3405a176bcc974908bac7fb01abeca148558954e88c9361216102e"
+    },
+    {
+      "bytes": 3526,
+      "mtime_ns": 1789439611030025900,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/blobs/78fb4f5197ee0666373492ffd765131da9c0301c243324392146736899f9c0ba",
+      "sha256": "78fb4f5197ee0666373492ffd765131da9c0301c243324392146736899f9c0ba",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\blobs\\78fb4f5197ee0666373492ffd765131da9c0301c243324392146736899f9c0ba"
+    },
+    {
+      "bytes": 2227,
+      "mtime_ns": 1789439606852934300,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/blobs/952ce81898eee8d92e337cf2b2db4d86386e399187e90bae8b60d90b49ea7502",
+      "sha256": "952ce81898eee8d92e337cf2b2db4d86386e399187e90bae8b60d90b49ea7502",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\blobs\\952ce81898eee8d92e337cf2b2db4d86386e399187e90bae8b60d90b49ea7502"
+    },
+    {
+      "bytes": 714,
+      "mtime_ns": 1789439611592285700,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/blobs/9b7dc1abea069cf721e2e52950132817dbc4040e163da1d0bf3da90fe4320384",
+      "sha256": "9b7dc1abea069cf721e2e52950132817dbc4040e163da1d0bf3da90fe4320384",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\blobs\\9b7dc1abea069cf721e2e52950132817dbc4040e163da1d0bf3da90fe4320384"
+    },
+    {
+      "bytes": 167,
+      "mtime_ns": 1789439607738029100,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/blobs/bbec0103765fefe4688dfbceb51a2b2e312cfd143f18eafff0e6f121279afd72",
+      "sha256": "bbec0103765fefe4688dfbceb51a2b2e312cfd143f18eafff0e6f121279afd72",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\blobs\\bbec0103765fefe4688dfbceb51a2b2e312cfd143f18eafff0e6f121279afd72"
+    },
+    {
+      "bytes": 339,
+      "mtime_ns": 1789439607019526300,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/blobs/dc1ae6cebcfda03c3367e8fb72531140f5b38504c3ffa16e7dd962c140c5b6e9",
+      "sha256": "dc1ae6cebcfda03c3367e8fb72531140f5b38504c3ffa16e7dd962c140c5b6e9",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\blobs\\dc1ae6cebcfda03c3367e8fb72531140f5b38504c3ffa16e7dd962c140c5b6e9"
+    },
+    {
+      "bytes": 16125,
+      "mtime_ns": 1789439608322096000,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/blobs/f53c6700414c43279cc60a75f964313f410f92657a9a3b5b60966f2999c6b620",
+      "sha256": "f53c6700414c43279cc60a75f964313f410f92657a9a3b5b60966f2999c6b620",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\blobs\\f53c6700414c43279cc60a75f964313f410f92657a9a3b5b60966f2999c6b620"
+    },
+    {
+      "bytes": 2818,
+      "mtime_ns": 1789439609438803600,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/blobs/f74d90774ba438519c9ab8bffab20d5afda9109875cd65e38537ee674a79c70f",
+      "sha256": "f74d90774ba438519c9ab8bffab20d5afda9109875cd65e38537ee674a79c70f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\blobs\\f74d90774ba438519c9ab8bffab20d5afda9109875cd65e38537ee674a79c70f"
+    },
+    {
+      "bytes": 3899,
+      "mtime_ns": 1789439612275260300,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/journal.jsonl",
+      "sha256": "cd3ffae2bf866a3990681fcca10992fbd0c385746cb9a1b88afc7a7ac7e0a80a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\journal.jsonl"
+    },
+    {
+      "bytes": 185,
+      "mtime_ns": 1789439612388976000,
+      "path": "test_lineage_closure_rereads_t0/cell/source-verification.json.artifacts/seal.json",
+      "sha256": "08264763bf3d639f401f6de95ce7bd6a44038b7c22f1b0ce1a6b32c0abb2be3d",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\cell\\source-verification.json.artifacts\\seal.json"
+    },
+    {
+      "bytes": 1357,
+      "mtime_ns": 1789439598715170500,
+      "path": "test_lineage_closure_rereads_t0/headless/custody.json",
+      "sha256": "40525c122b0539569afd1909647d1c74be3f39af66778b1f1c7275140848cc6d",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\custody.json"
+    },
+    {
+      "bytes": 1,
+      "mtime_ns": 1789439598498431300,
+      "path": "test_lineage_closure_rereads_t0/headless/custody.json.lock",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\custody.json.lock"
+    },
+    {
+      "bytes": 1502,
+      "mtime_ns": 1789439606105516200,
+      "path": "test_lineage_closure_rereads_t0/headless/lineage-references/blade-reference.json",
+      "sha256": "d1f2444335feea4831547b964d656ba3ab6004a2bba1183082d25e8a94f01794",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\lineage-references\\blade-reference.json"
+    },
+    {
+      "bytes": 960,
+      "mtime_ns": 1789439606104524100,
+      "path": "test_lineage_closure_rereads_t0/headless/lineage-references/blade-source.json",
+      "sha256": "1faf0e26291171aa1cf47db772cff0f6f9495e3eb92253b94bacae7311c5efb2",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\lineage-references\\blade-source.json"
+    },
+    {
+      "bytes": 1566,
+      "mtime_ns": 1789439606103039600,
+      "path": "test_lineage_closure_rereads_t0/headless/lineage-references/discoverybench-reference.json",
+      "sha256": "7640467fea0c9b8862e2b765a723d6c29d1f4cfdf69f38a9fa85861f4e0c63c8",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\lineage-references\\discoverybench-reference.json"
+    },
+    {
+      "bytes": 1014,
+      "mtime_ns": 1789439606101522900,
+      "path": "test_lineage_closure_rereads_t0/headless/lineage-references/discoverybench-source.json",
+      "sha256": "54c473bd3b7b7584eaa64761aac388cec00ee4ad55561d4725382aecf3adbdf9",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\lineage-references\\discoverybench-source.json"
+    },
+    {
+      "bytes": 1103,
+      "mtime_ns": 1789439606105516200,
+      "path": "test_lineage_closure_rereads_t0/headless/lineage-references/manifest.json",
+      "sha256": "1550ab7285c8390fcdcfd6fbafa63f17c90317a7296d8f7f530b96f1625aa9a4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\lineage-references\\manifest.json"
+    },
+    {
+      "bytes": 10,
+      "mtime_ns": 1789439603228807200,
+      "path": "test_lineage_closure_rereads_t0/headless/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/data.csv",
+      "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\data.csv"
+    },
+    {
+      "bytes": 13211,
+      "mtime_ns": 1789439604655402500,
+      "path": "test_lineage_closure_rereads_t0/headless/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/legacy-primary-artifacts.jsonl",
+      "sha256": "6684005cbee0f59ef3b59e44a6ed33cdf79019365e96b9e5adec87a0f4bfcc13",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\legacy-primary-artifacts.jsonl"
+    },
+    {
+      "bytes": 304,
+      "mtime_ns": 1789439605072121000,
+      "path": "test_lineage_closure_rereads_t0/headless/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/legacy-primary-artifacts.jsonl.seal.json",
+      "sha256": "828221f07e6393f4bd5f782c5d66b02d8f94ea35b1e841ac6923d902acbe468f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\legacy-primary-artifacts.jsonl.seal.json"
+    },
+    {
+      "bytes": 3149,
+      "mtime_ns": 1789439605511170800,
+      "path": "test_lineage_closure_rereads_t0/headless/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/packet-seal.json",
+      "sha256": "920e07096fdee30bc909b09a0c51e549d72bbaefb0a3c0a8e29bcb2f7b19c2b7",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\packet-seal.json"
+    },
+    {
+      "bytes": 1068,
+      "mtime_ns": 1789439604029964100,
+      "path": "test_lineage_closure_rereads_t0/headless/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/public.json",
+      "sha256": "a524ea3dc23ac656b0caaf72177d1c821d08c042523254f2fe21e436c6ef119f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\public.json"
+    },
+    {
+      "bytes": 2766,
+      "mtime_ns": 1789439602433137700,
+      "path": "test_lineage_closure_rereads_t0/headless/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/reservation.json",
+      "sha256": "c45f6024b54941059ce661712627b8c2a5e8bfe0e635ddec8eca171e82af02c5",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\reservation.json"
+    },
+    {
+      "bytes": 6,
+      "mtime_ns": 1789439599615761100,
+      "path": "test_lineage_closure_rereads_t0/headless/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/data.csv",
+      "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\data.csv"
+    },
+    {
+      "bytes": 13662,
+      "mtime_ns": 1789439601459749600,
+      "path": "test_lineage_closure_rereads_t0/headless/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/legacy-primary-artifacts.jsonl",
+      "sha256": "23ed886cb8f08e68137da60415957447bd713bf356be5de44be9d008d9bb1f99",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\legacy-primary-artifacts.jsonl"
+    },
+    {
+      "bytes": 304,
+      "mtime_ns": 1789439601637732600,
+      "path": "test_lineage_closure_rereads_t0/headless/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/legacy-primary-artifacts.jsonl.seal.json",
+      "sha256": "60d5bf1c0a22bc633e343afa9889b12c747c723ce4c3e71acb47ec9e18736f03",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\legacy-primary-artifacts.jsonl.seal.json"
+    },
+    {
+      "bytes": 3386,
+      "mtime_ns": 1789439602035926200,
+      "path": "test_lineage_closure_rereads_t0/headless/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/packet-seal.json",
+      "sha256": "c3713dd9f74a96872cd41ac1f01bb26aba1a75c896d43b0862552c37806e4b2c",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\packet-seal.json"
+    },
+    {
+      "bytes": 1347,
+      "mtime_ns": 1789439600537290300,
+      "path": "test_lineage_closure_rereads_t0/headless/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/public.json",
+      "sha256": "67f0a164f4b24b02f96fff92ade62ef15ff9b8be28b5dbe9954108cbfef71623",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\public.json"
+    },
+    {
+      "bytes": 3003,
+      "mtime_ns": 1789439598867825800,
+      "path": "test_lineage_closure_rereads_t0/headless/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/reservation.json",
+      "sha256": "ea41556a6b70ff40ea8e56b78ffe2a31e29326f60e8247ba79c98f332b24c717",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\reservation.json"
+    },
+    {
+      "bytes": 7027,
+      "mtime_ns": 1789439633769877200,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/headless-request.private.json",
+      "sha256": "35cca2e8696795bf479d6bdb420a77733e6933ddf554bb1a62cd2d961294136d",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\headless-request.private.json"
+    },
+    {
+      "bytes": 872,
+      "mtime_ns": 1789439633915976200,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native-home/config.toml",
+      "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native-home\\config.toml"
+    },
+    {
+      "bytes": 13315,
+      "mtime_ns": 1789439633930542200,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native-reservation.json",
+      "sha256": "5c88f6a4ea38f5e7f88b45a94a99f5d9b6e9a62793e3ab818401716c46e00ac0",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native-reservation.json"
+    },
+    {
+      "bytes": 263,
+      "mtime_ns": 1789439634791660600,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/billing-after/attempt-000/credits.private.json",
+      "sha256": "7dc702c2bb153f06e24cf88b52ed38ffddd77168490edde4d48d18e92439dd91",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempt-000\\credits.private.json"
+    },
+    {
+      "bytes": 692,
+      "mtime_ns": 1789439635003210300,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/billing-after/attempt-000/observation.json",
+      "sha256": "c005e05f8c51fc5924f1268fc9485d93d7d69294c0002d698f92c7dff2b1335f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempt-000\\observation.json"
+    },
+    {
+      "bytes": 959,
+      "mtime_ns": 1789439634996450100,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/billing-after/attempt-000/requests.json",
+      "sha256": "66c7b72178ee85005b1e132f0bd182e6f62a23e4762790a3c332152462f2ed8d",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempt-000\\requests.json"
+    },
+    {
+      "bytes": 2,
+      "mtime_ns": 1789439634995449300,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/billing-after/attempt-000/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempt-000\\topup.private.json"
+    },
+    {
+      "bytes": 142,
+      "mtime_ns": 1789439634996450100,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/billing-after/attempt-000/user.private.json",
+      "sha256": "56cc03df8899f89c9059fe8db7c12c1e10015b5abf8b882b8bd87221c2954762",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempt-000\\user.private.json"
+    },
+    {
+      "bytes": 1064,
+      "mtime_ns": 1789439635013996400,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/billing-after/attempts.json",
+      "sha256": "1184234257a0f00d3fd3d989f5e34f5079af9100435e3908c51d550a4096667d",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempts.json"
+    },
+    {
+      "bytes": 263,
+      "mtime_ns": 1789439634646065100,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/billing-before/attempt-000/credits.private.json",
+      "sha256": "2bd2b434394bde9b115fcb753a042bd075f03e8ac498b8e9cfa8c08e0520025f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempt-000\\credits.private.json"
+    },
+    {
+      "bytes": 692,
+      "mtime_ns": 1789439634671606400,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/billing-before/attempt-000/observation.json",
+      "sha256": "4f947ac0316450c08c29fb6326e14c0c684d7e285bbae6c148e14fe88314a491",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempt-000\\observation.json"
+    },
+    {
+      "bytes": 959,
+      "mtime_ns": 1789439634663902600,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/billing-before/attempt-000/requests.json",
+      "sha256": "65bc264cfa2454b843e5c004591b3ed3ab450c75d7f4c5e9b29400a1f021bdf7",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempt-000\\requests.json"
+    },
+    {
+      "bytes": 2,
+      "mtime_ns": 1789439634662386100,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/billing-before/attempt-000/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempt-000\\topup.private.json"
+    },
+    {
+      "bytes": 142,
+      "mtime_ns": 1789439634663902600,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/billing-before/attempt-000/user.private.json",
+      "sha256": "56cc03df8899f89c9059fe8db7c12c1e10015b5abf8b882b8bd87221c2954762",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempt-000\\user.private.json"
+    },
+    {
+      "bytes": 1064,
+      "mtime_ns": 1789439634683163300,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/billing-before/attempts.json",
+      "sha256": "43669a39ddaf8717f07245f7b7e783f8ab97b2fd77be9889b9312da5d55fa6ab",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempts.json"
+    },
+    {
+      "bytes": 3067,
+      "mtime_ns": 1789439634086792400,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/command.json",
+      "sha256": "657c33ebb4feae9ebee23258e08238abc4c912ea7b34f372e0862928dd500e72",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\command.json"
+    },
+    {
+      "bytes": 6371,
+      "mtime_ns": 1789439634644071300,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/inspect/process.json",
+      "sha256": "2c79e4496fe5630d4fc5912e027fb876db9d68c9cefaf89138d06777c4478eca",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\inspect\\process.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439634620313400,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/inspect/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\inspect\\stderr.private.txt"
+    },
+    {
+      "bytes": 179,
+      "mtime_ns": 1789439634620313400,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/inspect/stdout.private.jsonl",
+      "sha256": "4ede3fe5926584428971f55e9d13e23b2f0a08b90a53ef91307d7dbb8d9b6a1a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\inspect\\stdout.private.jsonl"
+    },
+    {
+      "bytes": 22591,
+      "mtime_ns": 1789439635026979700,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/observer-receipt.json",
+      "sha256": "5f105f35e448666b68bfb86d0babf43e8ae1091b0a1b340cc28ca115c6721716",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\observer-receipt.json"
+    },
+    {
+      "bytes": 9051,
+      "mtime_ns": 1789439634790122200,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/process.json",
+      "sha256": "68909ee1db49bfb2442b25eb6484dc4900889c906d3d755ef4307f16cb3d5bb4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\process.json"
+    },
+    {
+      "bytes": 5923,
+      "mtime_ns": 1789439634071825400,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/prompt.private.txt",
+      "sha256": "833ad81a1f672e12ee6539b048b224a723d1be57b4ac1f4abffaac6afc04b113",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\prompt.private.txt"
+    },
+    {
+      "bytes": 222,
+      "mtime_ns": 1789439634791150500,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/response.private.json",
+      "sha256": "3723a868006c70a6849fc3e49328a378a4883168cbf87cb7b68d6aa2452b0b85",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\response.private.json"
+    },
+    {
+      "bytes": 713,
+      "mtime_ns": 1789439634071825400,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/schema.private.json",
+      "sha256": "a8b07dafd52378266a0bc19bed20e8d394eeab6477b3c11a7067f9b788b89201",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\schema.private.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439634789119900,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\stderr.private.txt"
+    },
+    {
+      "bytes": 1387,
+      "mtime_ns": 1789439634789119900,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/native/stdout.private.jsonl",
+      "sha256": "7b882fe140709c67b509c6dffd4c0af088f37ca8964f6136fcc186ab31a4315a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\stdout.private.jsonl"
+    },
+    {
+      "bytes": 22591,
+      "mtime_ns": 1789439635033118200,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/observer-receipt.private.json",
+      "sha256": "5f105f35e448666b68bfb86d0babf43e8ae1091b0a1b340cc28ca115c6721716",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\observer-receipt.private.json"
+    },
+    {
+      "bytes": 7454,
+      "mtime_ns": 1789439633768874300,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/request.private.json",
+      "sha256": "645dd89da0d1e7f52cea70aeb07caab370cffcb9dd110ab20a0768c26c4cd8ff",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\request.private.json"
+    },
+    {
+      "bytes": 223,
+      "mtime_ns": 1789439636691940900,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/response.private.json",
+      "sha256": "c7e15e00b8f0e384ba72c95d55c00197258cfe7a3a59a2f6d262df3337819c94",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\response.private.json"
+    },
+    {
+      "bytes": 238,
+      "mtime_ns": 1789439634698653400,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/calls/0001-discoverybench/synthetic-lineage-answer.json",
+      "sha256": "ea90ab9dd7c50472642a4f9f7cb45b227c11ea257c364cd79ada3836b0107574",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\calls\\0001-discoverybench\\synthetic-lineage-answer.json"
+    },
+    {
+      "bytes": 14199,
+      "mtime_ns": 1789439636708472400,
+      "path": "test_lineage_closure_rereads_t0/headless/native/ledger/ledger.json",
+      "sha256": "0b7b49de581595422b55f4c9326c9c04c276b80fbebaaf5114ec2fbce88a0e07",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\ledger\\ledger.json"
+    },
+    {
+      "bytes": 62,
+      "mtime_ns": 1789439606153280300,
+      "path": "test_lineage_closure_rereads_t0/headless/native/synthetic-grok.exe",
+      "sha256": "a3a814392148b74102a06a43dbea7697e8942652545fe7e3d06159114e7dbae7",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\native\\synthetic-grok.exe"
+    },
+    {
+      "bytes": 555,
+      "mtime_ns": 1789439606095987200,
+      "path": "test_lineage_closure_rereads_t0/headless/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+      "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\private-scorer-store\\0000000000000000000000000000000000000000000000000000000000000001.json"
+    },
+    {
+      "bytes": 549,
+      "mtime_ns": 1789439606100522900,
+      "path": "test_lineage_closure_rereads_t0/headless/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+      "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\private-scorer-store\\0000000000000000000000000000000000000000000000000000000000000002.json"
+    },
+    {
+      "bytes": 1907,
+      "mtime_ns": 1789439606100522900,
+      "path": "test_lineage_closure_rereads_t0/headless/private-scorer-store/manifest.json",
+      "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\private-scorer-store\\manifest.json"
+    },
+    {
+      "bytes": 6,
+      "mtime_ns": 1789439598494381100,
+      "path": "test_lineage_closure_rereads_t0/headless/public-snapshot/discovery/upstream/discoverybench/synth/train/family_1_1/data.csv",
+      "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\public-snapshot\\discovery\\upstream\\discoverybench\\synth\\train\\family_1_1\\data.csv"
+    },
+    {
+      "bytes": 120,
+      "mtime_ns": 1789439598494381100,
+      "path": "test_lineage_closure_rereads_t0/headless/public-snapshot/discovery/upstream/discoverybench/synth/train/family_1_1/metadata_1.json",
+      "sha256": "2115a649c012d30e5151724fcf6e7255077b299df839a5f6480d2b447092d5d0",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\public-snapshot\\discovery\\upstream\\discoverybench\\synth\\train\\family_1_1\\metadata_1.json"
+    },
+    {
+      "bytes": 10,
+      "mtime_ns": 1789439598495429500,
+      "path": "test_lineage_closure_rereads_t0/headless/public-snapshot/scienceagent/work/BLADE/blade_bench/datasets/fish/data.csv",
+      "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\public-snapshot\\scienceagent\\work\\BLADE\\blade_bench\\datasets\\fish\\data.csv"
+    },
+    {
+      "bytes": 109,
+      "mtime_ns": 1789439598494381100,
+      "path": "test_lineage_closure_rereads_t0/headless/public-snapshot/scienceagent/work/BLADE/blade_bench/datasets/fish/info.json",
+      "sha256": "b6b6e79cf1fcf1e856a8eb4953a122d9be1610e1b6b6d7b4df30956fa7db6efd",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\public-snapshot\\scienceagent\\work\\BLADE\\blade_bench\\datasets\\fish\\info.json"
+    },
+    {
+      "bytes": 15297,
+      "mtime_ns": 1789439606155351200,
+      "path": "test_lineage_closure_rereads_t0/headless/worker0/server.json",
+      "sha256": "07c3e6f0ad143968d73228019fef5a05b772feb8aa8e85e0969d605afdd59293",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\worker0\\server.json"
+    },
+    {
+      "bytes": 16829,
+      "mtime_ns": 1789439606130455500,
+      "path": "test_lineage_closure_rereads_t0/headless/worker1/server.json",
+      "sha256": "2910f69ef98ec706dba36b68036c9a9c582f10b75f0b5bcf1ce3fea0655a066b",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\worker1\\server.json"
+    },
+    {
+      "bytes": 16890,
+      "mtime_ns": 1789439606137557900,
+      "path": "test_lineage_closure_rereads_t0/headless/worker2/server.json",
+      "sha256": "602c41abd83d7d37b72e685f7f703722449fc71e61ec4ab914794e76f5402b63",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\worker2\\server.json"
+    },
+    {
+      "bytes": 23395,
+      "mtime_ns": 1789439606145722900,
+      "path": "test_lineage_closure_rereads_t0/headless/worker3/server.json",
+      "sha256": "2a29503060074d8e372813ba609010f4c441587fffb38a966527b14f8868bd2d",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\headless\\worker3\\server.json"
+    },
+    {
+      "bytes": 4891,
+      "mtime_ns": 1789439635393899700,
+      "path": "test_lineage_closure_rereads_t0/score-journal.jsonl",
+      "sha256": "4078f056e394d77574bc7ca52a6a24d3f4e4dd03bbc1b7df5c2c941c864b5333",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\score-journal.jsonl"
+    },
+    {
+      "bytes": 7714,
+      "mtime_ns": 1789439636521691800,
+      "path": "test_lineage_closure_rereads_t0/score-journal.jsonl.headless-lineage-evaluator-finalization.jsonl",
+      "sha256": "5a3b8a1a828e4ff7dfc52adb05aca8ccb7caf6d4016d1dc2490789d7f91d3252",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\score-journal.jsonl.headless-lineage-evaluator-finalization.jsonl"
+    },
+    {
+      "bytes": 11,
+      "mtime_ns": 1789439606680692500,
+      "path": "test_lineage_closure_rereads_t0/solver/codex.exe",
+      "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\codex.exe"
+    },
+    {
+      "bytes": 13002,
+      "mtime_ns": 1789439606693402600,
+      "path": "test_lineage_closure_rereads_t0/solver/context-audit/UNQUALIFIED-BASE-CONTEXT-AUDIT.json",
+      "sha256": "d510aafaf64da3c7c7b9d8f0d93d1245f696ebe4fad1926f5c63d8734dabb65e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\context-audit\\UNQUALIFIED-BASE-CONTEXT-AUDIT.json"
+    },
+    {
+      "bytes": 10734,
+      "mtime_ns": 1789439606700056100,
+      "path": "test_lineage_closure_rereads_t0/solver/context-audit/UNQUALIFIED-POLICY.json",
+      "sha256": "08f357ac689b767e069dc9e9aac570affde546ef0e147ca1495697fbcdec3c07",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\context-audit\\UNQUALIFIED-POLICY.json"
+    },
+    {
+      "bytes": 97,
+      "mtime_ns": 1789439606692898000,
+      "path": "test_lineage_closure_rereads_t0/solver/context-audit/base-context.visible.json",
+      "sha256": "38693fd65d691d0ac170adee33f0ab8189fa784919960219a37e6c2157eb7841",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\context-audit\\base-context.visible.json"
+    },
+    {
+      "bytes": 139,
+      "mtime_ns": 1789439606687376900,
+      "path": "test_lineage_closure_rereads_t0/solver/context-audit/debug-prompt-input.raw.json",
+      "sha256": "127fb70628b3e85e4446d2e4a2b4b46831fe839728c4c15fec2f13441c867fcb",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\context-audit\\debug-prompt-input.raw.json"
+    },
+    {
+      "bytes": 163,
+      "mtime_ns": 1789439625418097400,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0001-lineage_review/events.jsonl",
+      "sha256": "43058fe9e115b0033250187a12fca6a46d7b3aab89003772a89a51e6ac319b10",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0001-lineage_review\\events.jsonl"
+    },
+    {
+      "bytes": 124,
+      "mtime_ns": 1789439625314692900,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0001-lineage_review/output.json",
+      "sha256": "6d3926575b89cebb6cb68ba759df8d048c72309a9a4a8efcd7a52a71cf40b7a8",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0001-lineage_review\\output.json"
+    },
+    {
+      "bytes": 3146,
+      "mtime_ns": 1789439625308160700,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0001-lineage_review/prompt.txt",
+      "sha256": "ff6607f60c402b914743dbe8b756a64550d766cb3f125d4f2a028546c0b77644",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0001-lineage_review\\prompt.txt"
+    },
+    {
+      "bytes": 356,
+      "mtime_ns": 1789439625307125600,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0001-lineage_review/schema.json",
+      "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0001-lineage_review\\schema.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439625418097400,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0001-lineage_review/stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0001-lineage_review\\stderr.txt"
+    },
+    {
+      "bytes": 163,
+      "mtime_ns": 1789439626869572700,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0002-measurement_review/events.jsonl",
+      "sha256": "43058fe9e115b0033250187a12fca6a46d7b3aab89003772a89a51e6ac319b10",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0002-measurement_review\\events.jsonl"
+    },
+    {
+      "bytes": 128,
+      "mtime_ns": 1789439626860533300,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0002-measurement_review/output.json",
+      "sha256": "378f51a5763c7b14cc607796d79bc279682d16b9f10a40cc98afa4ce2286aba3",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0002-measurement_review\\output.json"
+    },
+    {
+      "bytes": 3140,
+      "mtime_ns": 1789439626852899200,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0002-measurement_review/prompt.txt",
+      "sha256": "f2d77295836b0855620a122479e97ed45af8ac9da6c658ebee7a2a3cae5d0819",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0002-measurement_review\\prompt.txt"
+    },
+    {
+      "bytes": 356,
+      "mtime_ns": 1789439626852899200,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0002-measurement_review/schema.json",
+      "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0002-measurement_review\\schema.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439626870077300,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0002-measurement_review/stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0002-measurement_review\\stderr.txt"
+    },
+    {
+      "bytes": 163,
+      "mtime_ns": 1789439628717748200,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0003-analysis_program/events.jsonl",
+      "sha256": "43058fe9e115b0033250187a12fca6a46d7b3aab89003772a89a51e6ac319b10",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0003-analysis_program\\events.jsonl"
+    },
+    {
+      "bytes": 280,
+      "mtime_ns": 1789439628715229900,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0003-analysis_program/output.json",
+      "sha256": "d614d976c2046d45d7037a4e4f31bf5d3344256d00a32fa423b55ef584a46ef8",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0003-analysis_program\\output.json"
+    },
+    {
+      "bytes": 3272,
+      "mtime_ns": 1789439628707296800,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0003-analysis_program/prompt.txt",
+      "sha256": "b89a240907ca0e06f3eec56f578abdf34b0872bed24b0aae3741fff47784a1a1",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0003-analysis_program\\prompt.txt"
+    },
+    {
+      "bytes": 152,
+      "mtime_ns": 1789439628707296800,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0003-analysis_program/schema.json",
+      "sha256": "fd0c444a2e3b004a5c3232ec3ceef3017d2aefd685c0ef412e442f84f5ade689",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0003-analysis_program\\schema.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439628717748200,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0003-analysis_program/stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0003-analysis_program\\stderr.txt"
+    },
+    {
+      "bytes": 163,
+      "mtime_ns": 1789439631349309100,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0004-final_answer/events.jsonl",
+      "sha256": "43058fe9e115b0033250187a12fca6a46d7b3aab89003772a89a51e6ac319b10",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0004-final_answer\\events.jsonl"
+    },
+    {
+      "bytes": 283,
+      "mtime_ns": 1789439631348265200,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0004-final_answer/output.json",
+      "sha256": "4d5a67b468629ac2bd631672fa78344e33331da4be46fa2dbacf5fad30f24128",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0004-final_answer\\output.json"
+    },
+    {
+      "bytes": 4645,
+      "mtime_ns": 1789439631338740900,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0004-final_answer/prompt.txt",
+      "sha256": "c61b34e682f00131d0bba93f81d92ae2b0f2314d6e03aa035447c6c8132196ba",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0004-final_answer\\prompt.txt"
+    },
+    {
+      "bytes": 380,
+      "mtime_ns": 1789439631338740900,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0004-final_answer/schema.json",
+      "sha256": "99a5b8ec8e592c7ca8c4c31223dc7637b403e05a7ce6567f6d42c22a437bf3d6",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0004-final_answer\\schema.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439631349309100,
+      "path": "test_lineage_closure_rereads_t0/solver/model/calls/0004-final_answer/stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\calls\\0004-final_answer\\stderr.txt"
+    },
+    {
+      "bytes": 139,
+      "mtime_ns": 1789439625300996000,
+      "path": "test_lineage_closure_rereads_t0/solver/model/context-probes/0001.json",
+      "sha256": "127fb70628b3e85e4446d2e4a2b4b46831fe839728c4c15fec2f13441c867fcb",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\context-probes\\0001.json"
+    },
+    {
+      "bytes": 139,
+      "mtime_ns": 1789439626846382400,
+      "path": "test_lineage_closure_rereads_t0/solver/model/context-probes/0002.json",
+      "sha256": "127fb70628b3e85e4446d2e4a2b4b46831fe839728c4c15fec2f13441c867fcb",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\context-probes\\0002.json"
+    },
+    {
+      "bytes": 139,
+      "mtime_ns": 1789439628699373700,
+      "path": "test_lineage_closure_rereads_t0/solver/model/context-probes/0003.json",
+      "sha256": "127fb70628b3e85e4446d2e4a2b4b46831fe839728c4c15fec2f13441c867fcb",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\context-probes\\0003.json"
+    },
+    {
+      "bytes": 139,
+      "mtime_ns": 1789439631305919600,
+      "path": "test_lineage_closure_rereads_t0/solver/model/context-probes/0004.json",
+      "sha256": "127fb70628b3e85e4446d2e4a2b4b46831fe839728c4c15fec2f13441c867fcb",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\context-probes\\0004.json"
+    },
+    {
+      "bytes": 32434,
+      "mtime_ns": 1789439631350857300,
+      "path": "test_lineage_closure_rereads_t0/solver/model/ledger.json",
+      "sha256": "4cff81cf7cfa381675e5e0c271200505a5713c339225d6c2df44d21e27e3655e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\model\\ledger.json"
+    },
+    {
+      "bytes": 11134,
+      "mtime_ns": 1789439606707066000,
+      "path": "test_lineage_closure_rereads_t0/solver/reviewed-policy.json",
+      "sha256": "1b6ec830b0481f0f0e3070518cd11bdc4c360152a67942d5109a3fdcc7832051",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\reviewed-policy.json"
+    },
+    {
+      "bytes": 37,
+      "mtime_ns": 1789439606680692500,
+      "path": "test_lineage_closure_rereads_t0/solver/user/.codex/config.toml",
+      "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_lineage_closure_rereads_t0\\solver\\user\\.codex\\config.toml"
+    },
+    {
+      "bytes": 1357,
+      "mtime_ns": 1789439520197282000,
+      "path": "test_null_headless_binding_is_0/custody.json",
+      "sha256": "40525c122b0539569afd1909647d1c74be3f39af66778b1f1c7275140848cc6d",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\custody.json"
+    },
+    {
+      "bytes": 1,
+      "mtime_ns": 1789439519998049500,
+      "path": "test_null_headless_binding_is_0/custody.json.lock",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\custody.json.lock"
+    },
+    {
+      "bytes": 10,
+      "mtime_ns": 1789439529233106400,
+      "path": "test_null_headless_binding_is_0/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/data.csv",
+      "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\data.csv"
+    },
+    {
+      "bytes": 13211,
+      "mtime_ns": 1789439531228463600,
+      "path": "test_null_headless_binding_is_0/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/legacy-primary-artifacts.jsonl",
+      "sha256": "cd3ffb1bfe7c78250d69cf62a7b35a4d1196aea371d8c71f58b37bc359667ba6",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\legacy-primary-artifacts.jsonl"
+    },
+    {
+      "bytes": 304,
+      "mtime_ns": 1789439531806098900,
+      "path": "test_null_headless_binding_is_0/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/legacy-primary-artifacts.jsonl.seal.json",
+      "sha256": "0e1ed0995c6592b8067932306ddff858157f45d1586c6860600d167bcaf98a18",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\legacy-primary-artifacts.jsonl.seal.json"
+    },
+    {
+      "bytes": 3149,
+      "mtime_ns": 1789439532638539600,
+      "path": "test_null_headless_binding_is_0/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/packet-seal.json",
+      "sha256": "be14f3c2b441c7db4d29ad0c36bb5dd7bcd3710bb606152a4303829838cb19c8",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\packet-seal.json"
+    },
+    {
+      "bytes": 1068,
+      "mtime_ns": 1789439530507086600,
+      "path": "test_null_headless_binding_is_0/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/public.json",
+      "sha256": "a524ea3dc23ac656b0caaf72177d1c821d08c042523254f2fe21e436c6ef119f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\public.json"
+    },
+    {
+      "bytes": 2766,
+      "mtime_ns": 1789439528066422500,
+      "path": "test_null_headless_binding_is_0/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/reservation.json",
+      "sha256": "28339c51ae3cd8070041c38a69eb85b196cfdda54420cba4e0c355ef5fa05e0a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\reservation.json"
+    },
+    {
+      "bytes": 6,
+      "mtime_ns": 1789439520993908200,
+      "path": "test_null_headless_binding_is_0/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/data.csv",
+      "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\data.csv"
+    },
+    {
+      "bytes": 13662,
+      "mtime_ns": 1789439523625029000,
+      "path": "test_null_headless_binding_is_0/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/legacy-primary-artifacts.jsonl",
+      "sha256": "f553d77c5cbb5a0e3f75ed035bf16aaec2142643a1182f11af17b6dceb23dcd1",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\legacy-primary-artifacts.jsonl"
+    },
+    {
+      "bytes": 304,
+      "mtime_ns": 1789439527216665000,
+      "path": "test_null_headless_binding_is_0/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/legacy-primary-artifacts.jsonl.seal.json",
+      "sha256": "3876e642f82a87488ddcd29db1a97d4828ff34908bb46b17918e353ef63668b2",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\legacy-primary-artifacts.jsonl.seal.json"
+    },
+    {
+      "bytes": 3386,
+      "mtime_ns": 1789439527740106600,
+      "path": "test_null_headless_binding_is_0/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/packet-seal.json",
+      "sha256": "a35c9b592071d14ee151cc927068b3e488685ef8029cdad804d471b5e414e1ae",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\packet-seal.json"
+    },
+    {
+      "bytes": 1347,
+      "mtime_ns": 1789439522584854500,
+      "path": "test_null_headless_binding_is_0/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/public.json",
+      "sha256": "67f0a164f4b24b02f96fff92ade62ef15ff9b8be28b5dbe9954108cbfef71623",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\public.json"
+    },
+    {
+      "bytes": 3003,
+      "mtime_ns": 1789439520555144300,
+      "path": "test_null_headless_binding_is_0/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/reservation.json",
+      "sha256": "b035890c2cab54755ccf13c93dfefadc29e2918a4ecffb8fc991373478411f9e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\reservation.json"
+    },
+    {
+      "bytes": 6,
+      "mtime_ns": 1789439519984028500,
+      "path": "test_null_headless_binding_is_0/public-snapshot/discovery/upstream/discoverybench/synth/train/family_1_1/data.csv",
+      "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\public-snapshot\\discovery\\upstream\\discoverybench\\synth\\train\\family_1_1\\data.csv"
+    },
+    {
+      "bytes": 120,
+      "mtime_ns": 1789439519984028500,
+      "path": "test_null_headless_binding_is_0/public-snapshot/discovery/upstream/discoverybench/synth/train/family_1_1/metadata_1.json",
+      "sha256": "2115a649c012d30e5151724fcf6e7255077b299df839a5f6480d2b447092d5d0",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\public-snapshot\\discovery\\upstream\\discoverybench\\synth\\train\\family_1_1\\metadata_1.json"
+    },
+    {
+      "bytes": 10,
+      "mtime_ns": 1789439519985026300,
+      "path": "test_null_headless_binding_is_0/public-snapshot/scienceagent/work/BLADE/blade_bench/datasets/fish/data.csv",
+      "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\public-snapshot\\scienceagent\\work\\BLADE\\blade_bench\\datasets\\fish\\data.csv"
+    },
+    {
+      "bytes": 109,
+      "mtime_ns": 1789439519984028500,
+      "path": "test_null_headless_binding_is_0/public-snapshot/scienceagent/work/BLADE/blade_bench/datasets/fish/info.json",
+      "sha256": "b6b6e79cf1fcf1e856a8eb4953a122d9be1610e1b6b6d7b4df30956fa7db6efd",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_null_headless_binding_is_0\\public-snapshot\\scienceagent\\work\\BLADE\\blade_bench\\datasets\\fish\\info.json"
+    },
+    {
+      "bytes": 205,
+      "mtime_ns": 1789439568173112900,
+      "path": "test_partial_signed_native_clo0/cell/runtime/analysis-1.py",
+      "sha256": "2a966d978470db14971d69c9b25758ec470506aea24e77230ee753e4fa0fdab5",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\runtime\\analysis-1.py"
+    },
+    {
+      "bytes": 98963,
+      "mtime_ns": 1789439571165973500,
+      "path": "test_partial_signed_native_clo0/cell/runtime/artifacts.jsonl",
+      "sha256": "f86d97e5cb9408556002d39f1eb79751ff9bf71ce2237ba8f2920530048fe6ed",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\runtime\\artifacts.jsonl"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439561935693600,
+      "path": "test_partial_signed_native_clo0/cell/runtime/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\runtime\\claims.jsonl"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439561934646600,
+      "path": "test_partial_signed_native_clo0/cell/runtime/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\runtime\\evidence.jsonl"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439562858687100,
+      "path": "test_partial_signed_native_clo0/cell/runtime/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\runtime\\predictions.jsonl"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439562858687100,
+      "path": "test_partial_signed_native_clo0/cell/runtime/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\runtime\\reviews.jsonl"
+    },
+    {
+      "bytes": 27990,
+      "mtime_ns": 1789439571008057300,
+      "path": "test_partial_signed_native_clo0/cell/runtime/trace.jsonl",
+      "sha256": "7cbc105ea67d7728a60dc817d9477628ea41586046664e0ad85db5186ee0b670",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\runtime\\trace.jsonl"
+    },
+    {
+      "bytes": 4453,
+      "mtime_ns": 1789439557650731800,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json",
+      "sha256": "0558d12054cb7a073320ac33a1297419ac6169564edf921902fb65c373f47a5a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json"
+    },
+    {
+      "bytes": 4738,
+      "mtime_ns": 1789439550543140500,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/attempt.json",
+      "sha256": "563b9567b982ba4e3ee77f1ab66ba8a234f8124312c6ba37928be36b349e4e45",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\attempt.json"
+    },
+    {
+      "bytes": 4453,
+      "mtime_ns": 1789439557658619300,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/blobs/0558d12054cb7a073320ac33a1297419ac6169564edf921902fb65c373f47a5a",
+      "sha256": "0558d12054cb7a073320ac33a1297419ac6169564edf921902fb65c373f47a5a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\blobs\\0558d12054cb7a073320ac33a1297419ac6169564edf921902fb65c373f47a5a"
+    },
+    {
+      "bytes": 1860,
+      "mtime_ns": 1789439551186400200,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/blobs/1245eee83f8010d518cb714978b9ac62424f44f0455d1ba4d17546e75925b700",
+      "sha256": "1245eee83f8010d518cb714978b9ac62424f44f0455d1ba4d17546e75925b700",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\blobs\\1245eee83f8010d518cb714978b9ac62424f44f0455d1ba4d17546e75925b700"
+    },
+    {
+      "bytes": 714,
+      "mtime_ns": 1789439554839610500,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/blobs/3cf6027d666729a20198a95957a0c569781ff2c9fc5e9028ab5e1b943357792c",
+      "sha256": "3cf6027d666729a20198a95957a0c569781ff2c9fc5e9028ab5e1b943357792c",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\blobs\\3cf6027d666729a20198a95957a0c569781ff2c9fc5e9028ab5e1b943357792c"
+    },
+    {
+      "bytes": 13609,
+      "mtime_ns": 1789439553295279000,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/blobs/52ce7f9279c4d2bb791d5faf5948505b16d66d0c268bd97f80ad1df374420834",
+      "sha256": "52ce7f9279c4d2bb791d5faf5948505b16d66d0c268bd97f80ad1df374420834",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\blobs\\52ce7f9279c4d2bb791d5faf5948505b16d66d0c268bd97f80ad1df374420834"
+    },
+    {
+      "bytes": 30044,
+      "mtime_ns": 1789439552797570500,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/blobs/5815ed98ff5ebcd5e35ba876efb02044ce57da9d78f90a03116f77571ef0a196",
+      "sha256": "5815ed98ff5ebcd5e35ba876efb02044ce57da9d78f90a03116f77571ef0a196",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\blobs\\5815ed98ff5ebcd5e35ba876efb02044ce57da9d78f90a03116f77571ef0a196"
+    },
+    {
+      "bytes": 3745,
+      "mtime_ns": 1789439556180299400,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/blobs/5ba39b367b3405a176bcc974908bac7fb01abeca148558954e88c9361216102e",
+      "sha256": "5ba39b367b3405a176bcc974908bac7fb01abeca148558954e88c9361216102e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\blobs\\5ba39b367b3405a176bcc974908bac7fb01abeca148558954e88c9361216102e"
+    },
+    {
+      "bytes": 3526,
+      "mtime_ns": 1789439555798736400,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/blobs/78fb4f5197ee0666373492ffd765131da9c0301c243324392146736899f9c0ba",
+      "sha256": "78fb4f5197ee0666373492ffd765131da9c0301c243324392146736899f9c0ba",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\blobs\\78fb4f5197ee0666373492ffd765131da9c0301c243324392146736899f9c0ba"
+    },
+    {
+      "bytes": 2227,
+      "mtime_ns": 1789439550687453500,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/blobs/952ce81898eee8d92e337cf2b2db4d86386e399187e90bae8b60d90b49ea7502",
+      "sha256": "952ce81898eee8d92e337cf2b2db4d86386e399187e90bae8b60d90b49ea7502",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\blobs\\952ce81898eee8d92e337cf2b2db4d86386e399187e90bae8b60d90b49ea7502"
+    },
+    {
+      "bytes": 714,
+      "mtime_ns": 1789439557216509600,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/blobs/9b7dc1abea069cf721e2e52950132817dbc4040e163da1d0bf3da90fe4320384",
+      "sha256": "9b7dc1abea069cf721e2e52950132817dbc4040e163da1d0bf3da90fe4320384",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\blobs\\9b7dc1abea069cf721e2e52950132817dbc4040e163da1d0bf3da90fe4320384"
+    },
+    {
+      "bytes": 167,
+      "mtime_ns": 1789439551670279200,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/blobs/bbec0103765fefe4688dfbceb51a2b2e312cfd143f18eafff0e6f121279afd72",
+      "sha256": "bbec0103765fefe4688dfbceb51a2b2e312cfd143f18eafff0e6f121279afd72",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\blobs\\bbec0103765fefe4688dfbceb51a2b2e312cfd143f18eafff0e6f121279afd72"
+    },
+    {
+      "bytes": 339,
+      "mtime_ns": 1789439550867957800,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/blobs/dc1ae6cebcfda03c3367e8fb72531140f5b38504c3ffa16e7dd962c140c5b6e9",
+      "sha256": "dc1ae6cebcfda03c3367e8fb72531140f5b38504c3ffa16e7dd962c140c5b6e9",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\blobs\\dc1ae6cebcfda03c3367e8fb72531140f5b38504c3ffa16e7dd962c140c5b6e9"
+    },
+    {
+      "bytes": 16125,
+      "mtime_ns": 1789439553074326700,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/blobs/f53c6700414c43279cc60a75f964313f410f92657a9a3b5b60966f2999c6b620",
+      "sha256": "f53c6700414c43279cc60a75f964313f410f92657a9a3b5b60966f2999c6b620",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\blobs\\f53c6700414c43279cc60a75f964313f410f92657a9a3b5b60966f2999c6b620"
+    },
+    {
+      "bytes": 2818,
+      "mtime_ns": 1789439554008399200,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/blobs/f74d90774ba438519c9ab8bffab20d5afda9109875cd65e38537ee674a79c70f",
+      "sha256": "f74d90774ba438519c9ab8bffab20d5afda9109875cd65e38537ee674a79c70f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\blobs\\f74d90774ba438519c9ab8bffab20d5afda9109875cd65e38537ee674a79c70f"
+    },
+    {
+      "bytes": 3899,
+      "mtime_ns": 1789439558073554100,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/journal.jsonl",
+      "sha256": "f74c13c36615e3479a73f43b4f2853242b67c4502c1c9788f01cf1ce0b5c616f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\journal.jsonl"
+    },
+    {
+      "bytes": 185,
+      "mtime_ns": 1789439558389453400,
+      "path": "test_partial_signed_native_clo0/cell/source-verification.json.artifacts/seal.json",
+      "sha256": "bdc694d938cab19bfe9091599594f6230446d2fcda2f5d34562175f15c3edaf3",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\cell\\source-verification.json.artifacts\\seal.json"
+    },
+    {
+      "bytes": 1357,
+      "mtime_ns": 1789439534287108100,
+      "path": "test_partial_signed_native_clo0/headless/custody.json",
+      "sha256": "40525c122b0539569afd1909647d1c74be3f39af66778b1f1c7275140848cc6d",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\custody.json"
+    },
+    {
+      "bytes": 1,
+      "mtime_ns": 1789439533724118800,
+      "path": "test_partial_signed_native_clo0/headless/custody.json.lock",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\custody.json.lock"
+    },
+    {
+      "bytes": 1502,
+      "mtime_ns": 1789439545791790600,
+      "path": "test_partial_signed_native_clo0/headless/lineage-references/blade-reference.json",
+      "sha256": "d1f2444335feea4831547b964d656ba3ab6004a2bba1183082d25e8a94f01794",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\lineage-references\\blade-reference.json"
+    },
+    {
+      "bytes": 960,
+      "mtime_ns": 1789439545790287900,
+      "path": "test_partial_signed_native_clo0/headless/lineage-references/blade-source.json",
+      "sha256": "1faf0e26291171aa1cf47db772cff0f6f9495e3eb92253b94bacae7311c5efb2",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\lineage-references\\blade-source.json"
+    },
+    {
+      "bytes": 1566,
+      "mtime_ns": 1789439545787289600,
+      "path": "test_partial_signed_native_clo0/headless/lineage-references/discoverybench-reference.json",
+      "sha256": "7640467fea0c9b8862e2b765a723d6c29d1f4cfdf69f38a9fa85861f4e0c63c8",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\lineage-references\\discoverybench-reference.json"
+    },
+    {
+      "bytes": 1014,
+      "mtime_ns": 1789439545786047500,
+      "path": "test_partial_signed_native_clo0/headless/lineage-references/discoverybench-source.json",
+      "sha256": "54c473bd3b7b7584eaa64761aac388cec00ee4ad55561d4725382aecf3adbdf9",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\lineage-references\\discoverybench-source.json"
+    },
+    {
+      "bytes": 1103,
+      "mtime_ns": 1789439545791790600,
+      "path": "test_partial_signed_native_clo0/headless/lineage-references/manifest.json",
+      "sha256": "1550ab7285c8390fcdcfd6fbafa63f17c90317a7296d8f7f530b96f1625aa9a4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\lineage-references\\manifest.json"
+    },
+    {
+      "bytes": 10,
+      "mtime_ns": 1789439542539364500,
+      "path": "test_partial_signed_native_clo0/headless/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/data.csv",
+      "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\data.csv"
+    },
+    {
+      "bytes": 13211,
+      "mtime_ns": 1789439544620399400,
+      "path": "test_partial_signed_native_clo0/headless/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/legacy-primary-artifacts.jsonl",
+      "sha256": "d3f5d672e19ae414ea71087f7291b0f001ab39cb7e72be9243077cc7d250b883",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\legacy-primary-artifacts.jsonl"
+    },
+    {
+      "bytes": 304,
+      "mtime_ns": 1789439544782960300,
+      "path": "test_partial_signed_native_clo0/headless/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/legacy-primary-artifacts.jsonl.seal.json",
+      "sha256": "8f462ec6895498601c58d16ad8877393df41c1ac7fd97360e16aac4d2bb8a275",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\legacy-primary-artifacts.jsonl.seal.json"
+    },
+    {
+      "bytes": 3149,
+      "mtime_ns": 1789439545176756000,
+      "path": "test_partial_signed_native_clo0/headless/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/packet-seal.json",
+      "sha256": "8b2475bed7d7b89a808675a115fc88dba0b269f78a41a66815b89e5bbc9b8155",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\packet-seal.json"
+    },
+    {
+      "bytes": 1068,
+      "mtime_ns": 1789439543793916700,
+      "path": "test_partial_signed_native_clo0/headless/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/public.json",
+      "sha256": "a524ea3dc23ac656b0caaf72177d1c821d08c042523254f2fe21e436c6ef119f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\public.json"
+    },
+    {
+      "bytes": 2766,
+      "mtime_ns": 1789439541426361300,
+      "path": "test_partial_signed_native_clo0/headless/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/reservation.json",
+      "sha256": "b30a0f9ccc3382b7e94b518e845ebff4367c8f12eec0536e8a6a6d77236c145c",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\reservation.json"
+    },
+    {
+      "bytes": 6,
+      "mtime_ns": 1789439536908443400,
+      "path": "test_partial_signed_native_clo0/headless/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/data.csv",
+      "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\data.csv"
+    },
+    {
+      "bytes": 13662,
+      "mtime_ns": 1789439539650510800,
+      "path": "test_partial_signed_native_clo0/headless/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/legacy-primary-artifacts.jsonl",
+      "sha256": "d2f50041a627a0b9bd3ddca8620bcf303078ca1747ec10a8d8fef8bbc207662b",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\legacy-primary-artifacts.jsonl"
+    },
+    {
+      "bytes": 304,
+      "mtime_ns": 1789439539983199500,
+      "path": "test_partial_signed_native_clo0/headless/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/legacy-primary-artifacts.jsonl.seal.json",
+      "sha256": "bf3a00ad917c6d717aadbb3236dd07d0c17a3af65af61bfee0b9ef7ef17d5215",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\legacy-primary-artifacts.jsonl.seal.json"
+    },
+    {
+      "bytes": 3386,
+      "mtime_ns": 1789439540943495900,
+      "path": "test_partial_signed_native_clo0/headless/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/packet-seal.json",
+      "sha256": "5cd6199441cac0c0f123423e02ce61f2a25ec1eba92584fce4fb14d508af5d06",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\packet-seal.json"
+    },
+    {
+      "bytes": 1347,
+      "mtime_ns": 1789439538453544600,
+      "path": "test_partial_signed_native_clo0/headless/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/public.json",
+      "sha256": "67f0a164f4b24b02f96fff92ade62ef15ff9b8be28b5dbe9954108cbfef71623",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\public.json"
+    },
+    {
+      "bytes": 3003,
+      "mtime_ns": 1789439534795937300,
+      "path": "test_partial_signed_native_clo0/headless/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/reservation.json",
+      "sha256": "6dbd24c4c426eec41097e0db5f3f92959f7c0529b064e97c283e63bee0172380",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\reservation.json"
+    },
+    {
+      "bytes": 7027,
+      "mtime_ns": 1789439572359455900,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/headless-request.private.json",
+      "sha256": "35cca2e8696795bf479d6bdb420a77733e6933ddf554bb1a62cd2d961294136d",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\headless-request.private.json"
+    },
+    {
+      "bytes": 872,
+      "mtime_ns": 1789439572512244700,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native-home/config.toml",
+      "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native-home\\config.toml"
+    },
+    {
+      "bytes": 13315,
+      "mtime_ns": 1789439572526602600,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native-reservation.json",
+      "sha256": "a475bfc4243ab065d639ef75da3a0d7451258939725eddc87754d83abae1b870",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native-reservation.json"
+    },
+    {
+      "bytes": 263,
+      "mtime_ns": 1789439574040104200,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/billing-after/attempt-000/credits.private.json",
+      "sha256": "eb8cfee69916bb1320b793ff4db2d59dd116006aeb362ccf8b2ef7e783bbe24a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempt-000\\credits.private.json"
+    },
+    {
+      "bytes": 692,
+      "mtime_ns": 1789439574070380200,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/billing-after/attempt-000/observation.json",
+      "sha256": "75f5fbdf96d22fd349173e52ccd36defd00696d34ef52f7d87d869e463a90ee4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempt-000\\observation.json"
+    },
+    {
+      "bytes": 959,
+      "mtime_ns": 1789439574064596700,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/billing-after/attempt-000/requests.json",
+      "sha256": "71c21b6853182e985238e18899b8b0962c577ad685611c57ad9ec3deaef17aaf",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempt-000\\requests.json"
+    },
+    {
+      "bytes": 2,
+      "mtime_ns": 1789439574063021000,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/billing-after/attempt-000/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempt-000\\topup.private.json"
+    },
+    {
+      "bytes": 142,
+      "mtime_ns": 1789439574064069200,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/billing-after/attempt-000/user.private.json",
+      "sha256": "56cc03df8899f89c9059fe8db7c12c1e10015b5abf8b882b8bd87221c2954762",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempt-000\\user.private.json"
+    },
+    {
+      "bytes": 1064,
+      "mtime_ns": 1789439574080115800,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/billing-after/attempts.json",
+      "sha256": "86db5a8f637e92aefa64ac6a6af6970a513a4130cf46885c503fe137024acd8d",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-after\\attempts.json"
+    },
+    {
+      "bytes": 263,
+      "mtime_ns": 1789439573929710700,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/billing-before/attempt-000/credits.private.json",
+      "sha256": "52b11b4a4a3b38f2b2f7b9913f58474e5d7631bf9586237d02eea32c0f8d4990",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempt-000\\credits.private.json"
+    },
+    {
+      "bytes": 692,
+      "mtime_ns": 1789439573941365000,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/billing-before/attempt-000/observation.json",
+      "sha256": "dd3d2c50e623d81cdb666f894068538a31d4c85425bc220154ca55a95b758e87",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempt-000\\observation.json"
+    },
+    {
+      "bytes": 959,
+      "mtime_ns": 1789439573934968700,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/billing-before/attempt-000/requests.json",
+      "sha256": "325c60d9c24a988d93311efdeb94285a70c3870d2a447a636db6f1ac3e24bfbd",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempt-000\\requests.json"
+    },
+    {
+      "bytes": 2,
+      "mtime_ns": 1789439573933370600,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/billing-before/attempt-000/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempt-000\\topup.private.json"
+    },
+    {
+      "bytes": 142,
+      "mtime_ns": 1789439573934436500,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/billing-before/attempt-000/user.private.json",
+      "sha256": "56cc03df8899f89c9059fe8db7c12c1e10015b5abf8b882b8bd87221c2954762",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempt-000\\user.private.json"
+    },
+    {
+      "bytes": 1064,
+      "mtime_ns": 1789439573953705000,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/billing-before/attempts.json",
+      "sha256": "cfca91003c2c4be37f29d928eb12414f4d87d469ae6d9ed175d15522354f0b2b",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\billing-before\\attempts.json"
+    },
+    {
+      "bytes": 3067,
+      "mtime_ns": 1789439572768232400,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/command.json",
+      "sha256": "1db1be4bedf2dc31360f159596276b9fce39b8b73309ec14d48d5cfbeae678d3",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\command.json"
+    },
+    {
+      "bytes": 6371,
+      "mtime_ns": 1789439573928155600,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/inspect/process.json",
+      "sha256": "9dba657f3168b55f7bce3f20bb95dc4589f600a99c84c254258b8bad9334a4c1",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\inspect\\process.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439573848622600,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/inspect/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\inspect\\stderr.private.txt"
+    },
+    {
+      "bytes": 179,
+      "mtime_ns": 1789439573848108500,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/inspect/stdout.private.jsonl",
+      "sha256": "4ede3fe5926584428971f55e9d13e23b2f0a08b90a53ef91307d7dbb8d9b6a1a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\inspect\\stdout.private.jsonl"
+    },
+    {
+      "bytes": 22591,
+      "mtime_ns": 1789439574096018000,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/observer-receipt.json",
+      "sha256": "56c1ca8cc542009a4763e92d9de5723c7361bd75d2528c128b2fde2605ce2d41",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\observer-receipt.json"
+    },
+    {
+      "bytes": 9051,
+      "mtime_ns": 1789439574038003400,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/process.json",
+      "sha256": "b83120fe4948aa28117ed3cf2131c98a88aca122d04484f38ff04e7bc78bec2e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\process.json"
+    },
+    {
+      "bytes": 5923,
+      "mtime_ns": 1789439572754053300,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/prompt.private.txt",
+      "sha256": "833ad81a1f672e12ee6539b048b224a723d1be57b4ac1f4abffaac6afc04b113",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\prompt.private.txt"
+    },
+    {
+      "bytes": 222,
+      "mtime_ns": 1789439574039004000,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/response.private.json",
+      "sha256": "3723a868006c70a6849fc3e49328a378a4883168cbf87cb7b68d6aa2452b0b85",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\response.private.json"
+    },
+    {
+      "bytes": 713,
+      "mtime_ns": 1789439572754053300,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/schema.private.json",
+      "sha256": "a8b07dafd52378266a0bc19bed20e8d394eeab6477b3c11a7067f9b788b89201",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\schema.private.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439574038003400,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\stderr.private.txt"
+    },
+    {
+      "bytes": 1387,
+      "mtime_ns": 1789439574038003400,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/native/stdout.private.jsonl",
+      "sha256": "425d8b0b048e1fe93c14cc20fb164f81df07322284741617101926f50f8853a1",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\native\\stdout.private.jsonl"
+    },
+    {
+      "bytes": 22591,
+      "mtime_ns": 1789439574104177100,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/observer-receipt.private.json",
+      "sha256": "56c1ca8cc542009a4763e92d9de5723c7361bd75d2528c128b2fde2605ce2d41",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\observer-receipt.private.json"
+    },
+    {
+      "bytes": 7454,
+      "mtime_ns": 1789439572358920600,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/request.private.json",
+      "sha256": "645dd89da0d1e7f52cea70aeb07caab370cffcb9dd110ab20a0768c26c4cd8ff",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\request.private.json"
+    },
+    {
+      "bytes": 222,
+      "mtime_ns": 1789439574170945400,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/response.private.json",
+      "sha256": "3723a868006c70a6849fc3e49328a378a4883168cbf87cb7b68d6aa2452b0b85",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\response.private.json"
+    },
+    {
+      "bytes": 238,
+      "mtime_ns": 1789439573965322000,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/calls/0001-discoverybench/synthetic-lineage-answer.json",
+      "sha256": "ea90ab9dd7c50472642a4f9f7cb45b227c11ea257c364cd79ada3836b0107574",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\calls\\0001-discoverybench\\synthetic-lineage-answer.json"
+    },
+    {
+      "bytes": 14136,
+      "mtime_ns": 1789439574171465900,
+      "path": "test_partial_signed_native_clo0/headless/native/ledger/ledger.json",
+      "sha256": "1e27dc121734c505bd743e24d4264b1df5d132e37b5b30a00056a14cddaf4f98",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\ledger\\ledger.json"
+    },
+    {
+      "bytes": 62,
+      "mtime_ns": 1789439549622023400,
+      "path": "test_partial_signed_native_clo0/headless/native/synthetic-grok.exe",
+      "sha256": "a3a814392148b74102a06a43dbea7697e8942652545fe7e3d06159114e7dbae7",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\native\\synthetic-grok.exe"
+    },
+    {
+      "bytes": 555,
+      "mtime_ns": 1789439545781381700,
+      "path": "test_partial_signed_native_clo0/headless/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+      "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\private-scorer-store\\0000000000000000000000000000000000000000000000000000000000000001.json"
+    },
+    {
+      "bytes": 549,
+      "mtime_ns": 1789439545785054600,
+      "path": "test_partial_signed_native_clo0/headless/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+      "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\private-scorer-store\\0000000000000000000000000000000000000000000000000000000000000002.json"
+    },
+    {
+      "bytes": 1907,
+      "mtime_ns": 1789439545786047500,
+      "path": "test_partial_signed_native_clo0/headless/private-scorer-store/manifest.json",
+      "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\private-scorer-store\\manifest.json"
+    },
+    {
+      "bytes": 6,
+      "mtime_ns": 1789439533720139400,
+      "path": "test_partial_signed_native_clo0/headless/public-snapshot/discovery/upstream/discoverybench/synth/train/family_1_1/data.csv",
+      "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\public-snapshot\\discovery\\upstream\\discoverybench\\synth\\train\\family_1_1\\data.csv"
+    },
+    {
+      "bytes": 120,
+      "mtime_ns": 1789439533720139400,
+      "path": "test_partial_signed_native_clo0/headless/public-snapshot/discovery/upstream/discoverybench/synth/train/family_1_1/metadata_1.json",
+      "sha256": "2115a649c012d30e5151724fcf6e7255077b299df839a5f6480d2b447092d5d0",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\public-snapshot\\discovery\\upstream\\discoverybench\\synth\\train\\family_1_1\\metadata_1.json"
+    },
+    {
+      "bytes": 10,
+      "mtime_ns": 1789439533721140200,
+      "path": "test_partial_signed_native_clo0/headless/public-snapshot/scienceagent/work/BLADE/blade_bench/datasets/fish/data.csv",
+      "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\public-snapshot\\scienceagent\\work\\BLADE\\blade_bench\\datasets\\fish\\data.csv"
+    },
+    {
+      "bytes": 109,
+      "mtime_ns": 1789439533720139400,
+      "path": "test_partial_signed_native_clo0/headless/public-snapshot/scienceagent/work/BLADE/blade_bench/datasets/fish/info.json",
+      "sha256": "b6b6e79cf1fcf1e856a8eb4953a122d9be1610e1b6b6d7b4df30956fa7db6efd",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\public-snapshot\\scienceagent\\work\\BLADE\\blade_bench\\datasets\\fish\\info.json"
+    },
+    {
+      "bytes": 15297,
+      "mtime_ns": 1789439549628579600,
+      "path": "test_partial_signed_native_clo0/headless/worker0/server.json",
+      "sha256": "30d31c8c40e6c22c5c8e1ed97e7dcf7059436e205bc7093d539765508a8ef7d2",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\worker0\\server.json"
+    },
+    {
+      "bytes": 16829,
+      "mtime_ns": 1789439549386160900,
+      "path": "test_partial_signed_native_clo0/headless/worker1/server.json",
+      "sha256": "7ea2dc739701979eaaf61e9670fe9aafa8163e32f9f9bc3cdbd91e21ff19f15f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\worker1\\server.json"
+    },
+    {
+      "bytes": 16890,
+      "mtime_ns": 1789439549394023900,
+      "path": "test_partial_signed_native_clo0/headless/worker2/server.json",
+      "sha256": "3c799eedd8a73ba375f067f9ee08c04137b2fb8e8967ead23821e3be75e92eaa",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\worker2\\server.json"
+    },
+    {
+      "bytes": 23395,
+      "mtime_ns": 1789439549615511200,
+      "path": "test_partial_signed_native_clo0/headless/worker3/server.json",
+      "sha256": "def6ce634f99e5d87ecfab623010ee69b060abb22296cdc4a5dcbae8b52183be",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\headless\\worker3\\server.json"
+    },
+    {
+      "bytes": 4891,
+      "mtime_ns": 1789439575822950900,
+      "path": "test_partial_signed_native_clo0/score-journal.jsonl",
+      "sha256": "a61ec60475b339dcb61393749c568b314f3c560e9781f3edf3776a703a6b991f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\score-journal.jsonl"
+    },
+    {
+      "bytes": 7870,
+      "mtime_ns": 1789439576610832000,
+      "path": "test_partial_signed_native_clo0/score-journal.jsonl.headless-lineage-evaluator-finalization.jsonl",
+      "sha256": "bfc0e2d74585a886f4a2fb4784e4119fcae0b954dcef9b5e8364b1092490f127",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\score-journal.jsonl.headless-lineage-evaluator-finalization.jsonl"
+    },
+    {
+      "bytes": 11,
+      "mtime_ns": 1789439550283034400,
+      "path": "test_partial_signed_native_clo0/solver/codex.exe",
+      "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\codex.exe"
+    },
+    {
+      "bytes": 13002,
+      "mtime_ns": 1789439550516204100,
+      "path": "test_partial_signed_native_clo0/solver/context-audit/UNQUALIFIED-BASE-CONTEXT-AUDIT.json",
+      "sha256": "2c7538a445ac6d516d4dd8bc7428d1b1c293d0876301cfce5a66ac24a691986c",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\context-audit\\UNQUALIFIED-BASE-CONTEXT-AUDIT.json"
+    },
+    {
+      "bytes": 10734,
+      "mtime_ns": 1789439550521208700,
+      "path": "test_partial_signed_native_clo0/solver/context-audit/UNQUALIFIED-POLICY.json",
+      "sha256": "b77424d8e18bcbdf89780c3f49cbf58d7877e58470e36ccf19a7b9b7c8f339f5",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\context-audit\\UNQUALIFIED-POLICY.json"
+    },
+    {
+      "bytes": 97,
+      "mtime_ns": 1789439550302287000,
+      "path": "test_partial_signed_native_clo0/solver/context-audit/base-context.visible.json",
+      "sha256": "38693fd65d691d0ac170adee33f0ab8189fa784919960219a37e6c2157eb7841",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\context-audit\\base-context.visible.json"
+    },
+    {
+      "bytes": 139,
+      "mtime_ns": 1789439550298243300,
+      "path": "test_partial_signed_native_clo0/solver/context-audit/debug-prompt-input.raw.json",
+      "sha256": "127fb70628b3e85e4446d2e4a2b4b46831fe839728c4c15fec2f13441c867fcb",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\context-audit\\debug-prompt-input.raw.json"
+    },
+    {
+      "bytes": 163,
+      "mtime_ns": 1789439564373881200,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0001-lineage_review/events.jsonl",
+      "sha256": "43058fe9e115b0033250187a12fca6a46d7b3aab89003772a89a51e6ac319b10",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0001-lineage_review\\events.jsonl"
+    },
+    {
+      "bytes": 124,
+      "mtime_ns": 1789439564271263900,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0001-lineage_review/output.json",
+      "sha256": "6d3926575b89cebb6cb68ba759df8d048c72309a9a4a8efcd7a52a71cf40b7a8",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0001-lineage_review\\output.json"
+    },
+    {
+      "bytes": 3146,
+      "mtime_ns": 1789439564263029400,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0001-lineage_review/prompt.txt",
+      "sha256": "ff6607f60c402b914743dbe8b756a64550d766cb3f125d4f2a028546c0b77644",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0001-lineage_review\\prompt.txt"
+    },
+    {
+      "bytes": 356,
+      "mtime_ns": 1789439564263029400,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0001-lineage_review/schema.json",
+      "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0001-lineage_review\\schema.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439564373881200,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0001-lineage_review/stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0001-lineage_review\\stderr.txt"
+    },
+    {
+      "bytes": 163,
+      "mtime_ns": 1789439565956164200,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0002-measurement_review/events.jsonl",
+      "sha256": "43058fe9e115b0033250187a12fca6a46d7b3aab89003772a89a51e6ac319b10",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0002-measurement_review\\events.jsonl"
+    },
+    {
+      "bytes": 128,
+      "mtime_ns": 1789439565861031100,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0002-measurement_review/output.json",
+      "sha256": "378f51a5763c7b14cc607796d79bc279682d16b9f10a40cc98afa4ce2286aba3",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0002-measurement_review\\output.json"
+    },
+    {
+      "bytes": 3140,
+      "mtime_ns": 1789439565854013000,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0002-measurement_review/prompt.txt",
+      "sha256": "f2d77295836b0855620a122479e97ed45af8ac9da6c658ebee7a2a3cae5d0819",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0002-measurement_review\\prompt.txt"
+    },
+    {
+      "bytes": 356,
+      "mtime_ns": 1789439565853006600,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0002-measurement_review/schema.json",
+      "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0002-measurement_review\\schema.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439565957668500,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0002-measurement_review/stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0002-measurement_review\\stderr.txt"
+    },
+    {
+      "bytes": 163,
+      "mtime_ns": 1789439567811887800,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0003-analysis_program/events.jsonl",
+      "sha256": "43058fe9e115b0033250187a12fca6a46d7b3aab89003772a89a51e6ac319b10",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0003-analysis_program\\events.jsonl"
+    },
+    {
+      "bytes": 280,
+      "mtime_ns": 1789439567805339000,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0003-analysis_program/output.json",
+      "sha256": "d614d976c2046d45d7037a4e4f31bf5d3344256d00a32fa423b55ef584a46ef8",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0003-analysis_program\\output.json"
+    },
+    {
+      "bytes": 3272,
+      "mtime_ns": 1789439567798322200,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0003-analysis_program/prompt.txt",
+      "sha256": "b89a240907ca0e06f3eec56f578abdf34b0872bed24b0aae3741fff47784a1a1",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0003-analysis_program\\prompt.txt"
+    },
+    {
+      "bytes": 152,
+      "mtime_ns": 1789439567798322200,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0003-analysis_program/schema.json",
+      "sha256": "fd0c444a2e3b004a5c3232ec3ceef3017d2aefd685c0ef412e442f84f5ade689",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0003-analysis_program\\schema.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439567811887800,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0003-analysis_program/stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0003-analysis_program\\stderr.txt"
+    },
+    {
+      "bytes": 163,
+      "mtime_ns": 1789439570663316900,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0004-final_answer/events.jsonl",
+      "sha256": "43058fe9e115b0033250187a12fca6a46d7b3aab89003772a89a51e6ac319b10",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0004-final_answer\\events.jsonl"
+    },
+    {
+      "bytes": 283,
+      "mtime_ns": 1789439570511321200,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0004-final_answer/output.json",
+      "sha256": "4d5a67b468629ac2bd631672fa78344e33331da4be46fa2dbacf5fad30f24128",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0004-final_answer\\output.json"
+    },
+    {
+      "bytes": 4645,
+      "mtime_ns": 1789439570504831200,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0004-final_answer/prompt.txt",
+      "sha256": "2573b37cd35cb46697ed47245638e33ccb0ec9162d4f45f1c873f7a6bd1661be",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0004-final_answer\\prompt.txt"
+    },
+    {
+      "bytes": 380,
+      "mtime_ns": 1789439570503827700,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0004-final_answer/schema.json",
+      "sha256": "99a5b8ec8e592c7ca8c4c31223dc7637b403e05a7ce6567f6d42c22a437bf3d6",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0004-final_answer\\schema.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789439570663316900,
+      "path": "test_partial_signed_native_clo0/solver/model/calls/0004-final_answer/stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\calls\\0004-final_answer\\stderr.txt"
+    },
+    {
+      "bytes": 139,
+      "mtime_ns": 1789439564256424400,
+      "path": "test_partial_signed_native_clo0/solver/model/context-probes/0001.json",
+      "sha256": "127fb70628b3e85e4446d2e4a2b4b46831fe839728c4c15fec2f13441c867fcb",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\context-probes\\0001.json"
+    },
+    {
+      "bytes": 139,
+      "mtime_ns": 1789439565790958100,
+      "path": "test_partial_signed_native_clo0/solver/model/context-probes/0002.json",
+      "sha256": "127fb70628b3e85e4446d2e4a2b4b46831fe839728c4c15fec2f13441c867fcb",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\context-probes\\0002.json"
+    },
+    {
+      "bytes": 139,
+      "mtime_ns": 1789439567788535000,
+      "path": "test_partial_signed_native_clo0/solver/model/context-probes/0003.json",
+      "sha256": "127fb70628b3e85e4446d2e4a2b4b46831fe839728c4c15fec2f13441c867fcb",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\context-probes\\0003.json"
+    },
+    {
+      "bytes": 139,
+      "mtime_ns": 1789439570497817300,
+      "path": "test_partial_signed_native_clo0/solver/model/context-probes/0004.json",
+      "sha256": "127fb70628b3e85e4446d2e4a2b4b46831fe839728c4c15fec2f13441c867fcb",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\context-probes\\0004.json"
+    },
+    {
+      "bytes": 32434,
+      "mtime_ns": 1789439570668564900,
+      "path": "test_partial_signed_native_clo0/solver/model/ledger.json",
+      "sha256": "94d09dc433c2477cbbb6ea43f02550fe8f95cbecbe378d157c1658ec31b6114e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\model\\ledger.json"
+    },
+    {
+      "bytes": 11134,
+      "mtime_ns": 1789439550529248600,
+      "path": "test_partial_signed_native_clo0/solver/reviewed-policy.json",
+      "sha256": "aa5dd179b09210335a403d87b8e680543efc9fa331d7dfe4c3c52d2f183a433a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\reviewed-policy.json"
+    },
+    {
+      "bytes": 37,
+      "mtime_ns": 1789439550283034400,
+      "path": "test_partial_signed_native_clo0/solver/user/.codex/config.toml",
+      "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_partial_signed_native_clo0\\solver\\user\\.codex\\config.toml"
+    },
+    {
+      "bytes": 1357,
+      "mtime_ns": 1789439589268547400,
+      "path": "test_per_panel_headless_worker0/root-alias/custody.json",
+      "sha256": "40525c122b0539569afd1909647d1c74be3f39af66778b1f1c7275140848cc6d",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\custody.json"
+    },
+    {
+      "bytes": 1,
+      "mtime_ns": 1789439589102985300,
+      "path": "test_per_panel_headless_worker0/root-alias/custody.json.lock",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\custody.json.lock"
+    },
+    {
+      "bytes": 1502,
+      "mtime_ns": 1789439598430999100,
+      "path": "test_per_panel_headless_worker0/root-alias/lineage-references/blade-reference.json",
+      "sha256": "d1f2444335feea4831547b964d656ba3ab6004a2bba1183082d25e8a94f01794",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\lineage-references\\blade-reference.json"
+    },
+    {
+      "bytes": 960,
+      "mtime_ns": 1789439598428986600,
+      "path": "test_per_panel_headless_worker0/root-alias/lineage-references/blade-source.json",
+      "sha256": "1faf0e26291171aa1cf47db772cff0f6f9495e3eb92253b94bacae7311c5efb2",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\lineage-references\\blade-source.json"
+    },
+    {
+      "bytes": 1566,
+      "mtime_ns": 1789439598427481800,
+      "path": "test_per_panel_headless_worker0/root-alias/lineage-references/discoverybench-reference.json",
+      "sha256": "7640467fea0c9b8862e2b765a723d6c29d1f4cfdf69f38a9fa85861f4e0c63c8",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\lineage-references\\discoverybench-reference.json"
+    },
+    {
+      "bytes": 1014,
+      "mtime_ns": 1789439598426482600,
+      "path": "test_per_panel_headless_worker0/root-alias/lineage-references/discoverybench-source.json",
+      "sha256": "54c473bd3b7b7584eaa64761aac388cec00ee4ad55561d4725382aecf3adbdf9",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\lineage-references\\discoverybench-source.json"
+    },
+    {
+      "bytes": 1103,
+      "mtime_ns": 1789439598430999100,
+      "path": "test_per_panel_headless_worker0/root-alias/lineage-references/manifest.json",
+      "sha256": "1550ab7285c8390fcdcfd6fbafa63f17c90317a7296d8f7f530b96f1625aa9a4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\lineage-references\\manifest.json"
+    },
+    {
+      "bytes": 10,
+      "mtime_ns": 1789439595434040000,
+      "path": "test_per_panel_headless_worker0/root-alias/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/data.csv",
+      "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\data.csv"
+    },
+    {
+      "bytes": 13211,
+      "mtime_ns": 1789439596866218900,
+      "path": "test_per_panel_headless_worker0/root-alias/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/legacy-primary-artifacts.jsonl",
+      "sha256": "57a7d2f067afcb7d3cf06969fcfacda50127cfc2ade49c5df928ba5f28de4c11",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\legacy-primary-artifacts.jsonl"
+    },
+    {
+      "bytes": 304,
+      "mtime_ns": 1789439597043971300,
+      "path": "test_per_panel_headless_worker0/root-alias/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/legacy-primary-artifacts.jsonl.seal.json",
+      "sha256": "15cb0740cbaabf5fab920adaef8353cca1a639c090f56536699f3d183322ac61",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\legacy-primary-artifacts.jsonl.seal.json"
+    },
+    {
+      "bytes": 3149,
+      "mtime_ns": 1789439598157416500,
+      "path": "test_per_panel_headless_worker0/root-alias/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/packet-seal.json",
+      "sha256": "afd2d8a32d5b8b34f5f2fcd42be41076eb7da16de810fa996c6787f4a9902629",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\packet-seal.json"
+    },
+    {
+      "bytes": 1068,
+      "mtime_ns": 1789439596045816100,
+      "path": "test_per_panel_headless_worker0/root-alias/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/public.json",
+      "sha256": "a524ea3dc23ac656b0caaf72177d1c821d08c042523254f2fe21e436c6ef119f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\public.json"
+    },
+    {
+      "bytes": 2766,
+      "mtime_ns": 1789439593969575500,
+      "path": "test_per_panel_headless_worker0/root-alias/material/blade/1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe/reservation.json",
+      "sha256": "a0789a25694ff9ef6a980cc05f19a063a59d6f9ad230b791ce29bc40ebd9ad76",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\material\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\reservation.json"
+    },
+    {
+      "bytes": 6,
+      "mtime_ns": 1789439590827806000,
+      "path": "test_per_panel_headless_worker0/root-alias/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/data.csv",
+      "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\data.csv"
+    },
+    {
+      "bytes": 13662,
+      "mtime_ns": 1789439592504558900,
+      "path": "test_per_panel_headless_worker0/root-alias/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/legacy-primary-artifacts.jsonl",
+      "sha256": "79033f836319804b73e2c0f72848162a78a66cd98e14c569a01e2b406bc12adc",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\legacy-primary-artifacts.jsonl"
+    },
+    {
+      "bytes": 304,
+      "mtime_ns": 1789439592678221800,
+      "path": "test_per_panel_headless_worker0/root-alias/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/legacy-primary-artifacts.jsonl.seal.json",
+      "sha256": "b847341c05e9621da0ec713f891afd75a471799fb6d1ebf61332a695ed8d2108",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\legacy-primary-artifacts.jsonl.seal.json"
+    },
+    {
+      "bytes": 3386,
+      "mtime_ns": 1789439593466543500,
+      "path": "test_per_panel_headless_worker0/root-alias/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/packet-seal.json",
+      "sha256": "c5e8f1905f108de48702d85a861f60d9e83c6b0e4fc6ee244fa510ff9643f793",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\packet-seal.json"
+    },
+    {
+      "bytes": 1347,
+      "mtime_ns": 1789439591833560100,
+      "path": "test_per_panel_headless_worker0/root-alias/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/public.json",
+      "sha256": "67f0a164f4b24b02f96fff92ade62ef15ff9b8be28b5dbe9954108cbfef71623",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\public.json"
+    },
+    {
+      "bytes": 3003,
+      "mtime_ns": 1789439589738063400,
+      "path": "test_per_panel_headless_worker0/root-alias/material/discoverybench/19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387/reservation.json",
+      "sha256": "c0ac700b0cfb57d83281f4f8663e3c25369368d68c31680d76c9aa42a8388046",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\material\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\reservation.json"
+    },
+    {
+      "bytes": 62,
+      "mtime_ns": 1789439598477266800,
+      "path": "test_per_panel_headless_worker0/root-alias/native/synthetic-grok.exe",
+      "sha256": "a3a814392148b74102a06a43dbea7697e8942652545fe7e3d06159114e7dbae7",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\native\\synthetic-grok.exe"
+    },
+    {
+      "bytes": 555,
+      "mtime_ns": 1789439598321912400,
+      "path": "test_per_panel_headless_worker0/root-alias/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+      "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\private-scorer-store\\0000000000000000000000000000000000000000000000000000000000000001.json"
+    },
+    {
+      "bytes": 549,
+      "mtime_ns": 1789439598424975400,
+      "path": "test_per_panel_headless_worker0/root-alias/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+      "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\private-scorer-store\\0000000000000000000000000000000000000000000000000000000000000002.json"
+    },
+    {
+      "bytes": 1907,
+      "mtime_ns": 1789439598425478800,
+      "path": "test_per_panel_headless_worker0/root-alias/private-scorer-store/manifest.json",
+      "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\private-scorer-store\\manifest.json"
+    },
+    {
+      "bytes": 6,
+      "mtime_ns": 1789439589098838900,
+      "path": "test_per_panel_headless_worker0/root-alias/public-snapshot/discovery/upstream/discoverybench/synth/train/family_1_1/data.csv",
+      "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\public-snapshot\\discovery\\upstream\\discoverybench\\synth\\train\\family_1_1\\data.csv"
+    },
+    {
+      "bytes": 120,
+      "mtime_ns": 1789439589098325700,
+      "path": "test_per_panel_headless_worker0/root-alias/public-snapshot/discovery/upstream/discoverybench/synth/train/family_1_1/metadata_1.json",
+      "sha256": "2115a649c012d30e5151724fcf6e7255077b299df839a5f6480d2b447092d5d0",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\public-snapshot\\discovery\\upstream\\discoverybench\\synth\\train\\family_1_1\\metadata_1.json"
+    },
+    {
+      "bytes": 10,
+      "mtime_ns": 1789439589099374600,
+      "path": "test_per_panel_headless_worker0/root-alias/public-snapshot/scienceagent/work/BLADE/blade_bench/datasets/fish/data.csv",
+      "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\public-snapshot\\scienceagent\\work\\BLADE\\blade_bench\\datasets\\fish\\data.csv"
+    },
+    {
+      "bytes": 109,
+      "mtime_ns": 1789439589098838900,
+      "path": "test_per_panel_headless_worker0/root-alias/public-snapshot/scienceagent/work/BLADE/blade_bench/datasets/fish/info.json",
+      "sha256": "b6b6e79cf1fcf1e856a8eb4953a122d9be1610e1b6b6d7b4df30956fa7db6efd",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\public-snapshot\\scienceagent\\work\\BLADE\\blade_bench\\datasets\\fish\\info.json"
+    },
+    {
+      "bytes": 15317,
+      "mtime_ns": 1789439598479770300,
+      "path": "test_per_panel_headless_worker0/root-alias/worker0/server.json",
+      "sha256": "e73f8b481c3bd5a83b121d308b20fe1e2507bbe1a96584a2d148c2ad6e620702",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\worker0\\server.json"
+    },
+    {
+      "bytes": 16837,
+      "mtime_ns": 1789439598456938800,
+      "path": "test_per_panel_headless_worker0/root-alias/worker1/server.json",
+      "sha256": "29d800a37a618d8ab50e4868b71054f2695a8ff77e9b90c8cf4ec6b6dbbecf9e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\worker1\\server.json"
+    },
+    {
+      "bytes": 16898,
+      "mtime_ns": 1789439598464011800,
+      "path": "test_per_panel_headless_worker0/root-alias/worker2/server.json",
+      "sha256": "764a5ef1f759605cd6e7d16b783b3cfa794807152878ad880c5d2075f298173f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\worker2\\server.json"
+    },
+    {
+      "bytes": 23403,
+      "mtime_ns": 1789439598470570400,
+      "path": "test_per_panel_headless_worker0/root-alias/worker3/server.json",
+      "sha256": "18ea3c97b8eb0a60dba8b9cda14bb0d126cd4a4d00a5b89053d485499ff4803b",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-lineage-final-gate-root-r1\\test_per_panel_headless_worker0\\root-alias\\worker3\\server.json"
+    }
+  ],
+  "links_followed": false,
+  "original_bytes_and_mtime_unchanged": true,
+  "roots": [
+    "test_four_headless_lineage_std0",
+    "test_lineage_closure_rereads_t0",
+    "test_null_headless_binding_is_0",
+    "test_partial_signed_native_clo0",
+    "test_per_panel_headless_worker0"
+  ],
+  "schema": "headless-lineage-final-gate-retained-private-v1",
+  "zip": {
+    "bytes": 410349,
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\retained-private-evidence\\headless-lineage-final-gate-r1\\selected-nonlinked-test-roots-without-credentials.zip",
+    "sha256": "3a0338350b39e724b37fddffc8840e37c212a7d14acf3b8efd253ecd9706aa16"
+  }
+}

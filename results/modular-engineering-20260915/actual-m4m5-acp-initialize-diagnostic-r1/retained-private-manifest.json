@@ -1,0 +1,1000 @@
+{
+  "credential_exclusions": [
+    {
+      "bytes": 1768,
+      "mtime_ns": 1789437626640946900,
+      "path": "private-input-home-opaque/auth.json"
+    },
+    {
+      "bytes": 1768,
+      "mtime_ns": 1789437626640946900,
+      "path": "private-runtime-home/auth.json"
+    }
+  ],
+  "original_unchanged": true,
+  "pruned_links": [],
+  "source_manifest": [
+    {
+      "bytes": 2748,
+      "mtime_ns": 1789439251875663400,
+      "path": "RESULT.md",
+      "sha256": "58c7ed4f3d50a857435dda869762e79a416a3b79a60dede9c15a2bfc946c5fbe"
+    },
+    {
+      "bytes": 634,
+      "mtime_ns": 1789439081571848000,
+      "path": "command.safe.json",
+      "sha256": "29be2bd4fe79a78decdf512d4395173406760928641cf221612eadd913e14ffa"
+    },
+    {
+      "bytes": 9037,
+      "mtime_ns": 1789439079481993800,
+      "path": "frozen-prelaunch.json",
+      "sha256": "985487b22ce26eccdba00f2706cce4e1f1555cd2d904a80e9faa939b39430455"
+    },
+    {
+      "bytes": 2977,
+      "mtime_ns": 1789439228541274500,
+      "path": "log-event-timeline.safe.json",
+      "sha256": "117d41fb40c5323753d65268ec634f94700cf92d6f16d8e1500203c215e8dd1f"
+    },
+    {
+      "bytes": 155,
+      "mtime_ns": 1789439228541274500,
+      "path": "private-runtime-log-hashes.json",
+      "sha256": "6807b3676906851ee7c21c3e94c8de8fc7a5d1c454a19d142753ffc8e23879b3"
+    },
+    {
+      "bytes": 1021,
+      "mtime_ns": 1789439228541914300,
+      "path": "receipt.incomplete.json",
+      "sha256": "55552a9e4a3734610cff34b4475b68467df2f19abfd91a7cba6ce5658b0b2928"
+    },
+    {
+      "bytes": 7591,
+      "mtime_ns": 1789439050748431300,
+      "path": "run_acp_initialize_only.py",
+      "sha256": "904e0a4412774c6082e2ff3167ed7669386694347684ca64b3574a858f24c0e2"
+    },
+    {
+      "bytes": 3893,
+      "mtime_ns": 1789439220195663500,
+      "path": "salvage_incomplete_receipt.py",
+      "sha256": "bf260fb245cfbabd40eb31c73feaa8795bd62f1f9b53d2cd407b15b3f5a23787"
+    },
+    {
+      "bytes": 15970,
+      "mtime_ns": 1789439228541914300,
+      "path": "source-home-before-after.json",
+      "sha256": "52cd60ac25bd684dbfb627e64966901f8441e3c0a3a5fec354919db422291d06"
+    },
+    {
+      "bytes": 4130,
+      "mtime_ns": 1789439460425481700,
+      "path": "wrapper-receipt-audit-r1.md",
+      "sha256": "fb3f2972956ad645f3716de524700ad0d331d57327d8df67d365589ea5c865ed"
+    },
+    {
+      "bytes": 3377,
+      "mtime_ns": 1789439572012152900,
+      "path": "wrapper-receipt-audit-r2-correction.md",
+      "sha256": "7a00a561d08d26a11e9a0564c68d74bcee49c67104cb6bbdae4032acb0b989a7"
+    },
+    {
+      "bytes": 6,
+      "mtime_ns": 1789437633382469200,
+      "path": "private-input-home-opaque/.metadata_version",
+      "sha256": "c48e6e8e49a7201f328a87456445464807aaa2ea2826ea6aa0aa64dcb504d540"
+    },
+    {
+      "bytes": 109668,
+      "mtime_ns": 1789437633382469200,
+      "path": "private-input-home-opaque/README.md",
+      "sha256": "b1be9ca13c67d83b39a61c8813339aaa8a8fda983eb6967a329007471aa76988"
+    },
+    {
+      "bytes": 2,
+      "mtime_ns": 1789437632447062600,
+      "path": "private-input-home-opaque/active_sessions.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789437629246333000,
+      "path": "private-input-home-opaque/active_sessions.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 872,
+      "mtime_ns": 1789437626641468000,
+      "path": "private-input-home-opaque/config.toml",
+      "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789437633380842800,
+      "path": "private-input-home-opaque/managed_config.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4638,
+      "mtime_ns": 1789437633113314500,
+      "path": "private-input-home-opaque/models_cache.json",
+      "sha256": "7980457d0af391b8d030b6ae951eeeb6f8e1df86e1a1b909f7329612beba730a"
+    },
+    {
+      "bytes": 40960,
+      "mtime_ns": 1789437637762794400,
+      "path": "private-input-home-opaque/worktrees.db",
+      "sha256": "391e1fd7002d2d9974ea5fc738007797fbb70993127d4f0ccb61f591c2080387"
+    },
+    {
+      "bytes": 9226,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/01-getting-started.md",
+      "sha256": "710721a51894e6f45c2d0d27965c29f775238121cbe920ab21f5ebe9814d246c"
+    },
+    {
+      "bytes": 14999,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/02-authentication.md",
+      "sha256": "ecf2234c009e7c89faecaef7e1f51daed902e7343f7d85d774a79ecc525c7b12"
+    },
+    {
+      "bytes": 29775,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/03-keyboard-shortcuts.md",
+      "sha256": "4148c59a00b7ae124a88f18ce70fb5b0eff92f94b65d9d951bb4a836981ac482"
+    },
+    {
+      "bytes": 22785,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/04-slash-commands.md",
+      "sha256": "b8be6b35513e6e34e3549ab3eac440c11ae364459cc34dd66d015ef0875bedab"
+    },
+    {
+      "bytes": 48644,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/05-configuration.md",
+      "sha256": "781c2b46bc68d153b8d9dc5843acce3634b06120aaf646bbd79b5ef40d21cea0"
+    },
+    {
+      "bytes": 14889,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/06-theming.md",
+      "sha256": "4750cea7e89fbdca3f0d4e7506c4825f441802d972f1da65b7e0f40b9414638e"
+    },
+    {
+      "bytes": 16852,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/07-mcp-servers.md",
+      "sha256": "b6d5c2a0a96d8349d074e2cfc9f0ed817f892d24f2891f74b3827d721b02c2eb"
+    },
+    {
+      "bytes": 12948,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/08-skills.md",
+      "sha256": "e1191a3aa42ebf6272b087b1d5840dcd298b72fae6222593c7601ad4744434d8"
+    },
+    {
+      "bytes": 19230,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/09-plugins.md",
+      "sha256": "62e0aacdd23ddfb96641cf570fa49f2f794ef24231ea27736a124bb23472cf4b"
+    },
+    {
+      "bytes": 48568,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/10-hooks.md",
+      "sha256": "3690762505faa65d6a82e6462abeaa20fe3a127de611021c171f9088f2c2e56f"
+    },
+    {
+      "bytes": 13491,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/11-custom-models.md",
+      "sha256": "85e7ec8b325488a51efff1b4bab0964cde61926fe9e56738877e3ab06ac9287e"
+    },
+    {
+      "bytes": 9539,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/12-project-rules.md",
+      "sha256": "a7a9afb14f52789f8c0b74fb761fa971959a77cabba5c62dfbb27c8dee4dccc2"
+    },
+    {
+      "bytes": 16235,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/13-memory.md",
+      "sha256": "e6b9d082cf53d0fa1c6a3d54c59c9c9a3d7755b3a6918645f736f09bfd8f084e"
+    },
+    {
+      "bytes": 41042,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/14-headless-mode.md",
+      "sha256": "333f8ccfb66e4a97019777788ed404c20cb305339063c63affe501147e8eac26"
+    },
+    {
+      "bytes": 11935,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/15-agent-mode.md",
+      "sha256": "ddeca2f0386a746d09316f697f229c48ab5e0f251bfca0b9d7815063611c9a84"
+    },
+    {
+      "bytes": 15396,
+      "mtime_ns": 1789437632442540200,
+      "path": "private-input-home-opaque/docs/user-guide/16-subagents.md",
+      "sha256": "c8d157fa7e07b52f76983e5f5d597dc3a6fc73a5e7eef99d152fcf09c4e03e35"
+    },
+    {
+      "bytes": 19093,
+      "mtime_ns": 1789437632444045400,
+      "path": "private-input-home-opaque/docs/user-guide/17-sessions.md",
+      "sha256": "2e32119c807a4ec3413b811b62ea2b95987e801f15c631824c05a9aa9d04e574"
+    },
+    {
+      "bytes": 17741,
+      "mtime_ns": 1789437632444045400,
+      "path": "private-input-home-opaque/docs/user-guide/18-sandbox.md",
+      "sha256": "6456b77c91cea857e6323009e268359e9cf20e98a3fa784c32a4e1dcea86e2fb"
+    },
+    {
+      "bytes": 9038,
+      "mtime_ns": 1789437632444045400,
+      "path": "private-input-home-opaque/docs/user-guide/19-plan-mode.md",
+      "sha256": "7b586678844f5fd8a411c5668610cc50c0021ebc96dab3b987eb94a0028c66f4"
+    },
+    {
+      "bytes": 10284,
+      "mtime_ns": 1789437632444045400,
+      "path": "private-input-home-opaque/docs/user-guide/20-background-tasks.md",
+      "sha256": "ac56e680cd8e6801dbaa0b16f409f672f76e491ebef9f5776712c43ef653e75d"
+    },
+    {
+      "bytes": 12434,
+      "mtime_ns": 1789437632444045400,
+      "path": "private-input-home-opaque/docs/user-guide/21-terminal-support.md",
+      "sha256": "8de7bd258bf9c4b3ecaa00691da8a8e4a409e97b8d73289848b45ed6f0c9a81a"
+    },
+    {
+      "bytes": 33000,
+      "mtime_ns": 1789437632445052300,
+      "path": "private-input-home-opaque/docs/user-guide/22-permissions-and-safety.md",
+      "sha256": "8b79320f29aaa45961ba3a68520f408aa72f8724fb1c2afb153ab5b439a725c5"
+    },
+    {
+      "bytes": 13180,
+      "mtime_ns": 1789437632445052300,
+      "path": "private-input-home-opaque/docs/user-guide/23-dashboard.md",
+      "sha256": "97c34268fe00503e6e8be600ccb12aa2d13658876b0307c29b4f942df5bd8e0f"
+    },
+    {
+      "bytes": 16025,
+      "mtime_ns": 1789437632445555900,
+      "path": "private-input-home-opaque/docs/user-guide/24-monitoring-usage.md",
+      "sha256": "0c77780d531ca82b9af4a5ea91122cc8edee93e9498514b7d9b021c3c2c2be17"
+    },
+    {
+      "bytes": 17348,
+      "mtime_ns": 1789437632445555900,
+      "path": "private-input-home-opaque/docs/user-guide/25-status-line.md",
+      "sha256": "3200adfa3740a7bca6e4079a47d1a2a80801813edd7e1818ae4773bb488ab48c"
+    },
+    {
+      "bytes": 52600,
+      "mtime_ns": 1789437632445555900,
+      "path": "private-input-home-opaque/docs/user-guide/26-config-reference.md",
+      "sha256": "ba434d85bd911f3ddf47ae81d6c39b09389454077c404feca67a158565fd526e"
+    },
+    {
+      "bytes": 1199,
+      "mtime_ns": 1789437632445555900,
+      "path": "private-input-home-opaque/docs/user-guide/27-grok-clone.md",
+      "sha256": "7413479f218aa08f750c0784f5039e7ba4a9611e30dc72fa4017ec4c437d95e3"
+    },
+    {
+      "bytes": 10390,
+      "mtime_ns": 1789437643465697800,
+      "path": "private-input-home-opaque/logs/unified.jsonl",
+      "sha256": "f48c1a82e83e1b3714366d2ccd579126ce0434d514f5c2cd83e1a98b93b4326b"
+    },
+    {
+      "bytes": 110,
+      "mtime_ns": 1789437662454344100,
+      "path": "private-input-home-opaque/memtrace/1789437632-44884.jsonl",
+      "sha256": "3832622e89ad6f470ffe4309e62722b88db4c2a236c0db69fffba8cccd93c624"
+    },
+    {
+      "bytes": 6,
+      "mtime_ns": 1789437633382469200,
+      "path": "private-runtime-home/.metadata_version",
+      "sha256": "c48e6e8e49a7201f328a87456445464807aaa2ea2826ea6aa0aa64dcb504d540"
+    },
+    {
+      "bytes": 109668,
+      "mtime_ns": 1789437633382469200,
+      "path": "private-runtime-home/README.md",
+      "sha256": "b1be9ca13c67d83b39a61c8813339aaa8a8fda983eb6967a329007471aa76988"
+    },
+    {
+      "bytes": 2,
+      "mtime_ns": 1789439081840206400,
+      "path": "private-runtime-home/active_sessions.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789437629246333000,
+      "path": "private-runtime-home/active_sessions.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 872,
+      "mtime_ns": 1789437626641468000,
+      "path": "private-runtime-home/config.toml",
+      "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789437633380842800,
+      "path": "private-runtime-home/managed_config.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 4638,
+      "mtime_ns": 1789439082451389800,
+      "path": "private-runtime-home/models_cache.json",
+      "sha256": "e7759f4814adac2e6c4bf1f53f13d2107966848a5f777fb0a0f669727a099e37"
+    },
+    {
+      "bytes": 40960,
+      "mtime_ns": 1789437637762794400,
+      "path": "private-runtime-home/worktrees.db",
+      "sha256": "391e1fd7002d2d9974ea5fc738007797fbb70993127d4f0ccb61f591c2080387"
+    },
+    {
+      "bytes": 9226,
+      "mtime_ns": 1789439081599482700,
+      "path": "private-runtime-home/docs/user-guide/01-getting-started.md",
+      "sha256": "710721a51894e6f45c2d0d27965c29f775238121cbe920ab21f5ebe9814d246c"
+    },
+    {
+      "bytes": 14999,
+      "mtime_ns": 1789439081599482700,
+      "path": "private-runtime-home/docs/user-guide/02-authentication.md",
+      "sha256": "ecf2234c009e7c89faecaef7e1f51daed902e7343f7d85d774a79ecc525c7b12"
+    },
+    {
+      "bytes": 29775,
+      "mtime_ns": 1789439081599482700,
+      "path": "private-runtime-home/docs/user-guide/03-keyboard-shortcuts.md",
+      "sha256": "4148c59a00b7ae124a88f18ce70fb5b0eff92f94b65d9d951bb4a836981ac482"
+    },
+    {
+      "bytes": 22785,
+      "mtime_ns": 1789439081599482700,
+      "path": "private-runtime-home/docs/user-guide/04-slash-commands.md",
+      "sha256": "b8be6b35513e6e34e3549ab3eac440c11ae364459cc34dd66d015ef0875bedab"
+    },
+    {
+      "bytes": 48644,
+      "mtime_ns": 1789439081599482700,
+      "path": "private-runtime-home/docs/user-guide/05-configuration.md",
+      "sha256": "781c2b46bc68d153b8d9dc5843acce3634b06120aaf646bbd79b5ef40d21cea0"
+    },
+    {
+      "bytes": 14889,
+      "mtime_ns": 1789439081599482700,
+      "path": "private-runtime-home/docs/user-guide/06-theming.md",
+      "sha256": "4750cea7e89fbdca3f0d4e7506c4825f441802d972f1da65b7e0f40b9414638e"
+    },
+    {
+      "bytes": 16852,
+      "mtime_ns": 1789439081599482700,
+      "path": "private-runtime-home/docs/user-guide/07-mcp-servers.md",
+      "sha256": "b6d5c2a0a96d8349d074e2cfc9f0ed817f892d24f2891f74b3827d721b02c2eb"
+    },
+    {
+      "bytes": 12948,
+      "mtime_ns": 1789439081599482700,
+      "path": "private-runtime-home/docs/user-guide/08-skills.md",
+      "sha256": "e1191a3aa42ebf6272b087b1d5840dcd298b72fae6222593c7601ad4744434d8"
+    },
+    {
+      "bytes": 19230,
+      "mtime_ns": 1789439081599482700,
+      "path": "private-runtime-home/docs/user-guide/09-plugins.md",
+      "sha256": "62e0aacdd23ddfb96641cf570fa49f2f794ef24231ea27736a124bb23472cf4b"
+    },
+    {
+      "bytes": 48568,
+      "mtime_ns": 1789439081599482700,
+      "path": "private-runtime-home/docs/user-guide/10-hooks.md",
+      "sha256": "3690762505faa65d6a82e6462abeaa20fe3a127de611021c171f9088f2c2e56f"
+    },
+    {
+      "bytes": 13491,
+      "mtime_ns": 1789439081600482600,
+      "path": "private-runtime-home/docs/user-guide/11-custom-models.md",
+      "sha256": "85e7ec8b325488a51efff1b4bab0964cde61926fe9e56738877e3ab06ac9287e"
+    },
+    {
+      "bytes": 9539,
+      "mtime_ns": 1789439081600482600,
+      "path": "private-runtime-home/docs/user-guide/12-project-rules.md",
+      "sha256": "a7a9afb14f52789f8c0b74fb761fa971959a77cabba5c62dfbb27c8dee4dccc2"
+    },
+    {
+      "bytes": 16235,
+      "mtime_ns": 1789439081600482600,
+      "path": "private-runtime-home/docs/user-guide/13-memory.md",
+      "sha256": "e6b9d082cf53d0fa1c6a3d54c59c9c9a3d7755b3a6918645f736f09bfd8f084e"
+    },
+    {
+      "bytes": 41042,
+      "mtime_ns": 1789439081839208100,
+      "path": "private-runtime-home/docs/user-guide/14-headless-mode.md",
+      "sha256": "333f8ccfb66e4a97019777788ed404c20cb305339063c63affe501147e8eac26"
+    },
+    {
+      "bytes": 11935,
+      "mtime_ns": 1789439081839208100,
+      "path": "private-runtime-home/docs/user-guide/15-agent-mode.md",
+      "sha256": "ddeca2f0386a746d09316f697f229c48ab5e0f251bfca0b9d7815063611c9a84"
+    },
+    {
+      "bytes": 15396,
+      "mtime_ns": 1789439081839208100,
+      "path": "private-runtime-home/docs/user-guide/16-subagents.md",
+      "sha256": "c8d157fa7e07b52f76983e5f5d597dc3a6fc73a5e7eef99d152fcf09c4e03e35"
+    },
+    {
+      "bytes": 19093,
+      "mtime_ns": 1789439081839208100,
+      "path": "private-runtime-home/docs/user-guide/17-sessions.md",
+      "sha256": "2e32119c807a4ec3413b811b62ea2b95987e801f15c631824c05a9aa9d04e574"
+    },
+    {
+      "bytes": 17741,
+      "mtime_ns": 1789439081839208100,
+      "path": "private-runtime-home/docs/user-guide/18-sandbox.md",
+      "sha256": "6456b77c91cea857e6323009e268359e9cf20e98a3fa784c32a4e1dcea86e2fb"
+    },
+    {
+      "bytes": 9038,
+      "mtime_ns": 1789439081839208100,
+      "path": "private-runtime-home/docs/user-guide/19-plan-mode.md",
+      "sha256": "7b586678844f5fd8a411c5668610cc50c0021ebc96dab3b987eb94a0028c66f4"
+    },
+    {
+      "bytes": 10284,
+      "mtime_ns": 1789439081839208100,
+      "path": "private-runtime-home/docs/user-guide/20-background-tasks.md",
+      "sha256": "ac56e680cd8e6801dbaa0b16f409f672f76e491ebef9f5776712c43ef653e75d"
+    },
+    {
+      "bytes": 12434,
+      "mtime_ns": 1789439081839208100,
+      "path": "private-runtime-home/docs/user-guide/21-terminal-support.md",
+      "sha256": "8de7bd258bf9c4b3ecaa00691da8a8e4a409e97b8d73289848b45ed6f0c9a81a"
+    },
+    {
+      "bytes": 33000,
+      "mtime_ns": 1789439081839208100,
+      "path": "private-runtime-home/docs/user-guide/22-permissions-and-safety.md",
+      "sha256": "8b79320f29aaa45961ba3a68520f408aa72f8724fb1c2afb153ab5b439a725c5"
+    },
+    {
+      "bytes": 13180,
+      "mtime_ns": 1789439081839208100,
+      "path": "private-runtime-home/docs/user-guide/23-dashboard.md",
+      "sha256": "97c34268fe00503e6e8be600ccb12aa2d13658876b0307c29b4f942df5bd8e0f"
+    },
+    {
+      "bytes": 16025,
+      "mtime_ns": 1789439081839208100,
+      "path": "private-runtime-home/docs/user-guide/24-monitoring-usage.md",
+      "sha256": "0c77780d531ca82b9af4a5ea91122cc8edee93e9498514b7d9b021c3c2c2be17"
+    },
+    {
+      "bytes": 17348,
+      "mtime_ns": 1789439081840206400,
+      "path": "private-runtime-home/docs/user-guide/25-status-line.md",
+      "sha256": "3200adfa3740a7bca6e4079a47d1a2a80801813edd7e1818ae4773bb488ab48c"
+    },
+    {
+      "bytes": 52600,
+      "mtime_ns": 1789439081840206400,
+      "path": "private-runtime-home/docs/user-guide/26-config-reference.md",
+      "sha256": "ba434d85bd911f3ddf47ae81d6c39b09389454077c404feca67a158565fd526e"
+    },
+    {
+      "bytes": 1199,
+      "mtime_ns": 1789439081840206400,
+      "path": "private-runtime-home/docs/user-guide/27-grok-clone.md",
+      "sha256": "7413479f218aa08f750c0784f5039e7ba4a9611e30dc72fa4017ec4c437d95e3"
+    },
+    {
+      "bytes": 19946,
+      "mtime_ns": 1789439082723228300,
+      "path": "private-runtime-home/logs/unified.jsonl",
+      "sha256": "38fe0fb1c44a7d4ebf9af3501cfcbf9d22452a68165e34954b5eafc2549ff857"
+    },
+    {
+      "bytes": 110,
+      "mtime_ns": 1789437662454344100,
+      "path": "private-runtime-home/memtrace/1789437632-44884.jsonl",
+      "sha256": "3832622e89ad6f470ffe4309e62722b88db4c2a236c0db69fffba8cccd93c624"
+    },
+    {
+      "bytes": 110,
+      "mtime_ns": 1789439111600227900,
+      "path": "private-runtime-home/memtrace/1789439081-59036.jsonl",
+      "sha256": "bcc20743c2eb9932a52f22a7032ad72317e7fb63f8bdf1424b5af6bcb8fb4c59"
+    },
+    {
+      "bytes": 36864,
+      "mtime_ns": 1789439094334929000,
+      "path": "private-runtime-home/sessions/session_search.sqlite",
+      "sha256": "f3f598b60fdfc9fec7cc2bff82937f3ecce059258a71dd0c5db9ae8e076113a2"
+    },
+    {
+      "bytes": 4128,
+      "mtime_ns": 1789439096121907800,
+      "path": "public-cwd/Microsoft/Windows/PowerShell/ModuleAnalysisCache",
+      "sha256": "e5fdbcb52670860d35a6f74b259bebd4052a81acae95113d6dbcb99375aede0a"
+    },
+    {
+      "bytes": 10646,
+      "mtime_ns": 1789439069190689600,
+      "path": "__pycache__/run_acp_initialize_only.cpython-312.pyc",
+      "sha256": "89ec308598834953203defcc980a77aacd284fdf2b465d2e9658e49830f12d33"
+    }
+  ],
+  "zip_entries": [
+    {
+      "bytes": 2748,
+      "path": "diagnostic/RESULT.md",
+      "sha256": "58c7ed4f3d50a857435dda869762e79a416a3b79a60dede9c15a2bfc946c5fbe"
+    },
+    {
+      "bytes": 10646,
+      "path": "diagnostic/__pycache__/run_acp_initialize_only.cpython-312.pyc",
+      "sha256": "89ec308598834953203defcc980a77aacd284fdf2b465d2e9658e49830f12d33"
+    },
+    {
+      "bytes": 634,
+      "path": "diagnostic/command.safe.json",
+      "sha256": "29be2bd4fe79a78decdf512d4395173406760928641cf221612eadd913e14ffa"
+    },
+    {
+      "bytes": 9037,
+      "path": "diagnostic/frozen-prelaunch.json",
+      "sha256": "985487b22ce26eccdba00f2706cce4e1f1555cd2d904a80e9faa939b39430455"
+    },
+    {
+      "bytes": 2977,
+      "path": "diagnostic/log-event-timeline.safe.json",
+      "sha256": "117d41fb40c5323753d65268ec634f94700cf92d6f16d8e1500203c215e8dd1f"
+    },
+    {
+      "bytes": 6,
+      "path": "diagnostic/private-input-home-opaque/.metadata_version",
+      "sha256": "c48e6e8e49a7201f328a87456445464807aaa2ea2826ea6aa0aa64dcb504d540"
+    },
+    {
+      "bytes": 109668,
+      "path": "diagnostic/private-input-home-opaque/README.md",
+      "sha256": "b1be9ca13c67d83b39a61c8813339aaa8a8fda983eb6967a329007471aa76988"
+    },
+    {
+      "bytes": 2,
+      "path": "diagnostic/private-input-home-opaque/active_sessions.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "bytes": 0,
+      "path": "diagnostic/private-input-home-opaque/active_sessions.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 872,
+      "path": "diagnostic/private-input-home-opaque/config.toml",
+      "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "bytes": 9226,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/01-getting-started.md",
+      "sha256": "710721a51894e6f45c2d0d27965c29f775238121cbe920ab21f5ebe9814d246c"
+    },
+    {
+      "bytes": 14999,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/02-authentication.md",
+      "sha256": "ecf2234c009e7c89faecaef7e1f51daed902e7343f7d85d774a79ecc525c7b12"
+    },
+    {
+      "bytes": 29775,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/03-keyboard-shortcuts.md",
+      "sha256": "4148c59a00b7ae124a88f18ce70fb5b0eff92f94b65d9d951bb4a836981ac482"
+    },
+    {
+      "bytes": 22785,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/04-slash-commands.md",
+      "sha256": "b8be6b35513e6e34e3549ab3eac440c11ae364459cc34dd66d015ef0875bedab"
+    },
+    {
+      "bytes": 48644,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/05-configuration.md",
+      "sha256": "781c2b46bc68d153b8d9dc5843acce3634b06120aaf646bbd79b5ef40d21cea0"
+    },
+    {
+      "bytes": 14889,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/06-theming.md",
+      "sha256": "4750cea7e89fbdca3f0d4e7506c4825f441802d972f1da65b7e0f40b9414638e"
+    },
+    {
+      "bytes": 16852,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/07-mcp-servers.md",
+      "sha256": "b6d5c2a0a96d8349d074e2cfc9f0ed817f892d24f2891f74b3827d721b02c2eb"
+    },
+    {
+      "bytes": 12948,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/08-skills.md",
+      "sha256": "e1191a3aa42ebf6272b087b1d5840dcd298b72fae6222593c7601ad4744434d8"
+    },
+    {
+      "bytes": 19230,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/09-plugins.md",
+      "sha256": "62e0aacdd23ddfb96641cf570fa49f2f794ef24231ea27736a124bb23472cf4b"
+    },
+    {
+      "bytes": 48568,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/10-hooks.md",
+      "sha256": "3690762505faa65d6a82e6462abeaa20fe3a127de611021c171f9088f2c2e56f"
+    },
+    {
+      "bytes": 13491,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/11-custom-models.md",
+      "sha256": "85e7ec8b325488a51efff1b4bab0964cde61926fe9e56738877e3ab06ac9287e"
+    },
+    {
+      "bytes": 9539,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/12-project-rules.md",
+      "sha256": "a7a9afb14f52789f8c0b74fb761fa971959a77cabba5c62dfbb27c8dee4dccc2"
+    },
+    {
+      "bytes": 16235,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/13-memory.md",
+      "sha256": "e6b9d082cf53d0fa1c6a3d54c59c9c9a3d7755b3a6918645f736f09bfd8f084e"
+    },
+    {
+      "bytes": 41042,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/14-headless-mode.md",
+      "sha256": "333f8ccfb66e4a97019777788ed404c20cb305339063c63affe501147e8eac26"
+    },
+    {
+      "bytes": 11935,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/15-agent-mode.md",
+      "sha256": "ddeca2f0386a746d09316f697f229c48ab5e0f251bfca0b9d7815063611c9a84"
+    },
+    {
+      "bytes": 15396,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/16-subagents.md",
+      "sha256": "c8d157fa7e07b52f76983e5f5d597dc3a6fc73a5e7eef99d152fcf09c4e03e35"
+    },
+    {
+      "bytes": 19093,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/17-sessions.md",
+      "sha256": "2e32119c807a4ec3413b811b62ea2b95987e801f15c631824c05a9aa9d04e574"
+    },
+    {
+      "bytes": 17741,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/18-sandbox.md",
+      "sha256": "6456b77c91cea857e6323009e268359e9cf20e98a3fa784c32a4e1dcea86e2fb"
+    },
+    {
+      "bytes": 9038,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/19-plan-mode.md",
+      "sha256": "7b586678844f5fd8a411c5668610cc50c0021ebc96dab3b987eb94a0028c66f4"
+    },
+    {
+      "bytes": 10284,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/20-background-tasks.md",
+      "sha256": "ac56e680cd8e6801dbaa0b16f409f672f76e491ebef9f5776712c43ef653e75d"
+    },
+    {
+      "bytes": 12434,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/21-terminal-support.md",
+      "sha256": "8de7bd258bf9c4b3ecaa00691da8a8e4a409e97b8d73289848b45ed6f0c9a81a"
+    },
+    {
+      "bytes": 33000,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/22-permissions-and-safety.md",
+      "sha256": "8b79320f29aaa45961ba3a68520f408aa72f8724fb1c2afb153ab5b439a725c5"
+    },
+    {
+      "bytes": 13180,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/23-dashboard.md",
+      "sha256": "97c34268fe00503e6e8be600ccb12aa2d13658876b0307c29b4f942df5bd8e0f"
+    },
+    {
+      "bytes": 16025,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/24-monitoring-usage.md",
+      "sha256": "0c77780d531ca82b9af4a5ea91122cc8edee93e9498514b7d9b021c3c2c2be17"
+    },
+    {
+      "bytes": 17348,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/25-status-line.md",
+      "sha256": "3200adfa3740a7bca6e4079a47d1a2a80801813edd7e1818ae4773bb488ab48c"
+    },
+    {
+      "bytes": 52600,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/26-config-reference.md",
+      "sha256": "ba434d85bd911f3ddf47ae81d6c39b09389454077c404feca67a158565fd526e"
+    },
+    {
+      "bytes": 1199,
+      "path": "diagnostic/private-input-home-opaque/docs/user-guide/27-grok-clone.md",
+      "sha256": "7413479f218aa08f750c0784f5039e7ba4a9611e30dc72fa4017ec4c437d95e3"
+    },
+    {
+      "bytes": 10390,
+      "path": "diagnostic/private-input-home-opaque/logs/unified.jsonl",
+      "sha256": "f48c1a82e83e1b3714366d2ccd579126ce0434d514f5c2cd83e1a98b93b4326b"
+    },
+    {
+      "bytes": 0,
+      "path": "diagnostic/private-input-home-opaque/managed_config.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 110,
+      "path": "diagnostic/private-input-home-opaque/memtrace/1789437632-44884.jsonl",
+      "sha256": "3832622e89ad6f470ffe4309e62722b88db4c2a236c0db69fffba8cccd93c624"
+    },
+    {
+      "bytes": 4638,
+      "path": "diagnostic/private-input-home-opaque/models_cache.json",
+      "sha256": "7980457d0af391b8d030b6ae951eeeb6f8e1df86e1a1b909f7329612beba730a"
+    },
+    {
+      "bytes": 40960,
+      "path": "diagnostic/private-input-home-opaque/worktrees.db",
+      "sha256": "391e1fd7002d2d9974ea5fc738007797fbb70993127d4f0ccb61f591c2080387"
+    },
+    {
+      "bytes": 6,
+      "path": "diagnostic/private-runtime-home/.metadata_version",
+      "sha256": "c48e6e8e49a7201f328a87456445464807aaa2ea2826ea6aa0aa64dcb504d540"
+    },
+    {
+      "bytes": 109668,
+      "path": "diagnostic/private-runtime-home/README.md",
+      "sha256": "b1be9ca13c67d83b39a61c8813339aaa8a8fda983eb6967a329007471aa76988"
+    },
+    {
+      "bytes": 2,
+      "path": "diagnostic/private-runtime-home/active_sessions.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "bytes": 0,
+      "path": "diagnostic/private-runtime-home/active_sessions.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 872,
+      "path": "diagnostic/private-runtime-home/config.toml",
+      "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "bytes": 9226,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/01-getting-started.md",
+      "sha256": "710721a51894e6f45c2d0d27965c29f775238121cbe920ab21f5ebe9814d246c"
+    },
+    {
+      "bytes": 14999,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/02-authentication.md",
+      "sha256": "ecf2234c009e7c89faecaef7e1f51daed902e7343f7d85d774a79ecc525c7b12"
+    },
+    {
+      "bytes": 29775,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/03-keyboard-shortcuts.md",
+      "sha256": "4148c59a00b7ae124a88f18ce70fb5b0eff92f94b65d9d951bb4a836981ac482"
+    },
+    {
+      "bytes": 22785,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/04-slash-commands.md",
+      "sha256": "b8be6b35513e6e34e3549ab3eac440c11ae364459cc34dd66d015ef0875bedab"
+    },
+    {
+      "bytes": 48644,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/05-configuration.md",
+      "sha256": "781c2b46bc68d153b8d9dc5843acce3634b06120aaf646bbd79b5ef40d21cea0"
+    },
+    {
+      "bytes": 14889,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/06-theming.md",
+      "sha256": "4750cea7e89fbdca3f0d4e7506c4825f441802d972f1da65b7e0f40b9414638e"
+    },
+    {
+      "bytes": 16852,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/07-mcp-servers.md",
+      "sha256": "b6d5c2a0a96d8349d074e2cfc9f0ed817f892d24f2891f74b3827d721b02c2eb"
+    },
+    {
+      "bytes": 12948,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/08-skills.md",
+      "sha256": "e1191a3aa42ebf6272b087b1d5840dcd298b72fae6222593c7601ad4744434d8"
+    },
+    {
+      "bytes": 19230,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/09-plugins.md",
+      "sha256": "62e0aacdd23ddfb96641cf570fa49f2f794ef24231ea27736a124bb23472cf4b"
+    },
+    {
+      "bytes": 48568,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/10-hooks.md",
+      "sha256": "3690762505faa65d6a82e6462abeaa20fe3a127de611021c171f9088f2c2e56f"
+    },
+    {
+      "bytes": 13491,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/11-custom-models.md",
+      "sha256": "85e7ec8b325488a51efff1b4bab0964cde61926fe9e56738877e3ab06ac9287e"
+    },
+    {
+      "bytes": 9539,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/12-project-rules.md",
+      "sha256": "a7a9afb14f52789f8c0b74fb761fa971959a77cabba5c62dfbb27c8dee4dccc2"
+    },
+    {
+      "bytes": 16235,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/13-memory.md",
+      "sha256": "e6b9d082cf53d0fa1c6a3d54c59c9c9a3d7755b3a6918645f736f09bfd8f084e"
+    },
+    {
+      "bytes": 41042,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/14-headless-mode.md",
+      "sha256": "333f8ccfb66e4a97019777788ed404c20cb305339063c63affe501147e8eac26"
+    },
+    {
+      "bytes": 11935,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/15-agent-mode.md",
+      "sha256": "ddeca2f0386a746d09316f697f229c48ab5e0f251bfca0b9d7815063611c9a84"
+    },
+    {
+      "bytes": 15396,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/16-subagents.md",
+      "sha256": "c8d157fa7e07b52f76983e5f5d597dc3a6fc73a5e7eef99d152fcf09c4e03e35"
+    },
+    {
+      "bytes": 19093,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/17-sessions.md",
+      "sha256": "2e32119c807a4ec3413b811b62ea2b95987e801f15c631824c05a9aa9d04e574"
+    },
+    {
+      "bytes": 17741,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/18-sandbox.md",
+      "sha256": "6456b77c91cea857e6323009e268359e9cf20e98a3fa784c32a4e1dcea86e2fb"
+    },
+    {
+      "bytes": 9038,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/19-plan-mode.md",
+      "sha256": "7b586678844f5fd8a411c5668610cc50c0021ebc96dab3b987eb94a0028c66f4"
+    },
+    {
+      "bytes": 10284,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/20-background-tasks.md",
+      "sha256": "ac56e680cd8e6801dbaa0b16f409f672f76e491ebef9f5776712c43ef653e75d"
+    },
+    {
+      "bytes": 12434,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/21-terminal-support.md",
+      "sha256": "8de7bd258bf9c4b3ecaa00691da8a8e4a409e97b8d73289848b45ed6f0c9a81a"
+    },
+    {
+      "bytes": 33000,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/22-permissions-and-safety.md",
+      "sha256": "8b79320f29aaa45961ba3a68520f408aa72f8724fb1c2afb153ab5b439a725c5"
+    },
+    {
+      "bytes": 13180,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/23-dashboard.md",
+      "sha256": "97c34268fe00503e6e8be600ccb12aa2d13658876b0307c29b4f942df5bd8e0f"
+    },
+    {
+      "bytes": 16025,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/24-monitoring-usage.md",
+      "sha256": "0c77780d531ca82b9af4a5ea91122cc8edee93e9498514b7d9b021c3c2c2be17"
+    },
+    {
+      "bytes": 17348,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/25-status-line.md",
+      "sha256": "3200adfa3740a7bca6e4079a47d1a2a80801813edd7e1818ae4773bb488ab48c"
+    },
+    {
+      "bytes": 52600,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/26-config-reference.md",
+      "sha256": "ba434d85bd911f3ddf47ae81d6c39b09389454077c404feca67a158565fd526e"
+    },
+    {
+      "bytes": 1199,
+      "path": "diagnostic/private-runtime-home/docs/user-guide/27-grok-clone.md",
+      "sha256": "7413479f218aa08f750c0784f5039e7ba4a9611e30dc72fa4017ec4c437d95e3"
+    },
+    {
+      "bytes": 19946,
+      "path": "diagnostic/private-runtime-home/logs/unified.jsonl",
+      "sha256": "38fe0fb1c44a7d4ebf9af3501cfcbf9d22452a68165e34954b5eafc2549ff857"
+    },
+    {
+      "bytes": 0,
+      "path": "diagnostic/private-runtime-home/managed_config.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 110,
+      "path": "diagnostic/private-runtime-home/memtrace/1789437632-44884.jsonl",
+      "sha256": "3832622e89ad6f470ffe4309e62722b88db4c2a236c0db69fffba8cccd93c624"
+    },
+    {
+      "bytes": 110,
+      "path": "diagnostic/private-runtime-home/memtrace/1789439081-59036.jsonl",
+      "sha256": "bcc20743c2eb9932a52f22a7032ad72317e7fb63f8bdf1424b5af6bcb8fb4c59"
+    },
+    {
+      "bytes": 4638,
+      "path": "diagnostic/private-runtime-home/models_cache.json",
+      "sha256": "e7759f4814adac2e6c4bf1f53f13d2107966848a5f777fb0a0f669727a099e37"
+    },
+    {
+      "bytes": 36864,
+      "path": "diagnostic/private-runtime-home/sessions/session_search.sqlite",
+      "sha256": "f3f598b60fdfc9fec7cc2bff82937f3ecce059258a71dd0c5db9ae8e076113a2"
+    },
+    {
+      "bytes": 40960,
+      "path": "diagnostic/private-runtime-home/worktrees.db",
+      "sha256": "391e1fd7002d2d9974ea5fc738007797fbb70993127d4f0ccb61f591c2080387"
+    },
+    {
+      "bytes": 155,
+      "path": "diagnostic/private-runtime-log-hashes.json",
+      "sha256": "6807b3676906851ee7c21c3e94c8de8fc7a5d1c454a19d142753ffc8e23879b3"
+    },
+    {
+      "bytes": 4128,
+      "path": "diagnostic/public-cwd/Microsoft/Windows/PowerShell/ModuleAnalysisCache",
+      "sha256": "e5fdbcb52670860d35a6f74b259bebd4052a81acae95113d6dbcb99375aede0a"
+    },
+    {
+      "bytes": 1021,
+      "path": "diagnostic/receipt.incomplete.json",
+      "sha256": "55552a9e4a3734610cff34b4475b68467df2f19abfd91a7cba6ce5658b0b2928"
+    },
+    {
+      "bytes": 7591,
+      "path": "diagnostic/run_acp_initialize_only.py",
+      "sha256": "904e0a4412774c6082e2ff3167ed7669386694347684ca64b3574a858f24c0e2"
+    },
+    {
+      "bytes": 3893,
+      "path": "diagnostic/salvage_incomplete_receipt.py",
+      "sha256": "bf260fb245cfbabd40eb31c73feaa8795bd62f1f9b53d2cd407b15b3f5a23787"
+    },
+    {
+      "bytes": 15970,
+      "path": "diagnostic/source-home-before-after.json",
+      "sha256": "52cd60ac25bd684dbfb627e64966901f8441e3c0a3a5fec354919db422291d06"
+    },
+    {
+      "bytes": 4130,
+      "path": "diagnostic/wrapper-receipt-audit-r1.md",
+      "sha256": "fb3f2972956ad645f3716de524700ad0d331d57327d8df67d365589ea5c865ed"
+    },
+    {
+      "bytes": 3377,
+      "path": "diagnostic/wrapper-receipt-audit-r2-correction.md",
+      "sha256": "7a00a561d08d26a11e9a0564c68d74bcee49c67104cb6bbdae4032acb0b989a7"
+    }
+  ],
+  "zip_sha256": "f11d6eb16cf42c02877cc2b6ac179336fa380ead30f01f210f451c3781b506db"
+}

@@ -1,0 +1,82 @@
+{
+  "credential_exclusions_count": 2,
+  "historical_records_superseded_for_interpretation": [
+    "RESULT.md",
+    "receipt.incomplete.json"
+  ],
+  "interpretation_control": "wrapper-receipt-audit-r2-correction.md",
+  "private_zip_sha256": "f11d6eb16cf42c02877cc2b6ac179336fa380ead30f01f210f451c3781b506db",
+  "pruned_links": [],
+  "published_files": [
+    {
+      "bytes": 661,
+      "path": "README.md",
+      "sha256": "b73d66dfbf8cfb2e4c2430635ba80b45e1eb21f6faa4dca5386c1c01f528cb64"
+    },
+    {
+      "bytes": 2748,
+      "path": "RESULT.md",
+      "sha256": "58c7ed4f3d50a857435dda869762e79a416a3b79a60dede9c15a2bfc946c5fbe"
+    },
+    {
+      "bytes": 6048,
+      "path": "actual-m4m5-headless-next-diagnostic-r1.md",
+      "sha256": "705babe9b170eb9de7fc24bd90f639f9a08661254a41d224751cfdd32755e86e"
+    },
+    {
+      "bytes": 634,
+      "path": "command.safe.json",
+      "sha256": "29be2bd4fe79a78decdf512d4395173406760928641cf221612eadd913e14ffa"
+    },
+    {
+      "bytes": 9037,
+      "path": "frozen-prelaunch.json",
+      "sha256": "985487b22ce26eccdba00f2706cce4e1f1555cd2d904a80e9faa939b39430455"
+    },
+    {
+      "bytes": 2977,
+      "path": "log-event-timeline.safe.json",
+      "sha256": "117d41fb40c5323753d65268ec634f94700cf92d6f16d8e1500203c215e8dd1f"
+    },
+    {
+      "bytes": 155,
+      "path": "private-runtime-log-hashes.json",
+      "sha256": "6807b3676906851ee7c21c3e94c8de8fc7a5d1c454a19d142753ffc8e23879b3"
+    },
+    {
+      "bytes": 1021,
+      "path": "receipt.incomplete.json",
+      "sha256": "55552a9e4a3734610cff34b4475b68467df2f19abfd91a7cba6ce5658b0b2928"
+    },
+    {
+      "bytes": 7591,
+      "path": "run_acp_initialize_only.py",
+      "sha256": "904e0a4412774c6082e2ff3167ed7669386694347684ca64b3574a858f24c0e2"
+    },
+    {
+      "bytes": 3893,
+      "path": "salvage_incomplete_receipt.py",
+      "sha256": "bf260fb245cfbabd40eb31c73feaa8795bd62f1f9b53d2cd407b15b3f5a23787"
+    },
+    {
+      "bytes": 15970,
+      "path": "source-home-before-after.json",
+      "sha256": "52cd60ac25bd684dbfb627e64966901f8441e3c0a3a5fec354919db422291d06"
+    },
+    {
+      "bytes": 4130,
+      "path": "wrapper-receipt-audit-r1.md",
+      "sha256": "fb3f2972956ad645f3716de524700ad0d331d57327d8df67d365589ea5c865ed"
+    },
+    {
+      "bytes": 3377,
+      "path": "wrapper-receipt-audit-r2-correction.md",
+      "sha256": "7a00a561d08d26a11e9a0564c68d74bcee49c67104cb6bbdae4032acb0b989a7"
+    }
+  ],
+  "self_excluding": true,
+  "source_study": {
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-next-diagnostic-r1.md",
+    "sha256": "705babe9b170eb9de7fc24bd90f639f9a08661254a41d224751cfdd32755e86e"
+  }
+}

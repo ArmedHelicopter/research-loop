@@ -1,0 +1,30 @@
+{
+  "credential_named_exclusion_count": 1,
+  "credential_values_parsed_or_emitted": false,
+  "deadline_seconds": 20,
+  "documented_entrypoint": [
+    "C:\\Users\\Administrator\\.grok\\bin\\grok.exe",
+    "agent",
+    "stdio"
+  ],
+  "evaluator_called": false,
+  "kind": "acp_initialize_only",
+  "launch_count": 1,
+  "launch_receipt_completeness": "incomplete_wrapper_timeout",
+  "model_selected": false,
+  "owned_tree_status": "no grok process observed after wrapper return",
+  "process_exit_code": "unknown",
+  "process_pid": "unrecorded",
+  "prompt_sent": false,
+  "request_count": 1,
+  "runtime_log_hash_file": "private-runtime-log-hashes.json",
+  "sent_methods": [
+    "initialize"
+  ],
+  "session_new_sent": false,
+  "settlement": "unknown",
+  "source_noncredential_bytes_and_mtimes_unchanged_vs_frozen_input": true,
+  "stdio_raw_capture": "unavailable because the outer wrapper ended before helper receipt finalization",
+  "timed_out": "not conclusively recorded",
+  "usage": "unknown"
+}

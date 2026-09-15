@@ -1,0 +1,19 @@
+{
+  "command": [
+    "C:\\Users\\Administrator\\.grok\\bin\\grok.exe",
+    "agent",
+    "--no-leader",
+    "stdio"
+  ],
+  "cwd": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-acp-initialize-diagnostic-r1\\public-cwd",
+  "grok_env": {
+    "GROK_DISABLE_API_KEY_AUTH": "1",
+    "GROK_DISABLE_AUTOUPDATER": "1",
+    "GROK_HOME": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-acp-initialize-diagnostic-r1\\private-runtime-home",
+    "GROK_MEMORY": "false",
+    "GROK_SUBAGENTS": "false",
+    "GROK_TITLE_REFRESH": "false",
+    "GROK_TURN_SUMMARY": "false",
+    "GROK_WORKFLOWS": "false"
+  }
+}
