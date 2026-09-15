@@ -11,7 +11,8 @@ from research_loop.modular.contracts import FrozenRecord, PublicTask
 from research_loop.modular.full_loo_driver import FullLooResult, run_stage, verify_stage
 from research_loop.modular.full_loo_modules import model_schemas, slots
 from research_loop.modular.full_loo_panel import runtime_arm
-from research_loop.modular.joint_train_protocol import FrozenJointTrainProtocol, OBLIGATION, _binding
+from research_loop.modular.joint_train_protocol import (FrozenJointTrainProtocol, OBLIGATION, HEADLESS_OBLIGATION,
+    _binding, _headless_evaluator_binding)
 from research_loop.modular.joint_train_panel import JointTrainPanel, history_build_id, target_arm
 from research_loop.modular.joint_deployment import JointComponentVersion, _hash
 from research_loop.modular.metaprogram_training import FrozenTrainHistory, _builder, _sha, _exclusive, _read_record
@@ -77,6 +78,13 @@ class FrozenJointTrainRuntimePlan:
     @property
     def composition(self): return self.protocol.record  # Existing stage arm helper reads only baseline_digest.
     @property
+    def headless_evaluator_binding(self):
+        body = self.protocol.record.data()
+        if body['schema'] != HEADLESS_OBLIGATION:
+            return None
+        usage, provider = _headless_evaluator_binding(body['evaluator_usage'], body['evaluator_provider'])
+        return {'evaluator_usage': usage, 'evaluator_provider': provider}
+    @property
     def parent(self): return CandidatePackage(R(self.data()['parent']))
     @property
     def fixed_builder(self): return FrozenBuilderVersion(R(self.data()['fixed_builder']))
@@ -109,6 +117,8 @@ class FrozenJointTrainRuntimePlan:
                 or b['history_binding'] != self.history.binding.data()):
             raise ContractError('common runtime scope or original protocol drift')
         self.protocol.__post_init__(); self.history.verify(); _builder(self.fixed_builder)
+        if p['schema'] == HEADLESS_OBLIGATION and self.headless_evaluator_binding is None:
+            raise ContractError('headless C5 protocol lost its frozen evaluator binding')
         if (p['history_binding_digest'] != self.history.binding.content_hash or p['builder_digest'] != self.fixed_builder.digest
                 or set(TrainingManifest(R(self.parent.record.data()['training_manifest'])).identities()) != {self.history.task.identity}
                 or len(self.history_inputs) != 1 or self.history_inputs[0][0] != 'public_csv'):
