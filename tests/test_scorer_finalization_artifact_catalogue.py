@@ -1,0 +1,105 @@
+import hashlib
+import json
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+
+from evaluation.modular.scorer_process import read_headless_client_observations
+from evaluation.modular.scoring_service import ScorerConfig
+from research_loop.modular.artifact_catalogue import ArtifactCatalogue
+from research_loop.modular.contracts import DataIdentity, FrozenRecord
+from research_loop.modular.scorer_finalization_artifact_catalogue import (
+    register_admission_headless_scorer_finalization_observations,
+)
+from research_loop.ontology import ContractError, canonical
+
+
+_PROVIDER = {"kind": "grok-headless-frozen-evaluator-v1", "configuration_digest": "a" * 64}
+
+
+class _Config:
+    def __init__(self, scorer):
+        self.record = FrozenRecord.from_dict({"scorer": scorer.record.data(), "evaluator_provider": _PROVIDER})
+
+    def data(self):
+        return self.record.data()
+
+
+def _cell(identity, label):
+    body = {"identity": identity.data(), "label": label}
+    return SimpleNamespace(identity=identity, key=(label,), data=lambda: body)
+
+
+def _write_observations(path, *, scorer, panel_digest, provider=_PROVIDER):
+    source = hashlib.sha256((Path(__file__).parents[1] / "evaluation/modular/scorer_process.py").read_bytes()).hexdigest()
+    base = {"schema": "headless-evaluator-client-observation-v1", "attempt_id": "attempt-1", "nonce": "n" * 32,
+            "panel_digest": panel_digest, "scorer_config_digest": scorer.record.content_hash,
+            "evaluator_provider": provider, "request_sha256": hashlib.sha256(b'{}\n').hexdigest(),
+            "producer_source_sha256": source,
+            "text_representation": "python_text_write_input_and_decoded_read_output"}
+    response = canonical({"closure": {"body": {"nonce": "n" * 32}, "mac": "not-authority"}})
+    events = [
+        {**base, "status": "requested", "request_text": "{}\n"},
+        {**base, "status": "response_received", "response_text": response,
+         "response_sha256": hashlib.sha256(response.encode()).hexdigest(), "response_utf8_bytes": len(response.encode())},
+        {**base, "status": "authenticated", "closure_digest": FrozenRecord.from_dict(json.loads(response)["closure"]).content_hash,
+         "response_sha256": hashlib.sha256(response.encode()).hexdigest()},
+    ]
+    previous = None; rows = []
+    for sequence, event in enumerate(events, 1):
+        row = {"schema": "headless-evaluator-client-journal-v1", "sequence": sequence, "previous": previous, "event": event}
+        row["digest"] = FrozenRecord.from_dict(row).content_hash
+        previous = row["digest"]; rows.append(row)
+    path.write_text("".join(canonical(row) + "\n" for row in rows), encoding="utf-8")
+    return rows
+
+
+def _inputs(tmp_path, *, provider=_PROVIDER):
+    scorer = ScorerConfig.create(benchmark="core_pair", evaluator_id="synthetic", version="v1", rubric_digest="c" * 64)
+    identities = (DataIdentity("blade", "b", "g", "v1", "split", "train"),
+                  DataIdentity("discoverybench", "d", "g", "v1", "split", "train"))
+    panel = SimpleNamespace(digest="p" * 64, obligation_id="triple:M1+M4+M7",
+                            cells=(_cell(identities[1], "d"), _cell(identities[0], "b")))
+    journal = tmp_path / "client.jsonl"
+    rows = _write_observations(Path(str(journal) + ".headless-evaluator-client.jsonl"),
+                               scorer=scorer, panel_digest=panel.digest, provider=provider)
+    root = tmp_path / "run"; root.mkdir()
+    (root / "controller-attempt.json").write_text(canonical({"schema": "attempt", "cells": []}), encoding="utf-8")
+    return root, _Config(scorer), panel, SimpleNamespace(config=scorer, evaluator_provider=provider, journal_path=journal), rows
+
+
+def test_registers_per_identity_non_authorizing_text_observations(tmp_path):
+    root, config, panel, service, rows = _inputs(tmp_path)
+    receipt = register_admission_headless_scorer_finalization_observations(
+        root=root, config=config, panel=panel, service=service)
+    assert receipt.data()["authorization"] == "none"
+    assert len(receipt.data()["catalogues"]) == 2
+    run_id = FrozenRecord.from_dict(receipt.data()["attempt"]).content_hash
+    for anchor in receipt.data()["catalogues"]:
+        catalogue = ArtifactCatalogue(Path(anchor["path"]), identity=DataIdentity.parse(anchor["identity"]),
+                                      run_id=run_id,
+                                      experiment_id="admission-prediction-exploration:scorer-finalization-observations",
+                                      lock_digest=config.record.content_hash)
+        records = catalogue.records()
+        body = Path(anchor["path"]).read_text(encoding="utf-8")
+        assert "response_text" not in body and "request_text" not in body
+        assert len(records) == len(rows) == len(anchor["record_digests"])
+        assert all(record.data()["module"] is None and record.data()["coverage"] == "uncovered"
+                   and record.data()["parents"] == [] for record in records)
+
+
+def test_rejects_observation_provider_drift_before_any_catalogue(tmp_path):
+    root, config, panel, service, _ = _inputs(tmp_path, provider={**_PROVIDER, "configuration_digest": "b" * 64})
+    with pytest.raises(ContractError):
+        register_admission_headless_scorer_finalization_observations(root=root, config=config, panel=panel, service=service)
+    assert not (root / "scorer-finalization-observations").exists()
+
+
+def test_reader_chain_is_rechecked_before_projection(tmp_path):
+    root, config, panel, service, _ = _inputs(tmp_path)
+    path = Path(str(service.journal_path) + ".headless-evaluator-client.jsonl")
+    path.write_text(path.read_text(encoding="utf-8").replace('"attempt-1"', '"changed"', 1), encoding="utf-8")
+    with pytest.raises(ContractError):
+        register_admission_headless_scorer_finalization_observations(root=root, config=config, panel=panel, service=service)
+    assert not (root / "scorer-finalization-observations").exists()

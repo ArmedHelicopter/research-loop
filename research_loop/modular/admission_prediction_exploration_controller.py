@@ -3,6 +3,7 @@ from research_loop.modular.train_provider_preflight import (native_envelope, hea
 from research_loop.modular.ordinary_provider import (family_service_preflight, model_root, allocation_fields, provider_usage, provider_terminal, unused_main_opportunities, provider_scope, bind_runtime_originals)
 from research_loop.modular.ordinary_provider import final_provider_gate, final_score_fields, unavailable_provider_contrast, final_usage, final_unused
 from research_loop.modular.ordinary_provider import headless_evaluator_binding, finalize_headless_evaluator_gate
+from research_loop.modular.scorer_finalization_artifact_catalogue import register_admission_headless_scorer_finalization_observations
 from research_loop.modular.phase_provider import PhaseProviderSession
 from dataclasses import dataclass
 import hashlib
@@ -360,6 +361,11 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
             family='admission-prediction-exploration', service=service, panel=compiled.panels[0],
             scores=scores, scorer_authority_keys=scorer_authority_keys,
             scorer_config=ScorerConfig(FrozenRecord.from_dict(b['scorer'])), capture=capture_evaluator_gate)
+        # This is a non-authorizing projection of the client text journal.  The
+        # signed closure remains in evaluator_final_verification above.
+        journal['evaluator_observation_catalogues'] = register_admission_headless_scorer_finalization_observations(
+            root=root, config=config, panel=compiled.panels[0], service=service).data()
+        persist(refresh_usage=False)
     final_gate = final_provider_gate(provider_session, root/'final-provider-ledger.json')
     contrasts = []
     for panel in compiled.panels:
