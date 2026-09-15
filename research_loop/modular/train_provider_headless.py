@@ -27,10 +27,12 @@ def configuration(backend):
     require(type(backend) is GrokHeadlessTrainModelPort, 'exact headless TRAIN port required')
     config = read(backend.ledger_path)['config']
     require(config == backend.ledger['config'], 'headless configuration memory/disk drift')
+    require(type(backend.timeout_seconds) is int and 1 <= backend.timeout_seconds <= 240,
+            'headless timeout outside frozen TRAIN bounds')
     expected = {'schema': 'grok-headless-train-solver-port-v1',
         'provider_kind': 'grok-headless-public-train-v1', 'model': 'grok-4.6',
         'opportunity_contract': TRAIN_OPPORTUNITY_CONTRACT,
-        'reasoning_effort': 'low', 'timeout_seconds': 60, 'max_retries': 0,
+        'reasoning_effort': 'low', 'timeout_seconds': backend.timeout_seconds, 'max_retries': 0,
         'paid_fallback': False, 'included_only': True, 'api_key_route_permitted': False,
         'title_opportunities_per_main': 1, 'title_usage_and_all_call_totals': 'unknown',
         'max_calls': backend.max_calls, 'schemas': backend.schemas,

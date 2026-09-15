@@ -98,7 +98,7 @@ def test_native_scheduler_closes_eight_evaluator_receipts(tmp_path, monkeypatch)
     assert gate['closure']['body']['scorer_config_digest'] == scorer.digest
     assert gate['known_headless_main_tokens'] == 80
     assert gate['title_and_all_opportunity_settlement'] == 'unknown'
-    assert len(__import__('json').loads((root / 'ledger.json').read_text(encoding='utf-8'))['calls']) == 8
+    assert len(__import__('json').loads((Path(evaluator['work_root']) / 'ledger.json').read_text(encoding='utf-8'))['calls']) == 8
 
 
 def test_evaluator_descriptor_mismatch_rejects_before_export_or_model(tmp_path, monkeypatch):
