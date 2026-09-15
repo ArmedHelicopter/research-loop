@@ -1,0 +1,185 @@
+{
+  "schema": "published-files-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "headless-binding-replay-child-process-observation-r1.json",
+      "sha256": "3cceaef2394a53efb1b9d4c3ec799991598a3393a2a37768bcac32052f2bc156",
+      "bytes": 282
+    },
+    {
+      "path": "headless-binding-replay-r1-check-before.json",
+      "sha256": "f8bc18ca87dae24ee5911e1557c5b24349c09b6a5b06510cae82d47a9cc14e49",
+      "bytes": 92237
+    },
+    {
+      "path": "headless-binding-replay-r1-check-closed.json",
+      "sha256": "93ba54e0050cb6c8b5e73a47cf06f5588ad4f8fc7bb979fcfe41d9b09ba6eabf",
+      "bytes": 92250
+    },
+    {
+      "path": "headless-binding-replay-r1-check-r2-before.json",
+      "sha256": "a7309506dfa9f7ccc4709108b42bb50511441e83b2ed3a16ac1b610dc0ef3b5a",
+      "bytes": 92237
+    },
+    {
+      "path": "headless-binding-replay-r1-check-r2-closed.json",
+      "sha256": "0be84138eec1110951dafe094e4c75c7ca8480866dc4fff4f40525fce0ecc83b",
+      "bytes": 92250
+    },
+    {
+      "path": "headless-binding-replay-r1-check-r2-source-members.json",
+      "sha256": "86bbe83b0702a178f6a49b0212399b70ccdb36110205abac97c6886c463ccce6",
+      "bytes": 137882
+    },
+    {
+      "path": "headless-binding-replay-r1-check-r2-sources.zip",
+      "sha256": "75ef2e5d8b3ea9356cf383811ed483114dfa349684981f0908597c71376f16b9",
+      "bytes": 2631133
+    },
+    {
+      "path": "headless-binding-replay-r1-check-r2.xml",
+      "sha256": "06ed64bb758e9f51efe6416af8d95159df0d1ea855845fb92b26e9b4ef89cccb",
+      "bytes": 4868
+    },
+    {
+      "path": "headless-binding-replay-r1-check-r3-before.json",
+      "sha256": "af77a50a83da437ea3f38c59012c1410b5b94799f75c9be1b85762cb24aac99a",
+      "bytes": 92237
+    },
+    {
+      "path": "headless-binding-replay-r1-check-r3-closed.json",
+      "sha256": "275af7cacfea4e360fa5c3c56289c73506faddff6008eed1741d491d8a900483",
+      "bytes": 92251
+    },
+    {
+      "path": "headless-binding-replay-r1-check-r3-source-members.json",
+      "sha256": "14badfa92adffbdd04ae33126e2d8782165f697b6f59476f61a51fcd1112eb1e",
+      "bytes": 137882
+    },
+    {
+      "path": "headless-binding-replay-r1-check-r3-sources.zip",
+      "sha256": "96326e46b88890c00b5fd06f85ba2afdaa3c06697a94b201444f35805a2aebfd",
+      "bytes": 2631410
+    },
+    {
+      "path": "headless-binding-replay-r1-check-r3.xml",
+      "sha256": "6fa977b854551bf30b3ea642a0b08392729f6d1f1a5d5d4f06e792414ce3ec59",
+      "bytes": 8517
+    },
+    {
+      "path": "headless-binding-replay-r1-check-r4-before.json",
+      "sha256": "9e36378a1a0154428087dd5d7f00645016eb7d68c95044f0445fc8d9bbc1a866",
+      "bytes": 92237
+    },
+    {
+      "path": "headless-binding-replay-r1-check-r4-closed.json",
+      "sha256": "12ba8ee819a32870bbeffeb282509259acda3522baccfe4f498eaabb940193b0",
+      "bytes": 92251
+    },
+    {
+      "path": "headless-binding-replay-r1-check-r4-source-members.json",
+      "sha256": "c2152d28c8d13c312470c66e685a22690043f64685ec29c493d21bd0f8c95db1",
+      "bytes": 137882
+    },
+    {
+      "path": "headless-binding-replay-r1-check-r4-sources.zip",
+      "sha256": "5c43e288e8cd6ba140be163c7cb833a6ae89eb2f74efb52205eb2ae8bb55ff08",
+      "bytes": 2631451
+    },
+    {
+      "path": "headless-binding-replay-r1-check-r4.xml",
+      "sha256": "33ccf3cadcd98992b3297f9ba0a7046a48b6fee9aa018d157879a396fc1172d0",
+      "bytes": 5342
+    },
+    {
+      "path": "headless-binding-replay-r1-check-source-members.json",
+      "sha256": "88b9e61512d3e682e491f551f02c470cf625018f0384a2b36c492527fcbfd48a",
+      "bytes": 137882
+    },
+    {
+      "path": "headless-binding-replay-r1-check-sources.zip",
+      "sha256": "a48c5190f9cbb79f7e7e867a9b2d4ece5a2b5b38ee3be3a75f7f9f9c49b83782",
+      "bytes": 2631108
+    },
+    {
+      "path": "headless-binding-replay-r1-check.xml",
+      "sha256": "f2780cfa585a515e46bd845b6fb9ab6ba34548d5485677bd90410381f0f41dd9",
+      "bytes": 4868
+    },
+    {
+      "path": "headless-binding-replay-r1-execution-join-correction-r2.json",
+      "sha256": "35d4f7149107035d7bd771bc0a5e3b3e768fb78aa20fd25e9b9eaef3845d148d",
+      "bytes": 3514
+    },
+    {
+      "path": "headless-binding-replay-r1-execution-join-r1.json",
+      "sha256": "c457fb67b4bdc280579ccb3d30122c4bdcd7635de2c9a4068573b802fae48687",
+      "bytes": 351651
+    },
+    {
+      "path": "headless-binding-replay-root-r1-before.json",
+      "sha256": "3810c147c0d28640c3266550dfdd1f6e91d7608d0029e34da32aaea51707ebc5",
+      "bytes": 92318
+    },
+    {
+      "path": "headless-binding-replay-root-r1-closed.json",
+      "sha256": "8808536c2a97e60c55e75bb7ad2713db16e6ef9e6f93603bda8f399152807a93",
+      "bytes": 92252
+    },
+    {
+      "path": "headless-binding-replay-root-r1-native-join.json",
+      "sha256": "08100658232afedb375a4b71546c49a825a200e8e5614a19dc6a0aa028c77ced",
+      "bytes": 372
+    },
+    {
+      "path": "headless-binding-replay-root-r1-source-members.json",
+      "sha256": "3d1d32d2f0114f4c8e12c4717e0f1a45398b5fb757fc5d2da48fbc0a4f1bab60",
+      "bytes": 137881
+    },
+    {
+      "path": "headless-binding-replay-root-r1-sources.zip",
+      "sha256": "4510758588d437852b02f99c83a781f242cfb7dfe099c98b5211320074ad36d6",
+      "bytes": 2631421
+    },
+    {
+      "path": "headless-binding-replay-root-r1.log",
+      "sha256": "9e60d088c01e69846a7930f701d0c0eeba046c995c4d6ef7a3c6f15785fe1504",
+      "bytes": 754
+    },
+    {
+      "path": "headless-binding-replay-root-r1.xml",
+      "sha256": "f0692f83362d0cbea92042b29fb15902a3abba182f8cf01069afc3c244cb3493",
+      "bytes": 15260
+    },
+    {
+      "path": "publish_headless_binding_replay_r1.py",
+      "sha256": "6c85421e6641495d4ba9b21b8288d6aac263829a9c479fd9fc18c576ee5781ff",
+      "bytes": 10230
+    },
+    {
+      "path": "README.md",
+      "sha256": "721ece0a1b1db0d39f8af904473a10c51dcebf3435a1b86c8817d8da13d82327",
+      "bytes": 2014
+    },
+    {
+      "path": "retention-helper-source.py",
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840
+    },
+    {
+      "path": "retention-manifest.json",
+      "sha256": "41447c34572457ff9c8f64374b5c1a0fadae7ad5d472b106ebe25476353ea7e0",
+      "bytes": 6724196
+    },
+    {
+      "path": "summary.json",
+      "sha256": "f5781b2d3286de3e6cfc463cd3d9159f75522d5dc68a82da613de19ab8c47778",
+      "bytes": 3042
+    }
+  ]
+}

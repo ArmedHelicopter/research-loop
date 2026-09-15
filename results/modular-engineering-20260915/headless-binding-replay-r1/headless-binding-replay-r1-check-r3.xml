@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="32" time="123.703" timestamp="2026-09-15T12:59:17.650548+08:00" hostname="SC-202507131830"><testcase classname="tests.test_headless_train_provider" name="test_headless_provider_phase_and_consumption_seal" time="4.793" /><testcase classname="tests.test_headless_train_provider" name="test_phase_headless_binding_uses_two_fresh_passes_and_never_reuses_them" time="7.937" /><testcase classname="tests.test_headless_train_provider" name="test_headless_binding_failure_poison_and_noneligible_history_remain_explicit" time="2.846" /><testcase classname="tests.test_headless_train_provider" name="test_public_headless_binding_rejects_invalid_arguments_before_replay[expected_call_ids0-True]" time="1.393"><failure message="AttributeError: 'FrozenTrainProviderLedgerV2' object has no attribute 'original'">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/headless-binding-replay-r1-check-r3/test_public_headless_binding_r0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001F3F2180A40&gt;
+expected_call_ids = (2, 1), require_eligible = True
+
+    @pytest.mark.parametrize(('expected_call_ids','require_eligible'),[
+        ((2,1),True),
+        (None,1),
+    ])
+    def test_public_headless_binding_rejects_invalid_arguments_before_replay(tmp_path,monkeypatch,
+                                                                              expected_call_ids,require_eligible):
+        backend=port(tmp_path,max_calls=1)
+        dispatches,_=synthetic_native(tmp_path,monkeypatch,backend)
+        provider=wrap_train_provider(backend);response=provider(REQUEST)
+        seal=provider.seal(tmp_path/'seal.json')
+        original=provider_core._verify_call;replayed=[]
+        def observe(*args,**kwargs):
+            replayed.append(args[1]['id']);return original(*args,**kwargs)
+        monkeypatch.setattr(provider_core,'_verify_call',observe)
+        invalid=events(REQUEST);invalid[-1]['data']['response']=response.data()
+&gt;       with pytest.raises(ContractError):seal.original.bind_events(
+                                          ^^^^^^^^^^^^^
+            invalid,expected_call_ids=expected_call_ids,require_eligible=require_eligible)
+E       AttributeError: 'FrozenTrainProviderLedgerV2' object has no attribute 'original'
+
+tests\test_headless_train_provider.py:120: AttributeError</failure></testcase><testcase classname="tests.test_headless_train_provider" name="test_public_headless_binding_rejects_invalid_arguments_before_replay[None-1]" time="7.096"><failure message="AttributeError: 'FrozenTrainProviderLedgerV2' object has no attribute 'original'">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/headless-binding-replay-r1-check-r3/test_public_headless_binding_r1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001F3F2D22E40&gt;
+expected_call_ids = None, require_eligible = 1
+
+    @pytest.mark.parametrize(('expected_call_ids','require_eligible'),[
+        ((2,1),True),
+        (None,1),
+    ])
+    def test_public_headless_binding_rejects_invalid_arguments_before_replay(tmp_path,monkeypatch,
+                                                                              expected_call_ids,require_eligible):
+        backend=port(tmp_path,max_calls=1)
+        dispatches,_=synthetic_native(tmp_path,monkeypatch,backend)
+        provider=wrap_train_provider(backend);response=provider(REQUEST)
+        seal=provider.seal(tmp_path/'seal.json')
+        original=provider_core._verify_call;replayed=[]
+        def observe(*args,**kwargs):
+            replayed.append(args[1]['id']);return original(*args,**kwargs)
+        monkeypatch.setattr(provider_core,'_verify_call',observe)
+        invalid=events(REQUEST);invalid[-1]['data']['response']=response.data()
+&gt;       with pytest.raises(ContractError):seal.original.bind_events(
+                                          ^^^^^^^^^^^^^
+            invalid,expected_call_ids=expected_call_ids,require_eligible=require_eligible)
+E       AttributeError: 'FrozenTrainProviderLedgerV2' object has no attribute 'original'
+
+tests\test_headless_train_provider.py:120: AttributeError</failure></testcase><testcase classname="tests.test_headless_train_provider" name="test_postflight_rejection_is_retained_in_provider_denominator" time="1.215" /><testcase classname="tests.test_headless_train_provider" name="test_seal_refuses_forged_consumption_and_closes_future_dispatch" time="1.624" /><testcase classname="tests.test_headless_train_provider" name="test_unknown_main_usage_keeps_the_spent_opportunity" time="1.551" /><testcase classname="tests.test_headless_train_provider" name="test_malformed_original_keeps_failed_provider_row[process]" time="1.605" /><testcase classname="tests.test_headless_train_provider" name="test_malformed_original_keeps_failed_provider_row[reservation]" time="5.705" /><testcase classname="tests.test_headless_train_provider" name="test_headless_configuration_cannot_be_relabelled_or_relaxed[kind]" time="0.626" /><testcase classname="tests.test_headless_train_provider" name="test_headless_configuration_cannot_be_relabelled_or_relaxed[effort]" time="0.779" /><testcase classname="tests.test_headless_train_provider" name="test_headless_configuration_cannot_be_relabelled_or_relaxed[recovery]" time="0.727" /><testcase classname="tests.test_headless_train_provider" name="test_headless_configuration_cannot_be_relabelled_or_relaxed[source]" time="0.867" /><testcase classname="tests.test_headless_train_provider" name="test_headless_configuration_cannot_be_relabelled_or_relaxed[opportunity_contract]" time="0.975" /><testcase classname="tests.test_phase_provider" name="test_native_history_build_prefix_and_targets_have_disjoint_original_spans" time="16.780" /><testcase classname="tests.test_phase_provider" name="test_failed_target_keeps_known_main_and_history_originals_without_score_eligibility" time="6.122" /><testcase classname="tests.test_phase_provider" name="test_duplicate_scope_or_unscoped_call_cannot_enter_a_seal" time="5.991" /><testcase classname="tests.test_phase_provider" name="test_coherently_rehashed_scope_reuse_rejected_against_original_partition" time="5.316" /><testcase classname="tests.test_phase_provider" name="test_native_configuration_cannot_reinterpret_lifetime_or_allocation[lifetime_seconds-180]" time="0.146" /><testcase classname="tests.test_phase_provider" name="test_native_configuration_cannot_reinterpret_lifetime_or_allocation[main_opportunities-2]" time="0.134" /><testcase classname="tests.test_phase_provider" name="test_native_configuration_cannot_reinterpret_lifetime_or_allocation[possible_initial_title_opportunities-0]" time="0.215" /><testcase classname="tests.test_phase_provider" name="test_provenance_abort_retains_unresolved_scope_and_only_historical_lower_bounds" time="5.567" /><testcase classname="tests.test_phase_provider" name="test_phase_programming_error_does_not_manufacture_a_terminal_snapshot" time="0.116" /><testcase classname="tests.test_provider_observation_pass" name="test_phase_verification_reads_each_original_once_but_never_reuses_old_pass[original-grok]" time="9.393" /><testcase classname="tests.test_provider_observation_pass" name="test_phase_verification_reads_each_original_once_but_never_reuses_old_pass[original-codex]" time="1.367" /><testcase classname="tests.test_provider_observation_pass" name="test_phase_verification_reads_each_original_once_but_never_reuses_old_pass[configuration-grok]" time="6.584" /><testcase classname="tests.test_provider_observation_pass" name="test_phase_verification_reads_each_original_once_but_never_reuses_old_pass[configuration-codex]" time="1.500" /><testcase classname="tests.test_provider_seal_observation" name="test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift[seal-grok]" time="9.580" /><testcase classname="tests.test_provider_seal_observation" name="test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift[seal-codex]" time="1.565" /><testcase classname="tests.test_provider_seal_observation" name="test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift[response-grok]" time="11.803" /><testcase classname="tests.test_provider_seal_observation" name="test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift[response-codex]" time="1.313" /></testsuite></testsuites>

@@ -1,0 +1,88 @@
+{
+  "schema": "headless-verification-profile-private-members-v1",
+  "zip": {
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\retained-private-evidence\\headless-verification-profile-r1\\headless-verification-profile-private-r1.zip",
+    "sha256": "63673c97864782c173fd1325b125a990105a2adc33ed473701de4892ea20b910",
+    "bytes": 743262
+  },
+  "members": [
+    {
+      "path": "headless-original-verification-profile-r1.py",
+      "sha256": "adfe17df37006b01092c14a0c415b96fc3748a22048d0c0d8d7b148be8732dc4",
+      "bytes": 4566,
+      "crc32": "c0326f7a"
+    },
+    {
+      "path": "headless-original-verification-profile-r1.input-before.json",
+      "sha256": "e6c6dbfb482013d89a78a0afcc74d477e5da32ded97139ac6ebe458ac55d9078",
+      "bytes": 1440496,
+      "crc32": "e96c4964"
+    },
+    {
+      "path": "headless-original-verification-profile-r1.setup-attempt.json",
+      "sha256": "b20ff21f522bcbb9a90c0cc491183a0c67bc2fffb5b8c725142dead44dd86b1a",
+      "bytes": 577,
+      "crc32": "2b3b669a"
+    },
+    {
+      "path": "headless-original-verification-profile-r1.setup-attempt-correction-r1.json",
+      "sha256": "6db31244b75f57c96a25c10843d21174a7316ca75bc164ca33ac93836454ec96",
+      "bytes": 1250,
+      "crc32": "f73a3707"
+    },
+    {
+      "path": "headless-original-verification-profile-r1-replay.py",
+      "sha256": "3b60663e5d5f47e4cef0d6345b96fc9d33aaef84a20181b9d040423e706bf465",
+      "bytes": 4234,
+      "crc32": "55fcbce1"
+    },
+    {
+      "path": "headless-original-verification-profile-r1-replay.input-before.json",
+      "sha256": "e6c6dbfb482013d89a78a0afcc74d477e5da32ded97139ac6ebe458ac55d9078",
+      "bytes": 1440496,
+      "crc32": "e96c4964"
+    },
+    {
+      "path": "headless-original-verification-profile-r1-replay.input-after.json",
+      "sha256": "e6c6dbfb482013d89a78a0afcc74d477e5da32ded97139ac6ebe458ac55d9078",
+      "bytes": 1440496,
+      "crc32": "e96c4964"
+    },
+    {
+      "path": "headless-original-verification-profile-r1-replay.pstats",
+      "sha256": "20598fa2434ef5a5fbfe16888a8c9e10d29040768d6c2ccf82b767aac6dc21e5",
+      "bytes": 25560,
+      "crc32": "a109087f"
+    },
+    {
+      "path": "headless-original-verification-profile-r1-replay.summary.json",
+      "sha256": "cb5b0fc24e7e651de730e7a075df95dec59d7776fd0061d1f7046909939f4279",
+      "bytes": 1974,
+      "crc32": "ba217227"
+    },
+    {
+      "path": "headless-provider-repeat-verification-audit-r1.md",
+      "sha256": "0845243c4d022f16bff865b0bf527486b48d0b5e9565d99fa6ae86bfd32c6f6b",
+      "bytes": 5727,
+      "crc32": "0c3836de"
+    }
+  ],
+  "input_manifest_policy": {
+    "public_copies": false,
+    "credential_summary_rows": [
+      {
+        "path": "headless-original-verification-profile-r1.input-before.json",
+        "credential_summary_rows": 176
+      },
+      {
+        "path": "headless-original-verification-profile-r1-replay.input-before.json",
+        "credential_summary_rows": 176
+      },
+      {
+        "path": "headless-original-verification-profile-r1-replay.input-after.json",
+        "credential_summary_rows": 176
+      }
+    ],
+    "reason": "Input manifests contain credential-file summary rows; retained only in private ZIP."
+  }
+}

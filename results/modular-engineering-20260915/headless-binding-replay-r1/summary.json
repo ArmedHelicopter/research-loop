@@ -1,0 +1,104 @@
+{
+  "schema": "headless-binding-replay-checkpoint-v1",
+  "authoritative_source_commit": "62ea4788b0fda4c3fb506c1e2b5a9e504e7a08dd",
+  "authoritative_native_session_joined": 55494,
+  "authoritative_junit": {
+    "tests": 102,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "runs": [
+    {
+      "label": "agent-r1",
+      "source_commit": "aa2f2c787a3479553a0e794f994d2ecf0d45b3ca",
+      "junit": {
+        "tests": 30,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 785,
+      "source_unchanged": true,
+      "wrapper_recorded_exit_code": 0,
+      "wall_seconds": 93.59400000001187,
+      "retained_noncredential_files": 963,
+      "original_native_tool_join": "not_retained_unproven"
+    },
+    {
+      "label": "agent-r2",
+      "source_commit": "371f3738c8c8ce161a338b70cc3258520d06f915",
+      "junit": {
+        "tests": 30,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 785,
+      "source_unchanged": true,
+      "wrapper_recorded_exit_code": 0,
+      "wall_seconds": 87.81299999999464,
+      "retained_noncredential_files": 963,
+      "original_native_tool_join": "not_retained_unproven"
+    },
+    {
+      "label": "agent-r3",
+      "source_commit": "bc2783c9512b19e51871b61ed1aea7a9d75b90af",
+      "junit": {
+        "tests": 32,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 785,
+      "source_unchanged": true,
+      "wrapper_recorded_exit_code": 1,
+      "wall_seconds": 124.31200000000536,
+      "retained_noncredential_files": 1037,
+      "original_native_tool_join": "not_retained_unproven"
+    },
+    {
+      "label": "agent-r4",
+      "source_commit": "ece291c7632609a36e727997cdf16b25db228354",
+      "junit": {
+        "tests": 33,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 785,
+      "source_unchanged": true,
+      "wrapper_recorded_exit_code": 0,
+      "wall_seconds": 127.40599999998813,
+      "retained_noncredential_files": 1082,
+      "original_native_tool_join": "not_retained_unproven"
+    },
+    {
+      "label": "root",
+      "source_commit": "62ea4788b0fda4c3fb506c1e2b5a9e504e7a08dd",
+      "junit": {
+        "tests": 102,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 785,
+      "source_unchanged": true,
+      "wrapper_recorded_exit_code": 0,
+      "wall_seconds": 199.93700000000536,
+      "retained_noncredential_files": 1902,
+      "original_native_tool_join": "retained_exit_0"
+    }
+  ],
+  "full_original_audits_per_phase_binding_before": 3,
+  "full_original_audits_per_phase_binding_after": 2,
+  "fresh_original_reads_per_consumer_retained": true,
+  "cross_consumer_cache_added": false,
+  "wall_clock_speedup_measured": false,
+  "retained_noncredential_files": 5947,
+  "originals_bytes_and_mtimes_unchanged": true,
+  "model_calls": 0,
+  "paid_api_calls": 0,
+  "validation_access": false,
+  "scientific_effectiveness_proven": false
+}

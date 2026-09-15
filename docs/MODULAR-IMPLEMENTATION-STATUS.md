@@ -3,6 +3,31 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Provenance cross-index and provider read cost (2026-09-15)
+
+The [C5 probe follow-up](../results/modular-engineering-20260915/c5-provenance-followup-r1/README.md)
+checks every one of its 70 generic trace descriptors. Fifty-two have direct
+catalogue references; automatic latest-event attachment does not establish
+semantic consumption or complete module coverage. Nine M9 field comparisons
+connect the builder request/terminal to retained typed outputs. The original
+graph and its coverage flags remain unchanged.
+
+Source `62ea4788` [passed 102 frozen integration checks](../results/modular-engineering-20260915/headless-binding-replay-r1/README.md)
+after removing one redundant original-provider pass inside phase event binding.
+Each independent consumer still rereads current originals; the public entry,
+fault/poison behavior, unknown usage and label isolation remain checked.
+The original native session was joined with exit 0, and all 785 source/document
+files retained their pre-run bytes. All five development/integration attempts,
+including two test-wiring failures and missing child native-tool joins, retain
+their separate evidence. The private archive has 5,947 noncredential files.
+
+The [closed full5 profile](../results/modular-engineering-20260915/headless-verification-profile-r1/INTEGRATION.md)
+replayed 136 original calls in 1.619 seconds; this is neither a full C5 duration
+estimate nor a measured speedup. Its rejected setup and correction are retained.
+These checks use synthetic responses, no actual model/API/VAL calls. The long
+C5 run keeps its original frozen source; real module effects, all experiments
+and independent acceptance remain outstanding obligations.
+
 ## Closed full34 lineage and C5 artifact probe (2026-09-15)
 
 The [full5 lineage run](../results/modular-engineering-20260915/headless-lineage-controller-full5-r1/README.md)

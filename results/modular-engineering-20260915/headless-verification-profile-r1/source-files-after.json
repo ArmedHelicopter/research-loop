@@ -1,0 +1,66 @@
+{
+  "schema": "headless-verification-profile-source-files-v1",
+  "files": [
+    {
+      "path": "headless-original-verification-profile-r1.py",
+      "sha256": "adfe17df37006b01092c14a0c415b96fc3748a22048d0c0d8d7b148be8732dc4",
+      "bytes": 4566,
+      "mtime_ns": 1789447352871907900
+    },
+    {
+      "path": "headless-original-verification-profile-r1.input-before.json",
+      "sha256": "e6c6dbfb482013d89a78a0afcc74d477e5da32ded97139ac6ebe458ac55d9078",
+      "bytes": 1440496,
+      "mtime_ns": 1789447353994932300
+    },
+    {
+      "path": "headless-original-verification-profile-r1.setup-attempt.json",
+      "sha256": "b20ff21f522bcbb9a90c0cc491183a0c67bc2fffb5b8c725142dead44dd86b1a",
+      "bytes": 577,
+      "mtime_ns": 1789447455828039600
+    },
+    {
+      "path": "headless-original-verification-profile-r1.setup-attempt-correction-r1.json",
+      "sha256": "6db31244b75f57c96a25c10843d21174a7316ca75bc164ca33ac93836454ec96",
+      "bytes": 1250,
+      "mtime_ns": 1789448156892163600
+    },
+    {
+      "path": "headless-original-verification-profile-r1-replay.py",
+      "sha256": "3b60663e5d5f47e4cef0d6345b96fc9d33aaef84a20181b9d040423e706bf465",
+      "bytes": 4234,
+      "mtime_ns": 1789447428004632600
+    },
+    {
+      "path": "headless-original-verification-profile-r1-replay.input-before.json",
+      "sha256": "e6c6dbfb482013d89a78a0afcc74d477e5da32ded97139ac6ebe458ac55d9078",
+      "bytes": 1440496,
+      "mtime_ns": 1789447429146938400
+    },
+    {
+      "path": "headless-original-verification-profile-r1-replay.input-after.json",
+      "sha256": "e6c6dbfb482013d89a78a0afcc74d477e5da32ded97139ac6ebe458ac55d9078",
+      "bytes": 1440496,
+      "mtime_ns": 1789447432334902700
+    },
+    {
+      "path": "headless-original-verification-profile-r1-replay.pstats",
+      "sha256": "20598fa2434ef5a5fbfe16888a8c9e10d29040768d6c2ccf82b767aac6dc21e5",
+      "bytes": 25560,
+      "mtime_ns": 1789447430856634100
+    },
+    {
+      "path": "headless-original-verification-profile-r1-replay.summary.json",
+      "sha256": "cb5b0fc24e7e651de730e7a075df95dec59d7776fd0061d1f7046909939f4279",
+      "bytes": 1974,
+      "mtime_ns": 1789447432348877100
+    },
+    {
+      "path": "headless-provider-repeat-verification-audit-r1.md",
+      "sha256": "0845243c4d022f16bff865b0bf527486b48d0b5e9565d99fa6ae86bfd32c6f6b",
+      "bytes": 5727,
+      "mtime_ns": 1789447784108666100
+    }
+  ],
+  "unchanged_from_before": true
+}

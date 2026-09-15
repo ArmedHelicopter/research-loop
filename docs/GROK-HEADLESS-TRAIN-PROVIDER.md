@@ -53,3 +53,14 @@ The full experiment registry, TRAIN-only optimization, VAL-only acceptance,
 singleton/pair/triple/full/LOO obligations and negative-result retention remain
 unchanged. This provider implementation alone does not complete those effects
 experiments or authorize a validation lease.
+
+The phase event-binding consumer now performs two complete original audits
+within one synchronous invocation instead of three. It reuses only that
+invocation's verified immutable observations for event matching; the next
+consumer and the public original-ledger entry still reread current files.
+Invalid arguments retain each entry's existing validation/poison order.
+The [102-check frozen integration](../results/modular-engineering-20260915/headless-binding-replay-r1/README.md)
+includes legacy providers, tampering between consumers, terminal accounting
+and label isolation. This establishes the reduced pass count, not a measured
+end-to-end speedup. The separate [closed-original profile](../results/modular-engineering-20260915/headless-verification-profile-r1/INTEGRATION.md)
+retains its initial rejection, additive correction and subsequent replay.

@@ -1,0 +1,97 @@
+{
+  "schema": "headless-verification-profile-pstats-summary-v1",
+  "pstats_source": {
+    "path": "headless-original-verification-profile-r1-replay.pstats",
+    "sha256": "20598fa2434ef5a5fbfe16888a8c9e10d29040768d6c2ccf82b767aac6dc21e5",
+    "bytes": 25560,
+    "mtime_ns": 1789447430856634100
+  },
+  "function_count": 164,
+  "top_cumulative": [
+    {
+      "function": "grok_headless_train_solver.py:204:replay_headless_train_ledger",
+      "primitive_calls": 1,
+      "total_calls": 1,
+      "self_seconds": 0.0010760000000000001,
+      "cumulative_seconds": 1.6184251
+    },
+    {
+      "function": "grok_headless_train_solver.py:198:_replay_headless_native_call",
+      "primitive_calls": 136,
+      "total_calls": 136,
+      "self_seconds": 0.0022651,
+      "cumulative_seconds": 1.6123488000000001
+    },
+    {
+      "function": "grok_headless_train_solver.py:184:_verify_row",
+      "primitive_calls": 136,
+      "total_calls": 136,
+      "self_seconds": 0.0037515,
+      "cumulative_seconds": 1.5904405000000001
+    },
+    {
+      "function": "grok_headless_transport.py:550:verify_headless_request_binding",
+      "primitive_calls": 136,
+      "total_calls": 136,
+      "self_seconds": 0.0018532000000000002,
+      "cumulative_seconds": 1.3665789000000002
+    },
+    {
+      "function": "grok_headless_transport.py:559:_verify_headless_request_binding",
+      "primitive_calls": 136,
+      "total_calls": 136,
+      "self_seconds": 0.013991700000000001,
+      "cumulative_seconds": 1.3647257000000002
+    },
+    {
+      "function": "grok_headless_transport.py:284:_plain",
+      "primitive_calls": 2312,
+      "total_calls": 2312,
+      "self_seconds": 0.0237565,
+      "cumulative_seconds": 0.7405472000000001
+    },
+    {
+      "function": "grok_headless_transport.py:292:_sources",
+      "primitive_calls": 136,
+      "total_calls": 136,
+      "self_seconds": 0.0028248,
+      "cumulative_seconds": 0.5318026
+    },
+    {
+      "function": "pathlib.py:1015:read_bytes",
+      "primitive_calls": 7218,
+      "total_calls": 7218,
+      "self_seconds": 0.0077343,
+      "cumulative_seconds": 0.4295101
+    },
+    {
+      "function": "grok_headless_transport.py:53:_read",
+      "primitive_calls": 5984,
+      "total_calls": 5984,
+      "self_seconds": 0.0051776,
+      "cumulative_seconds": 0.3720821
+    },
+    {
+      "function": "pathlib.py:909:is_symlink",
+      "primitive_calls": 22440,
+      "total_calls": 22440,
+      "self_seconds": 0.0105716,
+      "cumulative_seconds": 0.3185446
+    },
+    {
+      "function": "pathlib.py:842:lstat",
+      "primitive_calls": 22440,
+      "total_calls": 22440,
+      "self_seconds": 0.0049648,
+      "cumulative_seconds": 0.3055623
+    },
+    {
+      "function": "pathlib.py:835:stat",
+      "primitive_calls": 22440,
+      "total_calls": 22440,
+      "self_seconds": 0.0046203,
+      "cumulative_seconds": 0.3005975
+    }
+  ],
+  "limit": "Profile values overlap and are not summed."
+}
