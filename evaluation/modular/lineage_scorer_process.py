@@ -6,6 +6,7 @@ accounts/mounts and authorize the pinned train reference publisher separately.
 import argparse
 import json
 from pathlib import Path
+from typing import Mapping
 import uuid
 
 from evaluation.modular.scorer_process import (LinkedScorerProcessClient, CombinationScorerProcessClient,
@@ -25,6 +26,24 @@ _HEADLESS_USAGE_SCHEMA = 'lineage-scorer-headless-usage-v1'
 _HEADLESS_USAGE_CONTRACT = 'grok-headless-lineage-usage-v1'
 _HEADLESS_PROVIDER_KIND = 'grok-headless-frozen-evaluator-v1'
 _HEADLESS_USAGE_DECLARATION_SCHEMA = 'lineage-headless-evaluator-usage-declaration-v1'
+_LINEAGE_FINALIZATION_SCHEMA = 'lineage-headless-evaluator-finalization-journal-v1'
+_LINEAGE_FINALIZE_REQUEST_SCHEMA = 'lineage-headless-evaluator-finalize-request-v1'
+_LINEAGE_FINALIZE_RESPONSE_SCHEMA = 'lineage-headless-evaluator-finalize-response-v1'
+
+
+def _lineage_headless_source_pin(spec):
+    """The lineage worker is a closure consumer and must be replay-pinned too."""
+    if spec.get('provider_kind') != _HEADLESS_PROVIDER_KIND:
+        return spec
+    result = dict(spec)
+    files = dict(spec.get('frozen_files', {}))
+    source = Path(__file__).resolve()
+    actual = _sha(source.read_bytes())
+    if str(source) in files and files[str(source)] != actual:
+        raise ContractError('supplied lineage scorer source pin differs')
+    files[str(source)] = actual
+    result['frozen_files'] = files
+    return result
 
 
 def _lineage_evaluator_contract(config, model, panel, limits, usage_declaration):
@@ -72,6 +91,8 @@ def _lineage_evaluator_contract(config, model, panel, limits, usage_declaration)
                 or model.config.get('max_tokens') != declaration.get('max_tokens')
                 or model.config.get('account_read_recovery') != declaration.get('account_read_recovery')):
             raise ContractError('lineage headless evaluator declaration differs')
+        if model.frozen_files.get(str(Path(__file__).resolve())) != _sha(Path(__file__).read_bytes()):
+            raise ContractError('lineage scorer source was not frozen into the evaluator port')
         usage_schema, usage_contract = _HEADLESS_USAGE_SCHEMA, _HEADLESS_USAGE_CONTRACT
     else:
         raise ContractError('lineage service requires a protected evaluator mode')
@@ -113,7 +134,8 @@ def load_lineage_service(path, expected_sha256, *, evaluator=None):
         from research_loop.ontology import digest
         ref, _, _ = resolver.resolve(config.task_handles[digest(cell.identity.data())], cell.identity.benchmark,
             identity_digest=digest(cell.identity.data()), task_digest=cell.task_digest)
-    model = evaluator if evaluator is not None else _production_evaluator(config.evaluator, rubric_mode='lineage_v1')
+    model = evaluator if evaluator is not None else _production_evaluator(
+        _lineage_headless_source_pin(config.evaluator), rubric_mode='lineage_v1')
     limits = spec['limits']
     usage_declaration = spec.get('evaluator_usage')
     usage_schema, usage_contract = _lineage_evaluator_contract(config, model, panel, limits, usage_declaration)
@@ -124,6 +146,12 @@ def load_lineage_service(path, expected_sha256, *, evaluator=None):
     service.lineage_reference_binding = {**resolver.binding, 'limits': limits,
                                          **({'evaluator_usage': usage_declaration} if usage_declaration is not None else {})}
     service.evaluator_port = model
+    from evaluation.modular.headless_evaluator_model_port import GrokHeadlessEvaluatorModelPort
+    if isinstance(model, GrokHeadlessEvaluatorModelPort):
+        from evaluation.modular.headless_evaluator_closure import descriptor
+        service.headless_evaluator_port = model
+        service.evaluator_provider = descriptor(model)
+        service.lineage_evaluator_declaration = FrozenRecord.from_dict(config.evaluator)
     service.lineage_usage_schema = usage_schema
     service.lineage_usage_contract = usage_contract
     return panel, service
@@ -131,12 +159,25 @@ def load_lineage_service(path, expected_sha256, *, evaluator=None):
 
 class LineageScorerProcessClient(CombinationScorerProcessClient):
     def __init__(self, *, panel, config, command, journal_path, task_handle_bindings, execution_authority_keys,
-                 scorer_authority_keys, reference_binding, environment=None, response_timeout_seconds=240):
+                 scorer_authority_keys, reference_binding, evaluator_provider=None, environment=None, response_timeout_seconds=240):
         serialize_combination_panel(panel, lineage=True)
         expected = scorer_process_binding(panel=panel, config=config, task_handle_bindings=task_handle_bindings,
             execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys)
         self.reference_binding = FrozenRecord.from_dict(reference_binding).data()
         expected = FrozenRecord.from_dict({**expected.data(), 'lineage_references': reference_binding})
+        declaration = self.reference_binding.get('evaluator_usage')
+        if declaration is not None:
+            if (not isinstance(evaluator_provider, Mapping) or set(evaluator_provider) != {'kind', 'configuration_digest'}
+                    or evaluator_provider.get('kind') != _HEADLESS_PROVIDER_KIND
+                    or not isinstance(evaluator_provider.get('configuration_digest'), str)
+                    or len(evaluator_provider['configuration_digest']) != 64):
+                raise ContractError('lineage headless client requires an exact evaluator descriptor binding')
+            self.evaluator_provider = dict(evaluator_provider)
+            expected = FrozenRecord.from_dict({**expected.data(), 'evaluator_provider': self.evaluator_provider})
+        elif evaluator_provider is not None:
+            raise ContractError('legacy lineage client must not bind a headless evaluator descriptor')
+        else:
+            self.evaluator_provider = None
         self.config = config
         self._scorer_keys = dict(scorer_authority_keys)
         LinkedScorerProcessClient.__init__(self, panel=panel, command=command, journal_path=journal_path,
@@ -255,6 +296,29 @@ class LineageScorerProcessClient(CombinationScorerProcessClient):
     def score_lineage(self, *, panel, cell, score_input):
         return self.score_combination(panel=panel, cell=cell, score_input=score_input)
 
+    def finalize_lineage(self, *, nonce: str, receipt_digests):
+        """Ask the bound private worker to replay, seal, and then stop scoring."""
+        if self.evaluator_provider is None:
+            raise ContractError('legacy lineage client has no headless closure contract')
+        if not isinstance(nonce, str) or not nonce or not isinstance(receipt_digests, list):
+            raise ContractError('lineage headless finalization request is malformed')
+        request = {'schema': _LINEAGE_FINALIZE_REQUEST_SCHEMA, 'nonce': nonce,
+                   'receipt_digests': receipt_digests, 'evaluator_provider': self.evaluator_provider}
+        try:
+            self.input.write(canonical(request)+'\n'); self.input.flush()
+            response = json.loads(self._readline_bounded())
+            if (not isinstance(response, dict) or set(response) != {'schema', 'nonce', 'closure'}
+                    or response.get('schema') != _LINEAGE_FINALIZE_RESPONSE_SCHEMA or response.get('nonce') != nonce):
+                raise ContractError('lineage headless finalization response is malformed')
+            from evaluation.modular.headless_evaluator_closure import verify_lineage_closure
+            closure = FrozenRecord.from_dict(response['closure'])
+            return verify_lineage_closure(closure, authority_keys=self._scorer_keys, panel=self.panel, config=self.config,
+                provider=self.evaluator_provider, reference_binding=self.reference_binding, nonce=nonce,
+                receipt_digests=receipt_digests)
+        except Exception as exc:
+            self._stop_unknown_worker()
+            raise ContractError('lineage headless finalization failed') from exc
+
 
 class LineageScorerProcessPool(CombinationScorerProcessClient):
     """Prestarted, exact four-panel workers; no reference contents enter controller."""
@@ -265,9 +329,25 @@ class LineageScorerProcessPool(CombinationScorerProcessClient):
         if set(self.clients) != set(DESIGNS) or len({c.config.digest for c in clients}) != 1:
             raise ContractError('lineage process pool design/configuration drift')
         self.config = clients[0].config
-        self.reference_binding = clients[0].reference_binding
-        if any(c.reference_binding != self.reference_binding for c in clients):
-            raise ContractError('lineage process references differ across panels')
+        bindings = [c.reference_binding for c in clients]
+        declarations = [binding.get('evaluator_usage') for binding in bindings]
+        if any(value is not None for value in declarations):
+            if any(not isinstance(value, Mapping) for value in declarations):
+                raise ContractError('lineage process headless declarations differ across panels')
+            shared = [{key: value for key, value in binding.items() if key != 'evaluator_usage'} for binding in bindings]
+            if any(value != shared[0] for value in shared):
+                raise ContractError('lineage process references differ across panels')
+            if any(client.evaluator_provider is None for client in clients):
+                raise ContractError('lineage process headless descriptor is missing')
+            self.reference_binding = shared[0]
+            self.evaluator_usage_by_obligation = {client.panel.obligation_id: client.reference_binding['evaluator_usage']
+                                                  for client in clients}
+            self.evaluator_providers_by_obligation = {client.panel.obligation_id: client.evaluator_provider
+                                                       for client in clients}
+        else:
+            self.reference_binding = bindings[0]
+            if any(binding != self.reference_binding for binding in bindings):
+                raise ContractError('lineage process references differ across panels')
 
     def assert_configuration(self, **kwargs):
         for client in self.clients.values(): client.assert_configuration(**kwargs)
@@ -279,8 +359,107 @@ class LineageScorerProcessPool(CombinationScorerProcessClient):
         for client in self.clients.values(): client.close()
 
 
+def _lineage_finalization_path(journal_path: Path) -> Path:
+    return Path(str(journal_path) + '.headless-lineage-evaluator-finalization.jsonl')
+
+
+def _lineage_finalization_request(value: object) -> dict[str, object]:
+    required = {'schema', 'nonce', 'receipt_digests', 'evaluator_provider'}
+    if (not isinstance(value, Mapping) or set(value) != required or value.get('schema') != _LINEAGE_FINALIZE_REQUEST_SCHEMA
+            or not isinstance(value.get('nonce'), str) or not value['nonce'] or not isinstance(value.get('receipt_digests'), list)
+            or not isinstance(value.get('evaluator_provider'), Mapping)):
+        raise ContractError('lineage headless finalization request is malformed')
+    provider = value['evaluator_provider']
+    if (set(provider) != {'kind', 'configuration_digest'} or provider.get('kind') != _HEADLESS_PROVIDER_KIND
+            or not isinstance(provider.get('configuration_digest'), str) or len(provider['configuration_digest']) != 64):
+        raise ContractError('lineage headless finalization provider is malformed')
+    for receipt in value['receipt_digests']:
+        if not isinstance(receipt, str) or len(receipt) != 64:
+            raise ContractError('lineage headless closure receipt is malformed')
+    return {'schema': value['schema'], 'nonce': value['nonce'], 'receipt_digests': list(value['receipt_digests']),
+            'evaluator_provider': dict(provider)}
+
+
+def _lineage_finalization_state(path: Path) -> dict[str, object] | None:
+    if not path.exists():
+        return None
+    try:
+        rows = [json.loads(line) for line in path.read_text(encoding='utf-8').splitlines()]
+        if len(rows) not in {1, 2}:
+            raise ValueError('unexpected lineage finalization history')
+        attempted = rows[0]
+        if (not isinstance(attempted, Mapping) or set(attempted) != {'schema', 'status', 'request'}
+                or attempted.get('schema') != _LINEAGE_FINALIZATION_SCHEMA or attempted.get('status') != 'attempted'):
+            raise ValueError('invalid lineage finalization attempt')
+        request = _lineage_finalization_request(attempted['request'])
+        if len(rows) == 1:
+            return {'status': 'attempted', 'request': request}
+        terminal = rows[1]
+        if (not isinstance(terminal, Mapping) or terminal.get('schema') != _LINEAGE_FINALIZATION_SCHEMA
+                or terminal.get('request') != request or terminal.get('status') not in {'eligible', 'rejected'}):
+            raise ValueError('invalid lineage finalization terminal')
+        if terminal['status'] == 'eligible':
+            if set(terminal) != {'schema', 'status', 'request', 'closure'}:
+                raise ValueError('invalid eligible lineage finalization')
+            FrozenRecord.from_dict(terminal['closure'])
+        elif set(terminal) != {'schema', 'status', 'request', 'reason'} or not isinstance(terminal['reason'], str):
+            raise ValueError('invalid rejected lineage finalization')
+        return dict(terminal)
+    except (OSError, TypeError, ValueError, KeyError, json.JSONDecodeError) as exc:
+        raise ContractError('lineage headless finalization history is not safely recoverable') from exc
+
+
 class LineageScorerWorker(ScorerWorker):
+    def __init__(self, service, panel, journal_path):
+        super().__init__(service, panel, journal_path)
+        self.lineage_finalization_path = _lineage_finalization_path(journal_path)
+        self.lineage_finalization_state = _lineage_finalization_state(self.lineage_finalization_path)
+        self.lineage_final_closure = (FrozenRecord.from_dict(self.lineage_finalization_state['closure'])
+                                      if self.lineage_finalization_state and self.lineage_finalization_state['status'] == 'eligible'
+                                      else None)
+
+    def _respond_lineage_finalization(self, value):
+        request = _lineage_finalization_request(value)
+        if (not hasattr(self.service, 'headless_evaluator_port') or request['evaluator_provider'] != self.service.evaluator_provider
+                or not hasattr(self.service, 'lineage_reference_binding')):
+            raise ContractError('lineage headless finalization provider differs')
+        if _lineage_finalization_state(self.lineage_finalization_path) != self.lineage_finalization_state:
+            raise ContractError('lineage headless finalization history changed')
+        from evaluation.modular.headless_evaluator_closure import finalize_lineage
+        if self.lineage_finalization_state is not None:
+            if self.lineage_finalization_state['request'] != request:
+                raise ContractError('lineage headless finalization already differs')
+            if self.lineage_finalization_state['status'] != 'eligible' or self.lineage_final_closure is None:
+                raise ContractError('lineage headless finalization is terminally rejected')
+            current = finalize_lineage(service=self.service, panel=self.panel, journal_path=self.journal_path,
+                nonce=request['nonce'], receipt_digests=request['receipt_digests'])
+            if current != self.lineage_final_closure:
+                raise ContractError('lineage headless finalization differs from the sealed original')
+            return {'schema': _LINEAGE_FINALIZE_RESPONSE_SCHEMA, 'nonce': request['nonce'], 'closure': current.data()}
+        attempted = {'schema': _LINEAGE_FINALIZATION_SCHEMA, 'status': 'attempted', 'request': request}
+        from evaluation.modular.scorer_process import _append
+        _append(self.lineage_finalization_path, attempted)
+        self.lineage_finalization_state = attempted
+        try:
+            self.lineage_final_closure = finalize_lineage(service=self.service, panel=self.panel, journal_path=self.journal_path,
+                nonce=request['nonce'], receipt_digests=request['receipt_digests'])
+        except Exception as exc:
+            terminal = {'schema': _LINEAGE_FINALIZATION_SCHEMA, 'status': 'rejected', 'request': request,
+                        'reason': 'provenance_replay_failed'}
+            _append(self.lineage_finalization_path, terminal)
+            self.lineage_finalization_state = terminal
+            raise ContractError('lineage headless finalization is terminally rejected') from exc
+        terminal = {'schema': _LINEAGE_FINALIZATION_SCHEMA, 'status': 'eligible', 'request': request,
+                    'closure': self.lineage_final_closure.data()}
+        _append(self.lineage_finalization_path, terminal)
+        self.lineage_finalization_state = terminal
+        return {'schema': _LINEAGE_FINALIZE_RESPONSE_SCHEMA, 'nonce': request['nonce'], 'closure': self.lineage_final_closure.data()}
+
     def respond(self, value):
+        if isinstance(value, Mapping) and value.get('schema') == _LINEAGE_FINALIZE_REQUEST_SCHEMA:
+            return self._respond_lineage_finalization(value)
+        if isinstance(value, Mapping) and value.get('schema') == 'headless-evaluator-finalize-request-v1':
+            raise ContractError('lineage scorer requires the lineage headless closure contract')
         if isinstance(value, dict) and value.get('schema') == 'lineage-scorer-usage-request-v1':
             if set(value) != {'schema', 'nonce'} or not isinstance(value['nonce'], str) or not value['nonce']:
                 raise ContractError('invalid lineage usage query')
@@ -310,6 +489,9 @@ class LineageScorerWorker(ScorerWorker):
             else:
                 raise ContractError('lineage usage contract was not admitted')
             return self.service._authority.issue(body).data()
+        if self.lineage_finalization_state is not None and not (isinstance(value, Mapping)
+                                                                and value.get('schema') == 'scorer-process-binding-request-v1'):
+            raise ContractError('lineage headless evaluator scorer is finalized')
         return super().respond(value)
 
 
