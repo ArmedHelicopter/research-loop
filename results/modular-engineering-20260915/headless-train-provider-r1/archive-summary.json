@@ -1,0 +1,51 @@
+{
+  "schema": "headless-train-provider-engineering-archive-v1",
+  "source_commit": "4c096f4fa65be10beb3b1dc95fefc64c0f5410ff",
+  "junit": {
+    "tests": 91,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "wall_seconds": 322.56299999999464,
+  "source_files_unchanged": 764,
+  "source_archive_sha256": "1a6216834d5c6467bf0b512463f0e8b9c87d2ba70a7848e6f89322fec6716528",
+  "copied_gate_originals": [
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-train-provider-root-r1-before.json",
+      "path": "before.json",
+      "sha256": "a0d3a2cb35d73d0495e65fb48d91d24e34ab1c3953bc812bff2576166c76ab46"
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-train-provider-root-r1-closed.json",
+      "path": "closed.json",
+      "sha256": "05b2eaf4c781529ba14aa60fd335f5ff527e7464c81ecb94afb74f38d1665d7a"
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-train-provider-root-r1-source-members.json",
+      "path": "source-members.json",
+      "sha256": "49fd6d194cb5a0281f90e5302aefb1ddd1661954c9d2e951faf646a831d3893a"
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-train-provider-root-r1-sources.zip",
+      "path": "sources.zip",
+      "sha256": "1a6216834d5c6467bf0b512463f0e8b9c87d2ba70a7848e6f89322fec6716528"
+    },
+    {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-train-provider-root-r1.xml",
+      "path": "checks.xml",
+      "sha256": "782cbe4f40f2393fd878ed85c54866b7bf516102f02ca2d378393ca9887dd7c7"
+    }
+  ],
+  "selected_synthetic_roots": 8,
+  "selected_original_files": 3879,
+  "new_paid_calls": 0,
+  "actual_model_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_measured": false,
+  "limits": [
+    "Full headless C4 and C5 grids were not run in this gate.",
+    "Synthetic observations do not authenticate an actual model or establish benchmark effects.",
+    "Prior preliminary checks are separate and are not added to this frozen denominator."
+  ]
+}

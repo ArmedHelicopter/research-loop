@@ -1,0 +1,97 @@
+{
+  "files": [
+    {
+      "bytes": 8,
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "bytes": 2046,
+      "path": "README.md",
+      "sha256": "96b70f18565b88fe1298bf46134e7abc2ae9f38ec230c2ead7002e0d4b6deada"
+    },
+    {
+      "bytes": 1492,
+      "path": "allocation-envelope.json",
+      "sha256": "87c1ab82e09933f83a0bf40be26ea3c606f8d5bae8b9dea2240f3de8d8ad114b"
+    },
+    {
+      "bytes": 24043,
+      "path": "audit_headless_review_r2.py",
+      "sha256": "6308e8df861674c45b7c1de3db28e88add51a049ea3c685a52436312c503d342"
+    },
+    {
+      "bytes": 2042,
+      "path": "check_r2_rejected_response_reader.py",
+      "sha256": "fb067f2f118ec4dcacecb1a2ac23aa0a993c8a73cb5148f609574e507932abed"
+    },
+    {
+      "bytes": 1454641,
+      "path": "independent-readback.json",
+      "sha256": "aa01249b201211a0a135102bd14b19f73fc08127014f9d6298cdf0fe2032c614"
+    },
+    {
+      "bytes": 1126,
+      "path": "parent-closure.json",
+      "sha256": "32dc576c329f3547aaeed6af452326c8ea5d230cd8aa651b4123a76924587749"
+    },
+    {
+      "bytes": 1174738,
+      "path": "private-run-inventory.json",
+      "sha256": "13f3170e562e9eb46902e2080f346ff85bc5a4ecb47c0075255db786e6ac9d7e"
+    },
+    {
+      "bytes": 5079,
+      "path": "public-preparation.json",
+      "sha256": "6f116656cfe65e743d37dd9ba9aa59164fa6e3461a5ddef1136d96d6f66c6eae"
+    },
+    {
+      "bytes": 670,
+      "path": "rejected-response-reader-regression.json",
+      "sha256": "2c39ae33b8bb3a05790dc63660a39e875c2d07705e6b0e8d02295927328de200"
+    },
+    {
+      "bytes": 4943,
+      "path": "run-summary.json",
+      "sha256": "572a900ae7f930981b27efcb4ca002f3abff265bd6fb59831c43c43b3db8d917"
+    }
+  ],
+  "manifest_self_excluded_from_file_hashes": true,
+  "public_file_names": [
+    ".gitattributes",
+    "README.md",
+    "allocation-envelope.json",
+    "audit_headless_review_r2.py",
+    "check_r2_rejected_response_reader.py",
+    "independent-readback.json",
+    "manifest.json",
+    "parent-closure.json",
+    "private-run-inventory.json",
+    "public-preparation.json",
+    "rejected-response-reader-regression.json",
+    "run-summary.json"
+  ],
+  "schema": "actual-headless-review-public-archive-v2",
+  "scope": "Closed correlated TRAIN diagnostic only; no scientific, calibration, or VAL claim.",
+  "validation": {
+    "frozen_snapshot_age_limit_seconds": 5,
+    "prelaunch_snapshot_age_seconds": 12.237717,
+    "private_members_metadata_only": 2159,
+    "public_files": [
+      ".gitattributes",
+      "README.md",
+      "allocation-envelope.json",
+      "audit_headless_review_r2.py",
+      "check_r2_rejected_response_reader.py",
+      "independent-readback.json",
+      "manifest.json",
+      "parent-closure.json",
+      "private-run-inventory.json",
+      "public-preparation.json",
+      "rejected-response-reader-regression.json",
+      "run-summary.json"
+    ],
+    "replay_originals_unchanged": 2156,
+    "source_commit": "02959f51896332037cfeb46ed9ebb548039b85b1"
+  }
+}

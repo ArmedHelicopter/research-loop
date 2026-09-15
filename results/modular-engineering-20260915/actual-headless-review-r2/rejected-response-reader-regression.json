@@ -1,0 +1,15 @@
+{
+  "schema": "r2-rejected-response-reader-regression-v1",
+  "passed": 4,
+  "source": "closed synthetic native producer postflight failure",
+  "helper_sha256": "6308e8df861674c45b7c1de3db28e88add51a049ea3c685a52436312c503d342",
+  "source_native": "E:\\_ryanDev\\AI\\research-loop-modular\\WORK\\headless-train-integration-preliminary-r1\\test_postflight_rejection_is_r0\\ledger\\calls\\0001-m4_plan\\native",
+  "original_files_unchanged": 17,
+  "retained_unbound_response": {
+    "present": true,
+    "sha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+    "consumed": false
+  },
+  "model_calls": 0,
+  "validation_access": false
+}

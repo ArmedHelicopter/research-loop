@@ -119,3 +119,10 @@ trace 与目录不一致、跨对象证据替换、VAL 及其索引泄漏，以�
 返回后发现替换，也保留历史评分并拒绝有效对比。原始输出存在但后置检查失败、
 未知用量、损坏回执等情况，均保留失败分母。工程执行与真实 benchmark 效果
 仍分别记录，实际覆盖和冻结检查版本以覆盖清单为准。
+
+该 TRAIN 接入已通过 [91 项冻结检查](../results/modular-engineering-20260915/headless-train-provider-r1/README.md)，
+包含实际单模块入口、M4/M5 四臂、末次评分后的原件替换拒绝及旧 ACP 回归。
+后续 [实际评审 r2](../results/modular-engineering-20260915/actual-headless-review-r2/README.md)
+另外保留 85 次真实 MAIN、一次 MAIN 前拒绝及 25 次诊断评分，并完成结果与
+日志的独立内存重放。前者是工程检查，后者是相关 TRAIN 诊断，均不推定全部
+模块效果、正式校准或 VAL 验收已完成。

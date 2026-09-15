@@ -1,0 +1,71 @@
+{
+  "schema": "headless-train-provider-public-archive-v1",
+  "manifest_self_excluded": true,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "archive-summary.json",
+      "bytes": 2062,
+      "sha256": "c6a82fa3141b17c93a567ac15db07cec206abed18b7d133974935ba36ade48dd"
+    },
+    {
+      "path": "archive_headless_train_provider_r1.py",
+      "bytes": 4730,
+      "sha256": "6b34073421d39a7d2d3aa3103453e80984859ee7796d523121129b99e3d23e62"
+    },
+    {
+      "path": "before.json",
+      "bytes": 89883,
+      "sha256": "a0d3a2cb35d73d0495e65fb48d91d24e34ab1c3953bc812bff2576166c76ab46"
+    },
+    {
+      "path": "checks.xml",
+      "bytes": 12930,
+      "sha256": "782cbe4f40f2393fd878ed85c54866b7bf516102f02ca2d378393ca9887dd7c7"
+    },
+    {
+      "path": "closed.json",
+      "bytes": 89688,
+      "sha256": "05b2eaf4c781529ba14aa60fd335f5ff527e7464c81ecb94afb74f38d1665d7a"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1907,
+      "sha256": "cfb24e2e50a90dc39ba4ff5b24e1bf748a08d8f8486313bca8e382b020494d2d"
+    },
+    {
+      "path": "run_frozen_checks_with_source.py",
+      "bytes": 1826,
+      "sha256": "71e2e8ba100d264bd5a91be47c40866bda417e6099e21f6e87f284d08cf31c3a"
+    },
+    {
+      "path": "run_frozen_useful_checks.py",
+      "bytes": 1918,
+      "sha256": "3d2d958a94b7c0437c93e36ede68f2877c5118a67343faadebc8209b8e5fa3b7"
+    },
+    {
+      "path": "selected-originals.json",
+      "bytes": 1878561,
+      "sha256": "51e1cf6a0dab202c537536cf01accaa5d857a0a379a87e65fb80377d2a179015"
+    },
+    {
+      "path": "selected-synthetic-originals.zip",
+      "bytes": 5155845,
+      "sha256": "abbfd81d32fdcd1244d9bb0871dac909c4431115eb7d75b8dd375256b1fa52e4"
+    },
+    {
+      "path": "source-members.json",
+      "bytes": 134091,
+      "sha256": "49fd6d194cb5a0281f90e5302aefb1ddd1661954c9d2e951faf646a831d3893a"
+    },
+    {
+      "path": "sources.zip",
+      "bytes": 2547284,
+      "sha256": "1a6216834d5c6467bf0b512463f0e8b9c87d2ba70a7848e6f89322fec6716528"
+    }
+  ]
+}

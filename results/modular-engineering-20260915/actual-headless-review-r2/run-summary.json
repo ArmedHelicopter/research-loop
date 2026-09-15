@@ -1,0 +1,186 @@
+{
+  "schema": "actual-headless-review-r2-public-summary-v1",
+  "source_commit": "02959f51896332037cfeb46ed9ebb548039b85b1",
+  "result_sha256": "f0ddf1fb01fb0ef5b495aad4faa91f46f20d2e8b31f068d74ed8f6a8a48091a3",
+  "independent_readback_sha256": "aa01249b201211a0a135102bd14b19f73fc08127014f9d6298cdf0fe2032c614",
+  "independent_result_and_journal_replay_exact": true,
+  "original_files_unchanged_during_replay": 2156,
+  "reserved_main_opportunities": 86,
+  "actual_main_processes_launched": 85,
+  "native_accepted": 85,
+  "native_rejected": 1,
+  "reserved_by_role": {
+    "arbitrator": 8,
+    "evaluator": 26,
+    "reviewer1": 26,
+    "reviewer2": 26
+  },
+  "record_statuses": {
+    "known_headless_main_expected_unknown_title": 85,
+    "rejected_before_prompt_dispatch": 1
+  },
+  "known_main_tokens": 3157092,
+  "known_output_tokens": 31118,
+  "possible_initial_title_opportunities": 86,
+  "title_tokens": null,
+  "all_opportunity_tokens": null,
+  "settled_additional_charge_usd": null,
+  "source_task_count": 4,
+  "slot_count": 36,
+  "material_availability": {
+    "not_applicable": 3,
+    "ready": 26,
+    "unresolved_material": 7
+  },
+  "review_states": {
+    "reviewed": 18,
+    "unresolved_material": 7,
+    "not_applicable": 3,
+    "arbitrated": 8
+  },
+  "planned_evaluator_opportunities": 72,
+  "observed_evaluator_statuses": {
+    "blade": {
+      "blocked_native_or_source_fault": 17,
+      "scored_diagnostic": 19
+    },
+    "discoverybench": {
+      "blocked_native_or_source_fault": 10,
+      "not_applicable": 6,
+      "scored_diagnostic": 6,
+      "unresolved_material": 14
+    }
+  },
+  "per_benchmark_diagnostic_only": {
+    "blade": {
+      "absolute_error": {
+        "cvars": {
+          "mean": 0.125,
+          "n": 16
+        },
+        "model": {
+          "mean": 0.0,
+          "n": 16
+        },
+        "transform": {
+          "mean": 0.0625,
+          "n": 16
+        }
+      },
+      "dimension_confusion": {
+        "cvars": {
+          "0.5:0": 4,
+          "0:0": 8,
+          "1:1": 4
+        },
+        "model": {
+          "0:0": 12,
+          "1:1": 4
+        },
+        "transform": {
+          "0.5:0": 2,
+          "0:0": 10,
+          "1:1": 4
+        }
+      },
+      "observed_groups": 2,
+      "opportunities": 36,
+      "repeat_absolute_difference": {
+        "cvars": {
+          "mean": 0.0,
+          "pairs": 9
+        },
+        "model": {
+          "mean": 0.0,
+          "pairs": 9
+        },
+        "transform": {
+          "mean": 0.0,
+          "pairs": 9
+        }
+      },
+      "source_tasks": 2,
+      "statuses": {
+        "blocked_native_or_source_fault": 17,
+        "scored_diagnostic": 19
+      }
+    },
+    "discoverybench": {
+      "absolute_error": {
+        "context": {
+          "mean": 0.0,
+          "n": 6
+        },
+        "relation": {
+          "mean": 0.0,
+          "n": 6
+        },
+        "variable_f1": {
+          "mean": 0.0,
+          "n": 6
+        }
+      },
+      "dimension_confusion": {
+        "context": {
+          "0:0": 2,
+          "1:1": 4
+        },
+        "relation": {
+          "0:0": 2,
+          "1:1": 4
+        }
+      },
+      "observed_groups": 2,
+      "opportunities": 36,
+      "repeat_absolute_difference": {
+        "context": {
+          "mean": 0.0,
+          "pairs": 3
+        },
+        "relation": {
+          "mean": 0.0,
+          "pairs": 3
+        },
+        "variable_f1": {
+          "mean": 0.0,
+          "pairs": 3
+        }
+      },
+      "source_tasks": 2,
+      "statuses": {
+        "blocked_native_or_source_fault": 10,
+        "not_applicable": 6,
+        "scored_diagnostic": 6,
+        "unresolved_material": 14
+      }
+    }
+  },
+  "terminal_refusal": {
+    "opportunity_id": "a92eae244ae0ed8faccb9425500994aad75488d60d9e50e1f869d705d7a76232",
+    "role": "evaluator",
+    "faults": [
+      "prelaunch_guard_failed"
+    ],
+    "main_process_launched": false,
+    "oldest_account_age_when_snapshot_completed_seconds": 12.237717,
+    "frozen_max_age_seconds": 5,
+    "detail": "All three account observations completed; the snapshot was already older than the frozen prelaunch limit. Underlying guard exception text is not recorded."
+  },
+  "cumulative_review_allocation": {
+    "original_cap": 180,
+    "r1_spent": 11,
+    "r2_spent": 86,
+    "remaining": 83
+  },
+  "calibration_eligible": false,
+  "validation_eligible": false,
+  "scientific_validity": "not_measured",
+  "correlated_with_r1": true,
+  "private_retention": {
+    "manifest_path": "E:\\_ryanDev\\AI\\research-loop-modular\\retained-private-evidence\\actual-headless-review-r2-private-raw-v1.manifest.json",
+    "manifest_sha256": "06c7dd0b0f118218f85f84339c5455f40dc40b4fbd41d07b176aadfce590bb6c",
+    "zip_path": "E:\\_ryanDev\\AI\\research-loop-modular\\retained-private-evidence\\actual-headless-review-r2-private-raw-v1.zip",
+    "zip_sha256": "bab00485a116dae7af457d1b34f2cebef2ef8e1839bbb1bb63ad2331dd90d3fc",
+    "members": 2159
+  }
+}
