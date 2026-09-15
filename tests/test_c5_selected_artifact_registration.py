@@ -5,6 +5,7 @@ from types import SimpleNamespace
 import pytest
 
 import research_loop.modular.joint_selected_snapshot as selected_snapshot
+import research_loop.modular.c5_selected_artifact_registration as registration_module
 from research_loop.modular.c5_selected_artifact_registration import (
     register_authenticated_selected_run,
     verify_registration,
@@ -109,6 +110,47 @@ def test_verify_rejects_tampered_retained_selected_registration_original(tmp_pat
     original.write_bytes(original.read_bytes() + b" ")
     with pytest.raises(ContractError, match="original bytes"):
         verify_registration(path, run, parent=parent, execution_authority_keys={}, scorer_authority_keys={})
+    assert not logs
+
+
+@pytest.mark.parametrize("partial", ("target_only", "original_only"))
+def test_same_authenticated_registration_safely_completes_partial_retention(tmp_path, monkeypatch, partial):
+    run, parent, snapshot, logs = _actual_projection(tmp_path, monkeypatch)
+    _authenticated_snapshot(monkeypatch, snapshot, [])
+    path = tmp_path / "registered.json"
+    registered = register_authenticated_selected_run(path, run, parent=parent, execution_authority_keys={}, scorer_authority_keys={})
+    original = path.with_name(path.name + ".original"); sidecar = path.with_name(path.name + ".provenance.json")
+    if partial == "target_only":
+        original.unlink(); sidecar.unlink()
+    else:
+        sidecar.unlink()
+    assert register_authenticated_selected_run(path, run, parent=parent, execution_authority_keys={}, scorer_authority_keys={}) == registered
+    assert verify_registration(path, run, parent=parent, execution_authority_keys={}, scorer_authority_keys={}) == registered
+    assert not logs
+
+
+def test_existing_different_target_cannot_be_used_to_complete_retention(tmp_path, monkeypatch):
+    run, parent, snapshot, logs = _actual_projection(tmp_path, monkeypatch)
+    _authenticated_snapshot(monkeypatch, snapshot, [])
+    path = tmp_path / "registered.json"
+    register_authenticated_selected_run(path, run, parent=parent, execution_authority_keys={}, scorer_authority_keys={})
+    path.write_bytes(path.read_bytes() + b" ")
+    with pytest.raises(ContractError, match="existing selected registration differs"):
+        register_authenticated_selected_run(path, run, parent=parent, execution_authority_keys={}, scorer_authority_keys={})
+    assert not logs
+
+
+def test_register_rechecks_retention_before_return(tmp_path, monkeypatch):
+    run, parent, snapshot, logs = _actual_projection(tmp_path, monkeypatch)
+    _authenticated_snapshot(monkeypatch, snapshot, [])
+    path = tmp_path / "registered.json"; original = registration_module._retain_registration_bytes
+    def tamper(target, record):
+        result = original(target, record)
+        target.with_name(target.name + ".original").write_bytes(b"tampered")
+        return result
+    monkeypatch.setattr(registration_module, "_retain_registration_bytes", tamper)
+    with pytest.raises(ContractError, match="original bytes"):
+        register_authenticated_selected_run(path, run, parent=parent, execution_authority_keys={}, scorer_authority_keys={})
     assert not logs
 
 

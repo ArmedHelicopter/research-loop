@@ -80,30 +80,39 @@ def _provenance_paths(path: Path) -> tuple[Path, Path]:
 
 
 def _retain_registration_bytes(path: Path, record: FrozenRecord) -> FrozenRecord:
-    """Retain the task-neutral selected bundle without fabricating one identity."""
+    """Complete only exact same-record retention; never overwrite evidence."""
     raw = path.read_bytes(); expected = record.encoded.encode('utf-8') + b'\n'
     if raw != expected:
         raise ContractError('selected registration bytes differ before retention')
     original, sidecar = _provenance_paths(path)
-    with original.open('xb') as stream:
-        stream.write(raw); stream.flush(); os.fsync(stream.fileno())
+    if original.exists():
+        if original.read_bytes() != raw:
+            raise ContractError('existing selected registration original differs')
+    else:
+        with original.open('xb') as stream:
+            stream.write(raw); stream.flush(); os.fsync(stream.fileno())
     body = {'schema':'c5-selected-registration-provenance-v1',
         'registration':{'path':str(path.resolve()),'sha256':_sha(raw),'bytes':len(raw)},
         'original':{'path':str(original.resolve()),'sha256':_sha(raw),'bytes':len(raw)},
         'registration_digest':record.content_hash,'producer_source':source_snapshot(Path(__file__)),
         'scope':'task_neutral_cross_task_selected_bundle','authorization':'none','scientific_status':'not_measured'}
-    sealed=FrozenRecord.from_dict(body)
-    with sidecar.open('x',encoding='utf-8',newline='\n') as stream:
-        stream.write(sealed.encoded+'\n'); stream.flush(); os.fsync(stream.fileno())
+    sealed=FrozenRecord.from_dict(body); expected_sidecar=sealed.encoded.encode('utf-8')+b'\n'
+    if sidecar.exists():
+        if sidecar.read_bytes() != expected_sidecar:
+            raise ContractError('existing selected registration provenance differs')
+    else:
+        with sidecar.open('x',encoding='utf-8',newline='\n') as stream:
+            stream.write(sealed.encoded+'\n'); stream.flush(); os.fsync(stream.fileno())
     return sealed
-
 
 def _verify_retained_registration(path: Path, record: FrozenRecord) -> FrozenRecord:
     original, sidecar = _provenance_paths(path)
-    raw=path.read_bytes(); original_raw=original.read_bytes()
+    try:
+        raw=path.read_bytes(); original_raw=original.read_bytes(); sealed_raw=sidecar.read_bytes()
+    except OSError as exc:
+        raise ContractError('selected registration retention is incomplete') from exc
     if raw != record.encoded.encode('utf-8') + b'\n' or original_raw != raw:
         raise ContractError('selected registration original bytes differ')
-    sealed_raw=sidecar.read_bytes()
     if not sealed_raw.endswith(b'\n') or sealed_raw.count(b'\n') != 1:
         raise ContractError('selected registration provenance is incomplete')
     sealed=FrozenRecord(sealed_raw[:-1].decode('utf-8')).data()
@@ -130,11 +139,21 @@ def register_authenticated_selected_run(path: Path, run, *, parent: JointDeploym
     result = _registration_record(snapshot, run.plan.protocol, parent, run.plan.data()["timeout_seconds"])
     target = Path(path)
     target.parent.mkdir(parents=True, exist_ok=True)
-    with target.open("x", encoding="utf-8", newline="\n") as stream:
-        stream.write(result.record.encoded + "\n")
-        stream.flush()
-        os.fsync(stream.fileno())
-    _retain_registration_bytes(target, result.record)
+    expected = result.record.encoded.encode('utf-8') + b"\n"
+    if target.exists():
+        # A crash may have left only the target. Completion is permitted only
+        # after fresh authentication reconstructed exactly these bytes.
+        if target.read_bytes() != expected:
+            raise ContractError('existing selected registration differs; retention cannot resume')
+    else:
+        with target.open("x", encoding="utf-8", newline="\n") as stream:
+            stream.write(result.record.encoded + "\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+    held = _retain_registration_bytes(target, result.record)
+    _verify_retained_registration(target, result.record)
+    if held != _verify_retained_registration(target, result.record):
+        raise ContractError('selected registration retention changed before return')
     return result
 
 
