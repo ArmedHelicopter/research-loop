@@ -1,0 +1,45 @@
+{
+  "schema": "closure-binding-full16-and-root-v1",
+  "runs": [
+    {
+      "label": "closure-full16",
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scorer-observation-closure-binding-full16-r1",
+      "commit": "205d7540b4048a7733b8cfd18821a27a232c184b",
+      "native_session_id": 63017,
+      "native_exit": 0,
+      "junit": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 795,
+      "wall_seconds": 1162.875,
+      "report_sha256": "978100dbef11acc000bab764b07385804585e17c56594aad4ed2e3a8cd31911f",
+      "retained_originals": 2950
+    },
+    {
+      "label": "root-p0-c5",
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\p0-c5-root-integration-r1",
+      "commit": "4c2df56d462c1ff8eab3118a66a4b246525ad708",
+      "native_session_id": 37025,
+      "native_exit": 0,
+      "junit": {
+        "tests": 15,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 797,
+      "wall_seconds": 86.46900000001187,
+      "report_sha256": "58788567c5effcc427da9af9f7b2611739d74d563221edc9b48d5112dceb04c6",
+      "retained_originals": 137
+    }
+  ],
+  "real_model_calls": 0,
+  "paid_api_calls": 0,
+  "validation_access": false,
+  "scientific_effectiveness_proven": false,
+  "originals_bytes_mtimes_unchanged": true,
+  "retained_noncredential_files": 3087
+}

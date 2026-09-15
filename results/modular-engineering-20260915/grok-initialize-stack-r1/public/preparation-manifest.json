@@ -1,0 +1,119 @@
+{
+  "constraints": {
+    "authenticate_writes_max": 0,
+    "billing_rpc_writes_max": 0,
+    "capture_success_requires_exit_zero_and_stack_frames": true,
+    "cdb_attach_max": 1,
+    "cdb_only_known_live_child_after_seconds": 15,
+    "cdb_timeout_seconds": 20,
+    "dump_allowed": false,
+    "initialize_writes_max": 1,
+    "prompt_writes_max": 0,
+    "remote_symbols_allowed": false,
+    "session_new_writes_max": 0,
+    "stack_arguments_allowed": false
+  },
+  "execution_performed": false,
+  "immutable_base_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-private-log-r1",
+  "prepared_at_utc": "2026-09-15T07:06:39.1204574Z",
+  "schema": "grok130-initialize-stack-preparation-v2",
+  "source_inputs": [
+    {
+      "bytes": 6594,
+      "mtime_ns": 1789453264660463300,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-private-log-r1\\driver.py",
+      "sha256": "a5aea698b31213f19c2bd217d8045bf8d534e8f375db76759fc37865f30c6b78"
+    },
+    {
+      "bytes": 8802,
+      "mtime_ns": 1789453152467438000,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-private-log-r1\\init_engine.py",
+      "sha256": "2396bfa21457ae89a3a7bf631ab3ea74faf207e15d3587701743f33e7bcb8db3"
+    },
+    {
+      "bytes": 11039,
+      "mtime_ns": 1789456425191320600,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r1\\driver.py",
+      "sha256": "76a885c3390101f5851d7824fc271d76921671b6b25dee303f6686130f5e644a"
+    },
+    {
+      "bytes": 9585,
+      "mtime_ns": 1789456075395909300,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r1\\init_engine.py",
+      "sha256": "aae365a5047a8ec487761554b77c2ee5ec331666a866180bf73842bf75fa43ce"
+    },
+    {
+      "bytes": 4689,
+      "mtime_ns": 1789456362022454200,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r1\\stack_capture.py",
+      "sha256": "0439a87696a0c3c8c5b0484812623fa609f7f5770ba644914c6390957ca4f4a9"
+    },
+    {
+      "bytes": 342,
+      "mtime_ns": 1789456362022984800,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r1\\parser_smoke.py",
+      "sha256": "ef54cf7876d69c69a17463ab6ba8092e8f130b89f05bf1fc10b006771f831526"
+    },
+    {
+      "bytes": 112,
+      "mtime_ns": 1789456425060871800,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r1\\parser-smoke-result.json",
+      "sha256": "2eff946c369b93d63c624242759a1aecc99ef7d1cd3182dd75ff0931c6ff9d00"
+    },
+    {
+      "bytes": 1045,
+      "mtime_ns": 1789456218613777300,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r1\\README.md",
+      "sha256": "edcf3149975aaa585ac35232d8377aa5001a75a0106af05ec19c9b66ac284483"
+    },
+    {
+      "bytes": 8039,
+      "mtime_ns": 1789455998955903900,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r1\\cdb-help.txt",
+      "sha256": "7bf314d5f9b53f5d27fb61cbde475638ab1e611f5c13ceffa9630b68b6aef411"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789455998768614500,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r1\\cdb-help.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 216,
+      "mtime_ns": 1789455999740865900,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r1\\cdb-help-result.json",
+      "sha256": "ad69ba7a4ef83c14cfecee1dacdc37b693b90766038790c35d3f4415ef5120fa"
+    },
+    {
+      "bytes": 3925,
+      "mtime_ns": 1789456362022454200,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stack-r1\\preparation-manifest.v1.json",
+      "sha256": "c61303599cf383ec4b518f2cc89137030ac16db232c2749a3d4a68e2bd94d8cf"
+    },
+    {
+      "bytes": 150036808,
+      "mtime_ns": 1789341681647980700,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-cli-1.0.30\\grok.exe",
+      "sha256": "ca24ea63272ba7881261f4a52498d1f5bd884b01da25845990422a10dd315266"
+    },
+    {
+      "bytes": 178536,
+      "mtime_ns": 1769465936000000000,
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x64\\cdb.exe",
+      "sha256": "67c3d1da6a3f2869fee12186d0c27ecb263fd9ed302b3d45d6ab10a32bf586a1"
+    },
+    {
+      "bytes": 53261,
+      "mtime_ns": 1789362812409504700,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_acp_transport.py",
+      "sha256": "f736d68218e49bf90fa6ead447097d8366d3827932bea5565c854e71d07aa855"
+    },
+    {
+      "bytes": 5045,
+      "mtime_ns": 1789362812874194400,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_skill_isolation.py",
+      "sha256": "694def3565b1f7df24fcbc59458eb88e33950cca07e68341080bcc89f1e6205f"
+    }
+  ],
+  "supersedes_preparation_manifest": "preparation-manifest.v1.json"
+}

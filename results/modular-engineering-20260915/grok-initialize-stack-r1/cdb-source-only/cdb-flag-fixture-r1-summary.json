@@ -1,0 +1,27 @@
+{
+  "schema": "cdb-flag-fixture-r1",
+  "fixture": "owned_python_sleep_no_network",
+  "fixture_pid": 42568,
+  "fixture_exit_code_after_cleanup": 1,
+  "process_attach_target_count": 1,
+  "cdb_command_uses_invalid_netsym": false,
+  "cdb_exit_code": 0,
+  "timed_out": false,
+  "elapsed_seconds": 0.48399999999674037,
+  "stack_frame_count": 0,
+  "raw_private_files": {
+    "cdb.private.stack.log": {
+      "bytes": null,
+      "sha256": null
+    },
+    "cdb.private.stdout.bin": {
+      "bytes": 1148,
+      "sha256": "038d44b92d2698a7914b8c4ee8cda232a8b9d94b9264fc0ccaa6d9b83de12362"
+    },
+    "cdb.private.stderr.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "raw_output_publicly_rendered": false
+}

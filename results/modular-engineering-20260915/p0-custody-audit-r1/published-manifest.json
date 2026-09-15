@@ -1,0 +1,70 @@
+{
+  "schema": "p0-custody-audit-published-files-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "archive-helper.py",
+      "sha256": "30a18206342a0dffc1b075d1ec4f4d9a4c2f5e84926348beba5b4100c96ade71",
+      "bytes": 9181
+    },
+    {
+      "path": "before.json",
+      "sha256": "38e2298f1f3901e08d6f5b77698e3c0affd1bed66078cc5479de65113b86d5c8",
+      "bytes": 93539
+    },
+    {
+      "path": "closed.json",
+      "sha256": "bba62669a52e9d147691b8347f709b858346bc0500ced2ba07f8024eeb998c83",
+      "bytes": 93683
+    },
+    {
+      "path": "junit.xml",
+      "sha256": "1951d85ff8ab359b53d4a892c16673bd0dbc1fbd6791696573bfa99220ae6080",
+      "bytes": 743
+    },
+    {
+      "path": "native-join.json",
+      "sha256": "022af719fef95c882fb832fbb8abb9f67e0390c29532aea46ac3eb6e9a70d899",
+      "bytes": 283
+    },
+    {
+      "path": "native-start.json",
+      "sha256": "35e675dcf542547e8619e84810d65556fe6261430416b53bebcd6dab5824d0b8",
+      "bytes": 130
+    },
+    {
+      "path": "private-retention-manifest.json",
+      "sha256": "a6fa2dbccc19eb7fbc0ac59dbd9c5ac9655da5f9e1d83e701925be75b2003028",
+      "bytes": 142826
+    },
+    {
+      "path": "pytest.log",
+      "sha256": "2c283340ea672b5b0c37a803cb750194746d4af36a9d7e9c8a8cb70f1b9bc3d4",
+      "bytes": 664
+    },
+    {
+      "path": "README.md",
+      "sha256": "bef94f7ecec32859b0e0c2190e69e322191270e3d5c55aca82921b25955e1b33",
+      "bytes": 1115
+    },
+    {
+      "path": "retention-helper-source.py",
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840
+    },
+    {
+      "path": "source-exact.zip",
+      "sha256": "6c3ffdc4eb9ab0887ddb1fb2dc8269ccb8acf6ba447bff40074ee4ee8e8bbf4b",
+      "bytes": 2665924
+    },
+    {
+      "path": "source-members.json",
+      "sha256": "23fed0d923b41a854f921cfd67a4ecca3b4fc34603640f36893c732aa214d0b3",
+      "bytes": 140015
+    }
+  ]
+}

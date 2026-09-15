@@ -1,0 +1,29 @@
+{
+  "schema": "grok130-cdb-argument-diagnosis-r1",
+  "originals_modified": false,
+  "private_stdout_bytes": 8185,
+  "private_stderr_bytes": 0,
+  "help_bytes": 8039,
+  "shared_prefix_bytes": 3,
+  "private_stdout_sha256": "ae9460cfc82fe0040bf37d04f9a985611027420f7f10089d4b9470d86fa3e325",
+  "help_sha256": "7bf314d5f9b53f5d27fb61cbde475638ab1e611f5c13ceffa9630b68b6aef411",
+  "diagnostic_lines": [
+    "cdb: Invalid switch 'n'",
+    "usage: cdb [options]",
+    "Options:",
+    "     -d cannot be used with debugger remoting",
+    "    transport arguments are given as with remoting",
+    "  -r <BreakErrorLevel> specifies the (0-3) error level to break on (see",
+    "                       SetErrorLevel)",
+    "    must be the first argument if present",
+    "  -sdce pops up dialogs for critical errors",
+    "    must be the first argument if present",
+    "  -sflags <flags> sets symbol flags from a numeric argument",
+    "  -t <PrintErrorLevel> specifies the (0-3) error level to display (see",
+    "                       SetErrorLevel)",
+    "    option, but not both.",
+    "    specifies the UWP application to be started. Needs '-plmPackage' option. ",
+    "    option. "
+  ],
+  "stderr_diagnostic_lines": []
+}

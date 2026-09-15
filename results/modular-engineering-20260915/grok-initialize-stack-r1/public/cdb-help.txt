@@ -1,0 +1,172 @@
+cdb version 10.0.26100.7705
+usage: cdb [options]
+
+Options:
+
+  <command-line> command to run under the debugger
+  -? displays command line help text
+  -- equivalent to -G -g -o -p -1 -d -pd
+  -2 creates a separate console window for debuggee
+  -a<DllName> adds a default extension DLL
+  -bonc request break in after session started
+  -c "<command>" executes the given debugger command at the first debugger
+                 prompt
+  -cf <file> specifies a script file to be processed at the first debugger
+             prompt
+  -cfr <file> specifies a script file to be processed at the beginning of a
+              session (including after .restart)
+  -cimp uses implicit create command line from a process server
+  -clines <#> number of lines of output history retrieved by a remote client
+  -d sends all debugger output to kernel debugger via DbgPrint
+     input is requested from the kernel debugger via DbgPrompt
+     -d cannot be used with debugger remoting
+     -d can only be used when the kernel debugger is enabled
+  -ddefer sends all debugger output to kernel debugger via DbgPrint
+          input is requested from the kernel debugger via DbgPrompt unless
+          there are remote clients that can provide input
+          -ddefer can only be used when the kernel debugger is enabled
+          -ddefer should be used with -server
+  -ee <name> set default expression evaluator
+             <name> can be MASM or C++
+  -failinc causes incomplete symbol and module loads to fail
+  -g ignores initial breakpoint in debuggee
+  -G ignores final breakpoint at process termination
+  -hd specifies that the debug heap should not be used for created processes. 
+      This only works on Windows XP and later
+  -i <ImagePath> specifies the location of the executables that generated the
+                 fault (see _NT_EXECUTABLE_IMAGE_PATH)
+  -iae install as AeDebug debugger
+  -iaec <Command> install as AeDebug debugger with given command tail
+  -isd sets the CREATE_IGNORE_SYSTEM_DEFAULT flag in STARTUPINFO.dwFlags
+       during CreateProcess
+  -iu install dbgeng URL protocols
+  -kqm turns on kd quiet mode (equivalent to KDQUIET)
+  -lines requests that line number information be used if present
+  -loga <logfile> appends to a log file
+  -logau <logfile> appends to an Unicode log file
+  -logo <logfile> opens a new log file
+  -logou <logfile> opens a new Unicode log file
+  -myob ignores version mismatches in DBGHELP.DLL
+  -n enables verbose output from symbol handler
+  -netsym:yes|no allow or disallow loading symbols from a network path
+  -noinh disables handle inheritance for created processes
+  -noio disables all I/O
+  -noshell disables the .shell (!!) command
+  -nosqm disables SQM data collection/upload.
+  -o debugs all processes launched by debuggee
+  -openPrivateDumpByHandle <HANDLE> 
+    specifies the handle of a crash dump file to debug
+  -p <pid> specifies the decimal process ID to attach to
+  -pb specifies that the debugger should not break in at attach
+  -pd specifies that the debugger should automatically detach
+  -pe specifies that any attach should be to an existing debug port
+  -pn <name> specifies the name of the process to attach to
+  -pr specifies that the debugger should resume on attach
+  -psn <name> specifies the process to attach to by service name
+  -premote <transport>:server=<name>,<params> 
+    specifies the process server to connect to
+    transport arguments are given as with remoting
+  -pt <#> specifies the interrupt timeout
+  -pv specifies that any attach should be noninvasive
+  -pvr specifies that any attach should be noninvasive and nonsuspending
+  -QR \\<machine> queries for remote servers
+  -r <BreakErrorLevel> specifies the (0-3) error level to break on (see
+                       SetErrorLevel)
+  -remote <transport>:server=<name>,<params> 
+    lets you connect to a debugger session started with -server
+    must be the first argument if present
+      transport: tcp | npipe | ssl | spipe | 1394 | com
+      name: machine name on which the debug server was created
+      params: parameters the debugger server was created with
+        for tcp use:  port=<socket port #>
+        for npipe use:  pipe=<name of pipe>
+        for 1394 use:  channel=<channel #>
+        for com use:  port=<COM port>,baud=<baud rate>,
+                      channel=<channel #>
+        for ssl and spipe see the documentation
+      example: ... -remote npipe:server=yourmachine,pipe=foobar
+  -robp allows breakpoints to be set in read-only memory
+  -s disables lazy symbol loading
+  -sdce pops up dialogs for critical errors
+  -server <transport>:<params> 
+    creates a debugger session other people can connect to
+    must be the first argument if present
+      transport: tcp | npipe | ssl | spipe | 1394 | com
+      params: connection parameterization
+        for tcp use:  port=<socket port #>
+        for npipe use:  pipe=<name of pipe>
+        for 1394 use:  channel=<channel #>
+        for com use:  port=<COM port>,baud=<baud rate>,
+                      channel=<channel #>
+        for ssl and spipe see the documentation
+      example: ... -server npipe:pipe=foobar
+  -ses enables strict symbol loading
+  -sflags <flags> sets symbol flags from a numeric argument
+  -sicv ignores the CV record when symbol loading
+  -sins ignores the symbol path environment variables
+  -snc converts :: to __ in symbol names
+  -snul disables automatic symbol loading for unqualified names
+  -srcpath <SourcePath> specifies the source search path
+  -sup enables full public symbol searches
+  -t <PrintErrorLevel> specifies the (0-3) error level to display (see
+                       SetErrorLevel)
+  -v enables verbose output from debugger
+  -version shows the build version
+  -vf enables default ApplicationVerifier settings
+  -vf:<opts> enables given ApplicationVerifier settings
+  -w specifies to debug 16 bit applications in a separate VDM
+  -wake <pid> wakes up a sleeping debugger and exits
+  -x sets second-chance break on AV exceptions
+  -x{e|d|n|i} <event> sets the break status for the specified event
+  -y <SymbolsPath> specifies the symbol search path (see _NT_SYMBOL_PATH)
+  -z <CrashDmpFile> specifies the name of a crash dump file to debug
+  -zf <CrashDmpDirectory> specifies the name of an unzipped CAB directory to
+                          debug
+  -zd <CrashDmpFile> specifies the name of a crash dump file to debugand
+                     deletes that crash dump after the debugger has finished
+                     using it
+  -zp <CrashPageFile> specifies the name of a page.dmp file to use with a
+                      crash dump
+  -plmPackage <PlmPackageFullName> 
+    specifies the UWP package to be started. Needs '-plmApp' or '-plmPackage'
+    option, but not both.
+  -plmApp <PlmApplicationName> 
+    specifies the UWP application to be started. Needs '-plmPackage' option. 
+  -plmBgTaskId <PlmBackgroundTaskId> 
+    specifies the UWP background task to be activated. Needs '-plmPackage'
+    option. 
+
+Environment Variables:
+
+    _NT_SYMBOL_PATH=[Drive:][Path]
+        Specify symbol image path.
+
+    _NT_ALT_SYMBOL_PATH=[Drive:][Path]
+        Specify an alternate symbol image path.
+
+    _NT_DEBUGGER_EXTENSION_PATH=[Drive:][Path]
+        Specify a path which should be searched first for extensions dlls
+
+    _NT_EXECUTABLE_IMAGE_PATH=[Drive:][Path]
+        Specify executable image path.
+
+    _NT_SOURCE_PATH=[Drive:][Path]
+        Specify source file path.
+
+    _NT_DEBUG_LOG_FILE_OPEN=filename
+        If specified, all output will be written to this file from offset 0.
+
+    _NT_DEBUG_LOG_FILE_APPEND=filename
+        If specified, all output will be APPENDed to this file.
+
+    _NT_DEBUG_HISTORY_SIZE=size
+        Specifies the size of a server's output history in kilobytes
+
+Control Keys:
+
+     <Ctrl-B><Enter> Quit debugger
+     <Ctrl-C>        Break into Target
+     <Ctrl-F><Enter> Force a break into debuggee (same as Ctrl-C)
+     <Ctrl-\><Enter> Debug Current debugger
+     <Ctrl-V><Enter> Toggle Verbose mode
+     <Ctrl-W><Enter> Print version information

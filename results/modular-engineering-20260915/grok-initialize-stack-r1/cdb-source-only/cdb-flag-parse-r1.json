@@ -1,0 +1,42 @@
+{
+  "schema": "cdb-flag-parse-r1",
+  "process_attach": false,
+  "results": {
+    "netsym_colon": {
+      "exit_code": 2147942487,
+      "first_parser_line": "cdb: Invalid switch 'n'",
+      "stdout_bytes": 8063,
+      "stderr_bytes": 0
+    },
+    "netsym_space": {
+      "exit_code": 2147942487,
+      "first_parser_line": "cdb: Invalid switch 'n'",
+      "stdout_bytes": 8063,
+      "stderr_bytes": 0
+    },
+    "noshell": {
+      "exit_code": 2147942487,
+      "first_parser_line": null,
+      "stdout_bytes": 8039,
+      "stderr_bytes": 0
+    },
+    "sins": {
+      "exit_code": 2147942487,
+      "first_parser_line": null,
+      "stdout_bytes": 8039,
+      "stderr_bytes": 0
+    },
+    "pvr": {
+      "exit_code": 2147942487,
+      "first_parser_line": null,
+      "stdout_bytes": 8039,
+      "stderr_bytes": 0
+    },
+    "pd": {
+      "exit_code": 2147942487,
+      "first_parser_line": null,
+      "stdout_bytes": 8039,
+      "stderr_bytes": 0
+    }
+  }
+}
