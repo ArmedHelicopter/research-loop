@@ -1,6 +1,7 @@
 """Admission v4 native controller seam: 16 cells, 48 synthetic MAIN calls, real stdio closure."""
 from contextlib import ExitStack
 import hashlib
+import json
 import os
 from pathlib import Path
 import sys
@@ -90,4 +91,12 @@ def test_native_v4_controller_runs_16_cells_and_closes_the_declared_evaluator(tm
     assert gate['ordered_receipt_digests'] == [score.receipt.content_hash for score in result.scores]
     assert gate['known_headless_main_tokens'] == 160 and gate['title_and_all_opportunity_settlement'] == 'unknown'
     assert result.receipt.data()['eligible_scored_cells'] == 16
-
+    assert result.receipt.data()['status'] == 'complete_train_engineering'
+    assert result.receipt.data()['validation_opened'] is False
+    assert len(result.results) == len(result.attempts) == len(result.scores) == 16
+    assert all(row.data()['status'] == 'succeeded' for row in result.attempts)
+    solver = provider.backend.ledger
+    evaluator_ledger = json.loads((Path(evaluator['work_root']) / 'ledger.json').read_text(encoding='utf-8'))
+    assert len(solver['calls']) == 48 and solver['known_main_tokens'] == 480
+    assert len(evaluator_ledger['calls']) == 16 and evaluator_ledger['known_main_tokens'] == 160
+    assert evaluator_ledger['usage_incomplete'] is False
