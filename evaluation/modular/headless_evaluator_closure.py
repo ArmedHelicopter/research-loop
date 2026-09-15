@@ -8,7 +8,7 @@ from typing import Mapping, Sequence
 
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.panel_receipts import verify_signed
-from research_loop.ontology import ContractError, canonical
+from research_loop.ontology import ContractError, canonical, digest
 
 
 _SCHEMA = "headless-evaluator-closure-v1"
@@ -292,6 +292,9 @@ def finalize_lineage(*, service, panel, journal_path: Path, nonce: str,
         response_data = response.data()
         endpoints = signed.get("endpoints")
         cell = cells.get(cell_key)
+        references = service.lineage_reference_binding.get("references") if isinstance(
+            getattr(service, "lineage_reference_binding", None), Mapping) else None
+        expected_lineage_reference = references.get(digest(cell.identity.data())) if isinstance(references, Mapping) and cell else None
         request_path = Path(native.get("request", {}).get("path", ""))
         request_raw = request_path.read_bytes()
         request_record = FrozenRecord.from_dict(json.loads(request_raw))
@@ -316,7 +319,7 @@ def finalize_lineage(*, service, panel, journal_path: Path, nonce: str,
                 or native.get("response_sha256") != _sha(output_raw)
                 or native.get("reservation_sha256") != _sha(reservation_raw)
                 or native.get("native_receipt_sha256") != _sha(native_receipt_raw)
-                or not isinstance(tokens, int) or tokens < 0 or cell is None
+                or not isinstance(tokens, int) or tokens < 0 or cell is None or cell.scorer_digest != service.config.digest
                 or primary.get("cell_key") != list(cell_key) or primary.get("panel_digest") != panel.digest
                 or primary.get("scorer_digest") != service.config.digest or primary.get("scorer_config_digest") != service.config.digest
                 or primary.get("benchmark") != cell.identity.benchmark or signed.get("scorer_digest") != service.config.digest
@@ -327,7 +330,7 @@ def finalize_lineage(*, service, panel, journal_path: Path, nonce: str,
                 or output.data().get("lineage_endpoints") != endpoints
                 or response_data.get("evidence") != primary.get("evaluator_evidence")
                 or not isinstance(response_data.get("lineage_reference_digest"), str)
-                or len(response_data["lineage_reference_digest"]) != 64):
+                or response_data["lineage_reference_digest"] != expected_lineage_reference):
             raise ContractError("lineage closure receipt does not bind the native rubric opportunity")
         evidence = primary["evaluator_evidence"]
         if (not isinstance(evidence, Mapping) or evidence.get("evaluator_id") != port.evaluator_id

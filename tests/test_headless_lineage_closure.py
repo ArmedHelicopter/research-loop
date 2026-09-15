@@ -11,11 +11,12 @@ import evaluation.modular.headless_evaluator_closure as closure
 from evaluation.modular.lineage_combination_scoring import issue_lineage_score_input
 from evaluation.modular.lineage_scorer_process import (LineageScorerProcessClient, LineageScorerProcessPool,
     LineageScorerWorker)
+from research_loop.modular.panel_receipts import verify_signed
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.lineage_combination_driver import DESIGNS, run_lineage_combination_cell, verify_lineage_combination_cell
 from research_loop.modular.runtime import AuditVerifier
-from research_loop.ontology import ContractError, canonical
+from research_loop.ontology import ContractError, canonical, digest
 from test_headless_lineage_evaluator import _configure_headless, _native_service
 from test_lineage_combination_controller import EXECUTION, IMAGE, SCHEMAS, _model
 from test_modular_train_controller import model_port
@@ -71,6 +72,8 @@ def test_native_lineage_worker_closure_binds_signed_nested_primary_and_endpoint_
         assert (verified['schema'] == 'headless-lineage-evaluator-closure-v1'
                 and call['lineage_receipt_digest'] == request['receipt_digests'][0]
                 and call['primary_receipt_digest'] and call['lineage_reference_digest']
+                and call['lineage_reference_digest'] == service.lineage_reference_binding['references'][
+                    digest(panel.cells[0].identity.data())]
                 and verified['evaluator_usage_declaration']['evaluator_config_digest']
                 and verified['evaluator_provider'] == service.evaluator_provider
                 and str((Path(__file__).parents[1] / 'evaluation' / 'modular' / 'lineage_scorer_process.py').resolve()) in verified['frozen_files']
@@ -81,6 +84,28 @@ def test_native_lineage_worker_closure_binds_signed_nested_primary_and_endpoint_
         assert len(service.evaluator_port.ledger['calls']) == 1
         with pytest.raises(ContractError):
             worker.respond(score_request)
+    finally:
+        patch.undo()
+
+
+def test_lineage_closure_rejects_resigned_reference_pointer_substitution(tmp_path, monkeypatch):
+    patch, panel, service, worker, _, scored = _score_one(tmp_path, monkeypatch)
+    try:
+        original = FrozenRecord.from_dict(scored['receipt'])
+        body = verify_signed(original, {service._authority.authority_id: service._authority.key},
+                             schema='lineage-combination-scored-cell-v1')
+        substituted = FrozenRecord.from_dict(body['rubric_response']).data()
+        substituted['lineage_reference_digest'] = '0' * 64
+        substituted = FrozenRecord.from_dict(substituted)
+        resigned = service._authority.issue({**body, 'rubric_response': substituted.data(),
+                                             'rubric_response_digest': substituted.content_hash})
+        rows = [json.loads(line) for line in worker.journal_path.read_text(encoding='utf-8').splitlines()]
+        rows[-1]['receipt'] = resigned.data()
+        worker.journal_path.write_text('\n'.join(canonical(row) for row in rows) + '\n', encoding='utf-8')
+        request = _final_request(service, resigned.data(), nonce='substituted-reference')
+        with pytest.raises(ContractError):
+            worker.respond(request)
+        assert len(service.evaluator_port.ledger['calls']) == 1
     finally:
         patch.undo()
 
