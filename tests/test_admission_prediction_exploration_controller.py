@@ -133,7 +133,7 @@ def prepare(root, fault=None):
                     'operation': claim['operation'], 'column': claim['column'], 'expected': claim['expected']}))
             datasets[packet.task.content_hash] = CsvMeasurementDataset(packet.csv_path, specs)
         verifiers['triple:M1+M4+M7'] = build_csv_measurement_admission_verifier(
-            authorities=(LinkedExecutionAuthority('csv-reader-test', b'r' * 32), LinkedExecutionAuthority('csv-dictreader-test', b's' * 32)),
+            authorities=(LinkedExecutionAuthority('csv-reader-test', b'r' * 32), LinkedExecutionAuthority('csv-dictreader-test', b'd' * 32)),
             datasets=datasets, receipt_root=root/'csv-receipts')
     package=CandidatePackage.create(parent_digest=None,manifest=TrainingManifest.freeze([p.task.identity for p in packets]),
         changes={'prompt':{'instructions':'Analyze the supplied public training observations.'}},search_cost=0)
