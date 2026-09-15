@@ -238,7 +238,11 @@ class PhaseProviderLedger:
         return self.original.verify_originals()
 
     def calls_for_scope(self,scope_id):
-        self.verify();matches=[r for r in self.record.data()['scopes']['scopes'] if r['scope_id']==scope_id]
+        self.verify();return self._calls_for_scope_after_verified(scope_id)
+
+    def _calls_for_scope_after_verified(self,scope_id):
+        """Select a scope only during the synchronous verification that precedes it."""
+        matches=[r for r in self.record.data()['scopes']['scopes'] if r['scope_id']==scope_id]
         _require(len(matches)==1, 'scope absent from original provider seal')
         row=matches[0];calls={c['view']['id']:_record(c['view']) for c in self.original.record.data()['calls']}
         selected=tuple(calls[n] for n in row['call_ids'])
@@ -255,8 +259,15 @@ class PhaseProviderLedger:
         verifying. They are not a reusable verification token or an eligible seal.
         Every invocation still replays current session and original provider files.
         """
-        calls=self.calls_for_scope(scope_id)
-        ids=self.original.bind_events(events,expected_call_ids=tuple(c.data()['id'] for c in calls),require_eligible=require_eligible)
+        verified=self.verify()
+        calls=self._calls_for_scope_after_verified(scope_id)
+        try:
+            ids=self.original._bind_events_after_verified(events,
+                expected_call_ids=tuple(c.data()['id'] for c in calls),require_eligible=require_eligible,
+                verified=verified)
+        except Exception as exc:
+            self.original.provider._poison('runtime_binding_fault')
+            raise ContractError('runtime provider binding fault; dispatch closed') from exc
         return ids,calls
 
 

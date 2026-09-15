@@ -6,6 +6,7 @@ import pytest
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.phase_provider import PhaseProviderSession, validate_configuration
 from research_loop.modular.train_provider import GrokHeadlessTrainProvider, wrap_train_provider
+from research_loop.modular import train_provider as provider_core
 from research_loop.ontology import ContractError
 from test_grok_headless_train_solver import port, synthetic_native, REQUEST, SCHEMA
 
@@ -40,6 +41,62 @@ def test_headless_provider_phase_and_consumption_seal(tmp_path, monkeypatch):
     native=provider.state['calls'][0]['original_files']
     assert any(Path(name).as_posix().endswith('billing-after/attempts.json') for name in native)
     assert not any(name.endswith('auth.json') for name in native)
+
+
+def test_phase_headless_binding_uses_two_fresh_passes_and_never_reuses_them(tmp_path, monkeypatch):
+    backend=port(tmp_path,max_calls=2)
+    dispatches,_=synthetic_native(tmp_path,monkeypatch,backend)
+    provider=wrap_train_provider(backend);session=PhaseProviderSession(provider,tmp_path/'scopes.json')
+    with session.scope('history') as scope: first=scope(REQUEST)
+    with session.scope('target') as scope: second=scope(REQUEST)
+    seal=session.seal(tmp_path/'seal.json')
+    original=provider_core._verify_call;replayed=[]
+    def observe(*args,**kwargs):
+        replayed.append(args[1]['id']);return original(*args,**kwargs)
+    monkeypatch.setattr(provider_core,'_verify_call',observe)
+    target=events(REQUEST);target[-1]['data']['response']=second.data()
+    ids,bound=seal.bind_events_with_calls(target,scope_id='target')
+    assert ids==(2,) and [call.data()['id'] for call in bound]==[2]
+    assert replayed==[1,2,1,2], 'one binding makes its two required fresh passes only'
+    replayed.clear()
+    assert seal.bind_events_with_calls(target,scope_id='target')[0]==(2,)
+    assert replayed==[1,2,1,2], 'a separate consumer invocation must reread every original'
+    replayed.clear()
+    assert seal.original.bind_events(target,expected_call_ids=(2,))==(2,)
+    assert replayed==[1,2], 'the public original-ledger entry remains independently fresh'
+    response=backend.calls_root/'0001-m4_plan'/'response.private.json'
+    response.write_bytes(response.read_bytes()+b' ')
+    with pytest.raises(ContractError):seal.bind_events_with_calls(target,scope_id='target')
+    assert len(dispatches)==2
+    with pytest.raises(ContractError):provider(REQUEST)
+    assert len(dispatches)==2
+
+
+def test_headless_binding_failure_poison_and_noneligible_history_remain_explicit(tmp_path, monkeypatch):
+    backend=port(tmp_path,max_calls=2)
+    dispatches,_=synthetic_native(tmp_path,monkeypatch,backend)
+    provider=wrap_train_provider(backend);session=PhaseProviderSession(provider,tmp_path/'scopes.json')
+    with session.scope('history') as scope: response=scope(REQUEST)
+    history=session.seal(tmp_path/'history.json')
+    with pytest.raises(ContractError):history.bind_events_with_calls([],scope_id='history')
+    assert len(dispatches)==1
+    with pytest.raises(ContractError):provider(REQUEST)
+    assert len(dispatches)==1
+
+    monkeypatch.undo()
+    backend=port(tmp_path/'noneligible',max_calls=1)
+    dispatches,_=synthetic_native(tmp_path/'noneligible',monkeypatch,backend)
+    provider=wrap_train_provider(backend);session=PhaseProviderSession(provider,tmp_path/'noneligible-scopes.json')
+    with session.scope('history') as scope: response=scope(REQUEST)
+    history=session.seal(tmp_path/'noneligible-history.json')
+    provider._poison('synthetic_terminal_after_history')
+    retained=history.bind_events_with_calls(
+        [{'stage':'model_request','data':{'request':REQUEST.data()}},
+         {'stage':'model_response','data':{'request_digest':REQUEST.content_hash,'response':response.data()}}],
+        scope_id='history',require_eligible=False)
+    assert retained[0]==(1,) and retained[1][0].data()['known_tokens']==10
+    with pytest.raises(ContractError):history.bind_events_with_calls(
+        events(REQUEST),scope_id='history',require_eligible=True)
 
 
 def test_postflight_rejection_is_retained_in_provider_denominator(tmp_path, monkeypatch):

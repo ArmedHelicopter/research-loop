@@ -476,12 +476,27 @@ class FrozenTrainProviderLedgerV2:
             raise ContractError('runtime provider binding fault; dispatch closed') from exc
 
     def _bind_events(self,events,*,expected_call_ids,require_eligible):
+        return self._bind_events_after_verified(events,expected_call_ids=expected_call_ids,
+            require_eligible=require_eligible,verified=self.verify_originals())
+
+    def _bind_events_after_verified(self,events,*,expected_call_ids,require_eligible,verified):
+        """Match one synchronous caller's already-fresh original verification.
+
+        This private helper neither stores nor accepts a reusable eligibility
+        token.  Public ``bind_events`` always obtains a fresh verification;
+        PhaseProviderLedger uses it only while completing the same invocation
+        that has just verified its phase and original seals.
+        """
         _require(type(require_eligible) is bool, 'eligibility mode must be an explicit bool')
         _require(expected_call_ids is None or (type(expected_call_ids) is tuple
             and all(type(number) is int and number>0 for number in expected_call_ids)
             and all(a<b for a,b in zip(expected_call_ids,expected_call_ids[1:]))), 'immutable strictly ordered call IDs required')
-        verified=self.verify_originals().data()
-        _require(not require_eligible or verified['score_eligible'], 'terminal or failed evidence is not score-eligible')
+        _require(type(verified) is FrozenRecord, 'fresh original verification required')
+        verified_data=verified.data()
+        _require(verified_data.get('schema')=='train-provider-seal-verification-v1'
+            and verified_data.get('seal_digest')==self.record.content_hash
+            and verified_data.get('originals_verified') is True, 'fresh original verification differs')
+        _require(not require_eligible or verified_data['score_eligible'], 'terminal or failed evidence is not score-eligible')
         calls=self.record.data()['calls'];used=[];pending=None
         if expected_call_ids is not None:
             _require(set(expected_call_ids)<=set(c['view']['id'] for c in calls), 'declared call ID is outside sealed prefix')
