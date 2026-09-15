@@ -35,7 +35,7 @@ from research_loop.modular.modules.improvement import CandidatePackage, Training
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier
 from research_loop.modular.runtime import AuditVerifier
-from research_loop.modular.train_controller import _checked_roots, _write
+from research_loop.modular.train_controller import _checked_roots, _write`nfrom research_loop.modular.admission_attempt_transitions import AttemptTransitions
 from research_loop.ontology import ContractError
 
 
@@ -263,10 +263,13 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
     provider_session = PhaseProviderSession(model, root/'provider-scopes.json') if native else None
     journal = {'schema': ('admission-prediction-exploration-train-attempt-v2' if native else 'admission-prediction-exploration-train-attempt-v1'), 'config_digest': config.record.content_hash, 'status': 'exporting',
         'allocation': b['allocation'], **allocation_fields(b, native=native), 'expected_cells': 16, 'cells': [], 'actual_scorer_calls': 0}
+    transitions = AttemptTransitions(root)
     def persist(*, refresh_usage=True):
         if refresh_usage:
             journal['actual_model_usage'] = provider_usage(provider_session, model)
+        raw = FrozenRecord.from_dict(journal).encoded.encode('utf-8')
         _write(root/'controller-attempt.json', journal)
+        transitions.append(raw)
     persist()
     try:
         packets = source.export()
@@ -441,7 +444,7 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
         'auxiliary_docker_attempts': sum(r.get('auxiliary_docker_attempts', 0) for r in journal['cells']),
         'phase_unknown_cost_attempts': sum(r.get('phase_receipt', {}).get('unknown_cost_attempts', 0) for r in journal['cells']),
         'contrasts': [c.data() for c in contrasts], 'pruned_cells': [], 'scientific_effectiveness_proven': False, 'validation_opened': False,
-        'status': 'complete_train_engineering' if len(scores)==len(results)==16 and (evaluator_gate is None or evaluator_gate['score_eligible'])
+        'attempt_transition_receipt': transitions.receipt().data(), 'status': 'complete_train_engineering' if len(scores)==len(results)==16 and (evaluator_gate is None or evaluator_gate['score_eligible'])
             and all(c.data()['status'] in {'estimated', 'not_identifiable'} for c in contrasts) else 'inconclusive'})
     _write(root/'controller-receipt.json', receipt.data()); journal['status'] = receipt.data()['status']; journal.update(actual_model_usage=receipt.data()['actual_model_usage']); _write(root/'controller-attempt.json',journal)
     return AdmissionPredictionExplorationTrainRun(compiled, tuple(results), tuple(scores), tuple(FrozenRecord.from_dict(r) for r in journal['cells']), tuple(contrasts), receipt)
