@@ -12,3 +12,10 @@ These are custody observations only: they create no module attribution, semantic
 parents, score authority, or scientific conclusion. They may contain private
 scorer text and must stay with the original run evidence rather than be copied to
 public catalogues.
+For terminal cell exchanges only, the client also creates a sealed per-identity
+`ArtifactCatalogue` projection under the private exchange sidecar and immediately
+re-reads the raw chain and catalogue anchor before returning to its consumer.
+The projection contains text digests and typed binding metadata, never request or
+response text. Startup has no single task identity, so it remains a neutral
+panel-scoped raw exchange record rather than being assigned a module or a task
+artifact.

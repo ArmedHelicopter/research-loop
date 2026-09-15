@@ -6,7 +6,8 @@ import os
 import pytest
 
 from evaluation.modular.scorer_process import (CombinationScorerProcessClient, serialize_combination_panel,
-    parse_combination_panel, parse_server_config, build_service, read_scorer_exchange_observations)
+    parse_combination_panel, parse_server_config, build_service, read_scorer_exchange_observations,
+    verify_scorer_exchange_catalogues)
 from research_loop.modular.combination_train_controller import FrozenM4M5TrainConfig, compile_m4_m5_train_panel, run_m4_m5_train_panel
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.runtime import AuditVerifier
@@ -89,6 +90,11 @@ def test_full_eight_cell_custody_controller_uses_real_separate_scorer_with_utf8(
     assert exchanges[0]['event']['cell_key'] is None and exchanges[0]['event']['phase']=='reserved'
     assert any(row['event']['phase']=='authenticated' and row['event']['cell_key'] is not None for row in exchanges)
     assert all(row['event']['cost']=={'known':False,'units':None} for row in exchanges)
+    verify_scorer_exchange_catalogues(service)
+    anchors=tmp_path/'client.jsonl.exchange-catalogue-anchors.jsonl'
+    anchors.write_bytes(anchors.read_bytes()+b' ')
+    with pytest.raises(ContractError):
+        verify_scorer_exchange_catalogues(service)
     for name in ('client.jsonl','worker.jsonl'):
         text=(tmp_path/name).read_text(encoding='utf-8')
         assert 'PRIVATE-REFERENCE-SENTINEL' not in text
