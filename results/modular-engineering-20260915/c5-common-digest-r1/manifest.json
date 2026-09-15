@@ -1,0 +1,92 @@
+{
+  "schema": "c5-deadline-published-archive-v1",
+  "manifest_self_excluded": true,
+  "original_stage_manifest_sha256": "6e91b3d044af766a6f72856aa1fc186461b63be10820c1b8559798c49a9aabf2",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "c5-common-digest-r1-observed-usage.json",
+      "bytes": 4928,
+      "sha256": "f7eeb795920d92bdaf9583be70dfac088020c1007a30b8532e5c6012d058fc35"
+    },
+    {
+      "path": "original-stage/.gitattributes",
+      "bytes": 9,
+      "sha256": "48747480eddba024928d03be9bf83dc579e5515768647507a767e8187a85c9ab"
+    },
+    {
+      "path": "original-stage/archive-builder.py",
+      "bytes": 14894,
+      "sha256": "7492d5d44b3855bea655f6b15fcbf38e3705d219ca2f42c4da536549f74854c1"
+    },
+    {
+      "path": "original-stage/c5-common-digest-r1-before.json",
+      "bytes": 82764,
+      "sha256": "c2d38ce4ac145386346d19602dff15bd4d54c83801080bc9e9db4d5884f46ec4"
+    },
+    {
+      "path": "original-stage/c5-common-digest-r1-source-members.json",
+      "bytes": 123876,
+      "sha256": "75b5cad1c0f0d6b9e417350256f604b7bf733547c0d4701002d7afdd7e36b946"
+    },
+    {
+      "path": "original-stage/c5-common-digest-r1-sources.zip",
+      "bytes": 2319175,
+      "sha256": "acb051a73a12795708e9698fad9bddeccf532333f2dec0eb80dbd63ded6786e5"
+    },
+    {
+      "path": "original-stage/c5-common-digest-r1-watchdog-config.json",
+      "bytes": 1210,
+      "sha256": "368d4b94573f9cec1d3ee99f2d0eec510cf865a4d6bcb074dc9a80531f96132b"
+    },
+    {
+      "path": "original-stage/c5-common-digest-r1-watchdog.jsonl",
+      "bytes": 4190,
+      "sha256": "3cb3a176577306fd4eda40f073e859e17fe5d1eb84c69b668075fcf478ae8bd7"
+    },
+    {
+      "path": "original-stage/closure.json",
+      "bytes": 998,
+      "sha256": "7b4c5937125e2a368306708b6f8dd286e6cce9ce6964e1928df8a74fa2a2061d"
+    },
+    {
+      "path": "original-stage/manifest.json",
+      "bytes": 4000,
+      "sha256": "6e91b3d044af766a6f72856aa1fc186461b63be10820c1b8559798c49a9aabf2"
+    },
+    {
+      "path": "original-stage/README.md",
+      "bytes": 934,
+      "sha256": "19483bc54ebc01ee2806a8f037895cf3a8e5fff795143c266021c9d7afe87728"
+    },
+    {
+      "path": "original-stage/runtime-private-inventory.json",
+      "bytes": 559,
+      "sha256": "e8c0db4a87f569d017270326f7f7eb9c94f23fa7758a737819c3183ad9975e9c"
+    },
+    {
+      "path": "original-stage/watch_native_phase_deadline_r1.ps1",
+      "bytes": 4229,
+      "sha256": "a2a884ad3c9195a258d245e108bc6da78ef7e181615195582a4717ecfa70a40c"
+    },
+    {
+      "path": "publish_c5_common_digest_r1.py",
+      "bytes": 3396,
+      "sha256": "5c35bf98d9c2dca9cdbc701ee4b1cd6263688de56b638a3451cda3cd69e35177"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1558,
+      "sha256": "667b3ccf5f7b7052f7674367913b0b596d1fd367555f379647bef929abe46703"
+    },
+    {
+      "path": "verify_c5_common_digest_r1_archive.py",
+      "bytes": 2677,
+      "sha256": "49fff2fa56253b391ed0f17cda0c35fb14aea5b9e7862e1ca54c01b489e245bc"
+    }
+  ]
+}

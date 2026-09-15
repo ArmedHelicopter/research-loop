@@ -1,0 +1,20 @@
+{
+  "source_commit": "2c091a113027df86bc75b6f8587a25d2615a74db",
+  "junit": {
+    "tests": 40,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "wall_seconds": 878.7810000000172,
+  "source_files_unchanged": 772,
+  "selected_original_files": 3673,
+  "selected_original_roots": 13,
+  "limits": [
+    "No actual Grok, paid API or VAL calls.",
+    "M4/M5 v6 lifecycle only; not every experiment controller.",
+    "Lineage factory and lineage final closure require separate integration.",
+    "Engineering checks do not establish benchmark effects or formal calibration."
+  ],
+  "preliminary_checks": "19 local closure/preflight checks passed before source freeze; not added to this denominator."
+}

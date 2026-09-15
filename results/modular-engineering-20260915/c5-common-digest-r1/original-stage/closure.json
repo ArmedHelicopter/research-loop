@@ -1,0 +1,31 @@
+{
+  "actual_docker_attempts": null,
+  "actual_scorer_invocations": null,
+  "actual_synthetic_main_calls": null,
+  "calibration_eligible": false,
+  "checkpoint_counts": {
+    "history_build:succeeded": 46,
+    "target:not_executed": 61,
+    "target:succeeded": 57
+  },
+  "deadline": "2026-09-15T08:56:20.6228180+08:00",
+  "expected_history_builds": 46,
+  "expected_target_cells": 118,
+  "new_paid_calls": 0,
+  "normal_junit_or_closed_receipt_present": false,
+  "observed_owned_docker_names": [],
+  "observed_owned_processes_absent": true,
+  "schema": "c5-common-digest-r1-deadline-closure-v1",
+  "scientific_validated": false,
+  "source_commit": "105dfcd321faa3245b9a1605515e1eb147d04c5f",
+  "status": "deadline_interrupted_incomplete",
+  "unobserved_resource_absence_proven": false,
+  "validation_eligible": false,
+  "watchdog_events": [
+    "watch_started",
+    "deadline_inventory",
+    "owned_tree_termination",
+    "deadline_cleanup_recorded"
+  ],
+  "watchdog_owned_tree_termination_exit": 0
+}

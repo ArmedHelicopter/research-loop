@@ -1,0 +1,117 @@
+{
+  "closure": {
+    "actual_docker_attempts": null,
+    "actual_scorer_invocations": null,
+    "actual_synthetic_main_calls": null,
+    "calibration_eligible": false,
+    "checkpoint_counts": {
+      "history_build:succeeded": 46,
+      "target:not_executed": 61,
+      "target:succeeded": 57
+    },
+    "deadline": "2026-09-15T08:56:20.6228180+08:00",
+    "expected_history_builds": 46,
+    "expected_target_cells": 118,
+    "new_paid_calls": 0,
+    "normal_junit_or_closed_receipt_present": false,
+    "observed_owned_docker_names": [],
+    "observed_owned_processes_absent": true,
+    "schema": "c5-common-digest-r1-deadline-closure-v1",
+    "scientific_validated": false,
+    "source_commit": "105dfcd321faa3245b9a1605515e1eb147d04c5f",
+    "status": "deadline_interrupted_incomplete",
+    "unobserved_resource_absence_proven": false,
+    "validation_eligible": false,
+    "watchdog_events": [
+      "watch_started",
+      "deadline_inventory",
+      "owned_tree_termination",
+      "deadline_cleanup_recorded"
+    ],
+    "watchdog_owned_tree_termination_exit": 0
+  },
+  "files": [
+    {
+      "bytes": 9,
+      "path": ".gitattributes",
+      "sha256": "48747480eddba024928d03be9bf83dc579e5515768647507a767e8187a85c9ab"
+    },
+    {
+      "bytes": 14894,
+      "path": "archive-builder.py",
+      "sha256": "7492d5d44b3855bea655f6b15fcbf38e3705d219ca2f42c4da536549f74854c1"
+    },
+    {
+      "bytes": 82764,
+      "path": "c5-common-digest-r1-before.json",
+      "sha256": "c2d38ce4ac145386346d19602dff15bd4d54c83801080bc9e9db4d5884f46ec4"
+    },
+    {
+      "bytes": 123876,
+      "path": "c5-common-digest-r1-source-members.json",
+      "sha256": "75b5cad1c0f0d6b9e417350256f604b7bf733547c0d4701002d7afdd7e36b946"
+    },
+    {
+      "bytes": 2319175,
+      "path": "c5-common-digest-r1-sources.zip",
+      "sha256": "acb051a73a12795708e9698fad9bddeccf532333f2dec0eb80dbd63ded6786e5"
+    },
+    {
+      "bytes": 1210,
+      "path": "c5-common-digest-r1-watchdog-config.json",
+      "sha256": "368d4b94573f9cec1d3ee99f2d0eec510cf865a4d6bcb074dc9a80531f96132b"
+    },
+    {
+      "bytes": 4190,
+      "path": "c5-common-digest-r1-watchdog.jsonl",
+      "sha256": "3cb3a176577306fd4eda40f073e859e17fe5d1eb84c69b668075fcf478ae8bd7"
+    },
+    {
+      "bytes": 998,
+      "path": "closure.json",
+      "sha256": "7b4c5937125e2a368306708b6f8dd286e6cce9ce6964e1928df8a74fa2a2061d"
+    },
+    {
+      "bytes": 934,
+      "path": "README.md",
+      "sha256": "19483bc54ebc01ee2806a8f037895cf3a8e5fff795143c266021c9d7afe87728"
+    },
+    {
+      "bytes": 559,
+      "path": "runtime-private-inventory.json",
+      "sha256": "e8c0db4a87f569d017270326f7f7eb9c94f23fa7758a737819c3183ad9975e9c"
+    },
+    {
+      "bytes": 4229,
+      "path": "watch_native_phase_deadline_r1.ps1",
+      "sha256": "a2a884ad3c9195a258d245e108bc6da78ef7e181615195582a4717ecfa70a40c"
+    }
+  ],
+  "manifest_self_excluded_from_hashes": true,
+  "private_inventory": {
+    "links_not_followed": {
+      "test_complete_common_train_concurrent": "\\\\?\\E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-digest-r1\\test_complete_common_train_con0"
+    },
+    "private_manifest_sha256": "7fc58442975484b42fdb8eb5ebdfc158d50a4068aee73c39ab6ecd75f6b0b4cd",
+    "private_root": "E:\\_ryanDev\\AI\\research-loop-modular\\retained-private-evidence\\c5-common-digest-r1-runtime-r1",
+    "runtime_archives": 32,
+    "runtime_bytes": 758690037,
+    "runtime_regular_files": 13516,
+    "schema": "c5-common-digest-r1-private-runtime-inventory-v1"
+  },
+  "public_file_names": [
+    ".gitattributes",
+    "README.md",
+    "archive-builder.py",
+    "c5-common-digest-r1-before.json",
+    "c5-common-digest-r1-source-members.json",
+    "c5-common-digest-r1-sources.zip",
+    "c5-common-digest-r1-watchdog-config.json",
+    "c5-common-digest-r1-watchdog.jsonl",
+    "closure.json",
+    "runtime-private-inventory.json",
+    "watch_native_phase_deadline_r1.ps1",
+    "manifest.json"
+  ],
+  "schema": "c5-common-digest-r1-public-stage-v1"
+}

@@ -1,0 +1,106 @@
+{
+  "accounting_limits": {
+    "actual_real_model_calls": "not established by these synthetic ledgers",
+    "common_provider_observed_synthetic_calls": 572,
+    "known_synthetic_tokens": 6864,
+    "new_paid_calls": 0
+  },
+  "archive_closure": {
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-digest-r1-archive-stage-r1\\closure.json",
+    "sha256": "7b4c5937125e2a368306708b6f8dd286e6cce9ce6964e1928df8a74fa2a2061d"
+  },
+  "checkpoint_not_a_score": {
+    "interpretation": "target:succeeded is a checkpoint state only; it is not a model efficacy, scientific, or scorer result",
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-digest-r1\\test_complete_common_train_con0\\common-run\\checkpoint.json",
+    "rows": 164,
+    "sha256": "3e29fef5672f66b673a85793b6acabc59a99fcd4335c1d700da697143699459f",
+    "stage_status_counts": {
+      "history_build:succeeded": 46,
+      "target:not_executed": 61,
+      "target:succeeded": 57
+    }
+  },
+  "common_provider": {
+    "calls_observed": 572,
+    "classification": "common_run_synthetic_provider",
+    "frozen_max_calls": 930,
+    "known_tokens": 6864,
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-digest-r1\\test_complete_common_train_con0\\common-provider\\native-ledger\\ledger.json",
+    "provider_kind": "grok-acp-public-train-v1",
+    "schema": "grok-train-solver-port-v1",
+    "sha256": "c34a547976c987830eb395983962b87421802b6d5c66dfed96765b22c8762f05",
+    "slots": {
+      "analysis_program": 57,
+      "bounded_choice": 103,
+      "builder_proposal": 15,
+      "final_answer": 57,
+      "m4_plan": 103,
+      "ordinary_revision": 31,
+      "review_first": 103,
+      "review_second": 103
+    },
+    "statuses": {
+      "succeeded": 572
+    },
+    "synthetic_executable_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-digest-r1\\test_complete_common_train_con0\\common-provider\\synthetic-grok.exe",
+    "synthetic_executable_sha256": "1150361fc959684d20999bd7c72fdeaf79eb19a16beae9c7b2ee094ed56a5593",
+    "unconsumed_synthetic_call_upper_bound": 358,
+    "usage_incomplete": false
+  },
+  "common_provider_state": {
+    "calls_observed": 572,
+    "matches_common_provider_call_count": true,
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-digest-r1\\test_complete_common_train_con0\\common-provider\\native-ledger\\train-provider-v1\\state.json",
+    "schema": "public-train-provider-state-v1",
+    "sha256": "75174c344ca761ff94e506d38df5393d36c9cfc87f92e735b3c44cb8fa3f2234"
+  },
+  "fixture_ports": [
+    {
+      "calls_observed": 0,
+      "classification": "fixture_port_preparation",
+      "known_tokens": 0,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-digest-r1\\test_complete_common_train_con0\\port\\model\\ledger.json",
+      "schema": "codex-model-port-v1",
+      "sha256": "48103d6d3f6396d058cf7f51bad01ffc495f34e67ae6235cf093df80362afedb",
+      "slots": {},
+      "statuses": {},
+      "usage_incomplete": false
+    },
+    {
+      "calls_observed": 2,
+      "classification": "fixture_prior_port_preparation",
+      "known_tokens": 4,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-digest-r1\\test_complete_common_train_con0\\prior-port\\model\\ledger.json",
+      "schema": "codex-model-port-v1",
+      "sha256": "d1efc61cab3e3b19199d65a8aa88ee7796344687748bd3d1c1bcfc1a8d73cd2a",
+      "slots": {
+        "analysis_program": 1,
+        "final_answer": 1
+      },
+      "statuses": {
+        "succeeded": 2
+      },
+      "usage_incomplete": false
+    }
+  ],
+  "limitations": [
+    "The 572 successful calls are the synthetic common provider ledger, not paid/native production calls.",
+    "The two prior-port calls are retained fixture preparation and are not added to the common-provider total.",
+    "The fixture port with zero calls is reported separately.",
+    "The interrupted run has no normal JUnit or closed receipt."
+  ],
+  "schema": "c5-common-digest-r1-observed-usage-v1",
+  "scope": "metadata-only observation of the closed deadline-interrupted synthetic C5 specimen; not a completion, scorer, scientific, calibration, or VAL receipt",
+  "scorer_usage": {
+    "journal_artifacts_found": [],
+    "observed_scorer_invocations": "unknown",
+    "observed_scorer_tokens": "unknown",
+    "reason": "no scorer journal was present in the exact common-run or common-scorer-inputs roots; no zero inference is made",
+    "searched_exact_roots": [
+      "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-digest-r1\\test_complete_common_train_con0\\common-run",
+      "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-digest-r1\\test_complete_common_train_con0\\common-scorer-inputs"
+    ]
+  },
+  "source_commit": "105dfcd321faa3245b9a1605515e1eb147d04c5f",
+  "specimen_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-digest-r1\\test_complete_common_train_con0"
+}
