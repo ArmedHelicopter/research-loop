@@ -107,6 +107,17 @@ def test_primary_factory_opt_in_130_binds_evaluator_transport_and_replays(tmp_pa
     replay_headless_evaluator_ledger(port)
 
 
+def test_opt_in_130_pure_descriptor_rejects_injected_native_descriptor_before_allocator(tmp_path, monkeypatch):
+    spec, prompts, gets = native_spec(tmp_path / 'native', monkeypatch, deployment_130=True)
+    pure = headless_evaluator_descriptor(spec)
+    injected = json.loads(json.dumps(spec)); injected['native_deployment']['account_client_version'] = '1.0.13'
+    with pytest.raises(ContractError):
+        _production_evaluator(injected)
+    assert not (Path(spec['work_root']) / 'ledger.json').exists() and not prompts and not gets
+    port = _production_evaluator(spec)
+    assert pure == descriptor(port)
+
+
 @pytest.mark.parametrize('rubric_mode', ['primary_v1', 'lineage_v1'])
 def test_pure_descriptor_matches_constructed_port_without_allocator_side_effects(tmp_path, monkeypatch, rubric_mode):
     spec, prompts, gets = native_spec(tmp_path / 'native', monkeypatch)

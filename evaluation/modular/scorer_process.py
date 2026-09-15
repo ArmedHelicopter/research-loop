@@ -378,7 +378,8 @@ def _headless_evaluator_material(spec: Mapping[str, object], *, rubric_mode: str
             or dict(spec["account_read_recovery"]) != RECOVERY
             or type(spec["account_read_recovery"].get("max_attempts")) is not int):
         raise ContractError("production headless evaluator recovery configuration is invalid")
-    generated = _source_pins(rubric_mode, deployment)
+    generated = (_source_pins(rubric_mode) if deployment is None
+                 else _source_pins(rubric_mode, deployment))
     if any(path in pins and pins[path] != value for path, value in generated.items()):
         raise ContractError("supplied evaluator source pin differs")
     pins.update(generated)

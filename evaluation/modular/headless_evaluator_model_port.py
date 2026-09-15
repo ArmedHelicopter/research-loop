@@ -127,7 +127,8 @@ class GrokHeadlessEvaluatorModelPort:
             self.native_deployment.verify_executable(self.executable)
         if supplied.get(self.executable) != executable_sha256:
             raise ContractError("supplied evaluator executable pin differs")
-        generated = _source_pins(rubric_mode, self.native_deployment)
+        generated = (_source_pins(rubric_mode) if self.native_deployment is None
+                     else _source_pins(rubric_mode, self.native_deployment))
         if any(path in supplied and supplied[path] != digest for path, digest in generated.items()):
             raise ContractError("supplied evaluator source pin differs")
         supplied.update(generated)
@@ -331,7 +332,8 @@ def _verify_live_config(port: GrokHeadlessEvaluatorModelPort) -> dict[str, Any]:
         raise ContractError("live headless evaluator configuration drifted")
     if _sha(Path(port.executable).read_bytes()) != frozen["executable_sha256"]:
         raise ContractError("live headless evaluator executable drifted")
-    current_sources = _source_pins(port.rubric_mode, port.native_deployment)
+    current_sources = (_source_pins(port.rubric_mode) if port.native_deployment is None
+                       else _source_pins(port.rubric_mode, port.native_deployment))
     if any(port.frozen_files.get(path) != digest for path, digest in current_sources.items()):
         raise ContractError("live headless evaluator source drifted")
     if port.ledger.get("config") != frozen:
