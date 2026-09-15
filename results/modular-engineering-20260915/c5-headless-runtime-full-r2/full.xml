@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="15515.848" timestamp="2026-09-15T14:56:10.096210+08:00" hostname="SC-202507131830"><testcase classname="tests.test_c5_headless_runtime_controller_full" name="test_full_headless_c5_controller_then_registers_selected_bundle" time="15513.914"><failure message="assert (38 == 46)&#10; +  where 38 = len((JointTrainStage(record=FrozenRecord(encoded='{&quot;build_id&quot;:&quot;9978ab3df111713fb54cd7a708fc67bc5eec6d553c8e14d154bd10a4928... session=&lt;research_loop.modular.phase_provider.PhaseProviderSession object at 0x0000029AD64E1A30&gt;), barrier=None), ...))&#10; +    where (JointTrainStage(record=FrozenRecord(encoded='{&quot;build_id&quot;:&quot;9978ab3df111713fb54cd7a708fc67bc5eec6d553c8e14d154bd10a4928... session=&lt;research_loop.modular.phase_provider.PhaseProviderSession object at 0x0000029AD64E1A30&gt;), barrier=None), ...) = JointCommonTrainRun(root=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/c5-headless-runtime-full-r2/test_full_...del_calls&quot;:null,&quot;retrieval_requests&quot;:375,&quot;scorer_calls&quot;:118,&quot;solver_docker_attempts&quot;:118},&quot;validation_opened&quot;:false}')).builds">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/c5-headless-runtime-full-r2/test_full_headless_c5_controll0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000029AD74B0740&gt;
+
+    @pytest.mark.skipif(os.environ.get('RESEARCH_LOOP_RUN_FULL_C5_HEADLESS') != '1',
+                        reason='set RESEARCH_LOOP_RUN_FULL_C5_HEADLESS=1 for the complete synthetic integration')
+    def test_full_headless_c5_controller_then_registers_selected_bundle(tmp_path, monkeypatch):
+        """One full run: controller, closure, verifier, selector and registration."""
+        setup = prepare_headless_runtime(tmp_path, monkeypatch)
+        runner = executor(setup)
+        plan = runner.plan
+        allocation = plan.protocol.record.data()['allocation']
+        assert allocation['model_calls'] == 930 and allocation['target_cells'] == allocation['scorer_calls'] == 118
+        run = run_joint_common_train(runner, scorer_factory=_headless_scorer_factory(tmp_path, plan, setup['evaluator']),
+                                     execution_authority=EXEC, scorer_authority_keys={SCORER.authority_id: SCORER.key})
+        receipt = run.receipt.data()
+&gt;       assert len(run.builds) == 46 and len(run.targets) == len(run.scores) == len(run.panel.cells) == 118
+E       assert (38 == 46)
+E        +  where 38 = len((JointTrainStage(record=FrozenRecord(encoded='{"build_id":"9978ab3df111713fb54cd7a708fc67bc5eec6d553c8e14d154bd10a4928... session=&lt;research_loop.modular.phase_provider.PhaseProviderSession object at 0x0000029AD64E1A30&gt;), barrier=None), ...))
+E        +    where (JointTrainStage(record=FrozenRecord(encoded='{"build_id":"9978ab3df111713fb54cd7a708fc67bc5eec6d553c8e14d154bd10a4928... session=&lt;research_loop.modular.phase_provider.PhaseProviderSession object at 0x0000029AD64E1A30&gt;), barrier=None), ...) = JointCommonTrainRun(root=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/c5-headless-runtime-full-r2/test_full_...del_calls":null,"retrieval_requests":375,"scorer_calls":118,"solver_docker_attempts":118},"validation_opened":false}')).builds
+
+tests\test_c5_headless_runtime_controller_full.py:127: AssertionError</failure></testcase></testsuite></testsuites>

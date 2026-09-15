@@ -23,8 +23,12 @@ one failed and eight were blocked; all 118 targets were blocked. Synthetic
 reservation 187 failed context inspection before MAIN launch. Its original
 unknown exit/failed shutdown record remains intact; a later absent-PID observation
 does not rewrite it. A terminal controller receipt now exists, but no selection
-or registration completed. Exact failed-run archival is in progress. This source
-predates d672c274 capture repair and the pending selected-registration adapter.
+or registration completed. Its [8,899 noncredential originals, exact source and
+native terminal evidence](../results/modular-engineering-20260915/c5-headless-runtime-full-r2/README.md)
+are retained and checked byte-for-byte. This source predates d672c274 capture
+repair and the pending selected-registration adapter. The separate `73268bb5`
+successor combines that adapter with d672c274 and is running bounded registration,
+preflight and failed-history closure checks; full successor integration is pending.
 
 ## Scorer exchanges verified; actual M4/M5 r3 retained (2026-09-15)
 

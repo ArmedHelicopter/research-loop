@@ -1,0 +1,58 @@
+{
+  "schema": "c5-synthetic-inspection-failure-observation-v1",
+  "observed_at": "2026-09-15T11:16:14.696709+00:00",
+  "original_native_session": 4370,
+  "native_status": "last rejoin confirmed live; observation is not a terminal completion",
+  "source_commit": "83aefb74f15a72d421dd5e34002e36483b6ce6d0",
+  "build_id": "3762079dfc9b827e2a20b84022bdfd66c3be5b06441f461aff07ea781e678363",
+  "stage_status": "failed",
+  "stage_reason": "ContractError: provider call is terminal; inspect retained evidence",
+  "call_id": 187,
+  "slot": "review_first",
+  "faults": [
+    "context_inspection_failed"
+  ],
+  "prompt_process_launched": false,
+  "inspect_process": {
+    "launched": true,
+    "pid": 64032,
+    "started_at": "2026-09-15T10:57:10.520556+00:00",
+    "finished_at": "2026-09-15T10:57:30.533418+00:00",
+    "process_exit_code": null,
+    "timed_out": true,
+    "timeout_seconds": 10,
+    "owned_tree_closed": false,
+    "failure": "process_tree_shutdown_failed"
+  },
+  "originals": {
+    "observer": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-full-r2\\test_full_headless_c5_controll0\\headless-solver\\ledger\\calls\\0187-review_first\\observer-receipt.private.json",
+      "sha256": "7cc7db1b2ee9bad436247ef74b3dbf53ec40b5ef00bafc21a9e655d5b23e7846",
+      "bytes": 10137
+    },
+    "inspect_process": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-full-r2\\test_full_headless_c5_controll0\\headless-solver\\ledger\\calls\\0187-review_first\\native\\inspect\\process.json",
+      "sha256": "6530def1e1620e7e29e6bc03d7f38df75ad30efa6ca506db47f783dc1031ee90",
+      "bytes": 6285
+    },
+    "inspect_stdout": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-full-r2\\test_full_headless_c5_controll0\\headless-solver\\ledger\\calls\\0187-review_first\\native\\inspect\\stdout.private.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "inspect_stderr": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-full-r2\\test_full_headless_c5_controll0\\headless-solver\\ledger\\calls\\0187-review_first\\native\\inspect\\stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "stage": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-full-r2\\test_full_headless_c5_controll0\\headless-common-run\\stages\\3762079dfc9b827e2a20b84022bdfd66c3be5b06441f461aff07ea781e678363\\receipt.json",
+      "sha256": "1c1807745ffa952c795705c82fac705596d7bbf4ae376d85319fc7a4fb07927c",
+      "bytes": 11213
+    }
+  },
+  "interpretation": "Synthetic context inspection timed out before MAIN dispatch. The original failed shutdown/unknown exit remain unmodified. This does not establish why the OS peer failed or any module-effect result.",
+  "actual_model_calls": 0,
+  "validation_opened": false,
+  "pruned_combinations": []
+}

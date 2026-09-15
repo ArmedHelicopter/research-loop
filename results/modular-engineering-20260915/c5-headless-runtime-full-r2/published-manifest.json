@@ -1,0 +1,80 @@
+{
+  "schema": "frozen-module-check-published-files-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "archive-helper.py",
+      "sha256": "dc2a92df078f056f7f0797eef712598bc992833634e2b46f9e3540a18a2c26a6",
+      "bytes": 22750
+    },
+    {
+      "path": "c5-headless-runtime-full-r2-inspection-failure-observation-r1.json",
+      "sha256": "6afae1c5cb623575d1b60f34c19fb6ef53d298c32c3d1882cc530c428846b143",
+      "bytes": 3034
+    },
+    {
+      "path": "full-before.json",
+      "sha256": "9478c2e018f59e9c7c89ce927e579c557073d202cf3a1c5cb8ed64716a6b7bc9",
+      "bytes": 93266
+    },
+    {
+      "path": "full-closed.json",
+      "sha256": "a721f1f21153ab84e60c3f468fef96cf53b3a425550797402b3aecdb594423fd",
+      "bytes": 93335
+    },
+    {
+      "path": "full-native-join.json",
+      "sha256": "5d5988e124458fb7652e3ee97edac42f11171752a399aaa7bfc425b02ebe18b5",
+      "bytes": 227
+    },
+    {
+      "path": "full-native-start.json",
+      "sha256": "6e4743dff61fe7ba5385bd822dcef5d128118bec862fd466b8a83ffd84f05983",
+      "bytes": 129
+    },
+    {
+      "path": "full-source-members.json",
+      "sha256": "d1e71a9f5d8b92531bfe38cc6daf915f8e42b00be55a7a27294b4324ac51efa9",
+      "bytes": 139491
+    },
+    {
+      "path": "full-sources.zip",
+      "sha256": "9a874d922cc1b8576a51f6c591b1acf5256847ec6f19862e3868bdfb8ad7166a",
+      "bytes": 2656848
+    },
+    {
+      "path": "full.log",
+      "sha256": "a0bfdb49534bc567a99eb4035c9067181275c08ebda92b9ffa068068075f0772",
+      "bytes": 3210
+    },
+    {
+      "path": "full.xml",
+      "sha256": "b4a3da7d2ac5542baf4063a121ee9059089f963fae3ca5445f44afe1f1bbbb74",
+      "bytes": 3523
+    },
+    {
+      "path": "observe_c5_r2_inspection_failure_r1.py",
+      "sha256": "eb2bd11070c06663eda09905b5f57daa2e38ce5c3adb6d675b74ed04870618c3",
+      "bytes": 2596
+    },
+    {
+      "path": "private-retention-manifest.json",
+      "sha256": "09df0f52d23491e1c3d39a646bfcf68a2b7c43993e39fa8f11839d5b75f1ee21",
+      "bytes": 11485217
+    },
+    {
+      "path": "README.md",
+      "sha256": "3668a69c18d9b65b485e436deb0c115a7b79efa01494c4cbb516385ca07b87ae",
+      "bytes": 1608
+    },
+    {
+      "path": "retention-helper-source.py",
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840
+    }
+  ]
+}
