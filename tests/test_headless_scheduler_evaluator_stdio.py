@@ -1,6 +1,7 @@
 """M7xM8 native scheduler/evaluator closure seam; synthetic peers only."""
 from contextlib import ExitStack
 import hashlib
+import json
 import os
 from pathlib import Path
 import sys
@@ -13,7 +14,7 @@ from evaluation.modular.scoring_service import ScorerConfig
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.exploration_scheduler_controller import FrozenExplorationSchedulerTrainConfig, compile_exploration_scheduler_train_panel, run_exploration_scheduler_train_panel
 from research_loop.modular.runtime import AuditVerifier
-from research_loop.modular.ordinary_provider import finalize_headless_evaluator_gate
+from research_loop.modular.ordinary_provider import finalize_headless_evaluator_gate, verify_retained_headless_evaluator_gate
 from research_loop.ontology import ContractError, canonical
 from test_remaining_prospective_train_sources import prepare_controller
 from test_headless_evaluator_factory import native_spec
@@ -88,9 +89,16 @@ def test_native_scheduler_closes_eight_evaluator_receipts(tmp_path, monkeypatch)
             run_root=tmp_path/'run', model=provider, audit_verifier=AuditVerifier({'a': b'a'*32, 'b': b'b'*32}),
             execution_authority=execution, scoring_service=client, scorer_authority_keys={scorer_authority.authority_id: scorer_authority.key})
     gate = result.receipt.data()['evaluator_final_verification']
-    assert len(calls) == len(result.scores) == 8 and gate['score_eligible'] is True
+    assert len(calls) == 16 and len(result.scores) == 8 and gate['score_eligible'] is True
     assert result.receipt.data()['eligible_scored_cells'] == 8 and result.receipt.data()['status'] == 'estimated'
     assert all(row.data()['status'] == 'succeeded' for row in result.attempts)
+    assert gate['ordered_receipt_digests'] == [score.receipt.content_hash for score in result.scores]
+    assert gate['closure']['body']['scope']['unscored_cell_count'] == 0
+    assert gate['closure']['body']['evaluator_provider'] == evaluator_provider
+    assert gate['closure']['body']['scorer_config_digest'] == scorer.digest
+    assert gate['known_headless_main_tokens'] == 80
+    assert gate['title_and_all_opportunity_settlement'] == 'unknown'
+    assert len(__import__('json').loads((root / 'ledger.json').read_text(encoding='utf-8'))['calls']) == 8
 
 
 def test_evaluator_descriptor_mismatch_rejects_before_export_or_model(tmp_path, monkeypatch):
@@ -138,3 +146,20 @@ def test_signed_tampered_final_closure_keeps_all_eight_historical_scores_ineligi
     assert service.calls == 1 and len(scores) == 8 and gate['score_eligible'] is False
     assert gate['closure'] == closure.data() and gate['failure_reason'] == 'closure_verification_failed'
     assert captured[0]['closure'] == closure.data() and captured[-1]['score_eligible'] is False
+
+
+def test_return_readback_rejects_changed_retained_signed_gate(tmp_path):
+    """Focused return-boundary readback; no controller or provider is started."""
+    authority = LinkedExecutionAuthority('scheduler-scorer', b's' * 32)
+    cells = tuple(SimpleNamespace(key=('bench' + str(index), 'cell' + str(index))) for index in range(8))
+    panel = SimpleNamespace(digest='e' * 64, cells=cells)
+    scores = tuple(_score(cell.key, format(index + 1, 'x')) for index, cell in enumerate(cells))
+    config = ScorerConfig.create(benchmark='core_pair', evaluator_id='synthetic', version='v1', rubric_digest='c' * 64)
+    provider = {'kind': 'grok-headless-frozen-evaluator-v1', 'configuration_digest': 'b' * 64}
+    closure = _signed_closure(authority=authority, panel=panel, config=config, scores=scores, provider=provider)
+    gate = {'score_eligible': True, 'closure': closure.data()}
+    path = tmp_path / 'controller-attempt.json'
+    path.write_text(json.dumps({'evaluator_final_verification': {**gate, 'score_eligible': False}}), encoding='utf-8')
+    with pytest.raises(ContractError, match='retained evaluator final gate differs'):
+        verify_retained_headless_evaluator_gate(path, gate=gate, binding={'evaluator_provider': provider}, panel=panel,
+            scores=scores, scorer_authority_keys={authority.authority_id: authority.key}, scorer_config=config)

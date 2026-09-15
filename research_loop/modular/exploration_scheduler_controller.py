@@ -236,7 +236,8 @@ from research_loop.modular.combination_train_controller import _service_prefligh
 
 
 from research_loop.modular.ordinary_provider import (family_service_preflight, model_root, allocation_fields, provider_usage,
-    provider_terminal, provider_scope, bind_runtime_originals, headless_evaluator_binding, finalize_headless_evaluator_gate)
+    provider_terminal, provider_scope, bind_runtime_originals, headless_evaluator_binding, finalize_headless_evaluator_gate,
+    verify_retained_headless_evaluator_gate)
 from research_loop.modular.ordinary_provider import final_provider_gate, final_score_fields, unavailable_provider_contrast, final_usage, final_unused
 from research_loop.modular.phase_provider import PhaseProviderSession
 
@@ -394,6 +395,9 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
             family='exploration-scheduler', service=scoring_service, panel=compiled.panel, scores=scores,
             scorer_authority_keys=scorer_authority_keys,
             scorer_config=ScorerConfig(FrozenRecord.from_dict(body['scorer'])), capture=capture_evaluator_gate)
+        evaluator_gate = verify_retained_headless_evaluator_gate(root/'controller-attempt.json', gate=evaluator_gate,
+            binding=evaluator_binding, panel=compiled.panel, scores=scores,
+            scorer_authority_keys=scorer_authority_keys, scorer_config=ScorerConfig(FrozenRecord.from_dict(body['scorer'])))
 
     def verify_score(score, cell, panel):
         verify_combination_adapted_receipt(score, authority_keys=scorer_authority_keys, config=scoring_service.config,

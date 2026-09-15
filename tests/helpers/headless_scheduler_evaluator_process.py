@@ -1,7 +1,9 @@
 """Synthetic native peer around the production M7xM8 scorer stdio worker."""
 import argparse
+import inspect
 import json
 from pathlib import Path
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -28,7 +30,7 @@ def main() -> int:
     with pytest.MonkeyPatch.context() as patch:
         install_synthetic_native(patch, {'native_deployment': {
             'executable': spec['executable'], 'slots': {'base': {'private_home': spec['private_home']}}}})
-        def spawn(command, cwd, env, stderr):
+        def spawn(command, cwd, env, stderr, stdout=subprocess.PIPE):
             assert env['GROK_DISABLE_API_KEY_AUTH'] == '1'
             assert not {'XAI_API_KEY', 'GROK_API_KEY'} & set(env)
             if 'inspect' in command:
@@ -40,7 +42,10 @@ def main() -> int:
                 answer = prompt.parent.parent / 'synthetic-answer.json'
                 answer.write_text(json.dumps({key: ('synthetic' if key == 'reason' else 1) for key in schema['properties']}), encoding='utf-8')
                 peer_args = [command[command.index('--session-id') + 1], str(answer)]
-            return ProcessTree([sys.executable, str(peer), *peer_args], cwd=cwd, env=env, stderr=stderr)
+            kwargs = {'cwd': cwd, 'env': env, 'stderr': stderr}
+            if 'stdout' in inspect.signature(ProcessTree).parameters:
+                kwargs['stdout'] = stdout
+            return ProcessTree([sys.executable, str(peer), *peer_args], **kwargs)
         patch.setattr(transport, 'ProcessTree', spawn)
         return serve(ScorerWorker(build_service(config), config.panel, _absolute(args.journal, 'journal')))
 
