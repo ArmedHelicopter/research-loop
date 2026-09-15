@@ -1,0 +1,28 @@
+{
+  "schema": "scorer-observation-catalogue-full16-v1",
+  "runs": [
+    {
+      "label": "full16",
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scorer-observation-catalogue-full16-r1",
+      "commit": "fa688a8ee565ed084e9d633a3bd9f2ae2ad519c9",
+      "native_session_id": 71041,
+      "native_exit": 0,
+      "junit": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 795,
+      "wall_seconds": 1699.8910000000033,
+      "report_sha256": "8441a1e46fa21dd0cb2317ca9f9d6a0d9aeb29596e9fb1d77cafecec9d4be2c2",
+      "retained_originals": 2950
+    }
+  ],
+  "real_model_calls": 0,
+  "paid_api_calls": 0,
+  "validation_access": false,
+  "scientific_effectiveness_proven": false,
+  "originals_bytes_mtimes_unchanged": true,
+  "retained_noncredential_files": 2950
+}

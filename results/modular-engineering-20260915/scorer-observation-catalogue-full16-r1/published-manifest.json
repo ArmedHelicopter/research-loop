@@ -1,0 +1,75 @@
+{
+  "schema": "published-files-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "archive_catalogue_full16_r1.py",
+      "sha256": "260512d138890467c6f61c141ceb400e4213e0ea72ecdcec5c7000b2f11b7791",
+      "bytes": 6853
+    },
+    {
+      "path": "prepare_headless_lineage_full4_archive_r1.py",
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840
+    },
+    {
+      "path": "README.md",
+      "sha256": "8956737dbcb67043c186db419d79ab895a68db57894a2f2d9674d552be5c43ce",
+      "bytes": 1238
+    },
+    {
+      "path": "retention-manifest.json",
+      "sha256": "961f44d82df9216b3f382e9496de8e6dcdceafefa9becfa5564de3062638e8c1",
+      "bytes": 3773401
+    },
+    {
+      "path": "scorer-observation-catalogue-full16-r1-before.json",
+      "sha256": "109d66558cea222d788d0569ea6898af8c0c479aa1a4160b069db96a4df8beda",
+      "bytes": 93352
+    },
+    {
+      "path": "scorer-observation-catalogue-full16-r1-closed.json",
+      "sha256": "1e4fcf2263eebbe2ae5ca9caedc7a1303b45e150fa16391cd1a5f6806a708705",
+      "bytes": 93487
+    },
+    {
+      "path": "scorer-observation-catalogue-full16-r1-native-join.json",
+      "sha256": "8909037b0a14ec1569854c892d1a26f5679f730226b586d194b8adf2711aa8c1",
+      "bytes": 283
+    },
+    {
+      "path": "scorer-observation-catalogue-full16-r1-native-start.json",
+      "sha256": "d92eaa89c10233e3f8f4aa379e96a21c1a25eb26e5442a30f340657da1b73c0f",
+      "bytes": 322
+    },
+    {
+      "path": "scorer-observation-catalogue-full16-r1-source-members.json",
+      "sha256": "df6e5a0c60fd809a406e47c6c6d47941700fe2e7f27826bbf67cd9db8eb73e27",
+      "bytes": 139702
+    },
+    {
+      "path": "scorer-observation-catalogue-full16-r1-sources.zip",
+      "sha256": "bba527c05ed4b73d68b766b755dffdf8ea6b44ee0be00e91d8e481d051b61aee",
+      "bytes": 2662281
+    },
+    {
+      "path": "scorer-observation-catalogue-full16-r1.log",
+      "sha256": "61f7ad385601b32b85f648c26bd55a9c90d6fe0f9a2731c0484ea41d2a1d1dc0",
+      "bytes": 678
+    },
+    {
+      "path": "scorer-observation-catalogue-full16-r1.xml",
+      "sha256": "8441a1e46fa21dd0cb2317ca9f9d6a0d9aeb29596e9fb1d77cafecec9d4be2c2",
+      "bytes": 421
+    },
+    {
+      "path": "summary.json",
+      "sha256": "12e6b76e437a823b26f53b01a5e3a4daacfe73b9b47f94f8984b4bce875f86ac",
+      "bytes": 844
+    }
+  ]
+}
