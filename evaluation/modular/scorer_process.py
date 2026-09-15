@@ -326,7 +326,38 @@ def parse_server_config(value: object, *, lineage: bool = False) -> ScorerServer
     return ScorerServerConfig(panel, scorer, store_root, manifest_sha256, inventory_digest, split_digest, handles, execution_keys, scorer_authority, dict(value["evaluator"]))
 
 
-def _production_evaluator(spec: Mapping[str, object], *, rubric_mode: str = "primary_v1") -> CodexEvaluatorModelPort:
+def _headless_evaluator(spec: Mapping[str, object], *, rubric_mode: str):
+    """Explicit private rubric transport; legacy Codex declarations stay distinct."""
+    from evaluation.modular.headless_evaluator_model_port import GrokHeadlessEvaluatorModelPort
+    required = {"provider_kind", "executable", "work_root", "private_home", "private_profile", "public_cwd",
+                "frozen_files", "evaluator_id", "evaluator_version", "model", "effort", "max_calls",
+                "max_tokens", "timeout_seconds", "account_read_recovery"}
+    if (set(spec) != required or spec.get("provider_kind") != "grok-headless-frozen-evaluator-v1"
+            or spec.get("model") != "grok-4.6" or spec.get("effort") != "low"
+            or type(spec.get("timeout_seconds")) is not int or spec["timeout_seconds"] != 60
+            or not isinstance(spec.get("frozen_files"), Mapping) or not spec["frozen_files"]):
+        raise ContractError("production headless evaluator configuration is invalid")
+    for name in ("max_calls", "max_tokens"):
+        if type(spec[name]) is not int or spec[name] < 1:
+            raise ContractError("production headless evaluator budget is invalid")
+    for name in ("evaluator_id", "evaluator_version"):
+        _text(spec[name], "headless " + name)
+    pins = {str(_absolute(path, "headless frozen source")): _digest(value, "headless frozen source")
+            for path, value in spec["frozen_files"].items()}
+    return GrokHeadlessEvaluatorModelPort(
+        executable=_absolute(spec["executable"], "headless executable"),
+        work_root=_absolute(spec["work_root"], "headless work root"),
+        private_home=_absolute(spec["private_home"], "headless private home"),
+        private_profile=_absolute(spec["private_profile"], "headless private profile"),
+        public_cwd=_absolute(spec["public_cwd"], "headless public cwd"), frozen_files=pins,
+        evaluator_id=spec["evaluator_id"], evaluator_version=spec["evaluator_version"], rubric_mode=rubric_mode,
+        max_calls=spec["max_calls"], max_tokens=spec["max_tokens"], timeout_seconds=spec["timeout_seconds"],
+        account_read_recovery=spec["account_read_recovery"])
+
+
+def _production_evaluator(spec: Mapping[str, object], *, rubric_mode: str = "primary_v1"):
+    if spec.get("provider_kind") == "grok-headless-frozen-evaluator-v1":
+        return _headless_evaluator(spec, rubric_mode=rubric_mode)
     required = {"executable", "work_root", "evaluator_id", "evaluator_version", "model", "effort", "max_calls", "max_tokens", "timeout_seconds", "frozen_base_context"}
     if set(spec) != required or not isinstance(spec["frozen_base_context"], Mapping) or set(spec["frozen_base_context"]) != {"source", "sha256"}:
         raise ContractError("production evaluator configuration is invalid")

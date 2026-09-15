@@ -112,7 +112,7 @@ def test_postflight_failure_retains_known_usage_and_never_consumes_rejected_raw_
     assert len(calls) == 1
 
 
-@pytest.mark.parametrize("change", ["identity", "source", "executable", "config", "raw"])
+@pytest.mark.parametrize("change", ["identity", "source", "executable", "config", "raw", "typed_response"])
 def test_tampering_stops_before_a_second_native_call(tmp_path, monkeypatch, change):
     value = port(tmp_path, max_calls=2); calls, _ = _install_native(monkeypatch, value); endpoint(value)(request())
     row = value.ledger["calls"][0]
@@ -120,10 +120,13 @@ def test_tampering_stops_before_a_second_native_call(tmp_path, monkeypatch, chan
     elif change == "source": monkeypatch.setattr(headless_port, "_source_pins", lambda mode: {"source": "0" * 64})
     elif change == "executable": Path(value.executable).write_bytes(b"tampered executable")
     elif change == "config": (value.calls_root / "0001-blade" / "native-home" / "config.toml").write_text("tampered", encoding="utf-8")
+    elif change == "typed_response":
+        path = value.calls_root / "0001-blade" / "response.private.json"
+        path.write_bytes(path.read_bytes() + b"\n")
     else: (value.calls_root / "0001-blade" / "native" / "stdout.private.jsonl").write_bytes(b"{}\n")
     with pytest.raises(ContractError): endpoint(value)(request())
     assert len(calls) == 1
-    if change in {"config", "raw"}: assert value.ledger["usage_incomplete"] is True
+    if change in {"config", "raw", "typed_response"}: assert value.ledger["usage_incomplete"] is True
     else: assert value.ledger["calls"][0] is row
 
 
@@ -136,3 +139,33 @@ def test_primary_and_lineage_modes_have_distinct_frozen_schemas_and_templates(tm
     private = FrozenRecord.from_dict({"schema": "frozen-independent-evaluator-call-v1", "evaluator_id": "fixture", "evaluator_version": "v1", "benchmark": "blade", "prompt": prompt, "output_schema": schema, "prompt_digest": _sha(prompt.encode()), "schema_digest": _sha(canonical(schema).encode()), "reference_digest": "a" * 64, "rubric_digest": FrozenBenchmarkRubricEndpoint.rubric_digest()})
     with pytest.raises(ContractError): lineage(private)
     assert lineage.ledger["calls"] == []
+
+
+def test_prelaunch_refusal_retains_receipt_without_inventing_main_usage(tmp_path, monkeypatch):
+    value = port(tmp_path); calls, gets = _install_native(monkeypatch, value)
+    import research_loop.modular.grok_headless_transport as transport
+    def refuse(*args, **kwargs):
+        raise ContractError("synthetic account observation unavailable")
+    monkeypatch.setattr(transport, "_account_recovered", refuse)
+    with pytest.raises(ContractError): endpoint(value)(request())
+    row = value.ledger["calls"][0]
+    assert not calls and not gets and value.ledger["usage_incomplete"]
+    assert row["main_dispatch_state"] == "not_dispatched"
+    assert row["known_headless_main_usage"] is None and row["native_receipt_sha256"]
+    assert row["reservation_sha256"] and row["status"] == "unknown_or_failed"
+
+
+@pytest.mark.parametrize("mutation", ["prefix", "noncanonical", "duplicate_delimiter"])
+def test_prompt_template_rejects_rehashed_substitution_before_native(tmp_path, monkeypatch, mutation):
+    value = port(tmp_path); calls, gets = _install_native(monkeypatch, value)
+    prompt = value.endpoint_type._prompt("blade", value.endpoint_type._BLADE_RUBRIC, {}, {}, {})
+    if mutation == "prefix": prompt = "extra instruction\n" + prompt
+    elif mutation == "noncanonical": prompt = prompt.replace("\nTASK={}", "\nTASK={ }")
+    else: prompt += "\nTASK={}"
+    schema = value.schemas["blade"]
+    body = {"schema": "frozen-independent-evaluator-call-v1", "evaluator_id": "fixture", "evaluator_version": "v1",
+        "benchmark": "blade", "prompt": prompt, "output_schema": schema,
+        "prompt_digest": _sha(canonical(prompt).encode()), "schema_digest": _sha(canonical(schema).encode()),
+        "reference_digest": "a" * 64, "rubric_digest": value.rubric_digest}
+    with pytest.raises(ContractError): value(FrozenRecord.from_dict(body))
+    assert not calls and not gets and not value.ledger["calls"]

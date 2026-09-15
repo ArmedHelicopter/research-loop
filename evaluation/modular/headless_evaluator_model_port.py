@@ -101,8 +101,10 @@ class GrokHeadlessEvaluatorModelPort:
                  timeout_seconds: int = 60, account_read_recovery: Mapping[str, Any] = RECOVERY) -> None:
         if (rubric_mode not in {"primary_v1", "lineage_v1"} or not isinstance(evaluator_id, str) or not evaluator_id
                 or not isinstance(evaluator_version, str) or not evaluator_version or type(max_calls) is not int
-                or max_calls < 1 or type(max_tokens) is not int or max_tokens < 1 or timeout_seconds != 60
-                or not isinstance(account_read_recovery, Mapping) or dict(account_read_recovery) != RECOVERY):
+                or max_calls < 1 or type(max_tokens) is not int or max_tokens < 1
+                or type(timeout_seconds) is not int or timeout_seconds != 60
+                or not isinstance(account_read_recovery, Mapping) or dict(account_read_recovery) != RECOVERY
+                or type(account_read_recovery.get("max_attempts")) is not int):
             raise ContractError("invalid headless evaluator configuration")
         if rubric_mode == "lineage_v1":
             from evaluation.modular.lineage_rubric import FrozenLineageRubricEndpoint
@@ -225,7 +227,8 @@ class GrokHeadlessEvaluatorModelPort:
                 receipt = result.receipt.data()
                 receipt_path = directory / "observer-receipt.private.json"
                 receipt_path.write_bytes(result.receipt.encoded.encode("utf-8"))
-                usage = receipt.get("stream_inspection", {}).get("usage") if isinstance(receipt, dict) else None
+                inspection = receipt.get("stream_inspection")
+                usage = inspection.get("usage") if isinstance(inspection, dict) else None
                 if isinstance(usage, dict) and type(usage.get("total_tokens")) is int and usage["total_tokens"] >= 0:
                     row["known_headless_main_usage"] = usage
                     self.ledger["known_main_tokens"] += usage["total_tokens"]
@@ -385,7 +388,11 @@ def _verify_row(port: GrokHeadlessEvaluatorModelPort, row: Mapping[str, Any], re
     if result is None:
         if receipt.data().get("accepted") is not True:
             raise ContractError("rejected headless response cannot be replayed")
-        result = HeadlessResult(receipt, FrozenRecord.from_dict(json.loads(response_path.read_text(encoding="utf-8"))))
+        raw_response = response_path.read_bytes()
+        response = FrozenRecord.from_dict(json.loads(raw_response))
+        if raw_response != response.encoded.encode("utf-8") or _sha(raw_response) != row.get("response_sha256"):
+            raise ContractError("headless evaluator response original bytes differ")
+        result = HeadlessResult(receipt, response)
     elif result.receipt != receipt:
         raise ContractError("persisted headless evaluator receipt differs")
     prompt = private["prompt"].encode("utf-8")
