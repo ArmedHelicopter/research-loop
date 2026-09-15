@@ -9,13 +9,26 @@ from evaluation.modular.diagnostic_subscription import sha
 import research_loop.modular.grok_headless_transport as transport
 
 
+# The complete synthetic C5 controller can exceed two hours.  Keep this
+# fixture-only credential valid for a bounded four-hour integration window
+# plus the production transport's 120-second near-expiry guard.
+SYNTHETIC_FULL_C5_WINDOW = timedelta(hours=4)
+SYNTHETIC_AUTH_VALIDITY = timedelta(hours=6)
+NATIVE_EXPIRY_GUARD = timedelta(seconds=120)
+
+
+def synthetic_oidc_auth(now=None):
+    now = datetime.now(timezone.utc) if now is None else now
+    return {'native': {'auth_mode': 'oidc', 'oidc_issuer': 'https://auth.x.ai',
+        'oidc_client_id': 'b1a00492-073a-47ea-816f-4c329264a828',
+        'key': 'PRIVATE_SYNTHETIC_NATIVE_TOKEN', 'user_id': 'synthetic-account',
+        'expires_at': (now + SYNTHETIC_AUTH_VALIDITY).isoformat()}}
+
+
 def install_synthetic_native(monkeypatch, envelope):
     deployment = envelope['native_deployment']; calls = []; gets = []
     monkeypatch.setattr(transport, 'EXECUTABLE_SHA256', sha(deployment['executable']))
-    auth = {'native': {'auth_mode': 'oidc', 'oidc_issuer': 'https://auth.x.ai',
-        'oidc_client_id': 'b1a00492-073a-47ea-816f-4c329264a828',
-        'key': 'PRIVATE_SYNTHETIC_NATIVE_TOKEN', 'user_id': 'synthetic-account',
-        'expires_at': (datetime.now(timezone.utc) + timedelta(hours=2)).isoformat()}}
+    auth = synthetic_oidc_auth()
     for slot in deployment['slots'].values():
         (Path(slot['private_home']) / 'auth.json').write_text(json.dumps(auth), encoding='utf-8')
     peer = Path(__file__).resolve().parents[1] / 'fixtures' / 'headless_authoring_peer.py'
