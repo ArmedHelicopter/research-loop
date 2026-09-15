@@ -110,8 +110,10 @@ def test_controller_rejects_otherwise_verified_partial_closure_scope(monkeypatch
         'known_main_tokens': 17, 'scope': {'unscored_cell_count': 1}}))
     gate = controller._finalize_headless_lineage_gate(panels=(panel,), journal_cells=[], scoring_service=_pool(client),
         scorer_authority_keys={authority.authority_id: authority.key})
-    assert gate['panels'][0]['status'] == 'inconclusive'
-    assert gate['panels'][0]['reason'] == 'closure_unavailable_or_rejected'
+    entry = gate['panels'][0]
+    assert entry['status'] == 'inconclusive'
+    assert entry['reason'] == 'closure_unavailable_or_rejected'
+    assert entry['closure'] == {'schema': 'signed-by-client'} and entry['closure_digest']
 
 
 def test_failed_final_usage_refresh_uses_latest_authenticated_cell_usage_snapshot():

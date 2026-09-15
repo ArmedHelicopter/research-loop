@@ -422,13 +422,16 @@ def _finalize_headless_lineage_gate(*, panels, journal_cells, scoring_service, s
                 config=client.config, provider=provider, reference_binding=client.reference_binding,
                 nonce=panel.digest, receipt_digests=receipt_digests)
             body = verified_closure.data()
+            # A signed partial closure is still durable provenance.  Preserve
+            # it before the outer full-panel eligibility predicate rejects it.
+            entry.update(closure=closure.data(), closure_digest=closure.content_hash)
             scope = body.get('scope')
             if (not isinstance(scope, dict) or scope.get('unscored_cell_count') != 0
                     or usage is None or body['known_main_tokens'] != usage['known_tokens_lower_bound']
                     or usage['usage_incomplete']):
                 raise ContractError('headless lineage closure MAIN accounting is incomplete or inconsistent')
-            entry.update(status='eligible', closure=closure.data(), closure_digest=closure.content_hash,
-                native_MAIN=body['known_main_tokens'], native_MAIN_completeness='complete')
+            entry.update(status='eligible', native_MAIN=body['known_main_tokens'],
+                native_MAIN_completeness='complete')
         except Exception as exc:
             entry.update(status='inconclusive', reason='closure_unavailable_or_rejected',
                          error_type=type(exc).__name__)
