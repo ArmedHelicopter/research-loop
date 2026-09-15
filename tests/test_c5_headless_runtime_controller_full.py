@@ -1,12 +1,12 @@
-"""Prepared, review-gated full C5 controller invocation using both headless ports.
+"""Full C5 controller integration using both synthetic headless ports.
 
-This file is intentionally skipped.  Removing the marker spends the frozen
-930 solver and 118 independent-evaluator synthetic opportunities exactly once;
-it must follow profiling and review of the bounded probe.
+The full test is opt-in because it executes 46 builds and 118 targets before
+independent scoring and selection. The ordinary preparation test has no calls.
 """
 from pathlib import Path
 import hashlib
 import json
+import os
 
 import pytest
 
@@ -74,9 +74,10 @@ def test_headless_full_controller_factory_preflight_has_no_grid_dispatch(tmp_pat
     assert not setup['common_calls'] and not setup['evaluator_prompts'] and not setup['evaluator_gets']
 
 
-@pytest.mark.skip(reason='review-gated: do not launch 930 solver + 118 evaluator full grid without root profiling plan')
+@pytest.mark.skipif(os.environ.get('RESEARCH_LOOP_RUN_FULL_C5_HEADLESS') != '1',
+                    reason='set RESEARCH_LOOP_RUN_FULL_C5_HEADLESS=1 for the complete synthetic integration')
 def test_full_headless_c5_controller_then_registers_selected_bundle(tmp_path, monkeypatch):
-    """Future single-run path: controller, closure, verifier, selector, registration."""
+    """One full run: controller, closure, verifier, selector and registration."""
     setup = prepare_headless_runtime(tmp_path, monkeypatch)
     runner = executor(setup)
     plan = runner.plan
