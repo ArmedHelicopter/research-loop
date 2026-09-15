@@ -8,6 +8,7 @@ import pytest
 
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.grok_headless_train_solver import GrokHeadlessTrainModelPort, RECOVERY
+from research_loop.modular.grok_native_deployment import FrozenHeadlessTrainDeployment
 from research_loop.ontology import ContractError
 
 
@@ -17,7 +18,8 @@ REQUEST=FrozenRecord.from_dict({"schema":"public-model-request-v1","task":{},"lo
 
 def port(tmp_path, **kwargs):
     tmp_path.mkdir(parents=True, exist_ok=True)
-    exe=tmp_path/"grok.exe"; exe.write_bytes(b"synthetic executable")
+    exe=tmp_path/"grok.exe"
+    if not exe.exists(): exe.write_bytes(b"synthetic executable")
     home=tmp_path/"approved-home"; home.mkdir(); (home/"auth.json").write_text(json.dumps({"native":{
         "auth_mode":"oidc","oidc_issuer":"https://auth.x.ai","oidc_client_id":"b1a00492-073a-47ea-816f-4c329264a828",
         "key":"synthetic-private-token","user_id":"synthetic-account","expires_at":(datetime.now(timezone.utc)+timedelta(hours=2)).isoformat()}}),encoding="utf-8")
@@ -69,6 +71,67 @@ def test_recovery_contract_is_explicit_and_defaulted(tmp_path):
     assert value.ledger["config"]["timeout_seconds"] == 60 and value.ledger["config"]["max_retries"] == 0
     with pytest.raises(ContractError):
         port(tmp_path/"bad", account_read_recovery={"schema":"headless-account-read-recovery-v1","max_attempts":3})
+
+
+def test_opt_in_130_normal_train_binds_versioned_binary_header_and_replay(tmp_path, monkeypatch):
+    """Synthetic local peer only; exercise the real normal TRAIN producer/reader seam."""
+    import research_loop.modular.grok_native_deployment as deployment_module
+    exe = tmp_path / "grok.exe"; exe.write_bytes(b"synthetic executable")
+    monkeypatch.setattr(deployment_module, "GROK_130_SHA256", hashlib.sha256(exe.read_bytes()).hexdigest())
+    deployment = FrozenHeadlessTrainDeployment.create(exe)
+    value = port(tmp_path, deployment=deployment)
+    calls, gets = synthetic_native(tmp_path, monkeypatch, value)
+    import research_loop.modular.grok_headless_transport as transport
+    original_factory = transport.urllib.request.build_opener; headers = []
+    class CapturingOpener:
+        def __init__(self, delegate): self.delegate = delegate
+        def open(self, request, timeout):
+            headers.append(request.get_header('X-grok-client-version'))
+            return self.delegate.open(request, timeout)
+    monkeypatch.setattr(transport.urllib.request, 'build_opener',
+                        lambda *args: CapturingOpener(original_factory(*args)))
+    assert value(REQUEST).data() == {"ok": True}
+    config = value.ledger["config"]
+    assert config["native_deployment"] == deployment.record.data()
+    assert config["native_deployment_digest"] == deployment.digest
+    assert len(calls) == 1 and len(gets) == 6 and headers == ["1.0.30"] * 6
+    for phase in ("billing-before", "billing-after"):
+        rows = json.loads((value.calls_root / "0001-m4_plan" / "native" / phase / "attempt-000" / "requests.json").read_bytes())
+        assert [row["client_version"] for row in rows] == ["1.0.30"] * 3
+    from research_loop.modular.grok_headless_train_solver import replay_headless_train_ledger
+    replay_headless_train_ledger(value)
+
+
+def test_opt_in_130_replay_rejects_rehashed_account_header_tamper(tmp_path, monkeypatch):
+    import research_loop.modular.grok_headless_transport as transport
+    import research_loop.modular.grok_native_deployment as deployment_module
+    exe = tmp_path / "grok.exe"; exe.write_bytes(b"synthetic executable")
+    monkeypatch.setattr(deployment_module, "GROK_130_SHA256", hashlib.sha256(exe.read_bytes()).hexdigest())
+    value = port(tmp_path, deployment=FrozenHeadlessTrainDeployment.create(exe))
+    synthetic_native(tmp_path, monkeypatch, value); value(REQUEST)
+    row = value.ledger["calls"][0]; call = value.calls_root / "0001-m4_plan"
+    requests = call / "native" / "billing-before" / "attempt-000" / "requests.json"
+    rows = json.loads(requests.read_bytes()); rows[0]["client_version"] = "1.0.13"; transport._write(requests, rows)
+    attempts = call / "native" / "billing-before" / "attempts.json"
+    manifest = json.loads(attempts.read_bytes()); manifest["attempts"][0]["requests_sha256"] = hashlib.sha256(requests.read_bytes()).hexdigest(); transport._write(attempts, manifest)
+    receipt_path = call / "observer-receipt.private.json"; native_receipt = call / "native" / "observer-receipt.json"
+    receipt = json.loads(receipt_path.read_bytes()); receipt["account_preflight_attempts_sha256"] = hashlib.sha256(attempts.read_bytes()).hexdigest()
+    transport._write(native_receipt, receipt); transport._write(receipt_path, receipt)
+    row["native_receipt_sha256"] = hashlib.sha256(receipt_path.read_bytes()).hexdigest()
+    value.ledger_path.write_text(json.dumps(value.ledger, sort_keys=True, separators=(",", ":")), encoding="utf-8")
+    from research_loop.modular.grok_headless_train_solver import replay_headless_train_ledger
+    with pytest.raises(ContractError, match="headless provenance replay failed"):
+        replay_headless_train_ledger(value)
+
+
+def test_opt_in_130_rejects_wrong_binary_before_allocator(tmp_path, monkeypatch):
+    import research_loop.modular.grok_native_deployment as deployment_module
+    exe = tmp_path / "grok.exe"; exe.write_bytes(b"synthetic executable")
+    monkeypatch.setattr(deployment_module, "GROK_130_SHA256", hashlib.sha256(exe.read_bytes()).hexdigest())
+    deployment = FrozenHeadlessTrainDeployment.create(exe)
+    exe.write_bytes(b"drifted executable")
+    with pytest.raises(ContractError, match="headless TRAIN executable differs"):
+        port(tmp_path, deployment=deployment)
 
 
 def test_supplied_executable_pin_is_an_input_not_overwritten(tmp_path):

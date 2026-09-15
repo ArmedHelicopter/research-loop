@@ -12,6 +12,7 @@ from typing import Any, Mapping
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.grok_acp_transport import MODEL, TRAIN_OPPORTUNITY_CONTRACT, diagnostic_config
 from research_loop.modular.grok_headless_transport import HeadlessResult, run_headless_diagnostic, verify_headless_request_binding
+from research_loop.modular.grok_native_deployment import checked_headless_train_deployment
 from research_loop.modular.model_port import _schema_witness, _validate_schema
 from research_loop.ontology import ContractError, canonical
 
@@ -44,16 +45,18 @@ def _exclusive(path: Path):
             except FileNotFoundError: pass
 
 
-def _source_pins() -> dict[str, str]:
+def _source_pins(deployment=None) -> dict[str, str]:
     import research_loop.modular.grok_acp_transport as acp
     import research_loop.modular.contracts as contracts
     import research_loop.modular.grok_headless_transport as headless
     import research_loop.modular.grok_cli_protocol as protocol
     import research_loop.modular.model_port as model_port
     import research_loop.ontology as ontology
-    paths = (Path(__file__).resolve(), Path(acp.__file__).resolve(), Path(contracts.__file__).resolve(),
+    paths = [Path(__file__).resolve(), Path(acp.__file__).resolve(), Path(contracts.__file__).resolve(),
              Path(headless.__file__).resolve(), Path(protocol.__file__).resolve(), Path(model_port.__file__).resolve(),
-             Path(ontology.__file__).resolve())
+             Path(ontology.__file__).resolve()]
+    if deployment is not None:
+        paths.extend(Path(path) for path in checked_headless_train_deployment(deployment).source_pins())
     return {str(path): _sha(path.read_bytes()) for path in paths}
 
 
@@ -65,7 +68,7 @@ class GrokHeadlessTrainModelPort:
                  public_cwd: Path, frozen_files: Mapping[str, str], max_calls: int, schemas: Mapping[str, Mapping],
                  slot_output_caps: Mapping[str, int], slot_input_byte_caps: Mapping[str, int],
                  observed_main_token_cap: int, account_read_recovery: Mapping[str, Any] | None = RECOVERY,
-                 native_invoke=run_headless_diagnostic) -> None:
+                 native_invoke=run_headless_diagnostic, deployment=None) -> None:
         if native_invoke is not run_headless_diagnostic:
             raise ContractError("headless TRAIN requires the native diagnostic transport")
         if (type(max_calls) is not int or max_calls < 1 or type(observed_main_token_cap) is not int or observed_main_token_cap < 2
@@ -79,17 +82,22 @@ class GrokHeadlessTrainModelPort:
         if (account_read_recovery is not None and (not isinstance(account_read_recovery, Mapping) or set(account_read_recovery) != set(RECOVERY)
                 or account_read_recovery.get("schema") != RECOVERY["schema"] or type(account_read_recovery.get("max_attempts")) is not int
                 or account_read_recovery["max_attempts"] != 2)): raise ContractError("unsupported headless account recovery contract")
+        self.native_deployment = None if deployment is None else checked_headless_train_deployment(deployment)
         self.executable = str(Path(executable).resolve()); self.root = Path(work_root).resolve()
         self.private_home, self.private_profile, self.public_cwd = Path(private_home).resolve(), Path(private_profile).resolve(), Path(public_cwd).resolve()
+        if self.native_deployment is not None:
+            self.native_deployment.verify_executable(self.executable)
         supplied = dict(frozen_files); actual = _sha(Path(self.executable).read_bytes())
         if supplied.get(self.executable) != actual: raise ContractError("supplied headless executable pin differs")
-        generated = _source_pins()
+        generated = _source_pins(self.native_deployment)
         if any(path in supplied and supplied[path] != digest for path, digest in generated.items()): raise ContractError("supplied headless source pin differs")
         supplied.update(generated); self.frozen_files = supplied
         self.max_calls, self.schemas = max_calls, json.loads(canonical(schemas)); self.slot_output_caps, self.slot_input_byte_caps = dict(slot_output_caps), dict(slot_input_byte_caps)
         self.observed_main_token_cap, self.account_read_recovery = observed_main_token_cap, json.loads(canonical(account_read_recovery)) if account_read_recovery is not None else None
         self.model, self.effort = MODEL, "low"; self.root.mkdir(parents=True, exist_ok=True); self.calls_root = self.root / "calls"; self.calls_root.mkdir(exist_ok=True); self.ledger_path = self.root / "ledger.json"; self.lock_path = self.root / "allocator.lock"
         config = {"schema":"grok-headless-train-solver-port-v1", "provider_kind":self.provider_kind, "model":MODEL, "opportunity_contract":TRAIN_OPPORTUNITY_CONTRACT, "reasoning_effort":"low", "timeout_seconds":60, "max_retries":0, "paid_fallback":False, "max_calls":max_calls, "title_opportunities_per_main":1, "title_usage_and_all_call_totals":"unknown", "api_key_route_permitted":False, "included_only":True, "schemas":self.schemas, "slot_output_caps":self.slot_output_caps, "slot_input_byte_caps":self.slot_input_byte_caps, "observed_main_token_cap":observed_main_token_cap, "account_read_recovery":self.account_read_recovery, "executable":self.executable, "executable_sha256":actual, "private_home":str(self.private_home), "private_profile_root":str(self.private_profile), "public_cwd_root":str(self.public_cwd), "frozen_files":self.frozen_files}
+        if self.native_deployment is not None:
+            config.update(native_deployment=self.native_deployment.record.data(), native_deployment_digest=self.native_deployment.digest)
         self._config_record = FrozenRecord.from_dict(config)
         config = self._config_record.data()
         with _exclusive(self.lock_path):
@@ -123,7 +131,7 @@ class GrokHeadlessTrainModelPort:
             try:
                 home=directory/"native-home"; home.mkdir(); shutil.copyfile(self.private_home/"auth.json",home/"auth.json"); config=home/"config.toml"; config.write_bytes(diagnostic_config(self.slot_output_caps[slot]).encode()); profile=directory/"native-profile"; cwd=directory/"public-cwd"; profile.mkdir(); cwd.mkdir()
                 frozen={**self.frozen_files,str(config):_sha(config.read_bytes()),str(request_path):row["private_request"]["sha256"]}; context=_expected_context(self, row); row.update(frozen_files=frozen,native_context=context,config_path=str(config),private_directory=str(directory/"native")); _write(self.ledger_path,self.ledger)
-                result=run_headless_diagnostic(executable=self.executable,cwd=str(cwd),private_home=str(home),private_profile=str(profile),private_dir=str(directory/"native"),reservation=str(directory/"native-reservation.json"),frozen_files=frozen,prompt=prompt,schema=self.schemas[slot],main_output_cap=self.slot_output_caps[slot],observed_main_token_cap=self.observed_main_token_cap,input_byte_cap=cap,timeout=60,reasoning_effort="low",account_read_recovery=self.account_read_recovery)
+                result=run_headless_diagnostic(executable=self.executable,cwd=str(cwd),private_home=str(home),private_profile=str(profile),private_dir=str(directory/"native"),reservation=str(directory/"native-reservation.json"),frozen_files=frozen,prompt=prompt,schema=self.schemas[slot],main_output_cap=self.slot_output_caps[slot],observed_main_token_cap=self.observed_main_token_cap,input_byte_cap=cap,timeout=60,reasoning_effort="low",account_read_recovery=self.account_read_recovery,deployment=self.native_deployment)
                 if not isinstance(result,HeadlessResult): raise ContractError("headless native result differs")
                 receipt=result.receipt.data(); receipt_path=directory/"observer-receipt.private.json"; receipt_path.write_bytes(result.receipt.encoded.encode()); usage=(receipt.get("stream_inspection") or {}).get("usage") if isinstance(receipt,dict) else None
                 if isinstance(usage,dict) and type(usage.get("total_tokens")) is int and usage["total_tokens"] >= 0: row["known_headless_main_usage"]=usage; self.ledger["known_main_tokens"] += usage["total_tokens"]; self.ledger["tokens"] += usage["total_tokens"]
@@ -147,6 +155,12 @@ def _verify_live_config(port):
                 "account_read_recovery":port.account_read_recovery, "executable":port.executable,
                 "private_home":str(port.private_home), "private_profile_root":str(port.private_profile),
                 "public_cwd_root":str(port.public_cwd), "frozen_files":port.frozen_files}
+    if port.native_deployment is None:
+        if 'native_deployment' in frozen or 'native_deployment_digest' in frozen:
+            raise ContractError("legacy headless TRAIN deployment drifted")
+    else:
+        expected.update(native_deployment=port.native_deployment.record.data(),
+                        native_deployment_digest=port.native_deployment.digest)
     if any(frozen.get(key) != value for key, value in expected.items()): raise ContractError("live headless TRAIN configuration drifted")
     if _sha(Path(port.executable).read_bytes()) != frozen["executable_sha256"]: raise ContractError("live headless executable drifted")
     if port.ledger.get("config") != frozen: raise ContractError("headless TRAIN ledger configuration drifted")
@@ -156,6 +170,7 @@ def _verify_live_config(port):
 def _expected_context(port, row):
     directory=_directory(port,row); context={"executable":port.executable,"cwd":str(directory/"public-cwd"),"private_home":str(directory/"native-home"),"private_profile":str(directory/"native-profile"),"reasoning_effort":"low"}
     if port.account_read_recovery is not None: context["account_read_recovery"]=port.account_read_recovery
+    if port.native_deployment is not None: context['native_deployment'] = port.native_deployment.record.data()
     return context
 
 
@@ -190,7 +205,7 @@ def _verify_row(port, row, result=None):
     receipt=FrozenRecord.from_dict(json.loads(receipt_path.read_text(encoding="utf-8")))
     if result is None: result=HeadlessResult(receipt,FrozenRecord.from_dict(json.loads((directory/"response.private.json").read_text(encoding="utf-8"))))
     elif result.receipt != receipt: raise ContractError("persisted native receipt differs")
-    prompt=private["prompt"].encode(); slot=row["slot"]; entry={"opportunity_id":row["opportunity_id"],"private_request":row["private_request"],"prompt_sha256":_sha(prompt),"schema_digest":_sha(canonical(port.schemas[slot]).encode()),"input_bytes":len(prompt)}; spec={"native_context":context,"reasoning_effort":"low","account_read_recovery":port.account_read_recovery,"main_output_cap":port.slot_output_caps[slot],"observed_main_token_cap":port.observed_main_token_cap,"max_input_bytes":port.slot_input_byte_caps[slot],"timeout_seconds":60}; binding=verify_headless_request_binding(result,entry,directory,spec,frozen)
+    prompt=private["prompt"].encode(); slot=row["slot"]; entry={"opportunity_id":row["opportunity_id"],"private_request":row["private_request"],"prompt_sha256":_sha(prompt),"schema_digest":_sha(canonical(port.schemas[slot]).encode()),"input_bytes":len(prompt)}; spec={"native_context":context,"reasoning_effort":"low","account_read_recovery":port.account_read_recovery,"main_output_cap":port.slot_output_caps[slot],"observed_main_token_cap":port.observed_main_token_cap,"max_input_bytes":port.slot_input_byte_caps[slot],"timeout_seconds":60}; binding=verify_headless_request_binding(result,entry,directory,spec,frozen,deployment=port.native_deployment)
     if row.get("known_headless_main_usage") != binding.data().get("usage",{}).get("main"): raise ContractError("known MAIN usage differs")
     return binding
 
