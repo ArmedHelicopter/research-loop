@@ -195,7 +195,10 @@ class LineageScorerProcessClient(CombinationScorerProcessClient):
 
     def assert_configuration(self, **kwargs):
         expected = scorer_process_binding(panel=self.panel, **kwargs)
-        if (self.binding != FrozenRecord.from_dict({**expected.data(), 'lineage_references': self.reference_binding})
+        bound = {**expected.data(), 'lineage_references': self.reference_binding}
+        if self.evaluator_provider is not None:
+            bound['evaluator_provider'] = self.evaluator_provider
+        if (self.binding != FrozenRecord.from_dict(bound)
                 or self.process.poll() is not None):
             raise ContractError('lineage scorer configuration or worker state drift')
 

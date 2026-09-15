@@ -65,7 +65,7 @@ class FrozenLineageTrainConfig:
                          optional=('lineage_reference_binding', 'lineage_evaluator_bindings')))
         if native:
             from research_loop.modular.lineage_useful_controls import RECIPE
-            schema_ok = (native_source_fields(b, required|{'execution_recipe'}, family=family,
+            schema_ok = (native_source_fields(b, required|{'execution_recipe', 'export_mode'}, family=family,
                 optional=('lineage_reference_binding', 'lineage_evaluator_bindings') if family=='lineage' else ())
                 and b.get('execution_recipe') == RECIPE.data())
         if (not schema_ok or b['domain'] != 'train'
