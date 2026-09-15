@@ -7,6 +7,7 @@ import stat
 from pathlib import Path
 from typing import Any, Mapping
 
+from evaluation.modular import custody as custody_module
 from evaluation.modular.custody_audit_projection import custody_state_anchor, verify_custody_snapshot
 from research_loop.modular.artifact_catalogue import source_snapshot
 from research_loop.modular.contracts import FrozenRecord
@@ -110,7 +111,7 @@ class CustodyTransitionRetainer:
                                 "bytes": len(receipt_raw), "digest": receipt.content_hash}
             row = R({"schema": _CAPTURE, "sequence": sequence, "previous_sha256": self._previous,
                      "operation": operation, "state_file": state_name, "state_anchor": custody_state_anchor(state_bytes).data(),
-                     "receipt": receipt_data, "producer_sources": {"retainer": source_snapshot(Path(__file__))},
+                     "receipt": receipt_data, "producer_sources": {"retainer": source_snapshot(Path(__file__)), "custody_mutator": source_snapshot(Path(custody_module.__file__))},
                      "optimizer_visible": False, "scientific_validated": False})
             raw = (row.encoded + "\n").encode("utf-8")
             _new(self._manifest, raw) if sequence == 1 else _append(self._manifest, raw)
@@ -150,6 +151,7 @@ def verify_custody_transition_retention(root: Path, *, receipt_keys: Mapping[str
     anchor = _anchor(expected_manifest_anchor)
     if anchor is not None and custody_transition_manifest_anchor(manifest_before).data() != anchor:
         raise ContractError("custody transition manifest anchor differs")
+    status_order: list[dict[str, Any]] = []
     statuses: dict[int, list[dict[str, Any]]] = {}
     for raw in status_before.splitlines(keepends=True):
         body = _record(raw, "custody transition status is not canonical").data()
@@ -159,14 +161,15 @@ def verify_custody_transition_retention(root: Path, *, receipt_keys: Mapping[str
                 or body["status"] == "captured" and not _hex(body["capture_digest"])
                 or body["status"] != "captured" and body["capture_digest"] is not None):
             raise ContractError("custody transition status differs")
+        status_order.append(body)
         statuses.setdefault(body["sequence"], []).append(body)
     previous, sequence, rows, observed = "0" * 64, 1, [], {manifest: manifest_before, status_path: status_before}
     for raw in manifest_before.splitlines(keepends=True):
         record = _record(raw, "custody transition manifest is not canonical"); body = record.data()
         required = {"schema", "sequence", "previous_sha256", "operation", "state_file", "state_anchor", "receipt", "producer_sources", "optimizer_visible", "scientific_validated"}
-        if (set(body) != required or body["schema"] != _CAPTURE or body["sequence"] != sequence or body["previous_sha256"] != previous
+        if (set(body) != required or body["schema"] != _CAPTURE or type(body["sequence"]) is not int or type(body["sequence"]) is bool or body["sequence"] != sequence or body["previous_sha256"] != previous
                 or body["operation"] not in _ALLOWED or body["optimizer_visible"] is not False or body["scientific_validated"] is not False
-                or body["producer_sources"] != {"retainer": source_snapshot(Path(__file__))}):
+                or body["producer_sources"] != {"retainer": source_snapshot(Path(__file__)), "custody_mutator": source_snapshot(Path(custody_module.__file__))}):
             raise ContractError("custody transition manifest binding or source differs")
         if statuses.get(sequence) != [{"schema": _STATUS, "operation": body["operation"], "sequence": sequence, "status": "attempted", "capture_digest": None},
                                       {"schema": _STATUS, "operation": body["operation"], "sequence": sequence, "status": "captured", "capture_digest": record.content_hash}]:
@@ -192,6 +195,14 @@ def verify_custody_transition_retention(root: Path, *, receipt_keys: Mapping[str
     failed = [{"sequence": seq, "operation": group[0]["operation"]} for seq, group in sorted(statuses.items()) if seq >= sequence and group == [{"schema": _STATUS, "operation": group[0]["operation"], "sequence": seq, "status": "attempted", "capture_digest": None}, {"schema": _STATUS, "operation": group[0]["operation"], "sequence": seq, "status": "failed", "capture_digest": None}]]
     if set(statuses) != set(range(1, sequence)) | {row["sequence"] for row in failed}:
         raise ContractError("custody transition status inventory differs")
+    expected_status_order = []
+    for row in rows:
+        captured = next(item["capture_digest"] for item in statuses[row["sequence"]] if item["status"] == "captured")
+        expected_status_order.extend(({"schema": _STATUS, "operation": row["operation"], "sequence": row["sequence"], "status": "attempted", "capture_digest": None}, {"schema": _STATUS, "operation": row["operation"], "sequence": row["sequence"], "status": "captured", "capture_digest": captured}))
+    for row in failed:
+        expected_status_order.extend(({"schema": _STATUS, "operation": row["operation"], "sequence": row["sequence"], "status": "attempted", "capture_digest": None}, {"schema": _STATUS, "operation": row["operation"], "sequence": row["sequence"], "status": "failed", "capture_digest": None}))
+    if status_order != expected_status_order:
+        raise ContractError("custody transition status chronology differs")
     if expected_tail_capture_digest is not None and previous != expected_tail_capture_digest:
         raise ContractError("custody transition expected tail differs")
     if expected_receipt_digest is not None and (not rows or rows[-1]["receipt_status"] != "retained" or expected_receipt_digest != body["receipt"]["digest"]):
