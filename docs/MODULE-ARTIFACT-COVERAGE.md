@@ -4,6 +4,20 @@
 每模块出现一条 `covered` 记录不表示该模块的全部输出都已覆盖。
 `covered` 是一条描述符有明确模块归属，完整覆盖须另与实际输出清单对账。
 
+Admission 控制器现已留存每次实际 `persist()` 的精确 checkpoint 副本、配置与
+生产源码，终态先落盘再由最终回执绑定。返回前独立重读，并拒绝持久回执被替换。
+[四项定向及十四项合入检查](../results/modular-engineering-20260915/admission-attempt-transitions-r1/README.md)
+保留 964 份非凭据运行文件，覆盖真实控制器的失败账本与前置失败路径。
+这补齐中途状态的原始字节留存；普通逐格评分和启动握手的统一目录登记仍待补齐，
+不能把这一 sidecar 解释成新的模块归属、评分资格或完整历史证明。
+
+Grok 1.0.30 的显式普通 CLI 部署已接入 TRAIN 求解器和私有评分器。
+[隔离评分器及合入检查](../results/modular-engineering-20260915/grok130-evaluator-and-root-checks-r1/README.md)
+分别通过 25 项和 53 项，原先一项 fixture 签名失败完整保留。
+随后[一次真实 TRAIN 调用](../results/modular-engineering-20260915/grok130-normal-train-control-r2/README.md)
+成功并重放一致，已知 MAIN 用量 6,148 tokens，523 份非凭据原件已保留。
+这不等于 M4/M5 配对效果；真实八格 r2 与完整 C5 工程运行各自继续取证，VAL 未打开。
+
 P0 新增[独立 custody 快照审计](P0-CUSTODY-AUDIT-SNAPSHOTS.md)：只解析调用方
 预先锚定的原始字节，重放分组与划分，并在返回前再次核对文件；另可核验独立保留的
 签名租约回执。三项合成集成检查通过，包含实际 CLI、新输出拒绝覆盖、回执不匹配

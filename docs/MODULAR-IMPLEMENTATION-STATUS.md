@@ -3,6 +3,28 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Actual TRAIN route restored and checkpoint retention merged (2026-09-15)
+
+The explicit 1.0.30 normal-CLI deployment is wired to TRAIN solver and private
+evaluator factory/configuration/replay. The evaluator's repaired isolated check
+passed 25 tests; merged ROOT passed 53 including label isolation. The preceding
+fixture-signature failure remains in the [same archive](../results/modular-engineering-20260915/grok130-evaluator-and-root-checks-r1/README.md).
+A [real one-opportunity TRAIN control](../results/modular-engineering-20260915/grok130-normal-train-control-r2/README.md)
+then succeeded and independently replayed, with 6,148 known MAIN tokens and 523
+retained noncredential originals. Title/all-opportunity settlement stays unknown.
+This is invocation evidence, not module efficacy. The fresh actual M4/M5 r2
+batch has eight cells, 40 solver and 8 evaluator opportunities with zero added
+paid-API budget; it is distinct from the original failed batch and awaits closure.
+
+Source `d71d2db3` also preserves every actual admission controller checkpoint and
+anchors its terminal state before returning. Four bounded checks passed in the
+isolated tree; ROOT `9e7a7c58` passed those four plus ten label checks. Exact
+sources and 964 noncredential files are [retained separately](../results/modular-engineering-20260915/admission-attempt-transitions-r1/README.md).
+This covers raw checkpoint history and the tested return boundary, without
+inventing module attribution or scientific authority. Per-cell scorer and startup
+observation catalogue coverage remains pending; the full original experimental
+scope and currently running C5 denominator remain unchanged.
+
 ## P0 custody transition retention merged (2026-09-15)
 
 Source `41f0c892` connects opt-in private retention to actual custody writes and

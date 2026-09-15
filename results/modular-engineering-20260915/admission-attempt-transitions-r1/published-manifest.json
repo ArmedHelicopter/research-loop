@@ -1,0 +1,110 @@
+{
+  "schema": "frozen-module-check-published-files-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "archive-helper.py",
+      "sha256": "dcddf192a623336b4d81da8b679873fd0f17ef6e6d185edd7f404acf099171cd",
+      "bytes": 12755
+    },
+    {
+      "path": "isolated-before.json",
+      "sha256": "1a0e6e7c626c486ded123fe3d30b21339c62c81885d70fe15ca9aa338dbdef92",
+      "bytes": 94886
+    },
+    {
+      "path": "isolated-closed.json",
+      "sha256": "489610a7234f9b81ce4c582ca3b255a99345a6c415976bd82967384f426ee471",
+      "bytes": 94559
+    },
+    {
+      "path": "isolated-native-join.json",
+      "sha256": "bcfb4cb1db122e9ee4d22c1f97227cb654e0246786dd2b01ece050b0793b79e3",
+      "bytes": 283
+    },
+    {
+      "path": "isolated-native-start.json",
+      "sha256": "6f2e5c06c786c64c08a35dff505690458efe2ee51fc367edf4a7311de5efb091",
+      "bytes": 129
+    },
+    {
+      "path": "isolated-source-members.json",
+      "sha256": "332db841a515fe62ea50b8f6cf8ae865451a576cf4853d1d0b32d21514f638bf",
+      "bytes": 141300
+    },
+    {
+      "path": "isolated-sources.zip",
+      "sha256": "d4ba3aefef550f5f23c8ffa93c48c65fefd9b5d60ba70269f9c6f8bb7f670959",
+      "bytes": 2692023
+    },
+    {
+      "path": "isolated.log",
+      "sha256": "d1ab3d2f36201da3ad5387007d87c304ed64c974cbc0bba03980f9963d36e161",
+      "bytes": 669
+    },
+    {
+      "path": "isolated.xml",
+      "sha256": "a3b0fc5d5a6a195b9421a155003ec29437b0347643616db608885567015177f1",
+      "bytes": 899
+    },
+    {
+      "path": "private-retention-manifest.json",
+      "sha256": "0a9aea5f160b82c0acb2d02dd36f2fa9f90f7cd3f9e4d15e18e17ea02399f8bb",
+      "bytes": 1119702
+    },
+    {
+      "path": "README.md",
+      "sha256": "6db3439960669e1fcd132d7e0526f04516f8ca8f1f5498cf55a1e3812e313884",
+      "bytes": 956
+    },
+    {
+      "path": "retention-helper-source.py",
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840
+    },
+    {
+      "path": "root-before.json",
+      "sha256": "8d7a03ac316410e78abef7243ea718db449ef88e8a3558dfbbcce0c8fa3bf4e1",
+      "bytes": 94924
+    },
+    {
+      "path": "root-closed.json",
+      "sha256": "6ff65d20c5ec73159ae355ebf407905267c2c83cad44a3e66275e1980c399461",
+      "bytes": 94561
+    },
+    {
+      "path": "root-native-join.json",
+      "sha256": "16044ec81324fe24f5ebac78db82ad45953a098633dceab091c3bbeac437d775",
+      "bytes": 282
+    },
+    {
+      "path": "root-native-start.json",
+      "sha256": "198b99819e354b2d3cbdf009757a715f1511a07e125d2b31976828b531f5cd77",
+      "bytes": 128
+    },
+    {
+      "path": "root-source-members.json",
+      "sha256": "229b3c3f8594c5ef489a283bd6fa32c109b598a279099d3f9f5efd9cfb2c5c08",
+      "bytes": 141299
+    },
+    {
+      "path": "root-sources.zip",
+      "sha256": "ef18270b2118f20dd732bad42f87c6b003dac553e2fe0d606cada777e6d34ddb",
+      "bytes": 2692741
+    },
+    {
+      "path": "root.log",
+      "sha256": "b364e045d0b132ed4b03880c1c71eb95644535a80b7d59dbedb15413908a0933",
+      "bytes": 681
+    },
+    {
+      "path": "root.xml",
+      "sha256": "7bb495d1bb055c24135cbd2e15f9be1167c90eb41894607b06a2f5a7039090fc",
+      "bytes": 2052
+    }
+  ]
+}

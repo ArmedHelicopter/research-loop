@@ -97,6 +97,10 @@ trace 与目录不一致、跨对象证据替换、VAL 及其索引泄漏，以�
 实际接入范围与未接入项见[产物审计覆盖清单](MODULE-ARTIFACT-COVERAGE.md)，
 具体版本的执行证据见[实施状态](MODULAR-IMPLEMENTATION-STATUS.md)。
 
+最新可检查的真实例子是[一次 Grok 4.6 TRAIN 调用及独立重放](../results/modular-engineering-20260915/grok130-normal-train-control-r2/README.md)：
+请求、固定部署、原始返回、账本和消费结果均有精确引用，非凭据原件私有保留。
+它只有一次真实调用，不能当作单模块或组合有效性结论。
+
 P0 另提供[独立 custody 快照审计入口](P0-CUSTODY-AUDIT-SNAPSHOTS.md)，面向审计器
 而非优化器。它核验预先保留的字节锚点、当前划分和显式提供的签名租约回执，不伪造
 混合数据域的单一 TRAIN 身份，也不把缺失回执当成已经签发或已经验收。
