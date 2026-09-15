@@ -3,6 +3,32 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## C5 failure repair and scorer-observation checks (2026-09-15)
+
+The first original C5 failure is now localized: call 131 was rejected locally
+as `native login near expiry`, before an account request or native prompt. The
+synthetic fixture issued a two-hour credential and the retained timestamps span
+7,220 seconds from the first account preflight to that failure. Its allocation
+was 930 calls; this was not a 130-call cap. An isolated no-network replay of the
+frozen transport reproduces the expiry rejection without changing the original.
+
+The controller now closes missing-history-barrier runs as inconclusive rather
+than dereferencing the missing barrier. Two frozen failure/preflight checks
+passed with all 46 history and 118 target allocations retained. The synthetic
+fixture uses a seven-day lifetime; two further deterministic checks verify its
+24-hour exercise point and the unchanged production 120-second expiry guard.
+These numbers describe fixture behavior, not an estimated full C5 duration.
+Fresh full-C5 run r2 uses source `83aefb74` and original native session 4370;
+it is running and has no terminal success claim. Original r1 remains a failure.
+
+The [closed observation and terminal checks](../results/modular-engineering-20260915/observation-and-terminal-checks-r1/README.md)
+preserve separate 28- and 31-test scorer-catalogue runs and the two C5 terminal
+checks, including 609 noncredential originals. The catalogue branch remains
+under verification: independent review found a missing exact association to
+the final gate's closure digest. A separate worktree now checks that repair;
+passing the earlier tests does not close this newly identified gap. These are
+synthetic engineering checks with no real model, paid API or VAL access.
+
 ## Original C5 full-runtime failure closed (2026-09-15)
 
 The [original full C5 runtime](../results/modular-engineering-20260915/c5-headless-runtime-full-r1/README.md)
