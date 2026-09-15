@@ -1,0 +1,85 @@
+{
+  "copied_artifacts": [
+    {
+      "bytes": 756,
+      "path": "summary.json",
+      "sha256": "517425d9b884a08575efe6ba6db3464738c91af79b6f4622777f41da404ad6a0"
+    },
+    {
+      "bytes": 4985,
+      "path": "parent-closure.json",
+      "sha256": "6d0c3a52e2b2618ad8f157b11ab63a27b8027521010f2288ae725bf6cae879d8"
+    },
+    {
+      "bytes": 15557,
+      "path": "controller-attempt.json",
+      "sha256": "1442293d43f54c9911b9a9082507ee15a3c233507d9bee84c7739a03cca448ab"
+    },
+    {
+      "bytes": 1679,
+      "path": "controller-receipt.json",
+      "sha256": "a2ea25d9bdd2d3c3090adbd038523206d3321741c9a8d5b8a7dfeadbf3c36418"
+    },
+    {
+      "bytes": 150808,
+      "path": "preparation.json",
+      "sha256": "fc620bf7be36b91d54563ea0f9fecce1ccbe19ee256c8e09abcc8ebfcc1a3ad3"
+    },
+    {
+      "bytes": 11093,
+      "path": "controller.json",
+      "sha256": "2aafb0807691c73ecebd02c04bfc68cb007ddd546672b3da2547ce70928c64bf"
+    },
+    {
+      "bytes": 146482,
+      "path": "solver-spec.json",
+      "sha256": "1edbc303dba2ae2f28aad8c265a3de537d4a06bfae74b718ed93b97429f914d0"
+    },
+    {
+      "bytes": 7275,
+      "path": "material-map.json",
+      "sha256": "9f039bbc822a578be9d15daf62182dc38dc08b00fc17929cc39cd2a48f02a26f"
+    },
+    {
+      "bytes": 23684,
+      "path": "runner-source.py",
+      "sha256": "a66bf731b1615b5cc64437a6ac85a8080c45e67c61ce6a16bb3ad86822ac3a2f"
+    },
+    {
+      "bytes": 5601,
+      "path": "archive-helper.py",
+      "sha256": "ad6132ff7ebaed9b766cbbb2595ee70df2bda69ce56903f6a264a1b5ce24ddbf"
+    },
+    {
+      "bytes": 867,
+      "path": "failure-prefix-graph.json",
+      "sha256": "94dd399c8df8d1c1e8549802e7d6521a2ce3ce03c65e320cd6123cce306ab61f"
+    }
+  ],
+  "limits": [
+    "Closed failed run evidence only; no retry.",
+    "Zero scores means no module-effect conclusion.",
+    "Native replay failed because the CLI response was empty; it is not a valid all-cell result."
+  ],
+  "retained_private": {
+    "excluded_credential_count": 7,
+    "file_count": 109,
+    "manifest_sha256": "84bd88a74d61c94218fbbb39c5141c6a4ac810cb9b8c2cd0ca147745f187475f",
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\retained-private-evidence\\actual-m4m5-headless-r1\\full-run-preparation-private-without-credentials.zip",
+    "zip_sha256": "f0b16a3bf4aa599315c77227c1993bc0acda54c9427c9bb5736001c4046f3121"
+  },
+  "schema": "actual-m4m5-headless-archive-v1",
+  "self_excluding": true,
+  "summary": {
+    "actual_main_dispatch": "unknown",
+    "blocked_cells": 7,
+    "evaluator_reservations": 0,
+    "first_failed_cells": 1,
+    "known_solver_main_tokens": 0,
+    "scored_cells": 0,
+    "solver_reservations": 1,
+    "solver_usage_incomplete": true,
+    "status": "inconclusive",
+    "validation_opened": false
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "schema": "actual-m4m5-headless-delivery-v1",
+  "self_excluding": true,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "archive-helper.py",
+      "bytes": 5601,
+      "sha256": "ad6132ff7ebaed9b766cbbb2595ee70df2bda69ce56903f6a264a1b5ce24ddbf"
+    },
+    {
+      "path": "controller-attempt.json",
+      "bytes": 15557,
+      "sha256": "1442293d43f54c9911b9a9082507ee15a3c233507d9bee84c7739a03cca448ab"
+    },
+    {
+      "path": "controller-receipt.json",
+      "bytes": 1679,
+      "sha256": "a2ea25d9bdd2d3c3090adbd038523206d3321741c9a8d5b8a7dfeadbf3c36418"
+    },
+    {
+      "path": "controller.json",
+      "bytes": 11093,
+      "sha256": "2aafb0807691c73ecebd02c04bfc68cb007ddd546672b3da2547ce70928c64bf"
+    },
+    {
+      "path": "failure-prefix-graph.json",
+      "bytes": 867,
+      "sha256": "94dd399c8df8d1c1e8549802e7d6521a2ce3ce03c65e320cd6123cce306ab61f"
+    },
+    {
+      "path": "material-map.json",
+      "bytes": 7275,
+      "sha256": "9f039bbc822a578be9d15daf62182dc38dc08b00fc17929cc39cd2a48f02a26f"
+    },
+    {
+      "path": "native-diagnosis.md",
+      "bytes": 4545,
+      "sha256": "b293ba4291ec32ff69a86920f27330ca57f555d372eaf241c64e197d8b1f567e"
+    },
+    {
+      "path": "parent-closure.json",
+      "bytes": 4985,
+      "sha256": "6d0c3a52e2b2618ad8f157b11ab63a27b8027521010f2288ae725bf6cae879d8"
+    },
+    {
+      "path": "preparation.json",
+      "bytes": 150808,
+      "sha256": "fc620bf7be36b91d54563ea0f9fecce1ccbe19ee256c8e09abcc8ebfcc1a3ad3"
+    },
+    {
+      "path": "publish-helper.py",
+      "bytes": 5557,
+      "sha256": "6c55aba0f7bb85dfc7b3ea803ef7b411e8808e7c06bdf9f286a8f50a09abd39d"
+    },
+    {
+      "path": "published-manifest.json",
+      "bytes": 2770,
+      "sha256": "e39da470db19bb31ec9413a3405be1920eccd11581528b69b3eacdbbdd021652"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2388,
+      "sha256": "6938f3e535d50352512c7b730426021d272a16babbf8cb89857207d019fdff53"
+    },
+    {
+      "path": "retained-private-manifest.json",
+      "bytes": 46401,
+      "sha256": "84bd88a74d61c94218fbbb39c5141c6a4ac810cb9b8c2cd0ca147745f187475f"
+    },
+    {
+      "path": "runner-source.py",
+      "bytes": 23684,
+      "sha256": "a66bf731b1615b5cc64437a6ac85a8080c45e67c61ce6a16bb3ad86822ac3a2f"
+    },
+    {
+      "path": "runtime-source-copy.json",
+      "bytes": 5625,
+      "sha256": "9f6059e3b93270affaceb071528c02b57fd67e95a0c8f4d886c32a074c6c87b1"
+    },
+    {
+      "path": "solver-spec.json",
+      "bytes": 146482,
+      "sha256": "1edbc303dba2ae2f28aad8c265a3de537d4a06bfae74b718ed93b97429f914d0"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 756,
+      "sha256": "517425d9b884a08575efe6ba6db3464738c91af79b6f4622777f41da404ad6a0"
+    }
+  ]
+}

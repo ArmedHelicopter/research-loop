@@ -1,0 +1,38 @@
+{
+  "edges": [
+    {
+      "from": "solver-reservation-1",
+      "relation": "attempt_recorded_for",
+      "to": "cell-1"
+    },
+    {
+      "from": "cell-1",
+      "relation": "usage_incomplete_blocked_following_allocation",
+      "to": "cells-2-through-8"
+    }
+  ],
+  "nodes": [
+    {
+      "actual_main_dispatch": "unknown",
+      "id": "solver-reservation-1",
+      "kind": "reservation",
+      "known_main_tokens": 0
+    },
+    {
+      "id": "cell-1",
+      "kind": "planned_cell",
+      "status": "failed"
+    },
+    {
+      "id": "cells-2-through-8",
+      "kind": "planned_cells",
+      "status": "blocked"
+    }
+  ],
+  "nonclaims": [
+    "No score or evaluator receipt exists.",
+    "No module-effect or valid-all-cell conclusion follows.",
+    "No unrecorded consumption edge is asserted."
+  ],
+  "schema": "actual-m4m5-headless-failure-prefix-graph-v1"
+}

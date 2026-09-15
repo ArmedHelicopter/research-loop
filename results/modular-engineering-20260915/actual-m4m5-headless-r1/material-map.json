@@ -1,0 +1,94 @@
+{
+  "schema": "actual-m4m5-train-material-map-v1",
+  "mapping_basis": "read_only_metadata_map",
+  "repo_head": "369fb3699dfe68e3713ac2179690e1c06851a376",
+  "selection_rule": "from the already frozen four-item primary TRAIN roster, select the lexicographically first token within each benchmark; this rule is independent of scores and model output",
+  "selected_token_allowlist": [
+    "012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299",
+    "13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a"
+  ],
+  "exporter_constructor": {
+    "class": "evaluation.modular.primary_prospective_exporter.PrimaryProspectiveTrainExporter",
+    "config_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-process-qualification-checks\\primary-config-r1.json",
+    "config_sha256": "1310f8e1ab2b25a4fdc2879e0f98e813be198f4550e8c74d899207cfb3204130",
+    "sealed_root": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\primary-process-split-20260913-r2",
+    "expected_split_digest": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+    "expected_audit_digest": "5c2454599abc71ab735923960f14862b2d8be23a9f7ed5e01c4918da7a2f7377",
+    "expected_split_sha256": "7653200478fa02a3890ff61a2972102a8ba6f547356e3abafcc3482c6b52fd54",
+    "expected_audit_sha256": "0f92162a1ef586e731e671c27ba4cad5d9e04078eaec4b6128baf9809b26e147",
+    "eligibility_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\primary-eligibility-r1.json",
+    "eligibility_sha256": "1963e2684ea024af19a798b89cf8d1665f25008cc6fb5200310de41fa0dd3917",
+    "output_root_requirement": "new empty run-owned directory, disjoint from the sealed root, snapshot root, and audit root",
+    "audit_root_requirement": "new empty run-owned directory, disjoint from the sealed root, snapshot root, and output root"
+  },
+  "historical_public_export": {
+    "use_as_controller_input": false,
+    "reason": "The historical receipt contains four packets. The v6 controller requires the fresh export receipt to contain exactly its two frozen item IDs.",
+    "export_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\public-train",
+    "export_receipt_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\public-train\\export-receipt.json",
+    "export_receipt_sha256": "b08238bc3fdf9757074d5e64e49ca7b3b5cdc2f58015b0688420cd9f78ad3bb3",
+    "audit_journal_sha256": "0a99c347e1a1f255efb5ca753d9ff7ad67574cd2887bc82d19cf4711e7b3737b"
+  },
+  "selected_public_train_items": [
+    {
+      "source": "discoverybench",
+      "token": "012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299",
+      "group_sha256": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+      "input_bindings_digest": "027cb25796a15fdfff697bdf3e2f70d3c71555c4ef4cda91050ccd679d2538a2",
+      "public_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\public-train\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\public.json",
+      "public_sha256": "eb639eb5e482f08d499cce95c5da180339253acb64cbe2f606fcbfdf8dca251f",
+      "csv_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\public-train\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\data.csv",
+      "csv_sha256": "455f1e3df7e93dce381b6adff312e89e6a3b4d3900cf0d6083660cd0a4d53881",
+      "csv_byte_count": 49023,
+      "task_sha256": "aaac713bb95a1ade3ca2410ad962663e22446c6c6d5bb99f6f82223ecf803ce3",
+      "receipt_sha256": "3fedb235317b1394d796bb16f78bd89ec316498792e7128f23090c1d15d01fb7",
+      "identity_digest": "4234a766d1b3c186618dde6d2aeb9c832112b5f1b6325f357c15195fe0697b3c",
+      "task_handle": "b2cc6e153feb49c0e7a75c4dd3132e343783c680d300c0488de34b13a4d1eda4"
+    },
+    {
+      "source": "blade",
+      "token": "13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a",
+      "group_sha256": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+      "input_bindings_digest": "027cb25796a15fdfff697bdf3e2f70d3c71555c4ef4cda91050ccd679d2538a2",
+      "public_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\public-train\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\public.json",
+      "public_sha256": "b623866374d6c0d494317b5faf2b5e9866543afbd14c1333568db447b48a6438",
+      "csv_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\public-train\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\data.csv",
+      "csv_sha256": "bcef1bbadbb898bccf71d51e5e619d03ee0e093eb6a3aee553d6688d3d3304ee",
+      "csv_byte_count": 106218,
+      "task_sha256": "aa00979db472a775cb18e4f26375b28ac1ba5095299baabd69b88c97442bccf4",
+      "receipt_sha256": "2c8529a9ee2066b2627e733e388627426b0593956f205869809733d95f0cfa79",
+      "identity_digest": "7b3d666689465e259fd37043201f163cc35410fca994e58c2ac3e1ff19b5d059",
+      "task_handle": "18e454b8ac9066e5c3978ffde18c929c85bad4aaaf7410f489842e0128a3fc7a"
+    }
+  ],
+  "private_reference_store": {
+    "store_root": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\primary-prospective-train-reference-20260913-r1",
+    "manifest_path": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\primary-prospective-train-reference-20260913-r1\\manifest.json",
+    "manifest_sha256": "3ae6c5c073e6d80686aa62b458a6a5b2a11a2b775b5dc472f331d2dc99462427",
+    "publication_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-reference-live-r1\\reference-publication-r1.json",
+    "publication_sha256": "21510b35dc8a70e317b488c4adcf5794f92223e4c58a5ab5440af31b1af0f7e0",
+    "publication_canonical_sha256": "81e824cf43faf87524cac24c210b8732bf7a636105e82ba443216516936e6d65",
+    "inventory_digest": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+    "split_digest": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+    "selected_task_handles": {
+      "4234a766d1b3c186618dde6d2aeb9c832112b5f1b6325f357c15195fe0697b3c": "b2cc6e153feb49c0e7a75c4dd3132e343783c680d300c0488de34b13a4d1eda4",
+      "7b3d666689465e259fd37043201f163cc35410fca994e58c2ac3e1ff19b5d059": "18e454b8ac9066e5c3978ffde18c929c85bad4aaaf7410f489842e0128a3fc7a"
+    }
+  },
+  "limits": {
+    "train_only": true,
+    "validation_access_enabled": false,
+    "selected_task_count": 2,
+    "exporter_max_items": 308,
+    "historical_reference_bridge_attempt_limit": 1,
+    "historical_export_model_calls": 0,
+    "historical_export_network_calls": 0,
+    "historical_reference_model_calls": 0,
+    "historical_reference_network_calls": 0
+  },
+  "historical_exposure_guard": {
+    "legacy_m4m5_run": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01",
+    "legacy_packets_to_exclude": ["blade:fish", "discoverybench:synth:test:philosophical-debates_0_0"],
+    "reason": "The historical M4/M5 attempt made model calls on these legacy-custody packet identities. They are a different split and must not be reused. The selected allowlist comes from the newer primary split and has distinct tokens, group digests, and split digest."
+  }
+}

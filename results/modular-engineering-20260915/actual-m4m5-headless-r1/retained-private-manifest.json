@@ -1,0 +1,784 @@
+{
+  "excluded_credentials": [
+    "private/actual-m4m5-executor-r1.key",
+    "private/actual-m4m5-scorer-r1.key",
+    "private/evaluator-home/auth.json",
+    "private/solver-home/auth.json",
+    "private/unused-a.key",
+    "private/unused-b.key",
+    "run/solver-model/calls/0001-m4_plan/native-home/auth.json"
+  ],
+  "files": [
+    {
+      "bytes": 5121,
+      "mtime_ns": 1789437541145003300,
+      "path": "preparation/compile-export-audit/exports.jsonl",
+      "sha256": "959d9a142232511a240034c31ca6315968f1a445d94a26201590f4f80284ea6e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-preparation-r1\\compile-export-audit\\exports.jsonl"
+    },
+    {
+      "bytes": 11093,
+      "mtime_ns": 1789437542135227900,
+      "path": "preparation/controller.json",
+      "sha256": "2aafb0807691c73ecebd02c04bfc68cb007ddd546672b3da2547ce70928c64bf",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-preparation-r1\\controller.json"
+    },
+    {
+      "bytes": 150808,
+      "mtime_ns": 1789437542156095300,
+      "path": "preparation/preparation.json",
+      "sha256": "fc620bf7be36b91d54563ea0f9fecce1ccbe19ee256c8e09abcc8ebfcc1a3ad3",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-preparation-r1\\preparation.json"
+    },
+    {
+      "bytes": 11597,
+      "mtime_ns": 1789437511168121700,
+      "path": "preparation/public-for-compile/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/artifacts.jsonl",
+      "sha256": "0670c931777ef5c8f17fe86a2d6a8dd470633bdf7ff62ea76bae64b9446c30d0",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl"
+    },
+    {
+      "bytes": 295,
+      "mtime_ns": 1789437511351901200,
+      "path": "preparation/public-for-compile/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/artifacts.jsonl.seal.json",
+      "sha256": "daf1c64a30c76e1af723f743ed7780cf8788a9daf2f638be54899e06472ffad8",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl.seal.json"
+    },
+    {
+      "bytes": 49023,
+      "mtime_ns": 1789437509466770800,
+      "path": "preparation/public-for-compile/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/data.csv",
+      "sha256": "455f1e3df7e93dce381b6adff312e89e6a3b4d3900cf0d6083660cd0a4d53881",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\data.csv"
+    },
+    {
+      "bytes": 4382,
+      "mtime_ns": 1789437509272186100,
+      "path": "preparation/public-for-compile/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/public.json",
+      "sha256": "eb639eb5e482f08d499cce95c5da180339253acb64cbe2f606fcbfdf8dca251f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\public.json"
+    },
+    {
+      "bytes": 1145,
+      "mtime_ns": 1789437509622402200,
+      "path": "preparation/public-for-compile/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/receipt.json",
+      "sha256": "3fedb235317b1394d796bb16f78bd89ec316498792e7128f23090c1d15d01fb7",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-preparation-r1\\public-for-compile\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\receipt.json"
+    },
+    {
+      "bytes": 11144,
+      "mtime_ns": 1789437515923681800,
+      "path": "preparation/public-for-compile/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/artifacts.jsonl",
+      "sha256": "98b5cc719da307d44a1eb79007ccbf376327ae38bd3dd17b537e11833a4d94ec",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl"
+    },
+    {
+      "bytes": 295,
+      "mtime_ns": 1789437516193374200,
+      "path": "preparation/public-for-compile/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/artifacts.jsonl.seal.json",
+      "sha256": "772ed9eb02bf155a7fa8293e429027bd9a2cca6039d5fd89277d198d113edb14",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl.seal.json"
+    },
+    {
+      "bytes": 106218,
+      "mtime_ns": 1789437512799158400,
+      "path": "preparation/public-for-compile/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/data.csv",
+      "sha256": "bcef1bbadbb898bccf71d51e5e619d03ee0e093eb6a3aee553d6688d3d3304ee",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\data.csv"
+    },
+    {
+      "bytes": 3203,
+      "mtime_ns": 1789437512338136800,
+      "path": "preparation/public-for-compile/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/public.json",
+      "sha256": "b623866374d6c0d494317b5faf2b5e9866543afbd14c1333568db447b48a6438",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\public.json"
+    },
+    {
+      "bytes": 947,
+      "mtime_ns": 1789437513388155800,
+      "path": "preparation/public-for-compile/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/receipt.json",
+      "sha256": "2c8529a9ee2066b2627e733e388627426b0593956f205869809733d95f0cfa79",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-preparation-r1\\public-for-compile\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\receipt.json"
+    },
+    {
+      "bytes": 9250,
+      "mtime_ns": 1789437517150185600,
+      "path": "preparation/public-for-compile/export-receipt.json",
+      "sha256": "92d32f1eabf0451a29e578f6b4267dc64639199be35b33ef781626e604e128c9",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-preparation-r1\\public-for-compile\\export-receipt.json"
+    },
+    {
+      "bytes": 146482,
+      "mtime_ns": 1789437542136822300,
+      "path": "preparation/solver-spec.json",
+      "sha256": "1edbc303dba2ae2f28aad8c265a3de537d4a06bfae74b718ed93b97429f914d0",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-preparation-r1\\solver-spec.json"
+    },
+    {
+      "bytes": 148003,
+      "mtime_ns": 1789437569577654600,
+      "path": "private/evaluator-model/ledger.json",
+      "sha256": "8cb1d6e4e428c58dff410df1f03ca116d92294197595303d19ba0ba76cac9a2f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-m4m5-headless-r1\\evaluator-model\\ledger.json"
+    },
+    {
+      "bytes": 163955,
+      "mtime_ns": 1789437542136288400,
+      "path": "private/server-config.json",
+      "sha256": "f89c17321cf447b739e2f73527ea2a00e45fd1527e7032061a21008cfb17413c",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-m4m5-headless-r1\\server-config.json"
+    },
+    {
+      "bytes": 42427,
+      "mtime_ns": 1789437757732617600,
+      "path": "run/controller/cells/1be212a023ab79fceff40ea34b0a851f8115b3a90cd164e51ec6ada9465df9e0/artifacts.jsonl",
+      "sha256": "2db25b62398fd5baaf032dc255fc673d96719f84524d6a684e2e1849f3c9a23d",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\controller\\cells\\1be212a023ab79fceff40ea34b0a851f8115b3a90cd164e51ec6ada9465df9e0\\artifacts.jsonl"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789437624286457900,
+      "path": "run/controller/cells/1be212a023ab79fceff40ea34b0a851f8115b3a90cd164e51ec6ada9465df9e0/claims.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\controller\\cells\\1be212a023ab79fceff40ea34b0a851f8115b3a90cd164e51ec6ada9465df9e0\\claims.jsonl"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789437624285951900,
+      "path": "run/controller/cells/1be212a023ab79fceff40ea34b0a851f8115b3a90cd164e51ec6ada9465df9e0/evidence.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\controller\\cells\\1be212a023ab79fceff40ea34b0a851f8115b3a90cd164e51ec6ada9465df9e0\\evidence.jsonl"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789437624888801000,
+      "path": "run/controller/cells/1be212a023ab79fceff40ea34b0a851f8115b3a90cd164e51ec6ada9465df9e0/predictions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\controller\\cells\\1be212a023ab79fceff40ea34b0a851f8115b3a90cd164e51ec6ada9465df9e0\\predictions.jsonl"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789437624888801000,
+      "path": "run/controller/cells/1be212a023ab79fceff40ea34b0a851f8115b3a90cd164e51ec6ada9465df9e0/reviews.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\controller\\cells\\1be212a023ab79fceff40ea34b0a851f8115b3a90cd164e51ec6ada9465df9e0\\reviews.jsonl"
+    },
+    {
+      "bytes": 12612,
+      "mtime_ns": 1789437757543128300,
+      "path": "run/controller/cells/1be212a023ab79fceff40ea34b0a851f8115b3a90cd164e51ec6ada9465df9e0/trace.jsonl",
+      "sha256": "46704a15ddc79106aa66e14fb5d9317f2adcc8d26934662abf71ebe6419892a4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\controller\\cells\\1be212a023ab79fceff40ea34b0a851f8115b3a90cd164e51ec6ada9465df9e0\\trace.jsonl"
+    },
+    {
+      "bytes": 15557,
+      "mtime_ns": 1789437758516280800,
+      "path": "run/controller/controller-attempt.json",
+      "sha256": "1442293d43f54c9911b9a9082507ee15a3c233507d9bee84c7739a03cca448ab",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\controller\\controller-attempt.json"
+    },
+    {
+      "bytes": 1679,
+      "mtime_ns": 1789437758516280800,
+      "path": "run/controller/controller-receipt.json",
+      "sha256": "a2ea25d9bdd2d3c3090adbd038523206d3321741c9a8d5b8a7dfeadbf3c36418",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\controller\\controller-receipt.json"
+    },
+    {
+      "bytes": 10213,
+      "mtime_ns": 1789437624250420600,
+      "path": "run/controller/panel.json",
+      "sha256": "42bfded54eb088724286016850eef82560bf6f9fa0b54c1742008fcad4ae1ace",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\controller\\panel.json"
+    },
+    {
+      "bytes": 5121,
+      "mtime_ns": 1789437624028927800,
+      "path": "run/export-audit/exports.jsonl",
+      "sha256": "12dcb0be9edf7bb168d00602359118ea80a85d98bdfc8ebd059fc683b617ad7e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\export-audit\\exports.jsonl"
+    },
+    {
+      "bytes": 4985,
+      "mtime_ns": 1789437758987834500,
+      "path": "run/parent-closure.json",
+      "sha256": "6d0c3a52e2b2618ad8f157b11ab63a27b8027521010f2288ae725bf6cae879d8",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\parent-closure.json"
+    },
+    {
+      "bytes": 4473,
+      "mtime_ns": 1789437758853759400,
+      "path": "run/parent-process/process.json",
+      "sha256": "9c3f116c1805c6d96f5997b7a222478078ca61b9a531e1d76c2258e0f51b6f15",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\parent-process\\process.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789437758590338900,
+      "path": "run/parent-process/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\parent-process\\stderr.private.txt"
+    },
+    {
+      "bytes": 795,
+      "mtime_ns": 1789437758590338900,
+      "path": "run/parent-process/stdout.private.jsonl",
+      "sha256": "ccc66a660bb20e10a1703523bd6cab0be16849a6b157dbbc0ffe7546df3ecc6f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\parent-process\\stdout.private.jsonl"
+    },
+    {
+      "bytes": 706,
+      "mtime_ns": 1789437566450557000,
+      "path": "run/parent-reservation.json",
+      "sha256": "29c5fe6b1d2969fc4cffe3987367e599e8d35cc46bc717767dc6ae0445f8ea02",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\parent-reservation.json"
+    },
+    {
+      "bytes": 11597,
+      "mtime_ns": 1789437606383897000,
+      "path": "run/public-export/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/artifacts.jsonl",
+      "sha256": "3434cefe5a75dc91b940c70fa3e9e2ac6f4e8eb2fa0dbfc8355a253331b76ad2",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl"
+    },
+    {
+      "bytes": 295,
+      "mtime_ns": 1789437606950240000,
+      "path": "run/public-export/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/artifacts.jsonl.seal.json",
+      "sha256": "dc0dbc9f27e5633d9e1204ee30f612a2d0d02ee9f169d218229228a7b45063cc",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\artifacts.jsonl.seal.json"
+    },
+    {
+      "bytes": 49023,
+      "mtime_ns": 1789437605470708800,
+      "path": "run/public-export/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/data.csv",
+      "sha256": "455f1e3df7e93dce381b6adff312e89e6a3b4d3900cf0d6083660cd0a4d53881",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\data.csv"
+    },
+    {
+      "bytes": 4382,
+      "mtime_ns": 1789437605326517600,
+      "path": "run/public-export/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/public.json",
+      "sha256": "eb639eb5e482f08d499cce95c5da180339253acb64cbe2f606fcbfdf8dca251f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\public.json"
+    },
+    {
+      "bytes": 1145,
+      "mtime_ns": 1789437605617472600,
+      "path": "run/public-export/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/receipt.json",
+      "sha256": "3fedb235317b1394d796bb16f78bd89ec316498792e7128f23090c1d15d01fb7",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\public-export\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\receipt.json"
+    },
+    {
+      "bytes": 11144,
+      "mtime_ns": 1789437609141150900,
+      "path": "run/public-export/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/artifacts.jsonl",
+      "sha256": "dfb287544ca040affab731d79afe041444ad474129f17c30d40943b77e8c7af1",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl"
+    },
+    {
+      "bytes": 295,
+      "mtime_ns": 1789437609407280400,
+      "path": "run/public-export/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/artifacts.jsonl.seal.json",
+      "sha256": "12855979bfb314f7f71f70127c969121bfdfa2610b0805320391be120cb110c6",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\artifacts.jsonl.seal.json"
+    },
+    {
+      "bytes": 106218,
+      "mtime_ns": 1789437607938902500,
+      "path": "run/public-export/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/data.csv",
+      "sha256": "bcef1bbadbb898bccf71d51e5e619d03ee0e093eb6a3aee553d6688d3d3304ee",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\data.csv"
+    },
+    {
+      "bytes": 3203,
+      "mtime_ns": 1789437607770448000,
+      "path": "run/public-export/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/public.json",
+      "sha256": "b623866374d6c0d494317b5faf2b5e9866543afbd14c1333568db447b48a6438",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\public.json"
+    },
+    {
+      "bytes": 947,
+      "mtime_ns": 1789437608092604100,
+      "path": "run/public-export/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/receipt.json",
+      "sha256": "2c8529a9ee2066b2627e733e388627426b0593956f205869809733d95f0cfa79",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\public-export\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\receipt.json"
+    },
+    {
+      "bytes": 9250,
+      "mtime_ns": 1789437610080268700,
+      "path": "run/public-export/export-receipt.json",
+      "sha256": "5766fb64bec4bb7b9bded93e2a160f796d3922a7f783c888d4a3bc71f0e10382",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\public-export\\export-receipt.json"
+    },
+    {
+      "bytes": 12826,
+      "mtime_ns": 1789437626624507000,
+      "path": "run/solver-model/calls/0001-m4_plan/headless-request.private.json",
+      "sha256": "b9ab953fcd6f5aabccf46927de986976d98ab3890b4d2766b0d50c9f5af215b0",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\headless-request.private.json"
+    },
+    {
+      "bytes": 6,
+      "mtime_ns": 1789437633382469200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/.metadata_version",
+      "sha256": "c48e6e8e49a7201f328a87456445464807aaa2ea2826ea6aa0aa64dcb504d540",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\.metadata_version"
+    },
+    {
+      "bytes": 109668,
+      "mtime_ns": 1789437633382469200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/README.md",
+      "sha256": "b1be9ca13c67d83b39a61c8813339aaa8a8fda983eb6967a329007471aa76988",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\README.md"
+    },
+    {
+      "bytes": 2,
+      "mtime_ns": 1789437632447062600,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/active_sessions.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\active_sessions.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789437629246333000,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/active_sessions.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\active_sessions.lock"
+    },
+    {
+      "bytes": 872,
+      "mtime_ns": 1789437626641468000,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/config.toml",
+      "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\config.toml"
+    },
+    {
+      "bytes": 9226,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/01-getting-started.md",
+      "sha256": "710721a51894e6f45c2d0d27965c29f775238121cbe920ab21f5ebe9814d246c",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\01-getting-started.md"
+    },
+    {
+      "bytes": 14999,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/02-authentication.md",
+      "sha256": "ecf2234c009e7c89faecaef7e1f51daed902e7343f7d85d774a79ecc525c7b12",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\02-authentication.md"
+    },
+    {
+      "bytes": 29775,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/03-keyboard-shortcuts.md",
+      "sha256": "4148c59a00b7ae124a88f18ce70fb5b0eff92f94b65d9d951bb4a836981ac482",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\03-keyboard-shortcuts.md"
+    },
+    {
+      "bytes": 22785,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/04-slash-commands.md",
+      "sha256": "b8be6b35513e6e34e3549ab3eac440c11ae364459cc34dd66d015ef0875bedab",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\04-slash-commands.md"
+    },
+    {
+      "bytes": 48644,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/05-configuration.md",
+      "sha256": "781c2b46bc68d153b8d9dc5843acce3634b06120aaf646bbd79b5ef40d21cea0",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\05-configuration.md"
+    },
+    {
+      "bytes": 14889,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/06-theming.md",
+      "sha256": "4750cea7e89fbdca3f0d4e7506c4825f441802d972f1da65b7e0f40b9414638e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\06-theming.md"
+    },
+    {
+      "bytes": 16852,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/07-mcp-servers.md",
+      "sha256": "b6d5c2a0a96d8349d074e2cfc9f0ed817f892d24f2891f74b3827d721b02c2eb",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\07-mcp-servers.md"
+    },
+    {
+      "bytes": 12948,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/08-skills.md",
+      "sha256": "e1191a3aa42ebf6272b087b1d5840dcd298b72fae6222593c7601ad4744434d8",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\08-skills.md"
+    },
+    {
+      "bytes": 19230,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/09-plugins.md",
+      "sha256": "62e0aacdd23ddfb96641cf570fa49f2f794ef24231ea27736a124bb23472cf4b",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\09-plugins.md"
+    },
+    {
+      "bytes": 48568,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/10-hooks.md",
+      "sha256": "3690762505faa65d6a82e6462abeaa20fe3a127de611021c171f9088f2c2e56f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\10-hooks.md"
+    },
+    {
+      "bytes": 13491,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/11-custom-models.md",
+      "sha256": "85e7ec8b325488a51efff1b4bab0964cde61926fe9e56738877e3ab06ac9287e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\11-custom-models.md"
+    },
+    {
+      "bytes": 9539,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/12-project-rules.md",
+      "sha256": "a7a9afb14f52789f8c0b74fb761fa971959a77cabba5c62dfbb27c8dee4dccc2",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\12-project-rules.md"
+    },
+    {
+      "bytes": 16235,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/13-memory.md",
+      "sha256": "e6b9d082cf53d0fa1c6a3d54c59c9c9a3d7755b3a6918645f736f09bfd8f084e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\13-memory.md"
+    },
+    {
+      "bytes": 41042,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/14-headless-mode.md",
+      "sha256": "333f8ccfb66e4a97019777788ed404c20cb305339063c63affe501147e8eac26",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\14-headless-mode.md"
+    },
+    {
+      "bytes": 11935,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/15-agent-mode.md",
+      "sha256": "ddeca2f0386a746d09316f697f229c48ab5e0f251bfca0b9d7815063611c9a84",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\15-agent-mode.md"
+    },
+    {
+      "bytes": 15396,
+      "mtime_ns": 1789437632442540200,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/16-subagents.md",
+      "sha256": "c8d157fa7e07b52f76983e5f5d597dc3a6fc73a5e7eef99d152fcf09c4e03e35",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\16-subagents.md"
+    },
+    {
+      "bytes": 19093,
+      "mtime_ns": 1789437632444045400,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/17-sessions.md",
+      "sha256": "2e32119c807a4ec3413b811b62ea2b95987e801f15c631824c05a9aa9d04e574",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\17-sessions.md"
+    },
+    {
+      "bytes": 17741,
+      "mtime_ns": 1789437632444045400,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/18-sandbox.md",
+      "sha256": "6456b77c91cea857e6323009e268359e9cf20e98a3fa784c32a4e1dcea86e2fb",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\18-sandbox.md"
+    },
+    {
+      "bytes": 9038,
+      "mtime_ns": 1789437632444045400,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/19-plan-mode.md",
+      "sha256": "7b586678844f5fd8a411c5668610cc50c0021ebc96dab3b987eb94a0028c66f4",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\19-plan-mode.md"
+    },
+    {
+      "bytes": 10284,
+      "mtime_ns": 1789437632444045400,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/20-background-tasks.md",
+      "sha256": "ac56e680cd8e6801dbaa0b16f409f672f76e491ebef9f5776712c43ef653e75d",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\20-background-tasks.md"
+    },
+    {
+      "bytes": 12434,
+      "mtime_ns": 1789437632444045400,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/21-terminal-support.md",
+      "sha256": "8de7bd258bf9c4b3ecaa00691da8a8e4a409e97b8d73289848b45ed6f0c9a81a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\21-terminal-support.md"
+    },
+    {
+      "bytes": 33000,
+      "mtime_ns": 1789437632445052300,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/22-permissions-and-safety.md",
+      "sha256": "8b79320f29aaa45961ba3a68520f408aa72f8724fb1c2afb153ab5b439a725c5",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\22-permissions-and-safety.md"
+    },
+    {
+      "bytes": 13180,
+      "mtime_ns": 1789437632445052300,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/23-dashboard.md",
+      "sha256": "97c34268fe00503e6e8be600ccb12aa2d13658876b0307c29b4f942df5bd8e0f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\23-dashboard.md"
+    },
+    {
+      "bytes": 16025,
+      "mtime_ns": 1789437632445555900,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/24-monitoring-usage.md",
+      "sha256": "0c77780d531ca82b9af4a5ea91122cc8edee93e9498514b7d9b021c3c2c2be17",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\24-monitoring-usage.md"
+    },
+    {
+      "bytes": 17348,
+      "mtime_ns": 1789437632445555900,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/25-status-line.md",
+      "sha256": "3200adfa3740a7bca6e4079a47d1a2a80801813edd7e1818ae4773bb488ab48c",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\25-status-line.md"
+    },
+    {
+      "bytes": 52600,
+      "mtime_ns": 1789437632445555900,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/26-config-reference.md",
+      "sha256": "ba434d85bd911f3ddf47ae81d6c39b09389454077c404feca67a158565fd526e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\26-config-reference.md"
+    },
+    {
+      "bytes": 1199,
+      "mtime_ns": 1789437632445555900,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/docs/user-guide/27-grok-clone.md",
+      "sha256": "7413479f218aa08f750c0784f5039e7ba4a9611e30dc72fa4017ec4c437d95e3",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\docs\\user-guide\\27-grok-clone.md"
+    },
+    {
+      "bytes": 10390,
+      "mtime_ns": 1789437643465697800,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/logs/unified.jsonl",
+      "sha256": "f48c1a82e83e1b3714366d2ccd579126ce0434d514f5c2cd83e1a98b93b4326b",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\logs\\unified.jsonl"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789437633380842800,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/managed_config.lock",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\managed_config.lock"
+    },
+    {
+      "bytes": 110,
+      "mtime_ns": 1789437662454344100,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/memtrace/1789437632-44884.jsonl",
+      "sha256": "3832622e89ad6f470ffe4309e62722b88db4c2a236c0db69fffba8cccd93c624",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\memtrace\\1789437632-44884.jsonl"
+    },
+    {
+      "bytes": 4638,
+      "mtime_ns": 1789437633113314500,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/models_cache.json",
+      "sha256": "7980457d0af391b8d030b6ae951eeeb6f8e1df86e1a1b909f7329612beba730a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\models_cache.json"
+    },
+    {
+      "bytes": 40960,
+      "mtime_ns": 1789437637762794400,
+      "path": "run/solver-model/calls/0001-m4_plan/native-home/worktrees.db",
+      "sha256": "391e1fd7002d2d9974ea5fc738007797fbb70993127d4f0ccb61f591c2080387",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-home\\worktrees.db"
+    },
+    {
+      "bytes": 10498,
+      "mtime_ns": 1789437646245828600,
+      "path": "run/solver-model/calls/0001-m4_plan/native-profile/AppData/Local/Microsoft/Windows/PowerShell/ModuleAnalysisCache",
+      "sha256": "0c6a80eb3cb2c714b04905ba4aa211c7b17f3fa26705b2671c8a3912399df8a5",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-profile\\AppData\\Local\\Microsoft\\Windows\\PowerShell\\ModuleAnalysisCache"
+    },
+    {
+      "bytes": 156085,
+      "mtime_ns": 1789437627117056100,
+      "path": "run/solver-model/calls/0001-m4_plan/native-reservation.json",
+      "sha256": "1b02e411137534cea3116a8e15da704be81c0f3e109bab34486a81071a59c38e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native-reservation.json"
+    },
+    {
+      "bytes": 500,
+      "mtime_ns": 1789437754719710300,
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-after/attempt-000/credits.private.json",
+      "sha256": "fe3f03100f9a57b5a1ddbc36133fc6b2b12bb5ce124b035ba82671c8d2c61aa1",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\credits.private.json"
+    },
+    {
+      "bytes": 694,
+      "mtime_ns": 1789437756240036300,
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-after/attempt-000/observation.json",
+      "sha256": "4e36feeab1a3281972692acc6361cd0278f3f02786764cb82ceb6444c5c9b6d0",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\observation.json"
+    },
+    {
+      "bytes": 959,
+      "mtime_ns": 1789437756237504900,
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-after/attempt-000/requests.json",
+      "sha256": "13d8795b4ae88a4ab5229a42db198763a61b117ab1752706a2c9bfcbeddd45b5",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\requests.json"
+    },
+    {
+      "bytes": 2,
+      "mtime_ns": 1789437755614064600,
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-after/attempt-000/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\topup.private.json"
+    },
+    {
+      "bytes": 618,
+      "mtime_ns": 1789437756237504900,
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-after/attempt-000/user.private.json",
+      "sha256": "19c28e904575909054709212e12d4be0962fb79a327b8df4b131e77545ad2cf5",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempt-000\\user.private.json"
+    },
+    {
+      "bytes": 1066,
+      "mtime_ns": 1789437756250054300,
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-after/attempts.json",
+      "sha256": "d3c50e65444b4da3e7e0d52ec7cd8f81194651e752e844be99a86c2680807266",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\billing-after\\attempts.json"
+    },
+    {
+      "bytes": 500,
+      "mtime_ns": 1789437629977657500,
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-before/attempt-000/credits.private.json",
+      "sha256": "fe3f03100f9a57b5a1ddbc36133fc6b2b12bb5ce124b035ba82671c8d2c61aa1",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\credits.private.json"
+    },
+    {
+      "bytes": 694,
+      "mtime_ns": 1789437631368716100,
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-before/attempt-000/observation.json",
+      "sha256": "7f18d71709ab781ae8fe087ab5f607f0507a144d51bbda7b7b669cc995005093",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\observation.json"
+    },
+    {
+      "bytes": 959,
+      "mtime_ns": 1789437631358420200,
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-before/attempt-000/requests.json",
+      "sha256": "c4ae7b2b3a4bd4c1efc0ddead32dc3caf56ff70aa8a1727f83c757c5fb27b9ab",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\requests.json"
+    },
+    {
+      "bytes": 2,
+      "mtime_ns": 1789437630730378900,
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-before/attempt-000/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\topup.private.json"
+    },
+    {
+      "bytes": 618,
+      "mtime_ns": 1789437631357900700,
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-before/attempt-000/user.private.json",
+      "sha256": "19c28e904575909054709212e12d4be0962fb79a327b8df4b131e77545ad2cf5",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempt-000\\user.private.json"
+    },
+    {
+      "bytes": 1066,
+      "mtime_ns": 1789437631379613300,
+      "path": "run/solver-model/calls/0001-m4_plan/native/billing-before/attempts.json",
+      "sha256": "c121843a58592996eb2ad0f69281ff3a08b85a4748f283c3834ee1bfde3e1b28",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\billing-before\\attempts.json"
+    },
+    {
+      "bytes": 3183,
+      "mtime_ns": 1789437627442946400,
+      "path": "run/solver-model/calls/0001-m4_plan/native/command.json",
+      "sha256": "026f74e359dce24a416ba38dc9d863220df9896ef80404a8310505a3e273bc39",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\command.json"
+    },
+    {
+      "bytes": 5664,
+      "mtime_ns": 1789437629278523300,
+      "path": "run/solver-model/calls/0001-m4_plan/native/inspect/process.json",
+      "sha256": "9c849c8b3845821c6de0f1c8bcbeae4c0f318207bc086dc8618e0296bc0cb2fc",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\inspect\\process.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789437629277226100,
+      "path": "run/solver-model/calls/0001-m4_plan/native/inspect/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\inspect\\stderr.private.txt"
+    },
+    {
+      "bytes": 3206,
+      "mtime_ns": 1789437629277226100,
+      "path": "run/solver-model/calls/0001-m4_plan/native/inspect/stdout.private.jsonl",
+      "sha256": "bfcb50941a92897dff92d50f51dc5ef6ce0226e6d1ddef00ad218833516bab76",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\inspect\\stdout.private.jsonl"
+    },
+    {
+      "bytes": 164634,
+      "mtime_ns": 1789437756582544400,
+      "path": "run/solver-model/calls/0001-m4_plan/native/observer-receipt.json",
+      "sha256": "8ea9301365ddef2c71247f584a5e67720078f4a5593c8453d69f1de28999bc2f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\observer-receipt.json"
+    },
+    {
+      "bytes": 8652,
+      "mtime_ns": 1789437754102209500,
+      "path": "run/solver-model/calls/0001-m4_plan/native/process.json",
+      "sha256": "9231a95d95b20c8f214dda832884f893924f564c1eb5ee6fd8d3e05aaef68c6d",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\process.json"
+    },
+    {
+      "bytes": 10957,
+      "mtime_ns": 1789437627275630600,
+      "path": "run/solver-model/calls/0001-m4_plan/native/prompt.private.txt",
+      "sha256": "15490095d068ba1e9eaf09528c403069869d3e7d24ac640089cae1a147ec265c",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\prompt.private.txt"
+    },
+    {
+      "bytes": 1000,
+      "mtime_ns": 1789437627276633200,
+      "path": "run/solver-model/calls/0001-m4_plan/native/schema.private.json",
+      "sha256": "2183a68b2b05aadc0e2b0002d2622290c6bb5b27fa055a3054652c4fd5f5d93f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\schema.private.json"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789437754101204100,
+      "path": "run/solver-model/calls/0001-m4_plan/native/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\stderr.private.txt"
+    },
+    {
+      "bytes": 0,
+      "mtime_ns": 1789437754101204100,
+      "path": "run/solver-model/calls/0001-m4_plan/native/stdout.private.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\native\\stdout.private.jsonl"
+    },
+    {
+      "bytes": 164634,
+      "mtime_ns": 1789437756592110200,
+      "path": "run/solver-model/calls/0001-m4_plan/observer-receipt.private.json",
+      "sha256": "8ea9301365ddef2c71247f584a5e67720078f4a5593c8453d69f1de28999bc2f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\observer-receipt.private.json"
+    },
+    {
+      "bytes": 10828,
+      "mtime_ns": 1789437626624507000,
+      "path": "run/solver-model/calls/0001-m4_plan/request.private.json",
+      "sha256": "cb0c0fa56056540de382b615aacf8386731c6afbefa124fc742a0f7ad6614e28",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\calls\\0001-m4_plan\\request.private.json"
+    },
+    {
+      "bytes": 298413,
+      "mtime_ns": 1789437758513676600,
+      "path": "run/solver-model/ledger.json",
+      "sha256": "5c8ff9802a18e7a08341491a60cdc25f2f806aa87ddd4d720c2f64de88b05bc6",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\solver-model\\ledger.json"
+    },
+    {
+      "bytes": 756,
+      "mtime_ns": 1789437758554756500,
+      "path": "run/summary.json",
+      "sha256": "517425d9b884a08575efe6ba6db3464738c91af79b6f4622777f41da404ad6a0",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\summary.json"
+    }
+  ],
+  "links_followed": false,
+  "original_bytes_and_mtime_unchanged": true,
+  "schema": "actual-m4m5-headless-retained-private-v1",
+  "zip": {
+    "bytes": 770089,
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\retained-private-evidence\\actual-m4m5-headless-r1\\full-run-preparation-private-without-credentials.zip",
+    "sha256": "f0b16a3bf4aa599315c77227c1993bc0acda54c9427c9bb5736001c4046f3121"
+  }
+}
