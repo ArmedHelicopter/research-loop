@@ -339,7 +339,8 @@ def _headless_evaluator_material(spec: Mapping[str, object], *, rubric_mode: str
     required = {"provider_kind", "executable", "work_root", "private_home", "private_profile", "public_cwd",
                 "frozen_files", "evaluator_id", "evaluator_version", "model", "effort", "max_calls",
                 "max_tokens", "timeout_seconds", "account_read_recovery"}
-    if (set(spec) != required or spec.get("provider_kind") != "grok-headless-frozen-evaluator-v1"
+    versioned_required = required | {"native_deployment"}
+    if (set(spec) not in (required, versioned_required) or spec.get("provider_kind") != "grok-headless-frozen-evaluator-v1"
             or spec.get("model") != "grok-4.6" or spec.get("effort") != "low"
             or type(spec.get("timeout_seconds")) is not int or spec["timeout_seconds"] != 60
             or not isinstance(spec.get("frozen_files"), Mapping) or not spec["frozen_files"]):
@@ -360,6 +361,14 @@ def _headless_evaluator_material(spec: Mapping[str, object], *, rubric_mode: str
             raise ContractError("supplied headless factory source pin differs")
         pins[str(path)] = actual
     executable = _absolute(spec["executable"], "headless executable").resolve()
+    deployment = None
+    if "native_deployment" in spec:
+        from research_loop.modular.contracts import FrozenRecord as NativeRecord
+        from research_loop.modular.grok_native_deployment import FrozenHeadlessTrainDeployment
+        if not isinstance(spec["native_deployment"], Mapping):
+            raise ContractError("headless evaluator native deployment is invalid")
+        deployment = FrozenHeadlessTrainDeployment(NativeRecord.from_dict(dict(spec["native_deployment"])))
+        deployment.verify_executable(executable)
     if pins.get(str(executable)) != _sha(executable.read_bytes()):
         raise ContractError("supplied evaluator executable pin differs")
     from evaluation.modular.headless_evaluator_model_port import (
@@ -369,7 +378,8 @@ def _headless_evaluator_material(spec: Mapping[str, object], *, rubric_mode: str
             or dict(spec["account_read_recovery"]) != RECOVERY
             or type(spec["account_read_recovery"].get("max_attempts")) is not int):
         raise ContractError("production headless evaluator recovery configuration is invalid")
-    generated = _source_pins(rubric_mode)
+    generated = (_source_pins(rubric_mode) if deployment is None
+                 else _source_pins(rubric_mode, deployment))
     if any(path in pins and pins[path] != value for path, value in generated.items()):
         raise ContractError("supplied evaluator source pin differs")
     pins.update(generated)
@@ -389,7 +399,7 @@ def _headless_evaluator_material(spec: Mapping[str, object], *, rubric_mode: str
         "public_cwd": _absolute(spec["public_cwd"], "headless public cwd").resolve(),
     }
     schemas = {benchmark: endpoint_type._output_schema(benchmark) for benchmark in ("discoverybench", "blade")}
-    config = FrozenRecord.from_dict({
+    body = {
         "schema": "grok-headless-evaluator-port-v1", "provider_kind": GrokHeadlessEvaluatorModelPort.provider_kind,
         "request_contract": headless_request_schema, "evaluator_id": spec["evaluator_id"],
         "evaluator_version": spec["evaluator_version"], "rubric_mode": rubric_mode,
@@ -401,11 +411,15 @@ def _headless_evaluator_material(spec: Mapping[str, object], *, rubric_mode: str
         "executable": str(executable), "executable_sha256": _sha(executable.read_bytes()),
         "private_home": str(paths["private_home"]), "private_profile_root": str(paths["private_profile"]),
         "public_cwd_root": str(paths["public_cwd"]), "frozen_files": json.loads(canonical(pins)),
-    })
+    }
+    if deployment is not None:
+        body.update(native_deployment=deployment.record.data(), native_deployment_digest=deployment.digest)
+    config = FrozenRecord.from_dict(body)
     return ({"executable": executable, **paths, "frozen_files": pins,
              "evaluator_id": spec["evaluator_id"], "evaluator_version": spec["evaluator_version"],
              "rubric_mode": rubric_mode, "max_calls": spec["max_calls"], "max_tokens": spec["max_tokens"],
-             "timeout_seconds": spec["timeout_seconds"], "account_read_recovery": RECOVERY}, config)
+             "timeout_seconds": spec["timeout_seconds"], "account_read_recovery": RECOVERY,
+             **({"deployment": deployment} if deployment is not None else {})}, config)
 
 
 def headless_evaluator_descriptor(spec: Mapping[str, object], *, rubric_mode: str = "primary_v1") -> dict[str, str]:

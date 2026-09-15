@@ -13,6 +13,7 @@ from evaluation.modular.scoring_service import FrozenBenchmarkRubricEndpoint
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.grok_acp_transport import MODEL, diagnostic_config
 from research_loop.modular.grok_headless_transport import HeadlessResult, run_headless_diagnostic, verify_headless_request_binding
+from research_loop.modular.grok_native_deployment import checked_headless_train_deployment
 from research_loop.modular.model_port import _validate_schema
 from research_loop.ontology import ContractError, canonical
 
@@ -65,7 +66,7 @@ def _exclusive(path: Path):
                 pass
 
 
-def _source_pins(rubric_mode: str) -> dict[str, str]:
+def _source_pins(rubric_mode: str, deployment=None) -> dict[str, str]:
     """Pin every local implementation that interprets this private contract."""
     import evaluation.modular.headless_evaluator_model_port as port
     import evaluation.modular.scoring_service as scoring
@@ -82,6 +83,8 @@ def _source_pins(rubric_mode: str) -> dict[str, str]:
     if rubric_mode == "lineage_v1":
         import evaluation.modular.lineage_rubric as lineage
         paths.append(Path(lineage.__file__).resolve())
+    if deployment is not None:
+        paths.extend(Path(path) for path in checked_headless_train_deployment(deployment).source_pins())
     return {str(path): _sha(path.read_bytes()) for path in paths}
 
 
@@ -98,7 +101,8 @@ class GrokHeadlessEvaluatorModelPort:
     def __init__(self, *, executable: Path | str, work_root: Path, private_home: Path, private_profile: Path,
                  public_cwd: Path, frozen_files: Mapping[str, str], evaluator_id: str, evaluator_version: str,
                  rubric_mode: str = "primary_v1", max_calls: int, max_tokens: int,
-                 timeout_seconds: int = 60, account_read_recovery: Mapping[str, Any] = RECOVERY) -> None:
+                 timeout_seconds: int = 60, account_read_recovery: Mapping[str, Any] = RECOVERY,
+                 deployment=None) -> None:
         if (rubric_mode not in {"primary_v1", "lineage_v1"} or not isinstance(evaluator_id, str) or not evaluator_id
                 or not isinstance(evaluator_version, str) or not evaluator_version or type(max_calls) is not int
                 or max_calls < 1 or type(max_tokens) is not int or max_tokens < 1
@@ -111,6 +115,7 @@ class GrokHeadlessEvaluatorModelPort:
             self.endpoint_type = FrozenLineageRubricEndpoint
         else:
             self.endpoint_type = FrozenBenchmarkRubricEndpoint
+        self.native_deployment = None if deployment is None else checked_headless_train_deployment(deployment)
         self.executable = str(Path(executable).resolve())
         self.root = Path(work_root).resolve()
         self.private_home = Path(private_home).resolve()
@@ -118,9 +123,12 @@ class GrokHeadlessEvaluatorModelPort:
         self.public_cwd = Path(public_cwd).resolve()
         supplied = dict(frozen_files)
         executable_sha256 = _sha(Path(self.executable).read_bytes())
+        if self.native_deployment is not None:
+            self.native_deployment.verify_executable(self.executable)
         if supplied.get(self.executable) != executable_sha256:
             raise ContractError("supplied evaluator executable pin differs")
-        generated = _source_pins(rubric_mode)
+        generated = (_source_pins(rubric_mode) if self.native_deployment is None
+                     else _source_pins(rubric_mode, self.native_deployment))
         if any(path in supplied and supplied[path] != digest for path, digest in generated.items()):
             raise ContractError("supplied evaluator source pin differs")
         supplied.update(generated)
@@ -151,6 +159,9 @@ class GrokHeadlessEvaluatorModelPort:
                   "executable_sha256": executable_sha256, "private_home": str(self.private_home),
                   "private_profile_root": str(self.private_profile), "public_cwd_root": str(self.public_cwd),
                   "frozen_files": self.frozen_files}
+        if self.native_deployment is not None:
+            config.update(native_deployment=self.native_deployment.record.data(),
+                          native_deployment_digest=self.native_deployment.digest)
         self._config_record = FrozenRecord.from_dict(config)
         config = self._config_record.data()
         with _exclusive(self.lock_path):
@@ -221,7 +232,7 @@ class GrokHeadlessEvaluatorModelPort:
                     reservation=str(directory / "native-reservation.json"), frozen_files=frozen, prompt=prompt,
                     schema=schema, main_output_cap=_MAIN_OUTPUT_CAP, observed_main_token_cap=_OBSERVED_MAIN_TOKEN_CAP,
                     input_byte_cap=_INPUT_BYTE_CAP, timeout=60, reasoning_effort="low",
-                    account_read_recovery=self.account_read_recovery)
+                    account_read_recovery=self.account_read_recovery, deployment=self.native_deployment)
                 if not isinstance(result, HeadlessResult):
                     raise ContractError("headless evaluator native result differs")
                 receipt = result.receipt.data()
@@ -311,11 +322,18 @@ def _verify_live_config(port: GrokHeadlessEvaluatorModelPort) -> dict[str, Any]:
                 "schemas": port.schemas, "executable": port.executable, "private_home": str(port.private_home),
                 "private_profile_root": str(port.private_profile), "public_cwd_root": str(port.public_cwd),
                 "frozen_files": port.frozen_files}
+    if port.native_deployment is None:
+        if "native_deployment" in frozen or "native_deployment_digest" in frozen:
+            raise ContractError("legacy headless evaluator deployment drifted")
+    else:
+        expected.update(native_deployment=port.native_deployment.record.data(),
+                        native_deployment_digest=port.native_deployment.digest)
     if any(frozen.get(name) != value for name, value in expected.items()):
         raise ContractError("live headless evaluator configuration drifted")
     if _sha(Path(port.executable).read_bytes()) != frozen["executable_sha256"]:
         raise ContractError("live headless evaluator executable drifted")
-    current_sources = _source_pins(port.rubric_mode)
+    current_sources = (_source_pins(port.rubric_mode) if port.native_deployment is None
+                       else _source_pins(port.rubric_mode, port.native_deployment))
     if any(port.frozen_files.get(path) != digest for path, digest in current_sources.items()):
         raise ContractError("live headless evaluator source drifted")
     if port.ledger.get("config") != frozen:
@@ -329,9 +347,12 @@ def _directory(port: GrokHeadlessEvaluatorModelPort, row: Mapping[str, Any]) -> 
 
 def _expected_context(port: GrokHeadlessEvaluatorModelPort, row: Mapping[str, Any]) -> dict[str, Any]:
     directory = _directory(port, row)
-    return {"executable": port.executable, "cwd": str(directory / "public-cwd"),
+    context = {"executable": port.executable, "cwd": str(directory / "public-cwd"),
             "private_home": str(directory / "native-home"), "private_profile": str(directory / "native-profile"),
             "reasoning_effort": "low", "account_read_recovery": port.account_read_recovery}
+    if port.native_deployment is not None:
+        context["native_deployment"] = port.native_deployment.record.data()
+    return context
 
 
 def _expected_private(port: GrokHeadlessEvaluatorModelPort, row: Mapping[str, Any]) -> dict[str, Any]:
@@ -403,7 +424,8 @@ def _verify_row(port: GrokHeadlessEvaluatorModelPort, row: Mapping[str, Any], re
             "account_read_recovery": port.account_read_recovery, "main_output_cap": _MAIN_OUTPUT_CAP,
             "observed_main_token_cap": _OBSERVED_MAIN_TOKEN_CAP, "max_input_bytes": _INPUT_BYTE_CAP,
             "timeout_seconds": 60}
-    binding = verify_headless_request_binding(result, entry, directory, spec, frozen)
+    binding = verify_headless_request_binding(result, entry, directory, spec, frozen,
+                                              deployment=port.native_deployment)
     if row.get("known_headless_main_usage") != binding.data().get("usage", {}).get("main"):
         raise ContractError("headless evaluator known MAIN usage differs")
     return binding
