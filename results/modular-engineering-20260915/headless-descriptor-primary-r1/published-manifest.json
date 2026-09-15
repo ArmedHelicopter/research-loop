@@ -1,0 +1,78 @@
+{
+  "closed_gate": {
+    "commit": "2113371268b30411712273623371cbcf49e0ccc8",
+    "junit": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 20
+    },
+    "source_count": 775,
+    "source_unchanged": true,
+    "wall_seconds": 318.23399999999674
+  },
+  "copied_artifacts": [
+    {
+      "bytes": 91010,
+      "path": "before.json",
+      "sha256": "42b7036db681add3284896f421c48379cfeeee7d5b406e69dafb14b96bc37058"
+    },
+    {
+      "bytes": 91018,
+      "path": "closed.json",
+      "sha256": "d147373ed186194a3d5fbe09d6156f2370f2f35313531d52b629ff609974d391"
+    },
+    {
+      "bytes": 136066,
+      "path": "source-manifest.json",
+      "sha256": "f2da81d1b42282daea506d1117dc0db24f9fee02e3fefdedd179b4c50ae5f83d"
+    },
+    {
+      "bytes": 2595710,
+      "path": "sources.zip",
+      "sha256": "cd8df721724b57350442ad81c0bb0c95db42e32291cae849a02036bb31328d1e"
+    },
+    {
+      "bytes": 3055,
+      "path": "checks.xml",
+      "sha256": "a9fd7e4748199bbf9b92a2c369b3324221f9b8d65a004fb8e1865a03d4a33ba3"
+    },
+    {
+      "bytes": 1826,
+      "path": "check-helper.py",
+      "sha256": "71e2e8ba100d264bd5a91be47c40866bda417e6099e21f6e87f284d08cf31c3a"
+    },
+    {
+      "bytes": 6717,
+      "path": "archive-helper.py",
+      "sha256": "dd0eaf0bfc8c0d05e88b6faa3bdbc8c3a5997a37c3667c888cdea4e5db9edc3e"
+    }
+  ],
+  "limits": [
+    "Synthetic descriptor/controller engineering gate only.",
+    "No model, API, Docker, VAL, or ground-truth execution in this archive step.",
+    "Credential files were excluded from the retained raw zip."
+  ],
+  "retained_private": {
+    "excluded_credential_count": 65,
+    "file_count": 1819,
+    "links_followed": false,
+    "manifest_sha256": "b17e7511e773fe3774a54a0085408ec4a4d6e4d4d2e95df78447f5693fcea5d7",
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\retained-private-evidence\\headless-descriptor-primary-r1\\selected-test-roots-without-credentials.zip",
+    "roots": [
+      "test_full_v6_factorial_closes_0",
+      "test_primary_scorer_factory_co0",
+      "test_pure_descriptor_matches_c0",
+      "test_pure_descriptor_matches_c1",
+      "test_pure_descriptor_rejects_n0",
+      "test_headless_factory_rejects_0",
+      "test_headless_factory_rejects_1",
+      "test_headless_factory_rejects_2",
+      "test_headless_factory_rejects_3",
+      "test_headless_factory_rejects_4"
+    ],
+    "sha256": "9b577d2032952333d63d57591ab45f9aeb8d54c865f8ffd3b59cc55e3d274e31"
+  },
+  "schema": "headless-descriptor-primary-archive-v1",
+  "self_excluding": true
+}
