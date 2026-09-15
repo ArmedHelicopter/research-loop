@@ -14,6 +14,7 @@ from research_loop.modular.admission_prediction_exploration_controller import (
 )
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.runtime import AuditVerifier
+from research_loop.modular.scorer_finalization_artifact_catalogue import verify_admission_headless_scorer_finalization_observation_catalogues
 from research_loop.ontology import canonical
 from test_admission_prediction_exploration_controller import EXECUTION, SCORER, IMAGE, model, prepare
 from test_headless_evaluator_factory import native_spec
@@ -100,3 +101,12 @@ def test_native_v4_controller_runs_16_cells_and_closes_the_declared_evaluator(tm
     assert len(solver['calls']) == 48 and solver['known_main_tokens'] == 480
     assert len(evaluator_ledger['calls']) == 16 and evaluator_ledger['known_main_tokens'] == 160
     assert evaluator_ledger['usage_incomplete'] is False
+    attempt = json.loads((tmp_path / 'run' / 'controller-attempt.json').read_text(encoding='utf-8'))
+    observation_receipt = FrozenRecord.from_dict(attempt['evaluator_observation_catalogues'])
+    anchors = observation_receipt.data()['catalogues']
+    assert len(anchors) == 2
+    assert all(anchor['record_digests'] and FrozenRecord.from_dict(anchor['seal']).content_hash == anchor['seal_digest']
+               for anchor in anchors)
+    verify_admission_headless_scorer_finalization_observation_catalogues(
+        root=tmp_path / 'run', config=config, panel=compiled.panels[0], service=client,
+        receipt=observation_receipt)

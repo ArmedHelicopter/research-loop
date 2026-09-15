@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import os
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -39,7 +40,8 @@ def _panel_binding(panel) -> dict[str, Any]:
 
 
 def _event_projection(event: Mapping[str, Any], *, observation_digest: str,
-                      journal_snapshot: Mapping[str, Any], attempt: Mapping[str, Any]) -> dict[str, Any]:
+                      journal_snapshot: Mapping[str, Any], attempt: Mapping[str, Any],
+                      panel_member: DataIdentity) -> dict[str, Any]:
     # Deliberately omit request_text and response_text. The original append-only
     # journal retains them; this catalogue contains only digest-bound metadata.
     status = event["status"]
@@ -58,20 +60,27 @@ def _event_projection(event: Mapping[str, Any], *, observation_digest: str,
                         score_eligible=False)
     return {"schema": _SCHEMA, "observation_digest": observation_digest,
             "status": status, "event": selected, "observation_journal": dict(journal_snapshot),
-            "attempt": dict(attempt), "authorization": "none",
+            "attempt": dict(attempt), "panel_member_association": {
+                "kind": "panel_member", "identity": panel_member.data()}, "authorization": "none",
             "scientific_status": "not_measured"}
 
 
-def register_admission_headless_scorer_finalization_observations(*, root: Path, config,
-        panel, service) -> FrozenRecord:
-    """Register one non-authorizing projection per observed event and task identity.
+def _attempt_prefix(root: Path, *, create: bool) -> dict[str, Any]:
+    original = root / "controller-attempt.json"
+    prefix = root / "scorer-finalization-observations" / "controller-attempt-prefix.json"
+    if create:
+        raw = original.read_bytes()
+        prefix.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            with prefix.open("xb") as stream:
+                stream.write(raw); stream.flush(); os.fsync(stream.fileno())
+        except FileExistsError:
+            if prefix.read_bytes() != raw:
+                raise ContractError("scorer finalization attempt prefix already differs")
+    return _snapshot(prefix)
 
-    The source journal remains the original text evidence.  This bridge verifies
-    its chain, text digests, current scorer-process source hash, exact frozen
-    scorer configuration/provider, and panel before it writes any descriptor.
-    It never treats an observation as a score, closure authority, or a semantic
-    parent of a task artifact.
-    """
+
+def _validated_observations(*, root: Path, config, panel, service, create_attempt_prefix: bool):
     root = Path(root)
     if (not isinstance(config.record, FrozenRecord) or not isinstance(service.config.record, FrozenRecord)
             or not isinstance(service.evaluator_provider, dict)):
@@ -95,10 +104,9 @@ def register_admission_headless_scorer_finalization_observations(*, root: Path, 
                    or row["event"]["producer_source_sha256"] != scorer_source["sha256"]
                    for row in rows)):
         raise ContractError("scorer finalization observations differ from frozen admission bindings")
-    controller = _snapshot(root / "controller-attempt.json")
+    controller = _attempt_prefix(root, create=create_attempt_prefix)
     attempt = {"schema": "admission-headless-scorer-finalization-attempt-binding-v1",
-               "controller_attempt": controller, "observation_journal": before}
-    run_id = FrozenRecord.from_dict(attempt).content_hash
+               "controller_attempt_prefix": controller, "observation_journal": before}
     refs = (
         _reference("frozen_scorer_config", scorer.data()),
         _reference("frozen_evaluator_provider", expected_provider),
@@ -107,35 +115,111 @@ def register_admission_headless_scorer_finalization_observations(*, root: Path, 
     )
     identities = tuple(sorted({cell.identity for cell in panel.cells},
                               key=lambda value: canonical(value.data())))
-    records = []
+    if not identities or any(identity.domain != "train" for identity in identities):
+        raise ContractError("admission finalization observations require actual TRAIN panel members")
+    return root, scorer, rows, before, attempt, refs, identities
+
+
+def _catalogue_path(root: Path, identity: DataIdentity) -> Path:
+    return root / "scorer-finalization-observations" / FrozenRecord.from_dict(identity.data()).content_hash / "artifacts.jsonl"
+
+
+def register_admission_headless_scorer_finalization_observations(*, root: Path, config,
+        panel, service) -> FrozenRecord:
+    """Register one non-authorizing projection per observed event and task identity.
+
+    The source journal remains the original text evidence.  This bridge verifies
+    its chain, text digests, current scorer-process source hash, exact frozen
+    scorer configuration/provider, and panel before it writes any descriptor.
+    It never treats an observation as a score, closure authority, or a semantic
+    parent of a task artifact.
+    """
+    root, _, rows, before, attempt, refs, identities = _validated_observations(
+        root=root, config=config, panel=panel, service=service, create_attempt_prefix=True)
+    run_id = FrozenRecord.from_dict(attempt).content_hash
     source = source_snapshot(Path(__file__))
+    anchors = []
     for identity in identities:
-        identity.require_train()
-        key = FrozenRecord.from_dict(identity.data()).content_hash
-        catalogue = ArtifactCatalogue(root / "scorer-finalization-observations" / key / "artifacts.jsonl",
-            identity=identity, run_id=run_id, experiment_id=_EXPERIMENT,
+        catalogue = ArtifactCatalogue(_catalogue_path(root, identity), identity=identity,
+            run_id=run_id, experiment_id=_EXPERIMENT,
             lock_digest=config.record.content_hash, producer_source=source)
         if catalogue.records():
             raise ContractError("scorer finalization observation catalogue already exists")
+        descriptors = []
         for row in rows:
             event = row["event"]
             status = "rejected" if event["status"] == "rejected" else "produced"
-            records.append(catalogue.append(
+            descriptors.append(catalogue.append(
                 kind=f"admission_scorer_finalization_{event['status']}_observation",
                 module=None, coverage="uncovered", status=status,
                 payload=_event_projection(event, observation_digest=row["digest"],
-                                          journal_snapshot=before, attempt=attempt),
+                                          journal_snapshot=before, attempt=attempt, panel_member=identity),
                 producer_source=source, config_refs=refs,
                 checks=(_reference("observation_chain_row", {"schema": "headless-evaluator-client-chain-row-v1",
                     "sequence": row["sequence"], "digest": row["digest"],
                     "previous": row["previous"]}),)))
-        catalogue.seal()
+        seal = catalogue.seal()
+        anchors.append({"identity": identity.data(), "path": str(catalogue.path.resolve()),
+                        "record_digests": [record.content_hash for record in descriptors],
+                        "seal": seal.data(), "seal_digest": seal.content_hash})
+    # A second byte snapshot makes a changing source journal fail closed rather
+    # than certifying a projection of an earlier, now-stale prefix.
+    if _snapshot(Path(str(service.journal_path) + ".headless-evaluator-client.jsonl")) != before:
+        raise ContractError("scorer finalization observation journal changed during catalogue projection")
     return FrozenRecord.from_dict({"schema": "admission-headless-scorer-finalization-observation-catalogues-v1",
-        "attempt": attempt, "panel_digest": panel.digest,
-        "catalogues": [{"identity": identity.data(),
-                         "path": str((root / "scorer-finalization-observations" /
-                                      FrozenRecord.from_dict(identity.data()).content_hash / "artifacts.jsonl").resolve()),
-                         "record_digests": [record.content_hash for record in records
-                                            if record.data()["identity"] == identity.data()]}
-                        for identity in identities],
+        "attempt": attempt, "panel_digest": panel.digest, "catalogues": anchors,
         "authorization": "none", "scientific_status": "not_measured"})
+
+
+def verify_admission_headless_scorer_finalization_observation_catalogues(*, root: Path,
+        config, panel, service, receipt: FrozenRecord) -> None:
+    """Re-read originals and require exact, sealed non-authorizing projections."""
+    if not isinstance(receipt, FrozenRecord):
+        raise ContractError("frozen scorer finalization observation receipt required")
+    root, _, rows, before, attempt, refs, identities = _validated_observations(
+        root=root, config=config, panel=panel, service=service, create_attempt_prefix=False)
+    body = receipt.data()
+    if (set(body) != {"schema", "attempt", "panel_digest", "catalogues", "authorization", "scientific_status"}
+            or body["schema"] != "admission-headless-scorer-finalization-observation-catalogues-v1"
+            or body["attempt"] != attempt or body["panel_digest"] != panel.digest
+            or body["authorization"] != "none" or body["scientific_status"] != "not_measured"
+            or not isinstance(body["catalogues"], list) or len(body["catalogues"]) != len(identities)):
+        raise ContractError("scorer finalization observation receipt binding differs")
+    run_id = FrozenRecord.from_dict(attempt).content_hash
+    source = source_snapshot(Path(__file__))
+    anchors = {canonical(anchor.get("identity")): anchor for anchor in body["catalogues"] if isinstance(anchor, dict)}
+    if len(anchors) != len(identities):
+        raise ContractError("scorer finalization observation identities differ")
+    for identity in identities:
+        anchor = anchors.get(canonical(identity.data()))
+        path = _catalogue_path(root, identity)
+        if (anchor is None or set(anchor) != {"identity", "path", "record_digests", "seal", "seal_digest"}
+                or anchor["path"] != str(path.resolve()) or not isinstance(anchor["record_digests"], list)):
+            raise ContractError("scorer finalization observation catalogue anchor differs")
+        catalogue = ArtifactCatalogue(path, identity=identity, run_id=run_id,
+            experiment_id=_EXPERIMENT, lock_digest=config.record.content_hash, producer_source=source)
+        seal = FrozenRecord.from_dict(anchor["seal"])
+        if seal.content_hash != anchor["seal_digest"]:
+            raise ContractError("scorer finalization observation seal digest differs")
+        catalogue.verify(seal)
+        records = catalogue.records()
+        expected = []
+        for row in rows:
+            event = row["event"]
+            status = "rejected" if event["status"] == "rejected" else "produced"
+            expected.append({"kind": f"admission_scorer_finalization_{event['status']}_observation",
+                "status": status, "payload": _event_projection(event, observation_digest=row["digest"],
+                    journal_snapshot=before, attempt=attempt, panel_member=identity), "check": _reference("observation_chain_row",
+                    {"schema": "headless-evaluator-client-chain-row-v1", "sequence": row["sequence"],
+                     "digest": row["digest"], "previous": row["previous"]})})
+        if len(records) != len(expected) or anchor["record_digests"] != [record.content_hash for record in records]:
+            raise ContractError("scorer finalization observation records differ")
+        for record, item in zip(records, expected, strict=True):
+            descriptor = record.data()
+            if (descriptor["kind"] != item["kind"] or descriptor["module"] is not None
+                    or descriptor["coverage"] != "uncovered" or descriptor["parents"] != []
+                    or descriptor["status"] != item["status"]
+                    or descriptor["payload"]["canonical"] != item["payload"]
+                    or descriptor["config_refs"] != list(refs) or descriptor["checks"] != [item["check"]]
+                    or descriptor["scientific_validated"] is not False):
+                raise ContractError("scorer finalization observation projection differs")

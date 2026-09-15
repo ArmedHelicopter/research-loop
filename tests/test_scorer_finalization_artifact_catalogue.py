@@ -11,6 +11,7 @@ from research_loop.modular.artifact_catalogue import ArtifactCatalogue
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.scorer_finalization_artifact_catalogue import (
     register_admission_headless_scorer_finalization_observations,
+    verify_admission_headless_scorer_finalization_observation_catalogues,
 )
 from research_loop.ontology import ContractError, canonical
 
@@ -78,18 +79,25 @@ def test_registers_per_identity_non_authorizing_text_observations(tmp_path):
         root=root, config=config, panel=panel, service=service)
     assert receipt.data()["authorization"] == "none"
     assert len(receipt.data()["catalogues"]) == 2
+    verify_admission_headless_scorer_finalization_observation_catalogues(
+        root=root, config=config, panel=panel, service=service, receipt=receipt)
     run_id = FrozenRecord.from_dict(receipt.data()["attempt"]).content_hash
     for anchor in receipt.data()["catalogues"]:
         catalogue = ArtifactCatalogue(Path(anchor["path"]), identity=DataIdentity.parse(anchor["identity"]),
                                       run_id=run_id,
                                       experiment_id="admission-prediction-exploration:scorer-finalization-observations",
                                       lock_digest=config.record.content_hash)
+        assert FrozenRecord.from_dict(anchor["seal"]).content_hash == anchor["seal_digest"]
+        catalogue.verify(FrozenRecord.from_dict(anchor["seal"]))
         records = catalogue.records()
         body = Path(anchor["path"]).read_text(encoding="utf-8")
         assert "response_text" not in body and "request_text" not in body
         assert len(records) == len(rows) == len(anchor["record_digests"])
         assert all(record.data()["module"] is None and record.data()["coverage"] == "uncovered"
-                   and record.data()["parents"] == [] for record in records)
+                   and record.data()["parents"] == []
+                   and record.data()["payload"]["canonical"]["panel_member_association"] == {
+                       "kind": "panel_member", "identity": anchor["identity"]}
+                   for record in records)
 
 
 def test_rejects_observation_provider_drift_before_any_catalogue(tmp_path):
@@ -120,3 +128,14 @@ def test_rejected_terminal_is_catalogued_without_score_authority(tmp_path):
         assert terminal["status"] == "rejected"
         assert terminal["payload"]["canonical"]["authorization"] == "none"
         assert terminal["payload"]["canonical"]["scientific_status"] == "not_measured"
+
+
+def test_readback_rejects_changed_original_journal(tmp_path):
+    root, config, panel, service, _ = _inputs(tmp_path)
+    receipt = register_admission_headless_scorer_finalization_observations(
+        root=root, config=config, panel=panel, service=service)
+    path = Path(str(service.journal_path) + ".headless-evaluator-client.jsonl")
+    path.write_text(path.read_text(encoding="utf-8") + "\n", encoding="utf-8")
+    with pytest.raises(ContractError):
+        verify_admission_headless_scorer_finalization_observation_catalogues(
+            root=root, config=config, panel=panel, service=service, receipt=receipt)

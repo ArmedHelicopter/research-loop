@@ -3,7 +3,10 @@ from research_loop.modular.train_provider_preflight import (native_envelope, hea
 from research_loop.modular.ordinary_provider import (family_service_preflight, model_root, allocation_fields, provider_usage, provider_terminal, unused_main_opportunities, provider_scope, bind_runtime_originals)
 from research_loop.modular.ordinary_provider import final_provider_gate, final_score_fields, unavailable_provider_contrast, final_usage, final_unused
 from research_loop.modular.ordinary_provider import headless_evaluator_binding, finalize_headless_evaluator_gate
-from research_loop.modular.scorer_finalization_artifact_catalogue import register_admission_headless_scorer_finalization_observations
+from research_loop.modular.scorer_finalization_artifact_catalogue import (
+    register_admission_headless_scorer_finalization_observations,
+    verify_admission_headless_scorer_finalization_observation_catalogues,
+)
 from research_loop.modular.phase_provider import PhaseProviderSession
 from dataclasses import dataclass
 import hashlib
@@ -362,10 +365,24 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
             scores=scores, scorer_authority_keys=scorer_authority_keys,
             scorer_config=ScorerConfig(FrozenRecord.from_dict(b['scorer'])), capture=capture_evaluator_gate)
         # This is a non-authorizing projection of the client text journal.  The
-        # signed closure remains in evaluator_final_verification above.
-        journal['evaluator_observation_catalogues'] = register_admission_headless_scorer_finalization_observations(
-            root=root, config=config, panel=compiled.panels[0], service=service).data()
-        persist(refresh_usage=False)
+        # signed closure remains in evaluator_final_verification above.  A failed
+        # projection cannot leave the consumer eligible, but never discards that
+        # already captured closure or its authenticated lower bound.
+        try:
+            observations = register_admission_headless_scorer_finalization_observations(
+                root=root, config=config, panel=compiled.panels[0], service=service)
+            verify_admission_headless_scorer_finalization_observation_catalogues(
+                root=root, config=config, panel=compiled.panels[0], service=service, receipt=observations)
+            journal['evaluator_observation_catalogues'] = observations.data()
+            persist(refresh_usage=False)
+        except Exception as exc:
+            evaluator_gate.update(status='inconclusive', score_eligible=False,
+                failure_reason='observation_catalogue_failed', error_type=type(exc).__name__)
+            journal['evaluator_final_verification'] = evaluator_gate
+            journal['evaluator_observation_catalogue_failure'] = {
+                'status': 'failed', 'error_type': type(exc).__name__,
+                'authorization': 'none', 'scientific_status': 'not_measured'}
+            persist(refresh_usage=False)
     final_gate = final_provider_gate(provider_session, root/'final-provider-ledger.json')
     contrasts = []
     for panel in compiled.panels:
