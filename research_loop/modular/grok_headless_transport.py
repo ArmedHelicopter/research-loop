@@ -22,6 +22,7 @@ from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.grok_acp_transport import (
     DENIED_TOOLS, EXECUTABLE_SHA256, ProcessTree, diagnostic_config, profile,
 )
+from research_loop.modular.grok_native_deployment import checked_headless_train_deployment
 from research_loop.modular.grok_cli_protocol import inspect_grok_stream
 from research_loop.ontology import ContractError
 
@@ -33,6 +34,8 @@ RECEIPT_SCHEMA = "grok-headless-diagnostic-receipt-v1"
 RECOVERY_RECEIPT_SCHEMA = "grok-headless-diagnostic-receipt-v2"
 RECOVERY_RESERVATION_SCHEMA = "grok-headless-reservation-v2"
 ACCOUNT_RECOVERY_SCHEMA = 'headless-account-read-recovery-v1'
+LEGACY_ACCOUNT_CLIENT_VERSION = '1.0.13'
+INSPECT_EMPTY_COLLECTIONS = ('skills', 'hooks', 'plugins', 'mcpServers', 'projectInstructions')
 
 
 @dataclass(frozen=True)
@@ -98,7 +101,7 @@ ACCOUNT_ROUTES = (("credits", "/billing?format=credits"), ("topup", "/auto-topup
                   ("user", "/user?include=subscription"))
 
 
-def _project_account(raws, rows, observed_at, *, expected_user_id=None):
+def _project_account(raws, rows, observed_at, *, expected_user_id=None, client_version=None):
     """Derive the safe account projection from the retained raw GET evidence."""
     _require(isinstance(raws, dict) and set(raws) == {name for name, _ in ACCOUNT_ROUTES},
              "account raw inventory")
@@ -110,6 +113,8 @@ def _project_account(raws, rows, observed_at, *, expected_user_id=None):
                  and row.get("url") == PROXY + route and row.get("status") == "received"
                  and row.get("http_status") == 200 and row.get("sha256") == _sha(raws[name]),
                  "account request binding")
+        if client_version is not None:
+            _require(row.get('client_version') == client_version, 'account client version binding')
         started, received = _instant(row.get('started_at')), _instant(row.get('received_at'))
         _require((previous is None or previous <= started) and started <= received <= now
                  and row.get('bytes') == len(raws[name]), 'account request timing')
@@ -149,7 +154,7 @@ def _project_account(raws, rows, observed_at, *, expected_user_id=None):
             "reported_subscription_tier": user.get("subscriptionTier")}
 
 
-def _account(home: Path, destination: Path):
+def _account(home: Path, destination: Path, *, client_version=None):
     """Three first-party CLI proxy GETs using only copied native OIDC."""
     destination.mkdir(exist_ok=False)
     store = _strict_json(_read(home / "auth.json"))
@@ -162,10 +167,13 @@ def _account(home: Path, destination: Path):
                  for k in ("key", "user_id")), "native login shape")
     _require(datetime.fromisoformat(auth["expires_at"].replace("Z", "+00:00")).timestamp() > time.time()+120,
              "native login near expiry")
+    version = LEGACY_ACCOUNT_CLIENT_VERSION if client_version is None else client_version
+    _require(type(version) is str and version in (LEGACY_ACCOUNT_CLIENT_VERSION, '1.0.30'), 'account client version')
     raws = {}; rows=[]; first=time.monotonic(); opener=urllib.request.build_opener(urllib.request.ProxyHandler({}), _NoRedirect)
     for name, route in ACCOUNT_ROUTES:
-        url=PROXY+route; request=urllib.request.Request(url, method="GET", headers={"Authorization":"Bearer "+auth["key"],"X-XAI-Token-Auth":"xai-grok-cli","x-userid":auth["user_id"],"x-grok-client-version":"1.0.13","Accept":"application/json"})
-        row={"name":name,"method":"GET","url":url,"status":"reserved","started_at":datetime.now(timezone.utc).isoformat()}; rows.append(row); _write(destination/"requests.json",rows)
+        url=PROXY+route; request=urllib.request.Request(url, method="GET", headers={"Authorization":"Bearer "+auth["key"],"X-XAI-Token-Auth":"xai-grok-cli","x-userid":auth["user_id"],"x-grok-client-version":version,"Accept":"application/json"})
+        extra = {} if client_version is None else {'client_version': version}
+        row={"name":name,"method":"GET","url":url,"status":"reserved","started_at":datetime.now(timezone.utc).isoformat(), **extra}; rows.append(row); _write(destination/"requests.json",rows)
         try:
             with opener.open(request, timeout=10) as response:
                 _require(response.geturl()==url, "account redirect")
@@ -174,7 +182,7 @@ def _account(home: Path, destination: Path):
         _write(destination/(name+".private.json"),raw); row.update(status="received",bytes=len(raw),sha256=_sha(raw),received_at=datetime.now(timezone.utc).isoformat()); _write(destination/"requests.json",rows); raws[name]=_strict_json(raw)
     projection = _project_account({name: _read(destination / (name + ".private.json"))
                                    for name, _ in ACCOUNT_ROUTES}, rows, datetime.now(timezone.utc).isoformat(),
-                                  expected_user_id=auth["user_id"])
+                                  expected_user_id=auth["user_id"], client_version=client_version)
     _write(destination/"observation.json",projection); return projection
 
 
@@ -193,7 +201,7 @@ def _recovery(value):
     return dict(value)
 
 
-def _account_once(home: Path, destination: Path):
+def _account_once(home: Path, destination: Path, *, client_version=None):
     """One recorded full observation attempt; only named transient HTTP errors escape typed."""
     destination.mkdir(exist_ok=False)
     store = _strict_json(_read(home / 'auth.json'))
@@ -202,10 +210,13 @@ def _account_once(home: Path, destination: Path):
     _require(len(choices) == 1, 'native login identity'); auth = choices[0]
     _require(all(isinstance(auth.get(k), str) and auth[k] and '\n' not in auth[k] and '\r' not in auth[k] for k in ('key','user_id')), 'native login shape')
     _require(datetime.fromisoformat(auth['expires_at'].replace('Z','+00:00')).timestamp() > time.time()+120, 'native login near expiry')
+    version = LEGACY_ACCOUNT_CLIENT_VERSION if client_version is None else client_version
+    _require(type(version) is str and version in (LEGACY_ACCOUNT_CLIENT_VERSION, '1.0.30'), 'account client version')
     raws={}; rows=[]; opener=urllib.request.build_opener(urllib.request.ProxyHandler({}), _NoRedirect)
     for name, route in ACCOUNT_ROUTES:
-        url=PROXY+route; request=urllib.request.Request(url, method='GET', headers={'Authorization':'Bearer '+auth['key'],'X-XAI-Token-Auth':'xai-grok-cli','x-userid':auth['user_id'],'x-grok-client-version':'1.0.13','Accept':'application/json'})
-        row={'name':name,'method':'GET','url':url,'status':'reserved','started_at':datetime.now(timezone.utc).isoformat()}; rows.append(row); _write(destination/'requests.json',rows)
+        url=PROXY+route; request=urllib.request.Request(url, method='GET', headers={'Authorization':'Bearer '+auth['key'],'X-XAI-Token-Auth':'xai-grok-cli','x-userid':auth['user_id'],'x-grok-client-version':version,'Accept':'application/json'})
+        extra = {} if client_version is None else {'client_version': version}
+        row={'name':name,'method':'GET','url':url,'status':'reserved','started_at':datetime.now(timezone.utc).isoformat(), **extra}; rows.append(row); _write(destination/'requests.json',rows)
         try:
             with opener.open(request, timeout=10) as response:
                 _require(response.geturl()==url, 'account redirect'); _require(response.status == 200, 'account status')
@@ -233,16 +244,16 @@ def _account_once(home: Path, destination: Path):
         elif name == 'user':
             _require(isinstance(raws[name],dict) and isinstance(raws[name].get('userId'),str) and raws[name]['userId'] and raws[name].get('hasGrokCodeAccess') is True
                      and raws[name].get('userBlockedReason') in (None,'') and raws[name].get('teamBlockedReasons') == [], 'account access')
-    projection=_project_account({name:_read(destination/(name+'.private.json')) for name,_ in ACCOUNT_ROUTES},rows,datetime.now(timezone.utc).isoformat(),expected_user_id=auth['user_id'])
+    projection=_project_account({name:_read(destination/(name+'.private.json')) for name,_ in ACCOUNT_ROUTES},rows,datetime.now(timezone.utc).isoformat(),expected_user_id=auth['user_id'],client_version=client_version)
     _write(destination/'observation.json',projection); return projection
 
 
-def _account_recovered(home: Path, destination: Path, recovery):
+def _account_recovered(home: Path, destination: Path, recovery, *, client_version=None):
     recovery=_recovery(recovery); destination.mkdir(exist_ok=False); attempts=[]
     for index in range(recovery['max_attempts']):
         attempt=destination/f'attempt-{index:03d}'
         try:
-            projection=_account_once(home, attempt)
+            projection=_account_once(home, attempt, client_version=client_version)
             attempts.append({'index':index,'status':'accepted','projection_sha256':_sha(_read(attempt/'observation.json')),
                              'requests_sha256':_sha(_read(attempt/'requests.json'))})
             manifest={'schema':ACCOUNT_RECOVERY_SCHEMA,'recovery':recovery,'attempts':attempts,'winning_attempt':index,'projection':projection}
@@ -312,10 +323,14 @@ def _inspect_command(context):
     return [context['executable'], '--no-auto-update', '--cwd', context['cwd'], 'inspect', '--json']
 
 
-def _inspect(raw):
+def _inspect(raw, deployment=None):
     value = _strict_json(raw)
+    if deployment is not None:
+        checked_headless_train_deployment(deployment)
+        _require(deployment.record.data()['inspect_inventory_contract'] == 'grok-headless-inspect-empty-v1',
+                 'headless inspect deployment contract')
     _require(isinstance(value, dict) and all(value.get(k) == [] for k in
-        ('skills', 'hooks', 'plugins', 'mcpServers', 'projectInstructions')), 'external native context')
+        INSPECT_EMPTY_COLLECTIONS), 'external native context')
     _require(value.get('loginPolicy', {}).get('apiKeyAuthDisabled') is True,
         'API key authentication disablement unobserved')
     return value
@@ -379,10 +394,15 @@ def _process_ok(process):
 def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, private_dir,
                             reservation, frozen_files, prompt, schema, main_output_cap,
                             observed_main_token_cap, input_byte_cap, timeout=240,
-                            reasoning_effort=None, account_read_recovery=None) -> HeadlessResult:
+                            reasoning_effort=None, account_read_recovery=None,
+                            deployment=None) -> HeadlessResult:
     """Reserve once; inspect, query account, launch once, then retain a terminal receipt."""
+    deployment = None if deployment is None else checked_headless_train_deployment(deployment)
     context = {k: str(_plain(v)) for k, v in dict(executable=executable, cwd=cwd,
         private_home=private_home, private_profile=private_profile).items()}
+    if deployment is not None:
+        _require(context['executable'] == deployment.executable, 'headless deployment executable binding')
+        context['native_deployment'] = deployment.record.data()
     if reasoning_effort is not None:
         context['reasoning_effort'] = reasoning_effort
     native = _plain(private_dir); reservation_path = _plain(reservation)
@@ -397,13 +417,17 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
     recovery = _recovery(account_read_recovery)
     if recovery:
         context['account_read_recovery'] = recovery
-    _require(_sha(_read(Path(context['executable']))) == EXECUTABLE_SHA256, 'headless executable pin')
+    expected_sha = EXECUTABLE_SHA256 if deployment is None else deployment.record.data()['executable_sha256']
+    _require(_sha(_read(Path(context['executable']))) == expected_sha, 'headless executable pin')
     _require(home.is_dir() and {p.name for p in home.iterdir()} == {'auth.json', 'config.toml'}
         and (home / 'auth.json').is_file()
         and _read(home / 'config.toml') == diagnostic_config(main_output_cap).encode(), 'fresh native home')
     for path in (Path(context['cwd']), user):
         _require(path.is_dir() and not any(path.iterdir()), 'fresh native context')
     _require(reservation_path == native.parent / 'native-reservation.json', 'reservation location')
+    if deployment is not None:
+        _require(all(frozen_files.get(path) == digest for path, digest in deployment.source_pins().items()),
+                 'headless deployment source manifest')
     _sources(frozen_files)
     native.mkdir(parents=True, exist_ok=False)
     for path in (context['executable'], str(home / 'config.toml')):
@@ -439,8 +463,9 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
     try:
         raw, receipt['inspect_process'] = _child(bound['inspect_command'], context, environment, native/'inspect', 10)
         _require(_process_ok(receipt['inspect_process']), 'context inspection process failed')
-        _inspect(raw)
-        stage = 'account_preflight'; pre = _account_recovered(home, native/'billing-before', recovery) if recovery else _account(home, native/'billing-before')
+        _inspect(raw, deployment)
+        version = None if deployment is None else deployment.account_client_version
+        stage = 'account_preflight'; pre = _account_recovered(home, native/'billing-before', recovery, client_version=version) if recovery else _account(home, native/'billing-before', client_version=version)
         receipt['account_preflight'] = pre['projection'] if recovery else pre
         if recovery: receipt['account_preflight_attempts_sha256'] = _sha(_read(native/'billing-before/attempts.json'))
         stage = 'prelaunch_guard'; _sources(frozen_files)
@@ -458,7 +483,7 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
         if inspection.response is not None:
             response = inspection.response
             receipt['response_sha256'] = _write(native/'response.private.json', response.data())
-        stage = 'account_postflight'; post = _account_recovered(home, native/'billing-after', recovery) if recovery else _account(home, native/'billing-after')
+        stage = 'account_postflight'; post = _account_recovered(home, native/'billing-after', recovery, client_version=version) if recovery else _account(home, native/'billing-after', client_version=version)
         receipt['account_postflight'] = post['projection'] if recovery else post
         if recovery: receipt['account_postflight_attempts_sha256'] = _sha(_read(native/'billing-after/attempts.json'))
         _require(receipt['account_preflight']['account_binding'] == receipt['account_postflight']['account_binding'],
@@ -490,16 +515,16 @@ def _reread_process(directory, expected_command, bound, timeout):
     return raw, process
 
 
-def _reread_account(folder):
+def _reread_account(folder, *, client_version=None):
     saved = _strict_json(_read(folder/'observation.json'))
     rows = _strict_json(_read(folder/'requests.json'))
     rebuilt = _project_account({key: _read(folder/(key+'.private.json')) for key, _ in ACCOUNT_ROUTES},
-        rows, saved['observed_at'])
+        rows, saved['observed_at'], client_version=client_version)
     _require(rebuilt == saved, 'account projection binding')
     return rebuilt
 
 
-def _reread_recovered_account(folder, recovery):
+def _reread_recovered_account(folder, recovery, *, client_version=None):
     manifest = _strict_json(_read(folder/'attempts.json')); recovery = _recovery(recovery)
     _require(manifest.get('schema') == ACCOUNT_RECOVERY_SCHEMA and manifest.get('recovery') == recovery,
              'account recovery manifest binding')
@@ -511,7 +536,7 @@ def _reread_recovered_account(folder, recovery):
         path=folder/f"attempt-{row['index']:03d}"
         if row.get('status') == 'accepted':
             _require(row.get('requests_sha256') == _sha(_read(path/'requests.json')), 'account recovery requests binding')
-            projection=_reread_account(path); _require(row.get('projection_sha256') == _sha(_read(path/'observation.json')), 'account recovery projection')
+            projection=_reread_account(path, client_version=client_version); _require(row.get('projection_sha256') == _sha(_read(path/'observation.json')), 'account recovery projection')
             _require(previous_time is None or previous_time <= _instant(projection['oldest_observed_at']),
                      'account recovery chronology')
             accepted.append((row['index'],projection))
@@ -524,6 +549,7 @@ def _reread_recovered_account(folder, recovery):
             _require(isinstance(rows,list) and rows and [r.get('name') for r in rows] == [n for n,_ in ACCOUNT_ROUTES[:len(rows)]]
                      and all(r.get('method') == 'GET' and r.get('url') == PROXY + ACCOUNT_ROUTES[i][1]
                              and r.get('status') in {'received','failed'} and isinstance(r.get('started_at'),str)
+                             and (client_version is None or r.get('client_version') == client_version)
                              for i,r in enumerate(rows)), 'account recovery partial order')
             last=rows[-1]
             _require((row.get('status') == 'transient_failed' and last.get('status') == 'failed'
@@ -547,21 +573,25 @@ def _reread_recovered_account(folder, recovery):
     return accepted[0][1]
 
 
-def verify_headless_request_binding(result, entry, directory, spec, frozen_files) -> FrozenRecord:
+def verify_headless_request_binding(result, entry, directory, spec, frozen_files, *, deployment=None) -> FrozenRecord:
     try:
-        return _verify_headless_request_binding(result, entry, directory, spec, frozen_files)
+        return _verify_headless_request_binding(result, entry, directory, spec, frozen_files, deployment=deployment)
     except ContractError:
         raise
     except (KeyError, TypeError, ValueError, AttributeError) as exc:
         raise ContractError('malformed headless binding artifact') from exc
 
 
-def _verify_headless_request_binding(result, entry, directory, spec, frozen_files) -> FrozenRecord:
+def _verify_headless_request_binding(result, entry, directory, spec, frozen_files, *, deployment=None) -> FrozenRecord:
     """Reread trusted request, reservation, runtime, streams and all six account GETs."""
+    deployment = None if deployment is None else checked_headless_train_deployment(deployment)
     _require(type(result) is HeadlessResult and type(result.receipt) is FrozenRecord, 'headless result required')
     native = _plain(directory)/'native'; persisted = _strict_json(_read(native/'observer-receipt.json'))
     _require(FrozenRecord.from_dict(persisted) == result.receipt, 'headless observer binding')
     receipt = persisted
+    if deployment is not None:
+        _require(all(frozen_files.get(path) == digest for path, digest in deployment.source_pins().items()),
+                 'headless deployment source manifest')
     _sources(frozen_files)
     bound_raw = _read(Path(directory)/'native-reservation.json'); bound = _strict_json(bound_raw)
     recovery = spec.get('account_read_recovery')
@@ -580,10 +610,15 @@ def _verify_headless_request_binding(result, entry, directory, spec, frozen_file
         and (expected_effort is None or expected_effort in ALLOWED_REASONING_EFFORTS),
         'native reasoning effort binding')
     _require(context == spec['native_context'] == receipt['context'], 'native deployment binding')
+    if deployment is None:
+        _require('native_deployment' not in context, 'legacy native deployment binding')
+    else:
+        _require(context.get('native_deployment') == deployment.record.data(), 'versioned native deployment binding')
     for key in ('executable', 'cwd', 'private_home', 'private_profile'): _plain(context[key])
-    _require(_sha(_read(Path(context['executable']))) == EXECUTABLE_SHA256, 'headless executable pin')
+    expected_sha = EXECUTABLE_SHA256 if deployment is None else deployment.record.data()['executable_sha256']
+    _require(_sha(_read(Path(context['executable']))) == expected_sha, 'headless executable pin')
     config_path = str(Path(context['private_home'])/'config.toml')
-    _require(frozen_files.get(context['executable']) == EXECUTABLE_SHA256
+    _require(frozen_files.get(context['executable']) == expected_sha
         and frozen_files.get(config_path) == _sha(diagnostic_config(spec['main_output_cap']).encode()),
         'native configuration binding')
     for key in ('main_output_cap', 'observed_main_token_cap', 'timeout_seconds'):
@@ -622,7 +657,7 @@ def _verify_headless_request_binding(result, entry, directory, spec, frozen_file
         and all(k in fixed or k.upper() in allowed_os for k in bound['environment']), 'native environment binding')
     raw, inspect_process = _reread_process(native/'inspect', bound['inspect_command'], bound, 10)
     _require(inspect_process == receipt['inspect_process'] and _process_ok(inspect_process), 'native inspect rejected')
-    _inspect(raw)
+    _inspect(raw, deployment)
     raw, process = _reread_process(native, bound['command'], bound, spec['timeout_seconds'])
     _require(process == receipt['native_process'] and receipt['prompt_process_launched'] == process['launched'],
         'native process receipt binding')
@@ -636,12 +671,13 @@ def _verify_headless_request_binding(result, entry, directory, spec, frozen_file
             and _strict_json(_read(native/'response.private.json')) == inspected.response.data(), 'native response binding')
     else:
         _require(result.response is None, 'rejected native response exposed')
+    version = None if deployment is None else deployment.account_client_version
     reread = _reread_recovered_account if recovery else _reread_account
     if recovery:
         _require(receipt.get('account_preflight_attempts_sha256') == _sha(_read(native/'billing-before/attempts.json'))
                  and receipt.get('account_postflight_attempts_sha256') == _sha(_read(native/'billing-after/attempts.json')), 'account attempts receipt binding')
-    pre = reread(native/'billing-before', recovery) if recovery else reread(native/'billing-before')
-    post = reread(native/'billing-after', recovery) if recovery else reread(native/'billing-after')
+    pre = reread(native/'billing-before', recovery, client_version=version) if recovery else reread(native/'billing-before', client_version=version)
+    post = reread(native/'billing-after', recovery, client_version=version) if recovery else reread(native/'billing-after', client_version=version)
     _require(pre == receipt['account_preflight'] and post == receipt['account_postflight']
         and pre['account_binding'] == post['account_binding'], 'native account binding')
     _require(_instant(inspect_process['finished_at']) <= _instant(pre['oldest_observed_at'])

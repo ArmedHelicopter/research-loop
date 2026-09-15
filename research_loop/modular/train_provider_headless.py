@@ -42,6 +42,12 @@ def configuration(backend):
         'private_home': str(backend.private_home),
         'private_profile_root': str(backend.private_profile),
         'public_cwd_root': str(backend.public_cwd)}
+    if backend.native_deployment is None:
+        require('native_deployment' not in config and 'native_deployment_digest' not in config,
+                'legacy headless deployment drift')
+    else:
+        expected.update(native_deployment=backend.native_deployment.record.data(),
+                        native_deployment_digest=backend.native_deployment.digest)
     require(all(config.get(k) == v for k, v in expected.items()), 'headless launch or allocation drift')
     require(backend.model == 'grok-4.6' and backend.effort == 'low', 'headless live model drift')
     require(sha(Path(backend.executable).read_bytes()) == config['executable_sha256'], 'headless executable drift')
