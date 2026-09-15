@@ -33,7 +33,7 @@ from research_loop.modular.modules.improvement import CandidatePackage, Training
 from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier, ScientificScorerReceipt
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.modular.train_controller import _checked_roots, _reviewed_model_policy, _write
-from research_loop.modular.train_provider_preflight import (native_envelope, native_source_fields,
+from research_loop.modular.train_provider_preflight import (native_envelope, headless_evaluator_envelope, native_source_fields,
     response_schemas, validate_native_declaration)
 from research_loop.ontology import ContractError
 
@@ -77,9 +77,12 @@ class FrozenExplorationSchedulerTrainConfig:
         if not isinstance(self.record, FrozenRecord):
             raise ContractError("combination controller configuration must be frozen")
         body = self.record.data()
+        headless_evaluator = headless_evaluator_envelope(body, 'exploration_scheduler')
         fields = {"schema", "domain", "stage", "item_ids", "task_bindings", "baseline_digest", "packages_by_arm",
                   "scorer", "scorer_handle_bindings", "acceptance_criteria", "replicates", "model", "effort",
                   "max_calls", "max_tokens", "schemas", "allocation", "image", "timeout_seconds", "materials_by_task"}
+        if headless_evaluator:
+            fields |= {'evaluator_usage', 'evaluator_provider'}
         native = native_envelope(body, 'exploration_scheduler')
         if not (source_schema_matches(body, fields, "exploration-scheduler-train-controller-config-v1")
                 or native_source_fields(body, fields, family='exploration_scheduler')) or body["domain"] != "train":
@@ -143,7 +146,8 @@ class FrozenExplorationSchedulerTrainConfig:
             raise ContractError("controller requires the existing frozen incomplete-reject contrast semantics")
         cells = len(identities) * len(body["replicates"]) * 4
         expected_allocation = {"model_slots_per_cell": list(SLOTS), "docker_attempts_per_cell": 3, "auxiliary_docker_attempts_per_cell": 2,
-            "scorer_calls_per_cell": 1, "scorer_call_limit": cells, "scorer_token_accounting": "transport_not_provided"}
+            "scorer_calls_per_cell": 1, "scorer_call_limit": cells,
+            "scorer_token_accounting": "signed_headless_main_unknown_title" if headless_evaluator else "transport_not_provided"}
         if (not isinstance(body["allocation"], Mapping) or body["allocation"] != expected_allocation
                 or any(type(body["allocation"].get(k)) is not int for k in
                        ("docker_attempts_per_cell", "auxiliary_docker_attempts_per_cell", "scorer_calls_per_cell", "scorer_call_limit"))):
@@ -166,6 +170,7 @@ class FrozenExplorationSchedulerTrainConfig:
         if native:
             validate_native_declaration(body, family='exploration_scheduler', schemas=schemas,
                 main_opportunities=cells*len(SLOTS))
+        headless_evaluator_binding(body, family='exploration-scheduler', enabled=headless_evaluator)
 
     def data(self):
         return self.record.data()
@@ -230,7 +235,9 @@ class ExplorationSchedulerTrainRun:
 from research_loop.modular.combination_train_controller import _service_preflight, _usage
 
 
-from research_loop.modular.ordinary_provider import (family_service_preflight, model_root, allocation_fields, provider_usage, provider_terminal, provider_scope, bind_runtime_originals)
+from research_loop.modular.ordinary_provider import (family_service_preflight, model_root, allocation_fields, provider_usage,
+    provider_terminal, provider_scope, bind_runtime_originals, headless_evaluator_binding, finalize_headless_evaluator_gate,
+    verify_retained_headless_evaluator_gate)
 from research_loop.modular.ordinary_provider import final_provider_gate, final_score_fields, unavailable_provider_contrast, final_usage, final_unused
 from research_loop.modular.phase_provider import PhaseProviderSession
 
@@ -243,6 +250,11 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
     if not isinstance(config, FrozenExplorationSchedulerTrainConfig) or not isinstance(audit_verifier, AuditVerifier):
         raise ContractError("typed train controller, custody and audit dependencies required")
     from evaluation.modular.scorer_process import CombinationScorerProcessClient, serialize_combination_panel
+    body = config.data()
+    evaluator_binding = headless_evaluator_binding(body, family='exploration-scheduler',
+        enabled=headless_evaluator_envelope(body, 'exploration_scheduler'))
+    if evaluator_binding is not None and getattr(scoring_service, 'evaluator_provider', None) != evaluator_binding['evaluator_provider']:
+        raise ContractError('scheduler scorer process and frozen headless evaluator declaration disagree')
     if type(scoring_service) is not CombinationScorerProcessClient:
         raise ContractError('independent primary scorer process required')
     serialize_combination_panel(scoring_service.panel, exploration_scheduler=True)
@@ -251,18 +263,19 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
     snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model_root(model, native=native))
     if root.exists() or exported.exists():
         raise ContractError("controller needs unused run and export roots; inspect earlier attempts instead of retrying")
-    body = config.data()
     source = CombinationTrainSource(body, custody=custody, prospective_exporter=prospective_exporter,
                                     snapshot=snapshot, exported=exported)
     expected_cells = len(body["item_ids"]) * len(body["replicates"]) * 4
     journal = {"schema": ('exploration-scheduler-train-controller-attempt-v2' if native else 'exploration-scheduler-train-controller-attempt-v1'), "config_digest": config.record.content_hash,
         "status": "exporting", "expected_cells": expected_cells, **(allocation_fields(body, native=True) if native else {'allocated_model_calls':body['max_calls'], 'allocated_model_token_limit':body['max_tokens']}), "allocated_docker_attempts": expected_cells*3,
-        "allocated_scorer_calls": expected_cells, "actual_scorer_calls": 0, "scorer_usage": "not_provided_by_transport",
+        "allocated_scorer_calls": expected_cells, "actual_scorer_calls": 0,
+        "scorer_usage": "signed_headless_main_unknown_title" if evaluator_binding is not None else "not_provided_by_transport",
         **({} if native else {'model_policy_sha256':model.frozen_base_context.sha256}), "cells": [], "packet_receipts": []}
     root.mkdir(parents=True, exist_ok=False)
     provider_session = PhaseProviderSession(model, root/'provider-scopes.json') if native else None
-    def persist():
-        journal["actual_model_usage"] = provider_usage(provider_session, model)
+    def persist(*, refresh_usage=True):
+        if refresh_usage:
+            journal["actual_model_usage"] = provider_usage(provider_session, model)
         _write(root / "controller-attempt.json", journal)
     persist()
     try:
@@ -372,17 +385,39 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
             if result is not None: row['phase_receipt'] = result.phase.data()
             results.append(result)
             persist()
+    evaluator_gate = None
+    if evaluator_binding is not None:
+        def capture_evaluator_gate(gate):
+            # Capture the closure before another provider usage read or scorer close.
+            journal['evaluator_final_verification'] = gate
+            persist(refresh_usage=False)
+        evaluator_gate = finalize_headless_evaluator_gate(binding=evaluator_binding,
+            family='exploration-scheduler', service=scoring_service, panel=compiled.panel, scores=scores,
+            scorer_authority_keys=scorer_authority_keys,
+            scorer_config=ScorerConfig(FrozenRecord.from_dict(body['scorer'])), capture=capture_evaluator_gate)
+        evaluator_gate = verify_retained_headless_evaluator_gate(root/'controller-attempt.json', gate=evaluator_gate,
+            binding=evaluator_binding, panel=compiled.panel, scores=scores,
+            scorer_authority_keys=scorer_authority_keys, scorer_config=ScorerConfig(FrozenRecord.from_dict(body['scorer'])))
+
     def verify_score(score, cell, panel):
         verify_combination_adapted_receipt(score, authority_keys=scorer_authority_keys, config=scoring_service.config,
             panel=panel, cell=cell, score_input=signed_inputs[cell.key],
             execution_authority_keys={execution_authority.authority_id: execution_authority.key})
     final_gate = final_provider_gate(provider_session, root/'final-provider-ledger.json')
-    complete = all(row['status']=='succeeded' for row in journal['cells']) and (not native or final_gate.data()['provider_evidence_eligible'])
+    complete = (all(row['status']=='succeeded' for row in journal['cells'])
+        and (not native or final_gate.data()['provider_evidence_eligible'])
+        and (evaluator_gate is None or evaluator_gate['score_eligible']))
     contrast = FrozenRecord.from_dict({"schema": "exploration-scheduler-inconclusive-contrast-v1", "panel_digest": compiled.panel.digest,
         "status": "inconclusive", "reason": "at_least_one_planned_cell_failed_or_unscored", "expected_cells": expected_cells,
         "scored_cells": len(scores), "missing_policy": "incomplete_reject", "scientific_status": "not_measured"})
     if native and not final_gate.data()['provider_evidence_eligible']:
         contrast = unavailable_provider_contrast(compiled.panel, final_gate)
+    if evaluator_gate is not None and not evaluator_gate['score_eligible']:
+        contrast = FrozenRecord.from_dict({'schema': 'exploration-scheduler-inconclusive-contrast-v1',
+            'panel_digest': compiled.panel.digest, 'status': 'inconclusive',
+            'reason': 'final_evaluator_evidence_ineligible', 'expected_cells': expected_cells,
+            'scored_cells': len(scores), 'missing_policy': 'incomplete_reject',
+            'evaluator_final_verification': evaluator_gate, 'scientific_status': 'not_measured'})
     if complete:
         try:
             contrast = estimate_grouped_contrast(compiled.panel, runtime=verified_runtime, scorer_receipts=scores,
@@ -397,9 +432,14 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
         if not final_gate.data()['provider_evidence_eligible']:
             journal['historical_contrast_before_failed_final_gate'] = contrast.data()
             contrast = unavailable_provider_contrast(compiled.panel, final_gate)
-    receipt = FrozenRecord.from_dict({"schema": ('exploration-scheduler-train-controller-receipt-v2' if native else 'exploration-scheduler-train-controller-receipt-v1'), "config_digest": config.record.content_hash,
+    eligible_scored_cells = (len(scores) if final_gate is None or final_gate.data()['provider_evidence_eligible'] else 0)
+    if evaluator_gate is not None and not evaluator_gate['score_eligible']:
+        eligible_scored_cells = 0
+    receipt = FrozenRecord.from_dict({"schema": ('exploration-scheduler-train-controller-receipt-v3' if evaluator_gate is not None else 'exploration-scheduler-train-controller-receipt-v2' if native else 'exploration-scheduler-train-controller-receipt-v1'), "config_digest": config.record.content_hash,
         "panel_digest": compiled.panel.digest, "expected_cells": expected_cells, "observed_cells": len(journal["cells"]),
         "successful_cells": sum(row["status"] == "succeeded" for row in journal["cells"]), "scored_cells": len(scores), **final_score_fields(final_gate, scores),
+        **({'evaluator_final_verification': evaluator_gate, 'eligible_scored_cells': eligible_scored_cells}
+           if evaluator_gate is not None else {}),
         "failed_cells": sum(row["status"] == "failed" for row in journal["cells"]),
         "blocked_cells": sum(row["status"] == "blocked" for row in journal["cells"]),
         "actual_docker_attempts": sum(row['docker_attempts'] for row in journal['cells']),
@@ -411,4 +451,10 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
     _write(root / "controller-receipt.json", receipt.data())
     journal["status"] = receipt.data()["status"]
     journal.update(actual_model_usage=receipt.data()['actual_model_usage']); _write(root/'controller-attempt.json',journal)
+    if evaluator_gate is not None:
+        verify_retained_headless_evaluator_gate(root/'controller-attempt.json', gate=evaluator_gate,
+            binding=evaluator_binding, panel=compiled.panel, scores=scores,
+            scorer_authority_keys=scorer_authority_keys, scorer_config=ScorerConfig(FrozenRecord.from_dict(body['scorer'])))
+        if json.loads((root/'controller-receipt.json').read_bytes()) != receipt.data():
+            raise ContractError('scheduler terminal receipt differs before return')
     return ExplorationSchedulerTrainRun(compiled, tuple(results), tuple(scores), tuple(FrozenRecord.from_dict(row) for row in journal["cells"]), contrast, receipt)

@@ -177,6 +177,10 @@ class FrozenM4M5TrainConfig:
                 'wall_timeout_seconds':60,'max_retries':0,'title_usage_and_all_call_totals':'unknown'}
             headless=body['schema'] in ('m4-m5-train-controller-config-v5','m4-m5-train-controller-config-v6')
             if headless:
+                from research_loop.modular.grok_headless_train_solver import validate_headless_train_timeout
+                if not isinstance(provider, dict):
+                    raise ContractError('headless provider declaration required')
+                expected['wall_timeout_seconds'] = validate_headless_train_timeout(provider.get('wall_timeout_seconds'))
                 expected.update(kind='grok-headless-public-train-v1',
                     account_read_recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2})
                 if not isinstance(provider,dict) or type(provider.get('account_read_recovery',{}).get('max_attempts')) is not int:
@@ -280,8 +284,9 @@ def _service_preflight(config, model, service, execution_authority, scorer_keys)
         declared=body['provider']
         if type(model) is GrokHeadlessTrainModelPort:
             headless_configuration(model)
-            if model.account_read_recovery != declared['account_read_recovery']:
-                raise ContractError('headless recovery differs from frozen declaration')
+            if (model.account_read_recovery != declared['account_read_recovery']
+                    or model.timeout_seconds != declared['wall_timeout_seconds']):
+                raise ContractError('headless recovery or timeout differs from frozen declaration')
         if (model.provider_kind != declared['kind'] or model.slot_output_caps != declared['main_output_caps']
                 or set(model.slot_input_byte_caps) != set(SLOTS)
                 or any(model.slot_input_byte_caps[s] != declared['input_byte_cap_per_request'] for s in SLOTS)

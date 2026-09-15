@@ -12,7 +12,7 @@ from research_loop.modular.train_provider_preflight import PROGRAM_SLOTS
 from tests.helpers.headless_authoring_fixture import install_synthetic_native
 
 
-def headless_train_provider(root,patch,*,schemas,max_calls,response,wrapped=True):
+def headless_train_provider(root,patch,*,schemas,max_calls,response,wrapped=True,timeout_seconds=60):
     root=Path(root);root.mkdir(parents=True,exist_ok=True)
     executable=root/'synthetic-headless.exe';executable.write_bytes(b'synthetic native identity; never launched')
     home=root/'approved-home';home.mkdir()
@@ -21,7 +21,7 @@ def headless_train_provider(root,patch,*,schemas,max_calls,response,wrapped=True
     import research_loop.modular.grok_headless_transport as transport
     peer=Path(__file__).resolve().parents[1]/'fixtures/headless_train_peer.py'
     calls=[]
-    def spawn(command,cwd,env,stderr):
+    def spawn(command,cwd,env,stderr,stdout=None):
         assert env['GROK_DISABLE_API_KEY_AUTH']=='1'
         assert not {'XAI_API_KEY','GROK_API_KEY'} & set(env)
         assert not any(Path(cwd).iterdir())
@@ -37,12 +37,13 @@ def headless_train_provider(root,patch,*,schemas,max_calls,response,wrapped=True
             path.write_text(json.dumps(answer),encoding='utf-8')
             calls.append(request)
             args=[command[command.index('--session-id')+1],str(path)]
-        return ProcessTree([sys.executable,str(peer),*args],cwd=cwd,env=env,stderr=stderr)
+        return ProcessTree([sys.executable,str(peer),*args],cwd=cwd,env=env,stderr=stderr, stdout=stdout)
     patch.setattr(transport,'ProcessTree',spawn)
     backend=GrokHeadlessTrainModelPort(executable=executable,work_root=root/'ledger',
         private_home=home,private_profile=root/'profiles',public_cwd=root/'contexts',
         frozen_files={str(p.resolve()):hashlib.sha256(p.read_bytes()).hexdigest() for p in (executable,peer)},
         max_calls=max_calls,schemas=schemas,
         slot_output_caps={slot:8192 if slot in PROGRAM_SLOTS else 2048 for slot in schemas},
-        slot_input_byte_caps={slot:262144 for slot in schemas},observed_main_token_cap=131072)
+        slot_input_byte_caps={slot:262144 for slot in schemas},observed_main_token_cap=131072,
+        timeout_seconds=timeout_seconds)
     return (GrokHeadlessTrainProvider(backend) if wrapped else backend),calls,gets

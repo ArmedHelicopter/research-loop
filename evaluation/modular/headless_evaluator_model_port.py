@@ -106,7 +106,7 @@ class GrokHeadlessEvaluatorModelPort:
         if (rubric_mode not in {"primary_v1", "lineage_v1"} or not isinstance(evaluator_id, str) or not evaluator_id
                 or not isinstance(evaluator_version, str) or not evaluator_version or type(max_calls) is not int
                 or max_calls < 1 or type(max_tokens) is not int or max_tokens < 1
-                or type(timeout_seconds) is not int or timeout_seconds != 60
+                or type(timeout_seconds) is not int or not 1 <= timeout_seconds <= 240
                 or not isinstance(account_read_recovery, Mapping) or dict(account_read_recovery) != RECOVERY
                 or type(account_read_recovery.get("max_attempts")) is not int):
             raise ContractError("invalid headless evaluator configuration")
@@ -137,7 +137,7 @@ class GrokHeadlessEvaluatorModelPort:
         self.frozen_files = json.loads(canonical(supplied))
         self.evaluator_id, self.evaluator_version, self.rubric_mode = evaluator_id, evaluator_version, rubric_mode
         self.max_calls, self.max_tokens = max_calls, max_tokens
-        self.timeout_seconds, self.account_read_recovery = 60, json.loads(canonical(RECOVERY))
+        self.timeout_seconds, self.account_read_recovery = timeout_seconds, json.loads(canonical(RECOVERY))
         self.model, self.effort = MODEL, "low"
         self.schemas = {benchmark: self.endpoint_type._output_schema(benchmark)
                         for benchmark in ("discoverybench", "blade")}
@@ -151,7 +151,7 @@ class GrokHeadlessEvaluatorModelPort:
                   "request_contract": _REQUEST_SCHEMA, "evaluator_id": evaluator_id,
                   "evaluator_version": evaluator_version, "rubric_mode": rubric_mode,
                   "rubric_digest": self.rubric_digest, "model": MODEL, "reasoning_effort": "low",
-                  "timeout_seconds": 60, "max_retries": 0, "paid_fallback": False,
+                  "timeout_seconds": self.timeout_seconds, "max_retries": 0, "paid_fallback": False,
                   "main_opportunities_per_request": 1, "max_calls": max_calls, "max_tokens": max_tokens,
                   "main_output_cap": _MAIN_OUTPUT_CAP, "observed_main_token_cap": _OBSERVED_MAIN_TOKEN_CAP,
                   "input_byte_cap": _INPUT_BYTE_CAP, "account_read_recovery": self.account_read_recovery,
@@ -231,7 +231,7 @@ class GrokHeadlessEvaluatorModelPort:
                     private_profile=str(profile), private_dir=str(directory / "native"),
                     reservation=str(directory / "native-reservation.json"), frozen_files=frozen, prompt=prompt,
                     schema=schema, main_output_cap=_MAIN_OUTPUT_CAP, observed_main_token_cap=_OBSERVED_MAIN_TOKEN_CAP,
-                    input_byte_cap=_INPUT_BYTE_CAP, timeout=60, reasoning_effort="low",
+                    input_byte_cap=_INPUT_BYTE_CAP, timeout=self.timeout_seconds, reasoning_effort="low",
                     account_read_recovery=self.account_read_recovery, deployment=self.native_deployment)
                 if not isinstance(result, HeadlessResult):
                     raise ContractError("headless evaluator native result differs")
@@ -313,6 +313,8 @@ class GrokHeadlessEvaluatorModelPort:
 
 
 def _verify_live_config(port: GrokHeadlessEvaluatorModelPort) -> dict[str, Any]:
+    if type(port.timeout_seconds) is not int or not 1 <= port.timeout_seconds <= 240:
+        raise ContractError("headless evaluator timeout drifted")
     frozen = port._config_record.data()
     expected = {"provider_kind": port.provider_kind, "request_contract": _REQUEST_SCHEMA,
                 "evaluator_id": port.evaluator_id, "evaluator_version": port.evaluator_version,
@@ -423,7 +425,7 @@ def _verify_row(port: GrokHeadlessEvaluatorModelPort, row: Mapping[str, Any], re
     spec = {"native_context": context, "reasoning_effort": "low",
             "account_read_recovery": port.account_read_recovery, "main_output_cap": _MAIN_OUTPUT_CAP,
             "observed_main_token_cap": _OBSERVED_MAIN_TOKEN_CAP, "max_input_bytes": _INPUT_BYTE_CAP,
-            "timeout_seconds": 60}
+            "timeout_seconds": port.timeout_seconds}
     binding = verify_headless_request_binding(result, entry, directory, spec, frozen,
                                               deployment=port.native_deployment)
     if row.get("known_headless_main_usage") != binding.data().get("usage", {}).get("main"):

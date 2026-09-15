@@ -342,7 +342,7 @@ def _headless_evaluator_material(spec: Mapping[str, object], *, rubric_mode: str
     versioned_required = required | {"native_deployment"}
     if (set(spec) not in (required, versioned_required) or spec.get("provider_kind") != "grok-headless-frozen-evaluator-v1"
             or spec.get("model") != "grok-4.6" or spec.get("effort") != "low"
-            or type(spec.get("timeout_seconds")) is not int or spec["timeout_seconds"] != 60
+            or type(spec.get("timeout_seconds")) is not int or not 1 <= spec["timeout_seconds"] <= 240
             or not isinstance(spec.get("frozen_files"), Mapping) or not spec["frozen_files"]):
         raise ContractError("production headless evaluator configuration is invalid")
     for name in ("max_calls", "max_tokens"):
@@ -404,7 +404,7 @@ def _headless_evaluator_material(spec: Mapping[str, object], *, rubric_mode: str
         "request_contract": headless_request_schema, "evaluator_id": spec["evaluator_id"],
         "evaluator_version": spec["evaluator_version"], "rubric_mode": rubric_mode,
         "rubric_digest": endpoint_type.rubric_digest(), "model": "grok-4.6", "reasoning_effort": "low",
-        "timeout_seconds": 60, "max_retries": 0, "paid_fallback": False,
+        "timeout_seconds": spec["timeout_seconds"], "max_retries": 0, "paid_fallback": False,
         "main_opportunities_per_request": 1, "max_calls": spec["max_calls"], "max_tokens": spec["max_tokens"],
         "main_output_cap": _MAIN_OUTPUT_CAP, "observed_main_token_cap": _OBSERVED_MAIN_TOKEN_CAP,
         "input_byte_cap": _INPUT_BYTE_CAP, "account_read_recovery": RECOVERY, "schemas": schemas,

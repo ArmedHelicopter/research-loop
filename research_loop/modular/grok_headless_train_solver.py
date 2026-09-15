@@ -60,6 +60,13 @@ def _source_pins(deployment=None) -> dict[str, str]:
     return {str(path): _sha(path.read_bytes()) for path in paths}
 
 
+def validate_headless_train_timeout(seconds: int) -> int:
+    """Freeze an integer per-call limit within the existing transport maximum."""
+    if type(seconds) is not int or not 1 <= seconds <= 240:
+        raise ContractError("headless TRAIN timeout must be an integer from 1 to 240 seconds")
+    return seconds
+
+
 class GrokHeadlessTrainModelPort:
     """One persisted reservation per request. Any uncertain result permanently closes I/O."""
     provider_kind = "grok-headless-public-train-v1"
@@ -68,7 +75,7 @@ class GrokHeadlessTrainModelPort:
                  public_cwd: Path, frozen_files: Mapping[str, str], max_calls: int, schemas: Mapping[str, Mapping],
                  slot_output_caps: Mapping[str, int], slot_input_byte_caps: Mapping[str, int],
                  observed_main_token_cap: int, account_read_recovery: Mapping[str, Any] | None = RECOVERY,
-                 native_invoke=run_headless_diagnostic, deployment=None) -> None:
+                 native_invoke=run_headless_diagnostic, deployment=None, timeout_seconds: int = 60) -> None:
         if native_invoke is not run_headless_diagnostic:
             raise ContractError("headless TRAIN requires the native diagnostic transport")
         if (type(max_calls) is not int or max_calls < 1 or type(observed_main_token_cap) is not int or observed_main_token_cap < 2
@@ -82,6 +89,7 @@ class GrokHeadlessTrainModelPort:
         if (account_read_recovery is not None and (not isinstance(account_read_recovery, Mapping) or set(account_read_recovery) != set(RECOVERY)
                 or account_read_recovery.get("schema") != RECOVERY["schema"] or type(account_read_recovery.get("max_attempts")) is not int
                 or account_read_recovery["max_attempts"] != 2)): raise ContractError("unsupported headless account recovery contract")
+        self.timeout_seconds = validate_headless_train_timeout(timeout_seconds)
         self.native_deployment = None if deployment is None else checked_headless_train_deployment(deployment)
         self.executable = str(Path(executable).resolve()); self.root = Path(work_root).resolve()
         self.private_home, self.private_profile, self.public_cwd = Path(private_home).resolve(), Path(private_profile).resolve(), Path(public_cwd).resolve()
@@ -95,7 +103,7 @@ class GrokHeadlessTrainModelPort:
         self.max_calls, self.schemas = max_calls, json.loads(canonical(schemas)); self.slot_output_caps, self.slot_input_byte_caps = dict(slot_output_caps), dict(slot_input_byte_caps)
         self.observed_main_token_cap, self.account_read_recovery = observed_main_token_cap, json.loads(canonical(account_read_recovery)) if account_read_recovery is not None else None
         self.model, self.effort = MODEL, "low"; self.root.mkdir(parents=True, exist_ok=True); self.calls_root = self.root / "calls"; self.calls_root.mkdir(exist_ok=True); self.ledger_path = self.root / "ledger.json"; self.lock_path = self.root / "allocator.lock"
-        config = {"schema":"grok-headless-train-solver-port-v1", "provider_kind":self.provider_kind, "model":MODEL, "opportunity_contract":TRAIN_OPPORTUNITY_CONTRACT, "reasoning_effort":"low", "timeout_seconds":60, "max_retries":0, "paid_fallback":False, "max_calls":max_calls, "title_opportunities_per_main":1, "title_usage_and_all_call_totals":"unknown", "api_key_route_permitted":False, "included_only":True, "schemas":self.schemas, "slot_output_caps":self.slot_output_caps, "slot_input_byte_caps":self.slot_input_byte_caps, "observed_main_token_cap":observed_main_token_cap, "account_read_recovery":self.account_read_recovery, "executable":self.executable, "executable_sha256":actual, "private_home":str(self.private_home), "private_profile_root":str(self.private_profile), "public_cwd_root":str(self.public_cwd), "frozen_files":self.frozen_files}
+        config = {"schema":"grok-headless-train-solver-port-v1", "provider_kind":self.provider_kind, "model":MODEL, "opportunity_contract":TRAIN_OPPORTUNITY_CONTRACT, "reasoning_effort":"low", "timeout_seconds":self.timeout_seconds, "max_retries":0, "paid_fallback":False, "max_calls":max_calls, "title_opportunities_per_main":1, "title_usage_and_all_call_totals":"unknown", "api_key_route_permitted":False, "included_only":True, "schemas":self.schemas, "slot_output_caps":self.slot_output_caps, "slot_input_byte_caps":self.slot_input_byte_caps, "observed_main_token_cap":observed_main_token_cap, "account_read_recovery":self.account_read_recovery, "executable":self.executable, "executable_sha256":actual, "private_home":str(self.private_home), "private_profile_root":str(self.private_profile), "public_cwd_root":str(self.public_cwd), "frozen_files":self.frozen_files}
         if self.native_deployment is not None:
             config.update(native_deployment=self.native_deployment.record.data(), native_deployment_digest=self.native_deployment.digest)
         self._config_record = FrozenRecord.from_dict(config)
@@ -131,7 +139,7 @@ class GrokHeadlessTrainModelPort:
             try:
                 home=directory/"native-home"; home.mkdir(); shutil.copyfile(self.private_home/"auth.json",home/"auth.json"); config=home/"config.toml"; config.write_bytes(diagnostic_config(self.slot_output_caps[slot]).encode()); profile=directory/"native-profile"; cwd=directory/"public-cwd"; profile.mkdir(); cwd.mkdir()
                 frozen={**self.frozen_files,str(config):_sha(config.read_bytes()),str(request_path):row["private_request"]["sha256"]}; context=_expected_context(self, row); row.update(frozen_files=frozen,native_context=context,config_path=str(config),private_directory=str(directory/"native")); _write(self.ledger_path,self.ledger)
-                result=run_headless_diagnostic(executable=self.executable,cwd=str(cwd),private_home=str(home),private_profile=str(profile),private_dir=str(directory/"native"),reservation=str(directory/"native-reservation.json"),frozen_files=frozen,prompt=prompt,schema=self.schemas[slot],main_output_cap=self.slot_output_caps[slot],observed_main_token_cap=self.observed_main_token_cap,input_byte_cap=cap,timeout=60,reasoning_effort="low",account_read_recovery=self.account_read_recovery,deployment=self.native_deployment)
+                result=run_headless_diagnostic(executable=self.executable,cwd=str(cwd),private_home=str(home),private_profile=str(profile),private_dir=str(directory/"native"),reservation=str(directory/"native-reservation.json"),frozen_files=frozen,prompt=prompt,schema=self.schemas[slot],main_output_cap=self.slot_output_caps[slot],observed_main_token_cap=self.observed_main_token_cap,input_byte_cap=cap,timeout=self.timeout_seconds,reasoning_effort="low",account_read_recovery=self.account_read_recovery,deployment=self.native_deployment)
                 if not isinstance(result,HeadlessResult): raise ContractError("headless native result differs")
                 receipt=result.receipt.data(); receipt_path=directory/"observer-receipt.private.json"; receipt_path.write_bytes(result.receipt.encoded.encode()); usage=(receipt.get("stream_inspection") or {}).get("usage") if isinstance(receipt,dict) else None
                 if isinstance(usage,dict) and type(usage.get("total_tokens")) is int and usage["total_tokens"] >= 0: row["known_headless_main_usage"]=usage; self.ledger["known_main_tokens"] += usage["total_tokens"]; self.ledger["tokens"] += usage["total_tokens"]
@@ -149,8 +157,9 @@ def _directory(port, row): return port.calls_root/f"{row['id']:04d}-{row['slot']
 def _verify_live_config(port):
     """Bind mutable Python attributes to the immutable constructor record before I/O."""
     frozen = port._config_record.data()
+    validate_headless_train_timeout(port.timeout_seconds)
     expected = {"provider_kind":port.provider_kind, "model":port.model, "reasoning_effort":port.effort,
-                "max_calls":port.max_calls, "schemas":port.schemas, "slot_output_caps":port.slot_output_caps,
+                "timeout_seconds":port.timeout_seconds, "max_calls":port.max_calls, "schemas":port.schemas, "slot_output_caps":port.slot_output_caps,
                 "slot_input_byte_caps":port.slot_input_byte_caps, "observed_main_token_cap":port.observed_main_token_cap,
                 "account_read_recovery":port.account_read_recovery, "executable":port.executable,
                 "private_home":str(port.private_home), "private_profile_root":str(port.private_profile),
@@ -205,7 +214,7 @@ def _verify_row(port, row, result=None):
     receipt=FrozenRecord.from_dict(json.loads(receipt_path.read_text(encoding="utf-8")))
     if result is None: result=HeadlessResult(receipt,FrozenRecord.from_dict(json.loads((directory/"response.private.json").read_text(encoding="utf-8"))))
     elif result.receipt != receipt: raise ContractError("persisted native receipt differs")
-    prompt=private["prompt"].encode(); slot=row["slot"]; entry={"opportunity_id":row["opportunity_id"],"private_request":row["private_request"],"prompt_sha256":_sha(prompt),"schema_digest":_sha(canonical(port.schemas[slot]).encode()),"input_bytes":len(prompt)}; spec={"native_context":context,"reasoning_effort":"low","account_read_recovery":port.account_read_recovery,"main_output_cap":port.slot_output_caps[slot],"observed_main_token_cap":port.observed_main_token_cap,"max_input_bytes":port.slot_input_byte_caps[slot],"timeout_seconds":60}; binding=verify_headless_request_binding(result,entry,directory,spec,frozen,deployment=port.native_deployment)
+    prompt=private["prompt"].encode(); slot=row["slot"]; entry={"opportunity_id":row["opportunity_id"],"private_request":row["private_request"],"prompt_sha256":_sha(prompt),"schema_digest":_sha(canonical(port.schemas[slot]).encode()),"input_bytes":len(prompt)}; spec={"native_context":context,"reasoning_effort":"low","account_read_recovery":port.account_read_recovery,"main_output_cap":port.slot_output_caps[slot],"observed_main_token_cap":port.observed_main_token_cap,"max_input_bytes":port.slot_input_byte_caps[slot],"timeout_seconds":port.timeout_seconds}; binding=verify_headless_request_binding(result,entry,directory,spec,frozen,deployment=port.native_deployment)
     if row.get("known_headless_main_usage") != binding.data().get("usage",{}).get("main"): raise ContractError("known MAIN usage differs")
     return binding
 

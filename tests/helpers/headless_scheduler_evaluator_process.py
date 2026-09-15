@@ -1,7 +1,8 @@
-"""Synthetic native fixture around the production admission scorer worker's UTF-8 stdio."""
+"""Synthetic native peer around the production M7xM8 scorer stdio worker."""
 import argparse
 import json
 from pathlib import Path
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -21,33 +22,27 @@ def main() -> int:
         parser.add_argument('--' + name, required=True)
     args = parser.parse_args()
     config = _load(_absolute(args.config, 'config'), args.config_sha256)
-    if (type(config.panel) is not CombinationPanel
-            or config.panel.obligation_id != 'triple:M1+M4+M7'
+    if (type(config.panel) is not CombinationPanel or config.panel.obligation_id != 'pair:M7+M8'
             or config.evaluator.get('provider_kind') != 'grok-headless-frozen-evaluator-v1'):
-        raise AssertionError('admission headless test worker requires its exact production scope')
-    peer = ROOT / 'tests/fixtures/headless_train_peer.py'
-    spec = config.evaluator
+        raise AssertionError('scheduler headless worker requires its exact production scope')
+    peer = ROOT / 'tests/fixtures/headless_train_peer.py'; spec = config.evaluator
     with pytest.MonkeyPatch.context() as patch:
         install_synthetic_native(patch, {'native_deployment': {
             'executable': spec['executable'], 'slots': {'base': {'private_home': spec['private_home']}}}})
-        def spawn(command, cwd, env, stderr, stdout=None):
+        def spawn(command, cwd, env, stderr, stdout=subprocess.PIPE):
             assert env['GROK_DISABLE_API_KEY_AUTH'] == '1'
             assert not {'XAI_API_KEY', 'GROK_API_KEY'} & set(env)
             if 'inspect' in command:
                 peer_args = ['inspect']
             else:
-                prompt = Path(command[command.index('--prompt-file') + 1])
-                content = prompt.read_text(encoding='utf-8')
-                assert 'PRIVATE-REFERENCE-SENTINEL' in content
-                assert 'public-model-request-v1' not in content
+                prompt = Path(command[command.index('--prompt-file') + 1]); content = prompt.read_text(encoding='utf-8')
+                assert 'PRIVATE-REFERENCE-SENTINEL' in content and 'public-model-request-v1' not in content
                 schema = json.loads(command[command.index('--json-schema') + 1])
-                value = ({'cvars': 2, 'transform': 2, 'model': 2, 'reason': 'synthetic'}
-                         if 'cvars' in schema['properties'] else
-                         {'context': 1, 'variable_f1': 1, 'relation': 1, 'reason': 'synthetic'})
                 answer = prompt.parent.parent / 'synthetic-answer.json'
-                answer.write_text(json.dumps(value), encoding='utf-8')
+                answer.write_text(json.dumps({key: ('synthetic' if key == 'reason' else 1) for key in schema['properties']}), encoding='utf-8')
                 peer_args = [command[command.index('--session-id') + 1], str(answer)]
-            return ProcessTree([sys.executable, str(peer), *peer_args], cwd=cwd, env=env, stderr=stderr, stdout=stdout)
+            return ProcessTree([sys.executable, str(peer), *peer_args], cwd=cwd, env=env,
+                               stderr=stderr, stdout=stdout)
         patch.setattr(transport, 'ProcessTree', spawn)
         return serve(ScorerWorker(build_service(config), config.panel, _absolute(args.journal, 'journal')))
 

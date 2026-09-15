@@ -1,5 +1,7 @@
 """Versioned native call ownership used by the explicit ordinary controllers."""
 from contextlib import contextmanager
+import json
+from pathlib import Path
 
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.phase_provider import PhaseProviderSession, PhaseProviderLedger
@@ -104,6 +106,48 @@ def finalize_headless_evaluator_gate(*, binding, family, service, panel, scores,
         gate.update(status='inconclusive', score_eligible=False,
                     failure_reason='closure_verification_failed', error_type=type(exc).__name__)
         persist_gate(); return gate
+
+
+def verify_retained_headless_evaluator_gate(path, *, gate, binding, panel, scores,
+                                            scorer_authority_keys, scorer_config):
+    """Read the captured gate from the attempt journal before a controller returns.
+
+    The append/write is not evidence by itself.  This binds the returned gate to
+    the exact persisted JSON and rechecks eligible signed closures without
+    starting a worker or finalizing a second time.
+    """
+    try:
+        raw = Path(path).read_bytes(); retained = json.loads(raw)['evaluator_final_verification']
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise ContractError('retained evaluator final gate is unavailable') from exc
+    if retained != gate:
+        raise ContractError('retained evaluator final gate differs before return')
+    def unchanged():
+        if Path(path).read_bytes() != raw:
+            raise ContractError('retained evaluator final gate changed during verification')
+    if gate.get('score_eligible') is not True:
+        # Rejected signed bytes remain evidence; a known mismatch must not erase
+        # the completed denominator by raising again during terminal readback.
+        unchanged()
+        return gate
+    closure_body = gate.get('closure') if isinstance(gate, dict) else None
+    if closure_body is None:
+        if gate.get('score_eligible') is True:
+            raise ContractError('eligible retained evaluator gate lacks a closure')
+        return gate
+    try:
+        from evaluation.modular.headless_evaluator_closure import verify_closure
+        closure = FrozenRecord.from_dict(closure_body)
+        nonce = closure.data()['body']['nonce']
+        verified = verify_closure(closure, authority_keys=scorer_authority_keys, panel=panel,
+            config=scorer_config, provider=binding['evaluator_provider'], nonce=nonce,
+            receipt_digests=[score.receipt.content_hash for score in scores])
+    except (KeyError, TypeError, ContractError) as exc:
+        raise ContractError('retained evaluator closure no longer verifies') from exc
+    if gate.get('score_eligible') is True and verified.data()['scope'].get('unscored_cell_count') != 0:
+        raise ContractError('eligible retained evaluator gate has an incomplete scope')
+    unchanged()
+    return gate
 
 
 def family_service_preflight(config, model, service, execution_authority, scorer_keys, *, family):

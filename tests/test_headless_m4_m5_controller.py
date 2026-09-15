@@ -13,14 +13,14 @@ from test_combination_prospective_train_source import prepare,processes
 from test_m4_m5_useful_controls import RECIPE
 
 
-def setup_headless(root,patch):
+def setup_headless(root,patch,*,timeout_seconds=60):
     setup=prepare(root,'m4');body=setup['config'].data()
     provider={'kind':'grok-headless-public-train-v1','model':'grok-4.6',
         'opportunity_contract':'public-train-main-and-initial-title-v1','included_only':True,
         'api_key_route_permitted':False,'main_calls':40,'possible_initial_title_calls':40,
         'main_output_caps':{'m4_plan':2048,'m5_mechanism':2048,'m5_measurement':2048,'analysis_program':8192,'final_answer':2048},
         'input_byte_cap_per_request':262144,'observed_main_token_cap':131072,'title_requested_output_cap':100,
-        'wall_timeout_seconds':60,'max_retries':0,'title_usage_and_all_call_totals':'unknown',
+        'wall_timeout_seconds':timeout_seconds,'max_retries':0,'title_usage_and_all_call_totals':'unknown',
         'account_read_recovery':{'schema':'headless-account-read-recovery-v1','max_attempts':2}}
     body.update(schema='m4-m5-train-controller-config-v5',execution_recipe=RECIPE,provider=provider,
         model='grok-4.6',effort='low',max_tokens=131072*40,timeout_seconds=60)
@@ -36,7 +36,7 @@ def setup_headless(root,patch):
                 'evidence_ids':[],'conclusion':'Observed public output: '+b['execution_feedback'][0]['stdout'],
                 'programme_complete':False}
         return ordinary(request)
-    backend,calls,gets=headless_train_provider(root/'port',patch,schemas=body['schemas'],max_calls=40,response=response,wrapped=False)
+    backend,calls,gets=headless_train_provider(root/'port',patch,schemas=body['schemas'],max_calls=40,response=response,wrapped=False,timeout_seconds=timeout_seconds)
     return setup,backend,calls,gets
 
 

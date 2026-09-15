@@ -31,7 +31,7 @@ def main():
         install_synthetic_native(patch, {'native_deployment': {'executable': spec['executable'],
             'slots': {'lineage': {'private_home': spec['private_home']}}}})
         peer = Path(__file__).resolve().parents[1] / 'fixtures' / 'headless_train_peer.py'
-        def spawn(command, cwd, env, stderr):
+        def spawn(command, cwd, env, stderr, stdout=None):
             if 'inspect' in command:
                 child = ['inspect']
             else:
@@ -46,7 +46,7 @@ def main():
                 answer_path = Path(command[command.index('--prompt-file') + 1]).parent.parent / 'synthetic-answer.json'
                 answer_path.write_text(json.dumps(answer), encoding='utf-8')
                 child = [command[command.index('--session-id') + 1], str(answer_path)]
-            return ProcessTree([sys.executable, str(peer), *child], cwd=cwd, env=env, stderr=stderr)
+            return ProcessTree([sys.executable, str(peer), *child], cwd=cwd, env=env, stderr=stderr, stdout=stdout)
         patch.setattr(native, 'ProcessTree', spawn)
         panel, service = load_lineage_service(args.config, args.config_sha256)
         return serve(LineageScorerWorker(service, panel, Path(args.journal)))
