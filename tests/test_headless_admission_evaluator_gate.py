@@ -102,11 +102,14 @@ def test_tampered_or_wrongly_bound_closure_is_ineligible_but_raw_envelope_is_ret
         verifier_authority = LinkedExecutionAuthority('scorer', b'x' * 32)
         gate = finalize_headless_evaluator_gate(binding={'evaluator_usage': dict(USAGE), 'evaluator_provider': dict(PROVIDER)},
             family=FAMILY, service=service, panel=panel, scores=scores,
-            scorer_authority_keys={verifier_authority.authority_id: verifier_authority.key}, capture=lambda value: captured.append(dict(value)))
+            scorer_authority_keys={verifier_authority.authority_id: verifier_authority.key},
+            scorer_config=config, capture=lambda value: captured.append(dict(value)))
         assert gate['score_eligible'] is False and gate['closure'] == closure.data() and gate['known_headless_main_tokens'] is None
         return
     elif fault == 'config':
         service.config = ScorerConfig.create(benchmark='core_pair', evaluator_id='other', version='v1', rubric_digest='c' * 64)
+        closure = _signed_closure(authority=authority, panel=panel, config=service.config, scores=scores)
+        service.finalize_headless_evaluator = lambda **_: closure
     else:
         bad = list(scores); bad[0] = _score(scores[0].cell_key, 'f')
         scores = tuple(bad)
