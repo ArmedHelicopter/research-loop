@@ -7,7 +7,7 @@ import pytest
 
 from evaluation.modular.scorer_process import read_headless_client_observations
 from evaluation.modular.scoring_service import ScorerConfig
-from research_loop.modular.artifact_catalogue import ArtifactCatalogue
+from research_loop.modular.artifact_catalogue import ArtifactCatalogue, source_snapshot
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.scorer_finalization_artifact_catalogue import (
     register_admission_headless_scorer_finalization_observations,
@@ -159,3 +159,44 @@ def test_readback_rejects_original_changed_during_descriptor_reads(tmp_path, mon
     with pytest.raises(ContractError):
         verify_admission_headless_scorer_finalization_observation_catalogues(
             root=root, config=config, panel=panel, service=service, receipt=receipt)
+
+def _rechain_and_reseal(path, mutate):
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+    previous = None; rebuilt = []
+    for sequence, entry in enumerate(rows):
+        descriptor = entry["descriptor"]
+        mutate(descriptor)
+        frozen = FrozenRecord.from_dict(descriptor)
+        rebuilt_entry = FrozenRecord.from_dict({"schema": "artifact-catalogue-entry-v2", "sequence": sequence,
+            "previous": previous, "descriptor_digest": frozen.content_hash, "descriptor": frozen.data()})
+        rebuilt.append(rebuilt_entry); previous = rebuilt_entry.content_hash
+    path.write_text("".join(entry.encoded + "\n" for entry in rebuilt), encoding="utf-8")
+    seal = FrozenRecord.from_dict({"schema": "artifact-catalogue-seal-v1", "count": len(rebuilt),
+        "head": previous, "binding": rows[0]["descriptor"]["binding"]})
+    path.with_name(path.name + ".seal.json").write_text(seal.encoded + "\n", encoding="utf-8")
+    return seal
+
+
+@pytest.mark.parametrize("field", ("producer_source", "cost", "optimizer_visible"))
+def test_readback_rejects_rehashed_resealed_descriptor_metadata_drift(tmp_path, field):
+    root, config, panel, service, _ = _inputs(tmp_path)
+    receipt = register_admission_headless_scorer_finalization_observations(
+        root=root, config=config, panel=panel, service=service)
+    body = receipt.data(); anchors = []
+    for anchor in body["catalogues"]:
+        path = Path(anchor["path"])
+        def mutate(descriptor):
+            if field == "producer_source":
+                descriptor[field] = source_snapshot(Path(__file__).parents[1] / "evaluation/modular/scorer_process.py")
+            elif field == "cost":
+                descriptor[field] = {"known": True, "units": 0}
+            else:
+                descriptor[field] = True
+        seal = _rechain_and_reseal(path, mutate)
+        anchors.append({**anchor, "seal": seal.data(), "seal_digest": seal.content_hash,
+                        "record_digests": [FrozenRecord(line).data()["descriptor_digest"]
+                                           for line in path.read_text(encoding="utf-8").splitlines()]})
+    forged = FrozenRecord.from_dict({**body, "catalogues": anchors})
+    with pytest.raises(ContractError):
+        verify_admission_headless_scorer_finalization_observation_catalogues(
+            root=root, config=config, panel=panel, service=service, receipt=forged)

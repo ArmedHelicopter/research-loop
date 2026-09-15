@@ -221,6 +221,9 @@ def verify_admission_headless_scorer_finalization_observation_catalogues(*, root
                     or descriptor["status"] != item["status"]
                     or descriptor["payload"]["canonical"] != item["payload"]
                     or descriptor["config_refs"] != list(refs) or descriptor["checks"] != [item["check"]]
+                    or descriptor["producer_source"] != source
+                    or descriptor["cost"] != {"known": False, "units": None}
+                    or descriptor["optimizer_visible"] is not False
                     or descriptor["scientific_validated"] is not False):
                 raise ContractError("scorer finalization observation projection differs")
         # Verify the caller-provided seal again after all descriptor reads.
