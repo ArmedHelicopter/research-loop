@@ -26,10 +26,13 @@ def test_actual_m2_withdrawal_projection_is_readonly_and_observational(tmp_path)
     body = projection.data()
     assert body['semantic_replay_source'] == source_snapshot(
         Path(__file__).parents[1] / 'research_loop/modular/evidence_artifacts.py')
+    assert body['reader_source'] == source_snapshot(
+        Path(__file__).parents[1] / 'research_loop/modular/evidence_relation_projection.py')
     withdrawal = next(row['descriptor_digest'] for row in body['nodes'] if row['event'] == 'withdraw')
     assert any(edge['relation'] == 'withdraws' and edge['from_descriptor_digest'] == withdrawal for edge in body['edges'])
     observed = query_m2_withdrawal_observations(withdrawal, ((session.artifacts, session.sidecar, seal),)).data()
     assert observed['complete'] is False and observed['unknown_scope'] is True
+    assert observed['reader_source'] == body['reader_source']
     assert observed['withdrawn_roots']
     assert observed['observed'] and all(row['event'] == 'withdrawal_refresh' for row in observed['observed'])
     assert all(row['status'] == 'produced' and row['module_enabled'] is True for row in observed['observed'])

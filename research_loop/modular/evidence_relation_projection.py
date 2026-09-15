@@ -65,6 +65,7 @@ def project_m2_typed_edges(catalogue, sidecar, *, seal=None):
         'identity': catalogue.identity.data(), 'catalogue_head': seal.data()['head'] if seal is not None else None,
         'catalogue_seal_digest': seal_digest, 'replay_digest': checked.content_hash,
         'semantic_replay_source': source_snapshot(Path(evidence_artifacts.__file__)),
+        'reader_source': source_snapshot(Path(__file__)),
         'nodes': nodes, 'edges': edges, 'scientific_validated': False})
 
 
@@ -103,4 +104,5 @@ def query_m2_withdrawal_observations(withdrawal_descriptor_digest, sources):
                                  'needs_review': node['needs_review']})
     return FrozenRecord.from_dict({'schema': 'm2-withdrawal-observation-query-v1',
         'withdrawal_descriptor_digest': withdrawal_descriptor_digest, 'withdrawn_roots': withdrawn_roots, 'observed': observed,
-        'semantic_replay_source': replay_source, 'complete': False, 'unknown_scope': True, 'scientific_validated': False})
+        'semantic_replay_source': replay_source, 'reader_source': source_snapshot(Path(__file__)),
+        'complete': False, 'unknown_scope': True, 'scientific_validated': False})
