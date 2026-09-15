@@ -85,16 +85,18 @@ def test_full_eight_cell_custody_controller_uses_real_separate_scorer_with_utf8(
         with pytest.raises(ContractError,match='differs'):
             service.score_combination(panel=compiled.panel,cell=compiled.panel.cells[0],score_input=FrozenRecord.from_dict(changed))
         assert (tmp_path/'worker.jsonl').read_bytes()==before
-    finally:service.close()
-    exchanges=read_scorer_exchange_observations(tmp_path/'client.jsonl.exchange-observations.jsonl')
-    assert exchanges[0]['event']['cell_key'] is None and exchanges[0]['event']['phase']=='reserved'
-    assert any(row['event']['phase']=='authenticated' and row['event']['cell_key'] is not None for row in exchanges)
-    assert all(row['event']['cost']=={'known':False,'units':None} for row in exchanges)
-    verify_scorer_exchange_catalogues(service)
-    anchors=tmp_path/'client.jsonl.exchange-catalogue-anchors.jsonl'
-    anchors.write_bytes(anchors.read_bytes()+b' ')
-    with pytest.raises(ContractError):
+        exchanges=read_scorer_exchange_observations(tmp_path/'client.jsonl.exchange-observations.jsonl')
+        assert exchanges[0]['event']['cell_key'] is None and exchanges[0]['event']['phase']=='reserved'
+        assert any(row['event']['phase']=='authenticated' and row['event']['cell_key'] is not None for row in exchanges)
+        assert all(row['event']['cost']=={'known':False,'units':None} for row in exchanges)
         verify_scorer_exchange_catalogues(service)
+        anchors=tmp_path/'client.jsonl.exchange-catalogue-anchors.jsonl'
+        anchors.write_bytes(anchors.read_bytes()+b' ')
+        # Cached success must still verify original sidecars before returning.
+        with pytest.raises(ContractError):
+            service.score_combination(panel=compiled.panel,cell=compiled.panel.cells[0],
+                score_input=FrozenRecord.from_dict(first['score_input']))
+    finally:service.close()
     for name in ('client.jsonl','worker.jsonl'):
         text=(tmp_path/name).read_text(encoding='utf-8')
         assert 'PRIVATE-REFERENCE-SENTINEL' not in text

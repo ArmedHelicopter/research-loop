@@ -846,6 +846,7 @@ class LinkedScorerProcessClient:
                     "cell_key": list(cell_key), "linked_input": linked_input.data()}
                 if _sha(canonical(material)) != state["request_digest"]:
                     raise ContractError("scorer client repeat input differs from completed request")
+                verify_scorer_exchange_catalogues(self)
                 return ScientificScorerReceipt(cell_key, FrozenRecord.from_dict(state["receipt"]))
             raise ContractError("scorer client has an unresolved prior reservation")
         request_id = uuid.uuid4().hex
@@ -1075,6 +1076,13 @@ def _exchange_path(client) -> Path:
 def _exchange(client, *, attempt_id: str, phase: str, cell_key, request_text: str,
               response_text: str | None = None, error_type: str | None = None, receipt_digest: str | None = None, success_journal_digest: str | None = None) -> None:
     path = _exchange_path(client)
+    existing_raw = path.read_bytes() if path.exists() else b''
+    held_raw = getattr(client, '_exchange_raw_anchor', existing_raw)
+    held_anchors = getattr(client, '_exchange_catalogue_anchor_bytes', None)
+    anchor_path = Path(str(client.journal_path)+'.exchange-catalogue-anchors.jsonl')
+    existing_anchors = anchor_path.read_bytes() if anchor_path.exists() else b''
+    if existing_raw != held_raw or (held_anchors is not None and existing_anchors != held_anchors):
+        raise ContractError('scorer exchange prefix changed before append')
     rows = read_scorer_exchange_observations(path)
     previous = rows[-1]['digest'] if rows else None
     event = {'schema': _SCORER_EXCHANGE_SCHEMA, 'attempt_id': attempt_id, 'phase': phase,
@@ -1088,7 +1096,10 @@ def _exchange(client, *, attempt_id: str, phase: str, cell_key, request_text: st
     row = {'schema': 'scorer-process-client-exchange-chain-v1', 'sequence': len(rows) + 1,
            'previous': previous, 'event': event}
     row['digest'] = FrozenRecord.from_dict(row).content_hash
+    expected_raw = existing_raw + canonical(row).encode('utf-8') + b'\n'
     _append(path, row)
+    if path.read_bytes() != expected_raw:
+        raise ContractError('scorer exchange append bytes differ')
     _exchange_catalogue_anchor(client, row)
     # Retain exact local bytes as the caller-owned anchor for the synchronous
     # consumer verification below; later local rehashing cannot replace it.
@@ -1116,8 +1127,8 @@ def read_scorer_exchange_observations(path: Path) -> tuple[dict, ...]:
                     or (event['response_text'] is None)!=(event['response_sha256'] is None)
                     or (event['response_text'] is not None and _sha(event['response_text'])!=event['response_sha256'])
                     or event['cost']!={'known':False,'units':None} or event['authorization']!='none' or event['scientific_status']!='not_measured'
-                    or (event['phase']=='authenticated' and (not _digest(event['receipt_digest'], 'exchange receipt') or not _digest(event['success_journal_digest'], 'exchange success journal')))
-                    or (event['phase']!='authenticated' and (event['receipt_digest'] is not None or event['success_journal_digest'] is not None))):
+                    or (event['phase']=='authenticated' and event['cell_key'] is not None and (not _digest(event['receipt_digest'], 'exchange receipt') or not _digest(event['success_journal_digest'], 'exchange success journal')))
+                    or ((event['phase']!='authenticated' or event['cell_key'] is None) and (event['receipt_digest'] is not None or event['success_journal_digest'] is not None))):
                 raise ValueError('scorer exchange observation differs')
             previous=row['digest']; rows.append(row)
         return tuple(rows)
@@ -1171,6 +1182,13 @@ def verify_scorer_exchange_catalogues(client) -> None:
     source=source_snapshot(Path(__file__))
     for row,anchor in zip(terminals,anchors,strict=True):
         event=row['event']; key=tuple(event['cell_key'])
+        if event['phase']=='authenticated':
+            response=json.loads(event['response_text'])
+            if FrozenRecord.from_dict(response['receipt']).content_hash != event['receipt_digest']:
+                raise ContractError('scorer exchange authenticated response differs')
+            legacy=[line for line in _journal(client.journal_path).values() if line.get('request_id')==event['attempt_id'] and line.get('status')=='succeeded']
+            if len(legacy)!=1 or FrozenRecord.from_dict(legacy[0]).content_hash != event['success_journal_digest']:
+                raise ContractError('scorer exchange authenticated journal differs')
         if (event['panel_digest']!=client.panel.digest or key not in client.cells
                 or event['cell_key']!=list(client.cells[key].key)
                 or event['scorer_config_digest']!=getattr(getattr(client,'config',None),'digest',None)
