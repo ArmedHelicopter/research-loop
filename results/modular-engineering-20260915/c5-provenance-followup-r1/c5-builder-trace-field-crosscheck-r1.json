@@ -1,0 +1,184 @@
+{
+  "schema": "c5-builder-trace-field-crosscheck-r1",
+  "scope": "derived field crosscheck only; no claim of catalogue parent edge, module ownership, causal consumption, independent verify_stage, or scientific support",
+  "results_index_commit": "0a5739e463e3c4a294141ff5bdfd1aec53a75835",
+  "probe_source_commit": "fad4ed4b2d8d3782f7e0b9366af8b9967ef282c1",
+  "source_root": "E:/_ryanDev/AI/research-loop-modular/work/c5-headless-runtime-probe-r4-basetemp/test_c5_headless_runtime_probe0/headless-common-run",
+  "inputs_before": [
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "sha256": "c04d1d3ac397dedbfdc78aedab0134e8647a36780264d246c99579fdbe30a0d9",
+      "bytes": 541237,
+      "mtime_ns": 1789445383989998600
+    },
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/candidate.json",
+      "sha256": "7280e59e2bde74dfbc6a139ae2103fc981fd86c352ec3b060f819d4ddb508e37",
+      "bytes": 599,
+      "mtime_ns": 1789445383308220200
+    },
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/m9-build-terminal.json",
+      "sha256": "3862a30667540f669dda0a9481f391ce4c5462908da8330ee68c7370ce082791",
+      "bytes": 3587,
+      "mtime_ns": 1789445383454329700
+    },
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/receipt.json",
+      "sha256": "866312bc4c3f218c54452536803c14453ebf15dcebebdfc3c4e90a9bd75804ba",
+      "bytes": 15311,
+      "mtime_ns": 1789445384291839600
+    },
+    {
+      "path": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e-stage.json",
+      "sha256": "e7399e5815aa82605327658b47ac08888c48d6ff160ef0db65f783fcae7c8dcc",
+      "bytes": 1589,
+      "mtime_ns": 1789445385318683300
+    }
+  ],
+  "inputs_after": [
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "sha256": "c04d1d3ac397dedbfdc78aedab0134e8647a36780264d246c99579fdbe30a0d9",
+      "bytes": 541237,
+      "mtime_ns": 1789445383989998600
+    },
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/candidate.json",
+      "sha256": "7280e59e2bde74dfbc6a139ae2103fc981fd86c352ec3b060f819d4ddb508e37",
+      "bytes": 599,
+      "mtime_ns": 1789445383308220200
+    },
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/m9-build-terminal.json",
+      "sha256": "3862a30667540f669dda0a9481f391ce4c5462908da8330ee68c7370ce082791",
+      "bytes": 3587,
+      "mtime_ns": 1789445383454329700
+    },
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/receipt.json",
+      "sha256": "866312bc4c3f218c54452536803c14453ebf15dcebebdfc3c4e90a9bd75804ba",
+      "bytes": 15311,
+      "mtime_ns": 1789445384291839600
+    },
+    {
+      "path": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e-stage.json",
+      "sha256": "e7399e5815aa82605327658b47ac08888c48d6ff160ef0db65f783fcae7c8dcc",
+      "bytes": 1589,
+      "mtime_ns": 1789445385318683300
+    }
+  ],
+  "inputs_unchanged": true,
+  "descriptor_records": {
+    "c4_builder_request": {
+      "journal_line": 98,
+      "descriptor_digest": "e0c4866e07988d94d76fe8294863433d9490965cb95e75b6e0ced2f0cf7d0362",
+      "kind": "trace_event",
+      "module": null
+    },
+    "m9_builder_selection": {
+      "journal_line": 99,
+      "descriptor_digest": "96401d22d3724a07e9ab3cb8c63397c009933707a9a68efb4dd4e0c1c7cf5ef8",
+      "kind": "m9_builder_selection",
+      "module": "M9",
+      "schema": "m9-builder-selection-v1"
+    },
+    "m9_builder_subjects": {
+      "journal_line": 100,
+      "descriptor_digest": "b7ca1724187ef1fdc41d0f861e592eb781b1497dc5da181cfb81a16b1b979995",
+      "kind": "m9_builder_subjects",
+      "module": "M9"
+    },
+    "m9_candidate": {
+      "journal_line": 104,
+      "descriptor_digest": "d48d1e7c35b57dd3c6871dbb633b6e66411f00f6e337bfa609c5d8155a2b8c23",
+      "kind": "m9_candidate",
+      "module": "M9"
+    },
+    "m9_build_terminal": {
+      "journal_line": 105,
+      "descriptor_digest": "5c39cef111b138a8d70ce894be581d4b1eb5285c2e3f45aef9bbbea7eee54141",
+      "kind": "m9_build_terminal",
+      "module": "M9"
+    },
+    "c4_build_terminal": {
+      "journal_line": 108,
+      "descriptor_digest": "8eeefb73177c7504142e320cab58d04ea114ef0a1eca9c2b22012c4f9759c7ce",
+      "kind": "trace_event",
+      "module": null
+    }
+  },
+  "field_crosschecks": [
+    {
+      "field_path": "trace[98].data.builder == M9[99].payload.canonical.builder",
+      "left_sha256": "967a2e55892ab5e83ff03f10df0ec9bbae26ce461b930d66064d1dfade552211",
+      "right_sha256": "967a2e55892ab5e83ff03f10df0ec9bbae26ce461b930d66064d1dfade552211",
+      "equal": true
+    },
+    {
+      "field_path": "trace[98].data.parent == M9[100].payload.canonical.parent_digest",
+      "left_sha256": "2d23cab4b46ca0fe4d56d988fbe80f32351a66345b0653f52a479297def66241",
+      "right_sha256": "2d23cab4b46ca0fe4d56d988fbe80f32351a66345b0653f52a479297def66241",
+      "equal": true
+    },
+    {
+      "field_path": "trace[98].data.search_cost == M9[100].payload.canonical.search_cost",
+      "left_value": 1,
+      "right_value": 1,
+      "equal": true
+    },
+    {
+      "field_path": "trace[108].data.candidate_digest == FrozenRecord(candidate.json).content_hash",
+      "left_value": "53a54d3b356f06fc98b8e903c69514f4488ee8778b4819bec600a1c5725bab96",
+      "right_value": "53a54d3b356f06fc98b8e903c69514f4488ee8778b4819bec600a1c5725bab96",
+      "equal": true
+    },
+    {
+      "field_path": "M9[104].payload.canonical.canonical == candidate.json",
+      "left_sha256": "53a54d3b356f06fc98b8e903c69514f4488ee8778b4819bec600a1c5725bab96",
+      "right_sha256": "53a54d3b356f06fc98b8e903c69514f4488ee8778b4819bec600a1c5725bab96",
+      "equal": true
+    },
+    {
+      "field_path": "history receipt.json.candidate_digest == FrozenRecord(candidate.json).content_hash",
+      "left_value": "53a54d3b356f06fc98b8e903c69514f4488ee8778b4819bec600a1c5725bab96",
+      "right_value": "53a54d3b356f06fc98b8e903c69514f4488ee8778b4819bec600a1c5725bab96",
+      "equal": true
+    },
+    {
+      "field_path": "M9[105].payload.canonical.file == m9-build-terminal.json",
+      "left_value": "m9-build-terminal.json",
+      "right_value": "m9-build-terminal.json",
+      "equal": true
+    },
+    {
+      "field_path": "M9[105].payload.canonical.sha256 == sha256(m9-build-terminal.json)",
+      "left_value": "3862a30667540f669dda0a9481f391ce4c5462908da8330ee68c7370ce082791",
+      "right_value": "3862a30667540f669dda0a9481f391ce4c5462908da8330ee68c7370ce082791",
+      "equal": true
+    },
+    {
+      "field_path": "M9 terminal canonical status == terminal file status",
+      "left_value": "succeeded",
+      "right_value": "succeeded",
+      "equal": true
+    }
+  ],
+  "reconstruction_source": {
+    "archived_probe_copy": {
+      "path": "producer-source/research_loop/modular/full_loo_driver.py",
+      "sha256": "94858bf9d02c94a0a6a69384c8e4d6c17cc837925d043ac14eb914ddb2fce9e9",
+      "bytes": 26513
+    },
+    "current_root_source": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance\\research_loop\\modular\\full_loo_driver.py",
+      "sha256": "4ff5493eb5c4425cc1beebcb5051c9371da0ed07335b45418c5c9cc7faa5f58d",
+      "bytes": 26463
+    },
+    "bytes_and_hash_match": false,
+    "limit": "Current root source does not byte-match the archived probe source. Lines 271-282 are cited as current-source behavior only; no source identity equivalence is claimed.",
+    "current_lines": "271-282",
+    "behavior": "offline history path verifies phase and M9 builder artifacts, checks selected builder/candidate, then records c4_builder_request, c4_builder_result, and c4_build_terminal"
+  },
+  "parent_field_representation": "M9[100].payload.canonical.parent is the full parent record; its FrozenRecord digest equals parent_digest. The trace stores that digest, so it must be compared to parent_digest rather than to the record object."
+}

@@ -1,0 +1,61 @@
+{
+  "schema": "c5-provenance-followup-root-verification-v1",
+  "graph_sha256": "d01ee5c27d84beb517d6f2bd9ac5987faa93c8afb0bb24930e4666df8a7fae0b",
+  "nodes": 212,
+  "uncovered_trace_nodes": 70,
+  "classification_counts": {
+    "has_direct_catalogue_reference": 52,
+    "generic_scheduler_or_model_io_further_review": 16,
+    "no_direct_catalogue_reference_further_review": 2
+  },
+  "recomputed_reported_field_equalities": 9,
+  "parent_record_digest_also_checked": true,
+  "source_raw_bytes_identical": false,
+  "source_diff_only_crlf_lf": true,
+  "source_old_sha256": "94858bf9d02c94a0a6a69384c8e4d6c17cc837925d043ac14eb914ddb2fce9e9",
+  "source_current_sha256": "4ff5493eb5c4425cc1beebcb5051c9371da0ed07335b45418c5c9cc7faa5f58d",
+  "historical_graph_changed": false,
+  "new_semantic_parent_edges_claimed": false,
+  "scientific_effectiveness_proven": false,
+  "model_calls": 0,
+  "validation_access": false,
+  "input_files": [
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "sha256": "c04d1d3ac397dedbfdc78aedab0134e8647a36780264d246c99579fdbe30a0d9",
+      "bytes": 541237,
+      "mtime_ns": 1789445383989998600
+    },
+    {
+      "path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "sha256": "9636bf6f601f328edabe4967423025a5b97d5e20d68c3260966d4614dc278169",
+      "bytes": 586247,
+      "mtime_ns": 1789445420538049800
+    },
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/candidate.json",
+      "sha256": "7280e59e2bde74dfbc6a139ae2103fc981fd86c352ec3b060f819d4ddb508e37",
+      "bytes": 599,
+      "mtime_ns": 1789445383308220200
+    },
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/m9-build-terminal.json",
+      "sha256": "3862a30667540f669dda0a9481f391ce4c5462908da8330ee68c7370ce082791",
+      "bytes": 3587,
+      "mtime_ns": 1789445383454329700
+    },
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/receipt.json",
+      "sha256": "866312bc4c3f218c54452536803c14453ebf15dcebebdfc3c4e90a9bd75804ba",
+      "bytes": 15311,
+      "mtime_ns": 1789445384291839600
+    },
+    {
+      "path": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e-stage.json",
+      "sha256": "e7399e5815aa82605327658b47ac08888c48d6ff160ef0db65f783fcae7c8dcc",
+      "bytes": 1589,
+      "mtime_ns": 1789445385318683300
+    }
+  ],
+  "originals_bytes_and_mtimes_unchanged": true
+}

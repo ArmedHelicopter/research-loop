@@ -1,0 +1,1633 @@
+{
+  "schema": "c5-probe-uncovered-trace-audit-r2",
+  "scope": "read-only audit of original catalogue trace descriptors; payload values omitted; r1 preserved",
+  "results_index_commit": "0a5739e463e3c4a294141ff5bdfd1aec53a75835",
+  "probe_source_commit": "fad4ed4b2d8d3782f7e0b9366af8b9967ef282c1",
+  "source_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-headless-runtime-probe-r4-basetemp\\test_c5_headless_runtime_probe0\\headless-common-run",
+  "graph": {
+    "sha256": "d01ee5c27d84beb517d6f2bd9ac5987faa93c8afb0bb24930e4666df8a7fae0b",
+    "bytes": 395310
+  },
+  "original_journals_before": [
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "sha256": "c04d1d3ac397dedbfdc78aedab0134e8647a36780264d246c99579fdbe30a0d9",
+      "bytes": 541237,
+      "mtime_ns": 1789445383989998600
+    },
+    {
+      "path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "sha256": "9636bf6f601f328edabe4967423025a5b97d5e20d68c3260966d4614dc278169",
+      "bytes": 586247,
+      "mtime_ns": 1789445420538049800
+    }
+  ],
+  "original_journals_after": [
+    {
+      "path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "sha256": "c04d1d3ac397dedbfdc78aedab0134e8647a36780264d246c99579fdbe30a0d9",
+      "bytes": 541237,
+      "mtime_ns": 1789445383989998600
+    },
+    {
+      "path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "sha256": "9636bf6f601f328edabe4967423025a5b97d5e20d68c3260966d4614dc278169",
+      "bytes": 586247,
+      "mtime_ns": 1789445420538049800
+    }
+  ],
+  "originals_unchanged": true,
+  "counts": {
+    "uncovered_trace_descriptors": 70,
+    "classification": {
+      "has_direct_catalogue_reference": 52,
+      "generic_scheduler_or_model_io_further_review": 16,
+      "no_direct_catalogue_reference_further_review": 2
+    }
+  },
+  "items": [
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 15,
+      "descriptor_digest": "5f79b0cd7c56bbc16c089238b2a5db194fdfeeb592cdc3464b295148f884fae7",
+      "trace_stage": "c4_state",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M1",
+          "kind": "lineage_transition",
+          "descriptor_digest": "1a2906a3a06aec50f6479c0b549c8c1d654866a19e53f5f387532920ee304356",
+          "status": "produced"
+        },
+        {
+          "module": "M2",
+          "kind": "lineage_transition",
+          "descriptor_digest": "c2e120258bc491a84ae4c6bdf025589f1e1cf12f69bee91060fb865e2b6b9d2e",
+          "status": "produced"
+        },
+        {
+          "module": "M3",
+          "kind": "lineage_transition",
+          "descriptor_digest": "065b2b813b34381bdaf07005d84545d46aa935388a00b4325ac413a5b6a383ce",
+          "status": "produced"
+        },
+        {
+          "module": "M3",
+          "kind": "model_context",
+          "descriptor_digest": "a2ce07fdeccecad9be277e6de5a04053ad1b53a00510ff31432a9a5b5ea3ca66",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 20,
+      "descriptor_digest": "84ed96ade77858f0f91e9c1fb786ce0f8ee60bfac8d46d0f22ce64b5a0e7f384",
+      "trace_stage": "model_request",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 21,
+      "descriptor_digest": "6ce5560539299d9e0ff7bfe5c1f8a258d7833ec9949e0a168e30debd52edcfcb",
+      "trace_stage": "model_response",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M4",
+          "kind": "journal_event",
+          "descriptor_digest": "a8b2558b43bda91191b4f5c94e73aee4b812f813a69b6d2557fff3e327bca590",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 23,
+      "descriptor_digest": "c9c9c006c3145cae6d9e8ecf94ad569ced0befa94f56fb3437c60f4679e3dc4d",
+      "trace_stage": "c4_prediction_frozen",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M4",
+          "kind": "c4_prediction_frozen",
+          "descriptor_digest": "34bb97b16084750f2c16f41848ce40ef642033391633f653983c51002797870e",
+          "status": "produced"
+        },
+        {
+          "module": "M5",
+          "kind": "journal_event",
+          "descriptor_digest": "c3f79ccc6bdcff9762ff9b1fb64678299a5476e95b56dc68c474d92399b02ef4",
+          "status": "produced"
+        },
+        {
+          "module": "M3",
+          "kind": "model_context",
+          "descriptor_digest": "e6a854d7c5d803c6081663f13ce77b200fb45d425866c2793c3e742af74f0527",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 27,
+      "descriptor_digest": "a8e8f3ea9dbe7c29e019833f636c9e2f6139a231ba69303114534fb30ef40e78",
+      "trace_stage": "model_request",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 28,
+      "descriptor_digest": "0280c6423c55b969d17298e1d9e6bde52a2c9fdac0c954b9ff1814cdb24f9526",
+      "trace_stage": "model_response",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M5",
+          "kind": "journal_event",
+          "descriptor_digest": "1bda0119dee45655554194c53eb42e5b18d7a304a442ae5138574c315e40b8c3",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 30,
+      "descriptor_digest": "6c63e07a95720e3b7df16b6c7838a12f9de79cc66bbcdd36d37917bbce3fe053",
+      "trace_stage": "c4_review_sealed",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M5",
+          "kind": "c4_review_sealed",
+          "descriptor_digest": "892707eced3c35c7898fff99110dd17cb25fcbb8a9d950226d1a5f34ce3daeff",
+          "status": "produced"
+        },
+        {
+          "module": "M3",
+          "kind": "model_context",
+          "descriptor_digest": "19f8faa12acdacd46a029e048e192bcf7fca8172c3a50bed088f7340a6a05d9a",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 33,
+      "descriptor_digest": "b4a153548e77534dd83fef9fb092f749a3a82dabdaa22da0da19137d763fc88e",
+      "trace_stage": "model_request",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 34,
+      "descriptor_digest": "feaca7f716d52a9a3b255ea2acf57e6a8c3a1995847515bbab309f3bc1492b1b",
+      "trace_stage": "model_response",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M5",
+          "kind": "journal_event",
+          "descriptor_digest": "df51ba232f5647568723d1ef30c35f41b41a8e2fd055c07121d0c82cc4f08e85",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 36,
+      "descriptor_digest": "5fe01fd3e11208b628ea02a2f12e1ba993733402ee5544e57ed84531a2d27cec",
+      "trace_stage": "c4_review_sealed",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M5",
+          "kind": "c4_review_sealed",
+          "descriptor_digest": "557a366c111836e6481907e47152abbcd16fca1d6f11933decdf642a166df0c8",
+          "status": "produced"
+        },
+        {
+          "module": "M5",
+          "kind": "reveal_output",
+          "descriptor_digest": "23b5724a3f6d8f1d06e82319ceb605143ae092bf7472b4ed1a36576a4b68af48",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 39,
+      "descriptor_digest": "14a6ea3acfba6601a086cbaeaff5c42a97abb469f06a46a4ce02cd23b3983c28",
+      "trace_stage": "c4_review_reveal",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M5",
+          "kind": "c4_review_reveal",
+          "descriptor_digest": "3be6fae91b4c2dcaac45fc6b3574e882a67de13cc169dea70bb206962e626f53",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 41,
+      "descriptor_digest": "ce386eaf2d8fbe9aea3ef003c427fac2f2120ab3c50e867618316e3e0373866b",
+      "trace_stage": "q8_source_admission",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "e3780db19252cfb2aedc82d3b121d680478c8ffa2a7db68c3ae2ecc2c08e029e",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 43,
+      "descriptor_digest": "a07fa77b3ef371c52034797f3ab0dc8ca81f08f616bcac28e8e23d24900747b3",
+      "trace_stage": "q8_retrieval_request",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "d2b8cf29718a4391f3f7feb0066757a62ce90328ab90d6099e9ce09671e7ac7e",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 45,
+      "descriptor_digest": "62c48d63587a4996da266430bee5a08df12b9d54bc1ad2bb027caa11846afe42",
+      "trace_stage": "q8_retrieval_item",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "5676e283bbd0995fd2002a268a2064c37dfd15e7027338a82dff094b1f34bbac",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 47,
+      "descriptor_digest": "d3c0a7cb4a11a3e4a62be5be587c2ce32583186924961afc384466731f48f29f",
+      "trace_stage": "q8_retrieval_result",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "6380e6bb7f79b25a8c2351ec0d0e1bc2894d4cb4fcc7fee24289f635c7324afa",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 49,
+      "descriptor_digest": "a490640a534c00cda185555fdfd45bd9efacb49737c8f1a673bb37f446403b5e",
+      "trace_stage": "q8_retrieval_request",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "c4d565a543f9d7bb52cfcd5901430be28cf5f3bdd23c26aed871bf07d2970ae0",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 51,
+      "descriptor_digest": "a2eb2cb5c8f053215e10b3a9c156c3842b59fcbeff5ebcfbf6128a46c1d14f85",
+      "trace_stage": "q8_retrieval_item",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "2a38bd284807c503d08cbc63b600dd97f1a2e6fcfc06798a1e13907d0b999e7d",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 53,
+      "descriptor_digest": "72704ceb996ed454dc0138199e9e166828b61a888701d26f5a31e1f850ce6151",
+      "trace_stage": "q8_retrieval_result",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "f3226ab44701a83bfa97796ff5e47059a46f6b8ad22c759a67e1c49224d2304d",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 55,
+      "descriptor_digest": "c8f9f0fe8a0ab870e80606e525dd35fb208114f0f0f7409b0baff340917f9fa3",
+      "trace_stage": "q8_retrieval_request",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "0ca27cb4f8fa3e8783764b29ca8ba8a69b625fe2e316106c4e9eeba11d5d2547",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 57,
+      "descriptor_digest": "9bbf435fdbf83c892eb000a9c1a8539f509208f42fbdf4457c5c6d870a70fbd6",
+      "trace_stage": "q8_retrieval_item",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "a99ffa61c84c2c021bfcb24845087555abb671678d228fdd8c262eefafea2866",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 59,
+      "descriptor_digest": "dac09649e86c9a84d5223413b61d1ea80a3fe699f13c33b2c8ed67ad490dc142",
+      "trace_stage": "q8_retrieval_result",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "c934f0c9489879160508a8faa40cc30e2b0f945bdc43d0ebcd0c52780ac29115",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 61,
+      "descriptor_digest": "93161fa984cb34cf6197248c694d4e90dec86553a79c953c50293d7d244f51f5",
+      "trace_stage": "q8_retrieval_selection",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "4d1561d274052ffda05960bc1915013d19190d34e5aaf010f5b034d30ab1dd93",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 63,
+      "descriptor_digest": "dc41056c4ae8238f8167fc5fbce5db60f7c290d64fdf1a2434b902e2e42c9899",
+      "trace_stage": "q8_retrieval_budget",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "165125a20b5aa3e5de9b0ec3a4457743732707189378354d21c734a1c1e88592",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 65,
+      "descriptor_digest": "9f23c68f2558d885647ecea432bd73d94c4aa369a41bcffa8d15971739e6c21e",
+      "trace_stage": "retrieval_review_sources",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "949dd849267eff558441411efc2e26eb7e1bebe1037b63abac19bff04f83c455",
+          "status": "produced"
+        },
+        {
+          "module": "M3",
+          "kind": "model_context",
+          "descriptor_digest": "0990fc1b0b89cbc8ed5118a403205928ae317e35fe85c6c02d9059c6e3f5bc2e",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 68,
+      "descriptor_digest": "ab8623de096103de42e49533672bff0b7754c5574c94fe6c9036a1dc1a710d23",
+      "trace_stage": "model_request",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 69,
+      "descriptor_digest": "f059e4b0c1fc9e6b08bf9c37dbdbea893d28dc679cb29545d7df8eb8c0bd5d39",
+      "trace_stage": "model_response",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 70,
+      "descriptor_digest": "4ba9ec75f9d8cb147a64cc028851359a0a3530948ec2bd6d61ba1cdccac83b1b",
+      "trace_stage": "c4_choice_frozen",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M7",
+          "kind": "c4_choice_frozen",
+          "descriptor_digest": "ebeef125f7b0a3dd979844c11e1ea91ca6a331c942b296418012ce83e4845271",
+          "status": "produced"
+        },
+        {
+          "module": "M6",
+          "kind": "retrieval_result",
+          "descriptor_digest": "f3d79a950cecc74fb28b81a52d324c7b4f5382b9d391c133f82512867fe2caa5",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 91,
+      "descriptor_digest": "8d5912a3be950782b4acc1137215b81258af52075b7544998ba1205ff3c5b211",
+      "trace_stage": "c4_phase",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M7",
+          "kind": "exploration_phase_receipt",
+          "descriptor_digest": "c9b28ec4fc12c7de3a5bf25c82b75190a4f87a3634a99773db1df5d0b5a8e273",
+          "status": "produced"
+        },
+        {
+          "module": "M8",
+          "kind": "exploration_phase_receipt",
+          "descriptor_digest": "ea45cc3ae95e15023d75e7e7832920a488f82ad2a68a9576e85f04cffb559927",
+          "status": "not_applied"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 94,
+      "descriptor_digest": "6e118e8df03b2d5afe03085ae198043eb08096878707790504f7d5b44fa7115a",
+      "trace_stage": "c4_joint",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M3",
+          "kind": "model_context",
+          "descriptor_digest": "739fea97f6105e8e65160db4db80033dd8dbad3ccd3d6a1be4665a04f4c5d912",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 96,
+      "descriptor_digest": "5406f00dbe0f5c245d10d406664d985e01b24eeefdea31484c0461fea83dc05b",
+      "trace_stage": "model_request",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M9",
+          "kind": "m9_builder_selection",
+          "descriptor_digest": "96401d22d3724a07e9ab3cb8c63397c009933707a9a68efb4dd4e0c1c7cf5ef8",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 97,
+      "descriptor_digest": "0e24fde10f9204df6583a099471123f5efa8d767f06bf543f37c89c1d4cd8b79",
+      "trace_stage": "model_response",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M9",
+          "kind": "m9_builder_selection",
+          "descriptor_digest": "96401d22d3724a07e9ab3cb8c63397c009933707a9a68efb4dd4e0c1c7cf5ef8",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 98,
+      "descriptor_digest": "e0c4866e07988d94d76fe8294863433d9490965cb95e75b6e0ced2f0cf7d0362",
+      "trace_stage": "c4_builder_request",
+      "classification": "no_direct_catalogue_reference_further_review",
+      "reason": "no direct module descriptor reference; further-review group only, not a demonstrated missing artefact",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 106,
+      "descriptor_digest": "aaf3d92ac72d1f7f65bfd23265e16c4f0e00519c96c1e28f774dfd851d3abb26",
+      "trace_stage": "c4_builder_result",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M9",
+          "kind": "training_limited_candidate",
+          "descriptor_digest": "0c428febf25baf848deca9620a77b4dc1bbb6f165c36f12826bb05dc75f90837",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e",
+      "journal_path": "stages/950f42de4d4b0eb198b1582e809e7f681e2ba42008499cdc48dbb0e7a7f6357e/runtime/artifacts.jsonl",
+      "journal_line": 108,
+      "descriptor_digest": "8eeefb73177c7504142e320cab58d04ea114ef0a1eca9c2b22012c4f9759c7ce",
+      "trace_stage": "c4_build_terminal",
+      "classification": "no_direct_catalogue_reference_further_review",
+      "reason": "no direct module descriptor reference; further-review group only, not a demonstrated missing artefact",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 15,
+      "descriptor_digest": "6533ce86650e9aa037b77681abf4bdd874668489d69de40238dc10b09070c229",
+      "trace_stage": "c4_state",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M1",
+          "kind": "lineage_transition",
+          "descriptor_digest": "e385cc4368d3012a04f792cf2d19f4b0b2e07479784f131884916b26da9c81b6",
+          "status": "produced"
+        },
+        {
+          "module": "M2",
+          "kind": "lineage_transition",
+          "descriptor_digest": "614a593a0b4a3f3bcb73b1b2a791de2c39770b949adb6c1f2e0533f2bdc301fc",
+          "status": "produced"
+        },
+        {
+          "module": "M3",
+          "kind": "lineage_transition",
+          "descriptor_digest": "cc6daa7db816b442da3dadbcc9438fb7dcdff9ad9d068dab5d906b2ed31a0a45",
+          "status": "produced"
+        },
+        {
+          "module": "M3",
+          "kind": "model_context",
+          "descriptor_digest": "dfc18c4acf874ad56341b0d01d718f39b582105b372aac9cb7c3e8556974f328",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 20,
+      "descriptor_digest": "2d0dc016151e6beb8cdb5a2d1b639f01c5ede94eb26781d7d24dbfc46044f931",
+      "trace_stage": "model_request",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 21,
+      "descriptor_digest": "ac28445b6dc9bd92fdec58696103de6f1a8fba8cef148e239394630d8d881670",
+      "trace_stage": "model_response",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M4",
+          "kind": "journal_event",
+          "descriptor_digest": "d85b41eee9e2d1d3e68687d6823baaf3c31443acf3d6a5900d488ed2ed6b4f81",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 23,
+      "descriptor_digest": "a1f95acc27c7ae88349f317032cfb551f3b342b9607bd7145fb0af960fbc0969",
+      "trace_stage": "c4_prediction_frozen",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M4",
+          "kind": "c4_prediction_frozen",
+          "descriptor_digest": "d9f5c1fb5042b2a7cadb65bd9a8ec74e65dd485cd8a8c91dad681052f8d4102f",
+          "status": "produced"
+        },
+        {
+          "module": "M5",
+          "kind": "journal_event",
+          "descriptor_digest": "034de328fcba51da67f6b564835f59218f570cb5b8d656259f2eaeaf212a7046",
+          "status": "produced"
+        },
+        {
+          "module": "M3",
+          "kind": "model_context",
+          "descriptor_digest": "62150fe697340ce4fce9de29a17fccc72c5fdda82d243ad45b94be03580474d8",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 27,
+      "descriptor_digest": "a1ae7610245ac7b990cfb12a00a54e5601768994569c822da005c5bfcfad5c2e",
+      "trace_stage": "model_request",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 28,
+      "descriptor_digest": "6ad99f2566a68e2a83c0638a5442af89ad8f9b2b679a0f2f37ff11698d19279d",
+      "trace_stage": "model_response",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M5",
+          "kind": "journal_event",
+          "descriptor_digest": "41cf9ca4dc4cd55dcbddae43ec8a11346e343ddcba07da535cd9c6684ce62267",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 30,
+      "descriptor_digest": "c802c45256ff642c63283c6248e9944f38e17d2d600a91bb0082ea2348692086",
+      "trace_stage": "c4_review_sealed",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M5",
+          "kind": "c4_review_sealed",
+          "descriptor_digest": "989e84dfd6bf302b278d3513594287af119870a2f7f7499495af56f8dffb3888",
+          "status": "produced"
+        },
+        {
+          "module": "M3",
+          "kind": "model_context",
+          "descriptor_digest": "fad4523471344bc499df1b0198d70645bc1f04ac0d2f2c538db3f7b57d7a27c1",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 33,
+      "descriptor_digest": "f3446555fb1370ea8ded0a2a22b2b9e2fb2030aef9b91d3d027cf29436ec51e2",
+      "trace_stage": "model_request",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 34,
+      "descriptor_digest": "f751410ffe5178e4f587dbb29527550f489928dbe6b8e1a1a12e0bfcde8b0dd8",
+      "trace_stage": "model_response",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M5",
+          "kind": "journal_event",
+          "descriptor_digest": "22ebafc89624c3017ddf78068efc0dddb67df3cb2092eae26efd0e320fea609d",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 36,
+      "descriptor_digest": "a4330c3f6033e734535223f23cbe8d7c1ff94dfe76598a642286a456eac3fd01",
+      "trace_stage": "c4_review_sealed",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M5",
+          "kind": "c4_review_sealed",
+          "descriptor_digest": "e60064d2978638c84c97d9aded53d1c3c9a1b8ee7bfcd8043f0e6e7fa9fa69f0",
+          "status": "produced"
+        },
+        {
+          "module": "M5",
+          "kind": "reveal_output",
+          "descriptor_digest": "561e501129fd09c818f1daa19b7d0b10ec58e0ffa12be348db270ebf336bd9ab",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 39,
+      "descriptor_digest": "c52b7e3f0735c48c8cee8b205912b578f682a343eb99d07c59a656c7196c6a2d",
+      "trace_stage": "c4_review_reveal",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M5",
+          "kind": "c4_review_reveal",
+          "descriptor_digest": "441ccd555bfdf57feef3881a85d51412edde33e36ed3d3a8fa55dbb308010f33",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 41,
+      "descriptor_digest": "e0d228138935c10726c075f9e111dedf2f3d7a4fe0256d6de1060568845d5b58",
+      "trace_stage": "q8_source_admission",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "ba6c0e9006b6531382b93b21541675aec8922aaa828108cfced4c58f25a9ee9a",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 43,
+      "descriptor_digest": "1093440d600c2f94cb35b4386c86c808fc5416b01d148605d49157b1bffdfd4e",
+      "trace_stage": "q8_retrieval_request",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "45d2c98691066b1f699612ec175b2be93fb2f10de5acbd879c83b24a89539c7a",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 45,
+      "descriptor_digest": "26c2c4bdcc8abc9f4af86332ec614dcce0bdb5eb0e9ea9a1551db110aba7c8a1",
+      "trace_stage": "q8_retrieval_item",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "f7dff1b6cc87b2903333924554c0421b3d0cdb7ee06130c1072d424eb46b920f",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 47,
+      "descriptor_digest": "4f32c8f7069d5ed6a048693266d5e6d2586b8c51f51cf29f11b89fcdaeb4ae0c",
+      "trace_stage": "q8_retrieval_result",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "854b62264a20c10b86d1c4126793ad17bd380123fe07488545ae1dfeb223fa91",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 49,
+      "descriptor_digest": "d88c2643d2553af32a72e5fc6c1199213796edc25671c41e5c88b2aea0f1a21a",
+      "trace_stage": "q8_retrieval_request",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "7495653a18ab791b7c5719c6377ed8f3f5871e50b43f8a4201cb3aed207c1f7b",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 51,
+      "descriptor_digest": "e47cbf52e115a29fd31e6204f0e83c066a8370ea3f71e08365c0cfd706da7d0f",
+      "trace_stage": "q8_retrieval_item",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "e4732d8e595fc93667f27e6db18e952622db33ea201611cb3ecb945281e8d37b",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 53,
+      "descriptor_digest": "c2360ddaa5a4c5bb05056b642d3d9e1e5e8874c74c3317c1d376fe6da42947dc",
+      "trace_stage": "q8_retrieval_result",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "016b91088df9ff347fcd327ca31b37b37c2d8db30b771f0aaaf14ea2b0f9a1a1",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 55,
+      "descriptor_digest": "5bf4ae360518a10aee72e00116672c14ddcef7915b4018d70684dd1866d7c45c",
+      "trace_stage": "q8_retrieval_request",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "9dc45acc6d84c6c94281a9929d279c5e934a854253fb8c4e86b8a4577b579c67",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 57,
+      "descriptor_digest": "bf7e702ebfe27bdbce046b2b03eabbb4b64cbf7a9b19ac7eae2586ae6141d992",
+      "trace_stage": "q8_retrieval_item",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "1e1392aed50f3c0fc0e9a4c6d69c445de02bd003a0fe4b542c8933ffdd290180",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 59,
+      "descriptor_digest": "62413436b5aed66e7b9b030eac38d273b8122fad43627118daff364943de70bd",
+      "trace_stage": "q8_retrieval_result",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "2adaf7463b0453f7d91c12559dcc4511a19437e7fca4a4540fd602fc785f3ebc",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 61,
+      "descriptor_digest": "d9619a67985a815c6ff628600c726df052805412a42f19c865efe268f280cdb3",
+      "trace_stage": "q8_retrieval_selection",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "3c4ca5e141c44f70b2b1cf651b653155934fb1c561b72631d85f66107bf7b710",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 63,
+      "descriptor_digest": "6cab57c108ab1386af7a26b75111a36df9150a3b419983ce35da4faf32381196",
+      "trace_stage": "q8_retrieval_budget",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "c4232248e849d8e7cc6cddc8e784a2caa23f496043d3a90c4a77a9e4f8ce755e",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 65,
+      "descriptor_digest": "8aa9f6d6fea9b619e3b284cb39eb3be486a62565b9366305907acc56cece3fa4",
+      "trace_stage": "retrieval_review_sources",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M6",
+          "kind": "retrieval_event",
+          "descriptor_digest": "d9fb29daddfe8922b35cd03ae0f0b337db51d95fc741b6172130414d78089955",
+          "status": "produced"
+        },
+        {
+          "module": "M3",
+          "kind": "model_context",
+          "descriptor_digest": "0580958d7fee4c02374a5bf2cd1b056cde3a0eeccab8279152fa1e8235382b6e",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 68,
+      "descriptor_digest": "ea22010954b6f699ce595005eef7a7918f0e9a62b02e752fd35b6db7fb8f0027",
+      "trace_stage": "model_request",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 69,
+      "descriptor_digest": "423f1e5df70f600e2c72c8cc8a80b9c3ea2a5b3b6fb996fda4dd4559a1a9cdd3",
+      "trace_stage": "model_response",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 70,
+      "descriptor_digest": "a08d037bd7aa944e6b45e9b70b33d05d2a451ca82013355e2559d73525ab1d53",
+      "trace_stage": "c4_choice_frozen",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M7",
+          "kind": "c4_choice_frozen",
+          "descriptor_digest": "3bad2efe906c7a6661e843c2f69d5eb505b38a0ee93dce847deb662e4b57dbde",
+          "status": "produced"
+        },
+        {
+          "module": "M6",
+          "kind": "retrieval_result",
+          "descriptor_digest": "55cce301309366a2ba4011f6213ad84f159fc3b887312dfb883d2ca94f48355a",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 92,
+      "descriptor_digest": "7411e184405a28ec1109c9488c83ea0f90272581ac5fdedaa4ed80ea04f45d0b",
+      "trace_stage": "c4_phase",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M7",
+          "kind": "exploration_phase_receipt",
+          "descriptor_digest": "07713569465dca6d929593795ac258171ab6bfc461cf3cc2bb865ac2f23cb8a6",
+          "status": "produced"
+        },
+        {
+          "module": "M8",
+          "kind": "exploration_phase_receipt",
+          "descriptor_digest": "3d8d2630004e1d581a37aa8af060a31add1748b539083e584051fad23aea6808",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 95,
+      "descriptor_digest": "3ca66e71f8ed64c2950edabaa50d8ccd0dd6b88e3af28fa957a5084e2bde591b",
+      "trace_stage": "c4_joint",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M3",
+          "kind": "model_context",
+          "descriptor_digest": "681d2a2a469a477da7ec7856f5e80f21e4fa639fd60abf8e992dbc233112e64b",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 97,
+      "descriptor_digest": "e70cd5dcedda59d9e52a7587ad40ffcb7b581a08cd6c658296243b6dc7f8c131",
+      "trace_stage": "model_request",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 98,
+      "descriptor_digest": "c4ff305eeb1f520a365a1aa81f49c0f5277badea8a91ca378e08f9a238b9d782",
+      "trace_stage": "model_response",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 99,
+      "descriptor_digest": "31a059b66cd09a2a13598b5b06d990285c384117cd3043773ecdcb31d81e541d",
+      "trace_stage": "execution_request",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 100,
+      "descriptor_digest": "142be837053aa8d8ccdf4741d779e096dce5d4e87ed027c42fbc62301683f1de",
+      "trace_stage": "execution_result",
+      "classification": "has_direct_catalogue_reference",
+      "reason": "actual catalogue parent reference exists; runtime record_artifact auto-attaches the latest trace, so this is not proof of semantic consumption, field coverage, causality, or module ownership",
+      "direct_specialized_descriptor_links": [
+        {
+          "module": "M3",
+          "kind": "model_context",
+          "descriptor_digest": "af4c139f7a965a7835956355e327ea0bb20a6b57dfd20f8730f597f3fc73b1e4",
+          "status": "produced"
+        }
+      ],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 102,
+      "descriptor_digest": "93d29bfbee8269443a9d3c579fb11b38db1308cb1cfa0a0504c156e898d6f9ce",
+      "trace_stage": "model_request",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 103,
+      "descriptor_digest": "b2527c6879e18cf66f7e72808ecc4ee39aa5beb2e37689335ae3e3ee2393ebcd",
+      "trace_stage": "model_response",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    },
+    {
+      "stage_id": "e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1",
+      "journal_path": "stages/e1c5188232f8b94daa4c1db56b8e4bc05049842acc33ec8efb2063ab7075f4f1/runtime/artifacts.jsonl",
+      "journal_line": 104,
+      "descriptor_digest": "e516f04efbe3ec5104a5f1d0764bc84de0ff223667113e48ad18fdbf0dd43931",
+      "trace_stage": "final_decision",
+      "classification": "generic_scheduler_or_model_io_further_review",
+      "reason": "generic runtime scheduler/model I/O group for further review; no coverage claim",
+      "direct_specialized_descriptor_links": [],
+      "producer_source": {
+        "path": "E:\\_ryanDev\\AI\\research-loop-modular\\c5-headless-runtime-integration-r1\\research_loop\\modular\\runtime.py",
+        "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+        "bytes": 35816
+      }
+    }
+  ],
+  "semantics_limit": "A direct catalogue parent reference is structural. runtime.py record_artifact automatically adds the latest trace parent; no class in this audit proves semantic consumption, per-field coverage, causality, or module ownership, and historical graph coverage is unchanged.",
+  "builder_trace_followup": {
+    "source_production": {
+      "path": "research_loop/modular/full_loo_driver.py",
+      "lines": "124, 132",
+      "evidence": "records c4_builder_request before begin_builder_artifacts and c4_build_terminal after the M9 training-limited candidate"
+    },
+    "offline_replay": {
+      "path": "research_loop/modular/full_loo_driver.py",
+      "lines": "280, 282",
+      "evidence": "verify_builder_artifacts and _checked_build precede recreation of the two C4 trace events"
+    },
+    "builder_request": {
+      "trace": {
+        "journal_line": 98,
+        "digest": "e0c4866e07988d94d76fe8294863433d9490965cb95e75b6e0ced2f0cf7d0362"
+      },
+      "typed_m9": {
+        "journal_line": 99,
+        "kind": "m9_builder_selection",
+        "digest": "96401d22d3724a07e9ab3cb8c63397c009933707a9a68efb4dd4e0c1c7cf5ef8",
+        "schema": "m9-builder-selection-v1",
+        "parents": [
+          "5406f00dbe0f5c245d10d406664d985e01b24eeefdea31484c0461fea83dc05b",
+          "0e24fde10f9204df6583a099471123f5efa8d767f06bf543f37c89c1d4cd8b79"
+        ]
+      },
+      "finding": "M9 typed selection and subjects artefacts exist and are independently read, but neither directly references the C4 builder-request trace digest. No phase receipt directly references it."
+    },
+    "builder_terminal": {
+      "trace": {
+        "journal_line": 108,
+        "digest": "8eeefb73177c7504142e320cab58d04ea114ef0a1eca9c2b22012c4f9759c7ce"
+      },
+      "typed_m9": {
+        "journal_line": 105,
+        "kind": "m9_build_terminal",
+        "digest": "5c39cef111b138a8d70ce894be581d4b1eb5285c2e3f45aef9bbbea7eee54141",
+        "file": "m9-build-terminal.json",
+        "parent": "d48d1e7c35b57dd3c6871dbb633b6e66411f00f6e337bfa609c5d8155a2b8c23"
+      },
+      "finding": "M9 terminal and candidate chain are independently verified, but the terminal trace is emitted after that chain and has no direct typed-descriptor reference. No phase receipt directly references it."
+    },
+    "independent_reader": {
+      "path": "research_loop/modular/builder_artifacts.py",
+      "lines": "243-257, 341-390",
+      "evidence": "verify_builder_artifacts reads existing M9 files, checks typed selection and terminal descriptors, verifies candidate/receipt types and replays literal builder DSL; it does not read either C4 trace descriptor as an input"
+    }
+  }
+}
