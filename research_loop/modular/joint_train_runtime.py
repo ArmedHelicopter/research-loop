@@ -143,7 +143,7 @@ class FrozenJointTrainRuntimePlan:
             raise ContractError('component templates do not bind the actual fixed consumers and history inputs')
         validate_configuration(R(p['provider_config']), schemas=model_schemas(), main_opportunities=p['allocation']['model_calls'])
         config = p['provider_config']
-        if config['provider_kind'] == 'grok-acp-public-train-v1':
+        if config['provider_kind'] in {'grok-acp-public-train-v1','grok-headless-public-train-v1'}:
             native = config['native_config']
             if (native['slot_output_caps'] != {s: 8192 if s == 'analysis_program' else 2048 for s in model_schemas()}
                     or native['slot_input_byte_caps'] != {s: 262144 for s in model_schemas()}

@@ -29,7 +29,7 @@ from research_loop.modular.modules.improvement import CandidatePackage
 from research_loop.modular.panel_receipts import PanelCell
 from research_loop.modular.phase_provider import (PhaseProviderAbort, PhaseProviderLedger, PhaseProviderSession, call_accounting,
     provider_configuration, validate_configuration)
-from research_loop.modular.train_provider import GrokTrainProvider
+from research_loop.modular.train_provider import GrokTrainProvider, GrokHeadlessTrainProvider
 from research_loop.ontology import ContractError
 
 
@@ -83,7 +83,7 @@ class FrozenNativeFullLooRuntimePlan:
         expected = self.composition.data()['allocation']['model_calls']
         validate_configuration(config, schemas=model_schemas(), main_opportunities=expected)
         native = config.data()['native_config']
-        if (config.data()['provider_kind'] != 'grok-acp-public-train-v1' or expected != 169
+        if (config.data()['provider_kind'] not in {'grok-acp-public-train-v1','grok-headless-public-train-v1'} or expected != 169
                 or native['slot_output_caps'] != _native_caps() or native['slot_input_byte_caps'] != {s: 262144 for s in model_schemas()}
                 or native['observed_main_token_cap'] != 131072):
             raise ContractError('native C4 requires exactly the frozen Grok MAIN allocation and per-slot bounds')
@@ -155,9 +155,14 @@ def run_native_full_loo_train(plan, *, prospective_exporter, snapshot_root, expo
                               audit_verifier, source_verifier, corpus_verifier, retrieval_provider, scorer_factory,
                               execution_authority, scorer_authority_keys):
     """Run the entire C4 grid through one bounded, scoped native provider session."""
-    if type(plan) is not FrozenNativeFullLooRuntimePlan or type(provider) is not GrokTrainProvider:
+    if type(plan) is not FrozenNativeFullLooRuntimePlan:
         raise ContractError('native C4 requires its versioned plan and closed Grok provider')
     plan.__post_init__()
+    provider_kind=plan.native_data()['provider_configuration'].get('provider_kind')
+    expected=(GrokHeadlessTrainProvider if provider_kind=='grok-headless-public-train-v1'
+              else GrokTrainProvider if provider_kind=='grok-acp-public-train-v1' else None)
+    if type(provider) is not expected:
+        raise ContractError('native C4 requires the frozen closed Grok provider kind')
     if provider_configuration(provider).data() != plan.native_data()['provider_configuration']:
         raise ContractError('live native provider differs from frozen C4 provider configuration')
     allocation = plan.composition.data()['allocation']; root = _path(run_root, exists=False)

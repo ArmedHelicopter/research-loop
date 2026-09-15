@@ -2,7 +2,7 @@
 from pathlib import Path
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.phase_provider import PhaseProviderSession,PhaseProviderLedger
-from research_loop.modular.train_provider import GrokTrainProvider
+from research_loop.modular.train_provider import GrokTrainProvider, GrokHeadlessTrainProvider
 from research_loop.modular.train_provider_preflight import validate_native_declaration,native_provider_preflight
 from research_loop.modular.ordinary_provider import final_provider_gate
 from research_loop.modular.runtime import verify_trace
@@ -82,9 +82,10 @@ def run_native(packets,compiled,export_root,run_root,model_factory,verifier):
     b=compiled.data();validate_provider_map(b['providers_by_cell'],b['tasks'],b['budget'])
     models=[]
     for i,cell in enumerate(b['cells']):
-        model=model_factory(i)
-        if type(model) is not GrokTrainProvider:raise ContractError('Q3.2 native factory requires a closed Grok provider')
         config=b['providers_by_cell'][cell['cell_id']]
+        model=model_factory(i)
+        expected=GrokHeadlessTrainProvider if config['provider_kind']=='grok-headless-public-train-v1' else GrokTrainProvider
+        if type(model) is not expected:raise ContractError('Q3.2 native factory requires a closed Grok provider')
         native_provider_preflight({'schema':'q32-prospective-source-config-v3','provider':config},model,
             family='q32_execution',schemas=config['native_config']['schemas'],main_opportunities=4)
         models.append(model)
