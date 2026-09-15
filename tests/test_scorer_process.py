@@ -96,6 +96,59 @@ def test_actual_stdio_worker_scores_two_benchmark_cells_without_exposing_private
         _load(path, "0" * 64)
 
 
+def test_first_submit_rejects_deleted_exchange_sidecars_before_return(tmp_path, monkeypatch):
+    import evaluation.modular.scorer_process as process
+    args, _ = _material(tmp_path)
+    path = tmp_path / 'worker.json'
+    path.write_text(canonical(_config(tmp_path, args)), encoding='utf-8')
+    client = LinkedScorerProcessClient(panel=args['panel'], command=_command(path, tmp_path/'worker.jsonl'),
+        journal_path=tmp_path/'client.jsonl')
+    original = process._exchange_catalogue_anchor
+    def remove_after_append(owner, row):
+        appended = original(owner, row)
+        if row['event']['phase'] == 'authenticated':
+            process._exchange_path(owner).write_bytes(b'')
+            Path(str(owner.journal_path)+'.exchange-catalogue-anchors.jsonl').write_bytes(b'')
+        return appended
+    monkeypatch.setattr(process, '_exchange_catalogue_anchor', remove_after_append)
+    cell = args['panel'].cells[0]
+    try:
+        with pytest.raises(ContractError, match='originals differ'):
+            client.submit(cell_key=cell.key, linked_input=args['linked_inputs'][cell.key])
+        # The scorer succeeded; failed audit custody prevents consumer return
+        # without rewriting or retrying that already completed transaction.
+        assert client.states[canonical(list(cell.key))]['status'] == 'succeeded'
+        with pytest.raises(ContractError):
+            client.submit(cell_key=cell.key, linked_input=args['linked_inputs'][cell.key])
+    finally:
+        client.close()
+    assert len((tmp_path/'worker.jsonl').read_text(encoding='utf-8').splitlines()) == 2
+
+
+def test_success_journal_failure_cannot_emit_authenticated_exchange(tmp_path, monkeypatch):
+    import evaluation.modular.scorer_process as process
+    args, _ = _material(tmp_path)
+    path = tmp_path / 'worker.json'
+    path.write_text(canonical(_config(tmp_path, args)), encoding='utf-8')
+    journal = tmp_path/'client.jsonl'
+    client = LinkedScorerProcessClient(panel=args['panel'], command=_command(path, tmp_path/'worker.jsonl'), journal_path=journal)
+    original = process._append
+    def fail_success(destination, value):
+        if destination == journal and value.get('status') == 'succeeded':
+            raise OSError('synthetic durable write failure')
+        return original(destination, value)
+    monkeypatch.setattr(process, '_append', fail_success)
+    cell = args['panel'].cells[0]
+    try:
+        with pytest.raises(OSError, match='durable write failure'):
+            client.submit(cell_key=cell.key, linked_input=args['linked_inputs'][cell.key])
+        assert client.states[canonical(list(cell.key))]['status'] == 'reserved'
+        observations = process.read_scorer_exchange_observations(process._exchange_path(client))
+        assert [row['event']['phase'] for row in observations] == ['reserved', 'received']
+    finally:
+        client.close()
+
+
 def test_utf8_signed_candidate_survives_a_gbk_worker_locale(tmp_path):
     args, _ = _material(tmp_path)
     value = _config(tmp_path, args)
