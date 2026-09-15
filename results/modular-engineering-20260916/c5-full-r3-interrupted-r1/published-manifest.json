@@ -1,0 +1,56 @@
+{
+  "manifest_scope": "Every canonical file in this directory except this self-referential manifest.",
+  "files": [
+    {
+      "bytes": 8,
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "bytes": 95212,
+      "path": "c5-headless-runtime-full-r3-before.json",
+      "sha256": "12dbbe9d6bb20004c39f6778f794d9c96a7f3b818b4de3fcf49e9d50a709aa08"
+    },
+    {
+      "bytes": 108,
+      "path": "c5-headless-runtime-full-r3-native-start.json",
+      "sha256": "a29f5a28c180daded328dfb841e93879e4f8fab46c79c74582b016c7062cdc5b"
+    },
+    {
+      "bytes": 142371,
+      "path": "c5-headless-runtime-full-r3-source-members.json",
+      "sha256": "da1cafd2188ad72eaa969f7f3e2ece0e6a2eeba3ada15131ce118fae3db193d5"
+    },
+    {
+      "bytes": 2714654,
+      "path": "c5-headless-runtime-full-r3-sources.zip",
+      "sha256": "410bea9fef5641afcf806bcf3b15f4f6ced423dd90de1ba76858ff3a2b30a728"
+    },
+    {
+      "bytes": 0,
+      "path": "c5-headless-runtime-full-r3.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2229,
+      "path": "interrupted-summary.json",
+      "sha256": "374dff14e2a074ac5715f6b363b3b2d6f40d18c45955cfd3f51d78dc21528b01"
+    },
+    {
+      "bytes": 1113,
+      "path": "original-payload-manifest.json",
+      "sha256": "eeca67dfe66962ad97714b82b50dad80180e9e070e1d5f621d0ea572712539fd"
+    },
+    {
+      "bytes": 600,
+      "path": "README.md",
+      "sha256": "fd4fdfb84eceaf2eaa1c7bb0fb14003ad4737515446a33b5646650c6711885f1"
+    },
+    {
+      "bytes": 453,
+      "path": "verification.json",
+      "sha256": "a47bacd7a5e2a7b7b98ac47d6c76f6f6af4c80738aa69b520ba4b542bfa64791"
+    }
+  ],
+  "schema": "c5-full-r3-interrupted-public-archive-v2"
+}

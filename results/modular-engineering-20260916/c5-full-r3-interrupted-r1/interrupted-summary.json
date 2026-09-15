@@ -1,0 +1,68 @@
+{
+  "checkpoint": {
+    "build_denominator": 46,
+    "build_statuses": {
+      "not_executed": 30,
+      "reserved": 1,
+      "succeeded": 15
+    },
+    "score_eligible": false,
+    "sha256": "9960694982827c449d518cb45e21a879e4641b8279bb4ad2203ce1a9eb778488",
+    "target_denominator": 118,
+    "target_statuses": {
+      "not_executed": 118
+    }
+  },
+  "closure": "absent",
+  "native": {
+    "closed_receipt": false,
+    "join_receipt": false,
+    "log_bytes": 0,
+    "session_id": 15471,
+    "start_receipt_sha256": "a29f5a28c180daded328dfb841e93879e4f8fab46c79c74582b016c7062cdc5b",
+    "terminal_status": "unknown"
+  },
+  "preserved_denominators": {
+    "build": 46,
+    "evaluator": 118,
+    "solver": 930,
+    "target": 118
+  },
+  "private_observer_receipts": 75,
+  "private_retention": {
+    "file_count": 3578,
+    "manifest": "retention-manifest.json",
+    "manifest_sha256": "7651ea96f8391441cff0f3c9b6fd3fce9496879c14b6053050d07ff66bdf9c94",
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\retained-private-evidence\\c5-full-r3-interrupted-r1"
+  },
+  "public_source_files": [
+    {
+      "bytes": 95212,
+      "path": "c5-headless-runtime-full-r3-before.json",
+      "sha256": "12dbbe9d6bb20004c39f6778f794d9c96a7f3b818b4de3fcf49e9d50a709aa08"
+    },
+    {
+      "bytes": 108,
+      "path": "c5-headless-runtime-full-r3-native-start.json",
+      "sha256": "a29f5a28c180daded328dfb841e93879e4f8fab46c79c74582b016c7062cdc5b"
+    },
+    {
+      "bytes": 142371,
+      "path": "c5-headless-runtime-full-r3-source-members.json",
+      "sha256": "da1cafd2188ad72eaa969f7f3e2ece0e6a2eeba3ada15131ce118fae3db193d5"
+    },
+    {
+      "bytes": 2714654,
+      "path": "c5-headless-runtime-full-r3-sources.zip",
+      "sha256": "410bea9fef5641afcf806bcf3b15f4f6ced423dd90de1ba76858ff3a2b30a728"
+    },
+    {
+      "bytes": 0,
+      "path": "c5-headless-runtime-full-r3.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "schema": "c5-full-r3-interrupted-public-summary-v1",
+  "scope_limit": "Interrupted historical evidence only; no model result, validation, completion, or scientific-effect claim.",
+  "source_actor_commit": "73268bb59b18b113f6f20e913900db51375e7377"
+}
