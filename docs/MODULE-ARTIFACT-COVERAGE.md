@@ -4,6 +4,18 @@
 每模块出现一条 `covered` 记录不表示该模块的全部输出都已覆盖。
 `covered` 是一条描述符有明确模块归属，完整覆盖须另与实际输出清单对账。
 
+最新接线补上了[评分封存消费端观察](SCORER-FINALIZATION-OBSERVATIONS.md)与
+[M2 封存关系读取](M2-TYPED-PROJECTION.md)。前者先保留请求及返回文本再解析验签，
+日志写失败不使评分获准消费；后者重放原 ledger 后仅投影已有类型化关系，保留
+撤回目标、观察记录、未启用和待复核状态。两者均记录实际读取器源码摘要。
+消费观察尚未全部成为通用目录节点；M2 查询也不证明跨模块的全部下游范围。
+
+对应[冻结检查和失败原件](../results/modular-engineering-20260915/admission-headless-evidence-r1/README.md)
+保留了 16 格 M1+M4+M7 控制器的实际 stdio/Docker 工程检查：48 次合成 solver、
+16 次合成 evaluator 和整组签名封存均通过。原批 46 项中另有两项测试接线失败，
+修复测试后 45 项非网格检查通过；M2 的 15 项与合入后含标签隔离的 23 项分别通过。
+这些运行不访问实际 VAL、不调用真实模型，不替代既定单模块、组合或科学效果验收。
+
 [C5 history→target 探针的逐产物索引](../results/modular-engineering-20260915/c5-headless-runtime-probe-r1/README.md)
 现保留 212 个节点、311 条目录父引用及一条外层构建绑定。逐模块状态同时保留
 未启用、撤回和未归属事件；2,304 个非凭据原件与九份生产源码匹配副本已读回。

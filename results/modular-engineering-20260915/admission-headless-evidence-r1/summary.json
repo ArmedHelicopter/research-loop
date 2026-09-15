@@ -1,0 +1,122 @@
+{
+  "schema": "admission-headless-evidence-checkpoint-v1",
+  "runs": [
+    {
+      "label": "observation-r1",
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scorer-finalization-evidence-check-r1",
+      "source_commit": "2b13a3588b557f66f8ad6f96cbdf366167c90e94",
+      "native_session_id": 53562,
+      "native_exit_code": 0,
+      "junit": {
+        "tests": 29,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 786,
+      "source_unchanged": true,
+      "report_sha256": "fab5d30709a13082638ef5fb63cf14240312c1acb168d0e2c3c84117b993f8a9",
+      "wall_seconds": 116.64000000001397,
+      "retained_noncredential_files": 521
+    },
+    {
+      "label": "observation-r2",
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scorer-finalization-evidence-check-r2",
+      "source_commit": "9917d13263f116c52b20ae49954bebedef7b876f",
+      "native_session_id": 6690,
+      "native_exit_code": 1,
+      "junit": {
+        "tests": 12,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 786,
+      "source_unchanged": true,
+      "report_sha256": "5e0a4a3861d983a23d67f86c14a58451d198c2e3a828293c040ffd1cf54b7dd7",
+      "wall_seconds": 22.765999999974156,
+      "retained_noncredential_files": 107
+    },
+    {
+      "label": "combined-r1",
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\admission-headless-evidence-integration-r1",
+      "source_commit": "6467c3d5617f674877338b391db1a19a527bd4ae",
+      "native_session_id": 95917,
+      "native_exit_code": 1,
+      "junit": {
+        "tests": 46,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 789,
+      "source_unchanged": true,
+      "report_sha256": "b8c8d36bfe8398abc506203362ded9531a7da4b67342da961a943bb31b6f465d",
+      "wall_seconds": 1010.2030000000086,
+      "retained_noncredential_files": 3202
+    },
+    {
+      "label": "combined-followup-r1",
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\admission-headless-evidence-followup-r1",
+      "source_commit": "c2aa74d444473d37576f00aed8b1231c2dd32768",
+      "native_session_id": 2311,
+      "native_exit_code": 0,
+      "junit": {
+        "tests": 45,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 789,
+      "source_unchanged": true,
+      "report_sha256": "f20957c861b10c69b7edd919cc8c7ffd9e0474c917baed0cea812c62ae1728a0",
+      "wall_seconds": 15.73399999999674,
+      "retained_noncredential_files": 257
+    },
+    {
+      "label": "m2-projection-r1",
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m2-typed-projection-check-r1",
+      "source_commit": "fff899a4f52aab68b73d464857f5ae2980a4cb48",
+      "native_session_id": 7796,
+      "native_exit_code": 0,
+      "junit": {
+        "tests": 15,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 788,
+      "source_unchanged": true,
+      "report_sha256": "e3f3e1e91062455fe38a50ecf73a353ded8daad13e7051809e4d17b937b09268",
+      "wall_seconds": 27.812000000005355,
+      "retained_noncredential_files": 96
+    },
+    {
+      "label": "root-integration-r1",
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\module-provenance-root-integration-r1",
+      "source_commit": "a0ec428d725a54f4d202e322958f13b5bb03d9a1",
+      "native_session_id": 94226,
+      "native_exit_code": 0,
+      "junit": {
+        "tests": 23,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 792,
+      "source_unchanged": true,
+      "report_sha256": "e29297b1b25ff6534bce60f0c3bd3f9c6c6a19a5274d5aca5582b0582037ee43",
+      "wall_seconds": 6.297000000020489,
+      "retained_noncredential_files": 21
+    }
+  ],
+  "originals_bytes_and_mtimes_unchanged": true,
+  "retained_noncredential_files": 4204,
+  "real_model_calls": 0,
+  "paid_api_calls": 0,
+  "validation_access": false,
+  "scientific_effectiveness_proven": false,
+  "read_only_design_reports_are_not_implementation": true,
+  "observation_text_is_not_wire_bytes": true,
+  "whole_history_rewrite_without_external_anchor_detected": false
+}

@@ -1,0 +1,44 @@
+...........F                                                             [100%]
+================================== FAILURES ===================================
+____ test_rejection_log_failure_preserves_original_verification_exception _____
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/scorer-finalization-evidence-check-r2/test_rejection_log_failure_pre0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002388CF5B3B0>
+
+    def test_rejection_log_failure_preserves_original_verification_exception(tmp_path, monkeypatch):
+        client, receipt, _, raw = client_fixture(tmp_path, monkeypatch, 'signature')
+        original_append = process._append
+        def write(path, row):
+            if str(path).endswith('.headless-evaluator-client.jsonl') and row['event']['status'] == 'rejected':
+                raise OSError('synthetic terminal storage failure')
+            return original_append(path, row)
+        monkeypatch.setattr(process, '_append', write)
+        try:
+            with pytest.raises(ContractError, match='rejection observation unavailable') as failure:
+                client.finalize_headless_evaluator(receipts=(receipt,))
+            assert isinstance(failure.value.__cause__, ContractError)
+            assert 'OSError' in str(failure.value) and 'ContractError' in str(failure.value)
+            assert client.final_closure is None
+            rows = observations(client)
+            assert [row['status'] for row in rows] == ['requested', 'response_received']
+            assert rows[-1]['response_text'] == raw
+            with pytest.raises(ContractError, match='unfinished observation attempt'):
+>               client.finalize_headless_evaluator(receipts=(receipt,))
+
+tests\test_headless_finalization_client_evidence.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+evaluation\modular\scorer_process.py:965: in finalize_headless_evaluator
+    "attempt_id": uuid.uuid4().hex, "nonce": nonce,
+                  ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+>   monkeypatch.setattr(process.uuid, "uuid4", lambda: SimpleNamespace(hex=next(identifiers)))
+                                                                           ^^^^^^^^^^^^^^^^^
+E   StopIteration
+
+tests\test_headless_finalization_client_evidence.py:51: StopIteration
+- generated xml file: E:\_ryanDev\AI\research-loop-modular\work\scorer-finalization-evidence-check-r2.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_headless_finalization_client_evidence.py::test_rejection_log_failure_preserves_original_verification_exception
+{"commit": "9917d13263f116c52b20ae49954bebedef7b876f", "source_unchanged": true, "source_count": 786, "exit_code": 1, "wall_seconds": 22.765999999974156, "new_paid_calls": 0, "report_sha256": "5e0a4a3861d983a23d67f86c14a58451d198c2e3a828293c040ffd1cf54b7dd7", "junit": {"tests": 12, "failures": 1, "errors": 0, "skipped": 0}}
+{"source_archive_matches_frozen_input": true, "source_files": 786, "source_archive_sha256": "dc01204145eb6321171f6b2d0890cfe81f46fdba10a8b4b86f4ad23adc0adab9"}

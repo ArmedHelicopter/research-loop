@@ -97,6 +97,11 @@ trace 与目录不一致、跨对象证据替换、VAL 及其索引泄漏，以�
 实际接入范围与未接入项见[产物审计覆盖清单](MODULE-ARTIFACT-COVERAGE.md)，
 具体版本的执行证据见[实施状态](MODULAR-IMPLEMENTATION-STATUS.md)。
 
+可调用的[M2 类型化关系读取器](M2-TYPED-PROJECTION.md)从封存目录和原 ledger
+重放得到撤回目标及明确的后续观察，结果保留读取器源码摘要和完整性范围。
+[评分封存消费端观察](SCORER-FINALIZATION-OBSERVATIONS.md)则保留解析、验签前的
+请求与返回文本，以及认证或拒绝终态。各自证据范围须按对应契约解读。
+
 可直接查看[一次实际评审运行的产物依赖图](../results/modular-engineering-20260915/review-lineage-r1/README.md)：
 从最终输出反向定位冻结输入、各次调用的原始返回、评审事件和预测封存。
 图中 32 个节点、87 条消费关系来自已落盘的合成工程用例，完整摘要和原件引用

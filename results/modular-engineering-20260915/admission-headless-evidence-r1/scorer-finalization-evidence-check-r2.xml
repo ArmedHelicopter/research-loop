@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="12" time="21.094" timestamp="2026-09-15T13:40:48.455946+08:00" hostname="SC-202507131830"><testcase classname="tests.test_headless_finalization_client_evidence" name="test_received_text_is_preserved_before_interpretation[malformed]" time="1.216" /><testcase classname="tests.test_headless_finalization_client_evidence" name="test_received_text_is_preserved_before_interpretation[signature]" time="1.664" /><testcase classname="tests.test_headless_finalization_client_evidence" name="test_received_text_is_preserved_before_interpretation[nonce]" time="2.458" /><testcase classname="tests.test_headless_finalization_client_evidence" name="test_received_text_is_preserved_before_interpretation[success]" time="4.101" /><testcase classname="tests.test_headless_finalization_client_evidence" name="test_evidence_write_failure_cannot_return_an_authenticated_closure[requested]" time="0.814" /><testcase classname="tests.test_headless_finalization_client_evidence" name="test_evidence_write_failure_cannot_return_an_authenticated_closure[response_received]" time="0.925" /><testcase classname="tests.test_headless_finalization_client_evidence" name="test_evidence_write_failure_cannot_return_an_authenticated_closure[authenticated]" time="1.544" /><testcase classname="tests.test_headless_finalization_client_evidence" name="test_changed_observation_history_blocks_repeated_finalize_before_dispatch[text]" time="1.676" /><testcase classname="tests.test_headless_finalization_client_evidence" name="test_changed_observation_history_blocks_repeated_finalize_before_dispatch[reorder]" time="1.389" /><testcase classname="tests.test_headless_finalization_client_evidence" name="test_changed_observation_history_blocks_repeated_finalize_before_dispatch[missing_response]" time="2.495" /><testcase classname="tests.test_headless_finalization_client_evidence" name="test_changed_observation_history_blocks_repeated_finalize_before_dispatch[truncated_attempt]" time="1.528" /><testcase classname="tests.test_headless_finalization_client_evidence" name="test_rejection_log_failure_preserves_original_verification_exception" time="0.799"><failure message="StopIteration">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/scorer-finalization-evidence-check-r2/test_rejection_log_failure_pre0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002388CF5B3B0&gt;
+
+    def test_rejection_log_failure_preserves_original_verification_exception(tmp_path, monkeypatch):
+        client, receipt, _, raw = client_fixture(tmp_path, monkeypatch, 'signature')
+        original_append = process._append
+        def write(path, row):
+            if str(path).endswith('.headless-evaluator-client.jsonl') and row['event']['status'] == 'rejected':
+                raise OSError('synthetic terminal storage failure')
+            return original_append(path, row)
+        monkeypatch.setattr(process, '_append', write)
+        try:
+            with pytest.raises(ContractError, match='rejection observation unavailable') as failure:
+                client.finalize_headless_evaluator(receipts=(receipt,))
+            assert isinstance(failure.value.__cause__, ContractError)
+            assert 'OSError' in str(failure.value) and 'ContractError' in str(failure.value)
+            assert client.final_closure is None
+            rows = observations(client)
+            assert [row['status'] for row in rows] == ['requested', 'response_received']
+            assert rows[-1]['response_text'] == raw
+            with pytest.raises(ContractError, match='unfinished observation attempt'):
+&gt;               client.finalize_headless_evaluator(receipts=(receipt,))
+
+tests\test_headless_finalization_client_evidence.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+evaluation\modular\scorer_process.py:965: in finalize_headless_evaluator
+    "attempt_id": uuid.uuid4().hex, "nonce": nonce,
+                  ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+&gt;   monkeypatch.setattr(process.uuid, "uuid4", lambda: SimpleNamespace(hex=next(identifiers)))
+                                                                           ^^^^^^^^^^^^^^^^^
+E   StopIteration
+
+tests\test_headless_finalization_client_evidence.py:51: StopIteration</failure></testcase></testsuite></testsuites>

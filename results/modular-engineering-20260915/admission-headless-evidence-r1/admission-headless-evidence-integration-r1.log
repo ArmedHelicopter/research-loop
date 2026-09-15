@@ -1,0 +1,58 @@
+...............FF.............................                           [100%]
+================================== FAILURES ===================================
+_ test_tampered_or_wrongly_bound_closure_is_ineligible_but_raw_envelope_is_retained[authority] _
+
+fault = 'authority'
+
+    @pytest.mark.parametrize('fault', ['provider', 'authority', 'config', 'digest'])
+    def test_tampered_or_wrongly_bound_closure_is_ineligible_but_raw_envelope_is_retained(fault):
+        panel, scores, config, authority, closure, service = _case()
+        captured = []
+        if fault == 'provider':
+            closure = _signed_closure(authority=authority, panel=panel, config=config, scores=scores,
+                provider={'kind': PROVIDER['kind'], 'configuration_digest': 'a' * 64})
+            service.finalize_headless_evaluator = lambda **_: closure
+        elif fault == 'authority':
+            verifier_authority = LinkedExecutionAuthority('scorer', b'x' * 32)
+>           gate = finalize_headless_evaluator_gate(binding={'evaluator_usage': dict(USAGE), 'evaluator_provider': dict(PROVIDER)},
+                family=FAMILY, service=service, panel=panel, scores=scores,
+                scorer_authority_keys={verifier_authority.authority_id: verifier_authority.key}, capture=lambda value: captured.append(dict(value)))
+E           TypeError: finalize_headless_evaluator_gate() missing 1 required keyword-only argument: 'scorer_config'
+
+tests\test_headless_admission_evaluator_gate.py:103: TypeError
+_ test_tampered_or_wrongly_bound_closure_is_ineligible_but_raw_envelope_is_retained[config] _
+
+fault = 'config'
+
+    @pytest.mark.parametrize('fault', ['provider', 'authority', 'config', 'digest'])
+    def test_tampered_or_wrongly_bound_closure_is_ineligible_but_raw_envelope_is_retained(fault):
+        panel, scores, config, authority, closure, service = _case()
+        captured = []
+        if fault == 'provider':
+            closure = _signed_closure(authority=authority, panel=panel, config=config, scores=scores,
+                provider={'kind': PROVIDER['kind'], 'configuration_digest': 'a' * 64})
+            service.finalize_headless_evaluator = lambda **_: closure
+        elif fault == 'authority':
+            verifier_authority = LinkedExecutionAuthority('scorer', b'x' * 32)
+            gate = finalize_headless_evaluator_gate(binding={'evaluator_usage': dict(USAGE), 'evaluator_provider': dict(PROVIDER)},
+                family=FAMILY, service=service, panel=panel, scores=scores,
+                scorer_authority_keys={verifier_authority.authority_id: verifier_authority.key}, capture=lambda value: captured.append(dict(value)))
+            assert gate['score_eligible'] is False and gate['closure'] == closure.data() and gate['known_headless_main_tokens'] is None
+            return
+        elif fault == 'config':
+            service.config = ScorerConfig.create(benchmark='core_pair', evaluator_id='other', version='v1', rubric_digest='c' * 64)
+        else:
+            bad = list(scores); bad[0] = _score(scores[0].cell_key, 'f')
+            scores = tuple(bad)
+            service.finalize_headless_evaluator = lambda **_: closure
+        gate = _finish(panel=panel, scores=scores, authority=authority, service=service, capture=lambda value: captured.append(dict(value)))
+>       assert gate['score_eligible'] is False and gate['closure'] == closure.data()
+E       assert (True is False)
+
+tests\test_headless_admission_evaluator_gate.py:115: AssertionError
+- generated xml file: E:\_ryanDev\AI\research-loop-modular\work\admission-headless-evidence-integration-r1.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_headless_admission_evaluator_gate.py::test_tampered_or_wrongly_bound_closure_is_ineligible_but_raw_envelope_is_retained[authority]
+FAILED tests/test_headless_admission_evaluator_gate.py::test_tampered_or_wrongly_bound_closure_is_ineligible_but_raw_envelope_is_retained[config]
+{"commit": "6467c3d5617f674877338b391db1a19a527bd4ae", "source_unchanged": true, "source_count": 789, "exit_code": 1, "wall_seconds": 1010.2030000000086, "new_paid_calls": 0, "report_sha256": "b8c8d36bfe8398abc506203362ded9531a7da4b67342da961a943bb31b6f465d", "junit": {"tests": 46, "failures": 2, "errors": 0, "skipped": 0}}
+{"source_archive_matches_frozen_input": true, "source_files": 789, "source_archive_sha256": "5cb3fdbf57661ce9b656957ea9e43d24dc1a6c0111616a978cb6db965210c12e"}

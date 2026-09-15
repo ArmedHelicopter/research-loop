@@ -3,6 +3,34 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Scorer observations and sealed M2 relations (2026-09-15)
+
+The [retained frozen attempts](../results/modular-engineering-20260915/admission-headless-evidence-r1/README.md)
+bind original native starts/joins, JUnit, unchanged source bytes and noncredential
+originals. Client finalization now records request/response text before parsing
+and authentication, with a checked journal chain and an in-process tail anchor.
+Logging failure does not grant scoring eligibility, and preserves the original
+verification failure as its exception cause. This is text evidence, not wire
+bytes, external authorship proof or generic module registration.
+
+The explicit admission/prediction/exploration native v4 completes its 16-cell
+synthetic controller path with 48 solver and 16 evaluator calls through actual
+Docker/stdio. Its final signed closure is independently checked against frozen
+scorer configuration, authority, provider and ordered receipts. The combined
+46-test command exited 1 because two boundary fixtures were wired incorrectly;
+the full controller test passed. Test-only repairs then passed all 45 nongrid
+checks without rerunning that grid. Both failures remain archived.
+
+The [M2 projection](M2-TYPED-PROJECTION.md) reuses existing sealed ledger semantics
+and leaves the old bridge byte-stable. It preserves typed withdrawal/observation
+edges and status, detects catalogue changes during reading, and binds both reader
+sources. It does not infer a complete or transitive affected-consumer graph.
+Fifteen dedicated/regression checks passed at `fff899a4`; after merging both
+branches, 23 integration/label-isolation checks passed at `a0ec428d`, with 792
+source/document files unchanged. No real model, paid API or VAL call occurred.
+All remaining module coverage, complete C5, real experiments and independent
+acceptance obligations remain open.
+
 ## Provenance cross-index and provider read cost (2026-09-15)
 
 The [C5 probe follow-up](../results/modular-engineering-20260915/c5-provenance-followup-r1/README.md)
