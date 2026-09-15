@@ -19,3 +19,11 @@ python -m evaluation.modular.custody_audit_projection `
 ```
 
 `--output` creates a new auditor result exclusively; the custody state is never written. This preserves the existing custody store and its deployment-specific process/mount boundary.
+
+## Opt-in custody transition retention
+
+`CustodyStore` may receive an auditor-owned `CustodyTransitionRetainer`. After a successful durable custody mutation, or after creating a signed lease receipt, it copies the exact canonical state bytes into a new private retention root and returns a separate capture status. Capture is an audit side channel: failures are reported as `retention_capture_failed` through `last_audit_capture`, but never roll back or falsify the completed custody operation or signed receipt.
+
+`verify_custody_transition_retention(root, receipt_keys=...)` independently replays each retained state through `verify_custody_snapshot` and validates a retained signed receipt when present. Its report contains only operation names, hashes, counts, and receipt status. A surviving chain is explicitly not complete custody history; absent, failed, or unretained attempts remain possible. The root contains private state snapshots and must stay outside public packet, optimizer, and result directories.
+
+The existing `python -m evaluation.modular.custody` host can opt in with `--audit-retention-root <new-private-directory>`. Without that option, existing callers and CLI output are unchanged. This adds no optimizer gate, permission decision, independent custodian authentication, calibration-authority proof, operating-system isolation, VAL access, or scientific validation.
