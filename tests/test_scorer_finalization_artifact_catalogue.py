@@ -59,6 +59,20 @@ def _write_observations(path, *, scorer, panel_digest, provider=_PROVIDER, rejec
     return rows
 
 
+def _gate(rows, *, score_eligible=False):
+    response = next(row["event"]["response_text"] for row in rows
+                    if row["event"]["status"] == "response_received")
+    return {"schema": "ordinary-headless-evaluator-final-gate-v1",
+            "status": "eligible" if score_eligible else "inconclusive",
+            "score_eligible": score_eligible,
+            "closure": json.loads(response)["closure"]}
+
+
+def _no_closure_gate():
+    return {"schema": "ordinary-headless-evaluator-final-gate-v1", "status": "inconclusive",
+            "score_eligible": False, "closure": None}
+
+
 def _inputs(tmp_path, *, provider=_PROVIDER):
     scorer = ScorerConfig.create(benchmark="core_pair", evaluator_id="synthetic", version="v1", rubric_digest="c" * 64)
     identities = (DataIdentity("blade", "b", "g", "v1", "split", "train"),
@@ -76,11 +90,11 @@ def _inputs(tmp_path, *, provider=_PROVIDER):
 def test_registers_per_identity_non_authorizing_text_observations(tmp_path):
     root, config, panel, service, rows = _inputs(tmp_path)
     receipt = register_admission_headless_scorer_finalization_observations(
-        root=root, config=config, panel=panel, service=service)
+        root=root, config=config, panel=panel, service=service, evaluator_gate=_gate(rows))
     assert receipt.data()["authorization"] == "none"
     assert len(receipt.data()["catalogues"]) == 2
     verify_admission_headless_scorer_finalization_observation_catalogues(
-        root=root, config=config, panel=panel, service=service, receipt=receipt)
+        root=root, config=config, panel=panel, service=service, evaluator_gate=_gate(rows), receipt=receipt)
     run_id = FrozenRecord.from_dict(receipt.data()["attempt"]).content_hash
     for anchor in receipt.data()["catalogues"]:
         catalogue = ArtifactCatalogue(Path(anchor["path"]), identity=DataIdentity.parse(anchor["identity"]),
@@ -101,27 +115,28 @@ def test_registers_per_identity_non_authorizing_text_observations(tmp_path):
 
 
 def test_rejects_observation_provider_drift_before_any_catalogue(tmp_path):
-    root, config, panel, service, _ = _inputs(tmp_path, provider={**_PROVIDER, "configuration_digest": "b" * 64})
+    root, config, panel, service, rows = _inputs(tmp_path, provider={**_PROVIDER, "configuration_digest": "b" * 64})
     with pytest.raises(ContractError):
-        register_admission_headless_scorer_finalization_observations(root=root, config=config, panel=panel, service=service)
+        register_admission_headless_scorer_finalization_observations(root=root, config=config, panel=panel, service=service, evaluator_gate=_gate(rows))
     assert not (root / "scorer-finalization-observations").exists()
 
 
 def test_reader_chain_is_rechecked_before_projection(tmp_path):
-    root, config, panel, service, _ = _inputs(tmp_path)
+    root, config, panel, service, rows = _inputs(tmp_path)
     path = Path(str(service.journal_path) + ".headless-evaluator-client.jsonl")
     path.write_text(path.read_text(encoding="utf-8").replace('"attempt-1"', '"changed"', 1), encoding="utf-8")
     with pytest.raises(ContractError):
-        register_admission_headless_scorer_finalization_observations(root=root, config=config, panel=panel, service=service)
+        register_admission_headless_scorer_finalization_observations(root=root, config=config, panel=panel, service=service, evaluator_gate=_gate(rows))
     assert not (root / "scorer-finalization-observations").exists()
 
 
 def test_rejected_terminal_is_catalogued_without_score_authority(tmp_path):
-    root, config, panel, service, _ = _inputs(tmp_path)
+    root, config, panel, service, rows = _inputs(tmp_path)
     _write_observations(Path(str(service.journal_path) + ".headless-evaluator-client.jsonl"),
                         scorer=service.config, panel_digest=panel.digest, rejected=True)
     receipt = register_admission_headless_scorer_finalization_observations(
-        root=root, config=config, panel=panel, service=service)
+        root=root, config=config, panel=panel, service=service, evaluator_gate=_no_closure_gate())
+    assert receipt.data()["closure_binding"]["status"] == "no_closure_ineligible"
     for anchor in receipt.data()["catalogues"]:
         rows = [json.loads(line)["descriptor"] for line in Path(anchor["path"]).read_text(encoding="utf-8").splitlines()]
         terminal = rows[-1]
@@ -131,20 +146,20 @@ def test_rejected_terminal_is_catalogued_without_score_authority(tmp_path):
 
 
 def test_readback_rejects_changed_original_journal(tmp_path):
-    root, config, panel, service, _ = _inputs(tmp_path)
+    root, config, panel, service, rows = _inputs(tmp_path)
     receipt = register_admission_headless_scorer_finalization_observations(
-        root=root, config=config, panel=panel, service=service)
+        root=root, config=config, panel=panel, service=service, evaluator_gate=_gate(rows))
     path = Path(str(service.journal_path) + ".headless-evaluator-client.jsonl")
     path.write_text(path.read_text(encoding="utf-8") + "\n", encoding="utf-8")
     with pytest.raises(ContractError):
         verify_admission_headless_scorer_finalization_observation_catalogues(
-            root=root, config=config, panel=panel, service=service, receipt=receipt)
+            root=root, config=config, panel=panel, service=service, evaluator_gate=_gate(rows), receipt=receipt)
 
 
 def test_readback_rejects_original_changed_during_descriptor_reads(tmp_path, monkeypatch):
-    root, config, panel, service, _ = _inputs(tmp_path)
+    root, config, panel, service, rows = _inputs(tmp_path)
     receipt = register_admission_headless_scorer_finalization_observations(
-        root=root, config=config, panel=panel, service=service)
+        root=root, config=config, panel=panel, service=service, evaluator_gate=_gate(rows))
     original = ArtifactCatalogue.records
     changed = False
     def racing_records(catalogue):
@@ -158,7 +173,42 @@ def test_readback_rejects_original_changed_during_descriptor_reads(tmp_path, mon
     monkeypatch.setattr(ArtifactCatalogue, "records", racing_records)
     with pytest.raises(ContractError):
         verify_admission_headless_scorer_finalization_observation_catalogues(
-            root=root, config=config, panel=panel, service=service, receipt=receipt)
+            root=root, config=config, panel=panel, service=service, evaluator_gate=_gate(rows), receipt=receipt)
+
+def test_rejects_valid_but_different_gate_closure_before_projection(tmp_path):
+    root, config, panel, service, rows = _inputs(tmp_path)
+    different = FrozenRecord.from_dict({"body": {"nonce": "z" * 32}, "mac": "different"}).data()
+    gate = {**_gate(rows), "closure": different}
+    with pytest.raises(ContractError):
+        register_admission_headless_scorer_finalization_observations(
+            root=root, config=config, panel=panel, service=service, evaluator_gate=gate)
+    assert not (root / "scorer-finalization-observations").exists()
+
+
+def test_success_gate_cannot_bind_a_rejected_journal_terminal(tmp_path):
+    root, config, panel, service, _ = _inputs(tmp_path)
+    rows = _write_observations(Path(str(service.journal_path) + ".headless-evaluator-client.jsonl"),
+                               scorer=service.config, panel_digest=panel.digest, rejected=True)
+    with pytest.raises(ContractError):
+        register_admission_headless_scorer_finalization_observations(
+            root=root, config=config, panel=panel, service=service,
+            evaluator_gate=_gate(rows, score_eligible=True))
+    assert not (root / "scorer-finalization-observations").exists()
+
+
+def test_partial_authenticated_closure_is_retained_but_ineligible(tmp_path):
+    root, config, panel, service, rows = _inputs(tmp_path)
+    gate = _gate(rows, score_eligible=False)
+    receipt = register_admission_headless_scorer_finalization_observations(
+        root=root, config=config, panel=panel, service=service, evaluator_gate=gate)
+    assert receipt.data()["closure_binding"] == {
+        "schema": "admission-headless-scorer-finalization-closure-binding-v1",
+        "status": "authenticated_exact",
+        "closure_digest": FrozenRecord.from_dict(gate["closure"]).content_hash,
+        "score_eligible": False}
+    verify_admission_headless_scorer_finalization_observation_catalogues(
+        root=root, config=config, panel=panel, service=service, evaluator_gate=gate, receipt=receipt)
+
 
 def _rechain_and_reseal(path, mutate):
     rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
@@ -179,9 +229,9 @@ def _rechain_and_reseal(path, mutate):
 
 @pytest.mark.parametrize("field", ("producer_source", "cost", "optimizer_visible"))
 def test_readback_rejects_rehashed_resealed_descriptor_metadata_drift(tmp_path, field):
-    root, config, panel, service, _ = _inputs(tmp_path)
+    root, config, panel, service, rows = _inputs(tmp_path)
     receipt = register_admission_headless_scorer_finalization_observations(
-        root=root, config=config, panel=panel, service=service)
+        root=root, config=config, panel=panel, service=service, evaluator_gate=_gate(rows))
     body = receipt.data(); anchors = []
     for anchor in body["catalogues"]:
         path = Path(anchor["path"])
@@ -199,4 +249,5 @@ def test_readback_rejects_rehashed_resealed_descriptor_metadata_drift(tmp_path, 
     forged = FrozenRecord.from_dict({**body, "catalogues": anchors})
     with pytest.raises(ContractError):
         verify_admission_headless_scorer_finalization_observation_catalogues(
-            root=root, config=config, panel=panel, service=service, receipt=forged)
+            root=root, config=config, panel=panel, service=service,
+            evaluator_gate=_gate(rows), receipt=forged)

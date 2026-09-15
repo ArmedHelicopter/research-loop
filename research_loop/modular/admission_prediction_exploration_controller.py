@@ -372,9 +372,11 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
         # already captured closure or its authenticated lower bound.
         try:
             observations = register_admission_headless_scorer_finalization_observations(
-                root=root, config=config, panel=compiled.panels[0], service=service)
+                root=root, config=config, panel=compiled.panels[0], service=service,
+                evaluator_gate=evaluator_gate)
             verify_admission_headless_scorer_finalization_observation_catalogues(
-                root=root, config=config, panel=compiled.panels[0], service=service, receipt=observations)
+                root=root, config=config, panel=compiled.panels[0], service=service,
+                evaluator_gate=evaluator_gate, receipt=observations)
             evaluator_observations = observations.data()
             journal['evaluator_observation_catalogues'] = evaluator_observations
             persist(refresh_usage=False)

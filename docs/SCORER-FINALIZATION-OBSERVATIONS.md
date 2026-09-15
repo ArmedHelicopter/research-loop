@@ -49,9 +49,12 @@ admission/prediction/exploration 的 native-v4 消费端会把已重新读取、
 摘要、字节数和冻结绑定，不复制请求或响应文本；每条只声明其 task identity
 是该 panel 的 member，不声明该 task 消费了 panel 中每一个评分。它们标记为
 `module=null`、`coverage=uncovered`，没有 parent 边，也不授予评分、封存或科学
-资格。跨任务 panel 因此不会被伪造为一个单一主体产物。该桥接目前只覆盖这一个 admission
-入口；普通逐格评分、启动握手、解码前字节及其他进程入口仍需各自的原件留存
-适配。观察相邻不代表模块实际消费，跨模块关系仍由明确入口及语义读取器核验，
+资格。跨任务 panel 因此不会被伪造为一个单一主体产物。投影回执还绑定最终 gate
+中保留的封存摘要与原 journal 的最后终态：带封存的 gate 必须精确对应最后一条
+`authenticated`，部分封存可保留但保持不合格；`rejected` 或无封存时也可保留观察，
+且明确保持不合格。该桥接目前只覆盖这一个 admission 入口；普通逐格评分、启动握手、
+解码前字节及其他进程入口仍需各自的原件留存适配。目前没有独立的 downstream
+controller-receipt consumer，因此该锚点不声称已获得额外的写后消费核验。观察相邻不代表模块实际消费，跨模块关系仍由明确入口及语义读取器核验，
 见[模块产物契约](MODULE-ARTIFACT-PROVENANCE.md)。
 
 此文定义实现边界；具体冻结版本、成功与失败检查见实施状态中的证据链接。

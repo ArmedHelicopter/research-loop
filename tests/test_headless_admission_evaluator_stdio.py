@@ -111,4 +111,9 @@ def test_native_v4_controller_runs_16_cells_and_closes_the_declared_evaluator(tm
                for anchor in anchors)
     verify_admission_headless_scorer_finalization_observation_catalogues(
         root=tmp_path / 'run', config=config, panel=compiled.panels[0], service=client,
-        receipt=observation_receipt)
+        evaluator_gate=gate, receipt=observation_receipt)
+    assert observation_receipt.data()['closure_binding'] == {
+        'schema': 'admission-headless-scorer-finalization-closure-binding-v1',
+        'status': 'authenticated_exact',
+        'closure_digest': FrozenRecord.from_dict(gate['closure']).content_hash,
+        'score_eligible': True}

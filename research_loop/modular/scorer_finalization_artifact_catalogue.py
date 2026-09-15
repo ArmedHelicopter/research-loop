@@ -80,7 +80,38 @@ def _attempt_prefix(root: Path, *, create: bool) -> dict[str, Any]:
     return _snapshot(prefix)
 
 
-def _validated_observations(*, root: Path, config, panel, service, create_attempt_prefix: bool):
+def _closure_binding(*, evaluator_gate: Mapping[str, Any], rows: tuple[Mapping[str, Any], ...]) -> dict[str, Any]:
+    """Bind the retained final gate to this journal's final terminal event.
+
+    An ineligible gate without a captured closure may still project rejected or
+    incomplete client observations.  A captured closure, including a valid
+    partial closure, must be the exact closure authenticated by the last
+    journal attempt; an eligible gate may never use a rejected or unbound tail.
+    """
+    if (not isinstance(evaluator_gate, Mapping)
+            or type(evaluator_gate.get("score_eligible")) is not bool):
+        raise ContractError("admission evaluator final gate is malformed")
+    closure = evaluator_gate.get("closure")
+    if closure is None:
+        if evaluator_gate["score_eligible"]:
+            raise ContractError("eligible evaluator final gate lacks a closure")
+        return {"schema": "admission-headless-scorer-finalization-closure-binding-v1",
+                "status": "no_closure_ineligible", "closure_digest": None,
+                "score_eligible": False}
+    try:
+        closure_digest = FrozenRecord.from_dict(closure).content_hash
+    except (TypeError, ValueError, KeyError, AttributeError) as exc:
+        raise ContractError("admission evaluator final gate closure is malformed") from exc
+    terminal = rows[-1]["event"]
+    if (terminal["status"] != "authenticated"
+            or terminal["closure_digest"] != closure_digest):
+        raise ContractError("admission evaluator final gate closure differs from journal terminal")
+    return {"schema": "admission-headless-scorer-finalization-closure-binding-v1",
+            "status": "authenticated_exact", "closure_digest": closure_digest,
+            "score_eligible": evaluator_gate["score_eligible"]}
+
+
+def _validated_observations(*, root: Path, config, panel, service, evaluator_gate: Mapping[str, Any], create_attempt_prefix: bool):
     root = Path(root)
     if (not isinstance(config.record, FrozenRecord) or not isinstance(service.config.record, FrozenRecord)
             or not isinstance(service.evaluator_provider, dict)):
@@ -104,6 +135,7 @@ def _validated_observations(*, root: Path, config, panel, service, create_attemp
                    or row["event"]["producer_source_sha256"] != scorer_source["sha256"]
                    for row in rows)):
         raise ContractError("scorer finalization observations differ from frozen admission bindings")
+    closure_binding = _closure_binding(evaluator_gate=evaluator_gate, rows=rows)
     controller = _attempt_prefix(root, create=create_attempt_prefix)
     attempt = {"schema": "admission-headless-scorer-finalization-attempt-binding-v1",
                "controller_attempt_prefix": controller, "observation_journal": before}
@@ -117,7 +149,7 @@ def _validated_observations(*, root: Path, config, panel, service, create_attemp
                               key=lambda value: canonical(value.data())))
     if not identities or any(identity.domain != "train" for identity in identities):
         raise ContractError("admission finalization observations require actual TRAIN panel members")
-    return root, scorer, rows, before, attempt, refs, identities
+    return root, scorer, rows, before, attempt, refs, identities, closure_binding
 
 
 def _catalogue_path(root: Path, identity: DataIdentity) -> Path:
@@ -125,17 +157,19 @@ def _catalogue_path(root: Path, identity: DataIdentity) -> Path:
 
 
 def register_admission_headless_scorer_finalization_observations(*, root: Path, config,
-        panel, service) -> FrozenRecord:
+        panel, service, evaluator_gate: Mapping[str, Any]) -> FrozenRecord:
     """Register one non-authorizing projection per observed event and task identity.
 
     The source journal remains the original text evidence.  This bridge verifies
     its chain, text digests, current scorer-process source hash, exact frozen
-    scorer configuration/provider, and panel before it writes any descriptor.
-    It never treats an observation as a score, closure authority, or a semantic
+    scorer configuration/provider, panel, and final-gate closure binding before
+    it writes any descriptor.  It never treats an observation as a score,
+    closure authority, or a semantic
     parent of a task artifact.
     """
-    root, _, rows, before, attempt, refs, identities = _validated_observations(
-        root=root, config=config, panel=panel, service=service, create_attempt_prefix=True)
+    root, _, rows, before, attempt, refs, identities, closure_binding = _validated_observations(
+        root=root, config=config, panel=panel, service=service, evaluator_gate=evaluator_gate,
+        create_attempt_prefix=True)
     run_id = FrozenRecord.from_dict(attempt).content_hash
     source = source_snapshot(Path(__file__))
     anchors = []
@@ -167,21 +201,23 @@ def register_admission_headless_scorer_finalization_observations(*, root: Path, 
     if _snapshot(Path(str(service.journal_path) + ".headless-evaluator-client.jsonl")) != before:
         raise ContractError("scorer finalization observation journal changed during catalogue projection")
     return FrozenRecord.from_dict({"schema": "admission-headless-scorer-finalization-observation-catalogues-v1",
-        "attempt": attempt, "panel_digest": panel.digest, "catalogues": anchors,
-        "authorization": "none", "scientific_status": "not_measured"})
+        "attempt": attempt, "panel_digest": panel.digest, "closure_binding": closure_binding,
+        "catalogues": anchors, "authorization": "none", "scientific_status": "not_measured"})
 
 
 def verify_admission_headless_scorer_finalization_observation_catalogues(*, root: Path,
-        config, panel, service, receipt: FrozenRecord) -> None:
+        config, panel, service, evaluator_gate: Mapping[str, Any], receipt: FrozenRecord) -> None:
     """Re-read originals and require exact, sealed non-authorizing projections."""
     if not isinstance(receipt, FrozenRecord):
         raise ContractError("frozen scorer finalization observation receipt required")
-    root, _, rows, before, attempt, refs, identities = _validated_observations(
-        root=root, config=config, panel=panel, service=service, create_attempt_prefix=False)
+    root, _, rows, before, attempt, refs, identities, closure_binding = _validated_observations(
+        root=root, config=config, panel=panel, service=service, evaluator_gate=evaluator_gate,
+        create_attempt_prefix=False)
     body = receipt.data()
-    if (set(body) != {"schema", "attempt", "panel_digest", "catalogues", "authorization", "scientific_status"}
+    if (set(body) != {"schema", "attempt", "panel_digest", "closure_binding", "catalogues", "authorization", "scientific_status"}
             or body["schema"] != "admission-headless-scorer-finalization-observation-catalogues-v1"
             or body["attempt"] != attempt or body["panel_digest"] != panel.digest
+            or body["closure_binding"] != closure_binding
             or body["authorization"] != "none" or body["scientific_status"] != "not_measured"
             or not isinstance(body["catalogues"], list) or len(body["catalogues"]) != len(identities)):
         raise ContractError("scorer finalization observation receipt binding differs")
