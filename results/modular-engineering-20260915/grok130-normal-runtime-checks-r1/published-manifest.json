@@ -1,0 +1,70 @@
+{
+  "schema": "frozen-module-check-published-files-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "archive-helper.py",
+      "sha256": "b5785f83f8fd1667b540c815b34ea55a7ea0604238deac2fdd8e8428ee926a85",
+      "bytes": 9926
+    },
+    {
+      "path": "isolated-before.json",
+      "sha256": "312e08ba0799130af0fb450cc6c72edf69692d64f232ba7d26045b1a94a5bfc8",
+      "bytes": 93972
+    },
+    {
+      "path": "isolated-closed.json",
+      "sha256": "2081a2f6c8c2a02da2ba4a3a79a1c2de312c5474d7277479ffe5c6c78c74d4a6",
+      "bytes": 94069
+    },
+    {
+      "path": "isolated-native-join.json",
+      "sha256": "1d1babbb31f0009fd3cb9900bba3fbe5511e256a07c76c0aecdbd5ccbfcd3347",
+      "bytes": 283
+    },
+    {
+      "path": "isolated-native-start.json",
+      "sha256": "72495641b58f7c731b772a452ffc40ec3f5bf784661ba667445d0a50170bba72",
+      "bytes": 130
+    },
+    {
+      "path": "isolated-source-members.json",
+      "sha256": "7375ebd9daa1b8e543cc9495e4bc187a459204447589ff376b7337b6f407d399",
+      "bytes": 140576
+    },
+    {
+      "path": "isolated-sources.zip",
+      "sha256": "4a150813a14d801866af984b3b0b03d3e5f25cfb6fb7270a6ae8c0165a7988c0",
+      "bytes": 2679353
+    },
+    {
+      "path": "isolated.log",
+      "sha256": "e5db07bec86f48d9465ee8dfe58dd83d67455a26ca76fb33548a830e13493d58",
+      "bytes": 672
+    },
+    {
+      "path": "isolated.xml",
+      "sha256": "d4f146d700ab0e37b879bcbbea458a747c6e03bd15ebb1e9463fc996e470cd23",
+      "bytes": 7554
+    },
+    {
+      "path": "private-retention-manifest.json",
+      "sha256": "42a11506eac3e839ebec936d158694c1c092d1b6bfa9410438a7c8cb9282210b",
+      "bytes": 1923063
+    },
+    {
+      "path": "README.md",
+      "sha256": "26b19a8198be9d8ee42bb91a4a249154a2194308552b72a014f981c930ef5f0c",
+      "bytes": 658
+    },
+    {
+      "path": "retention-helper-source.py",
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840
+    }
+  ]
+}
