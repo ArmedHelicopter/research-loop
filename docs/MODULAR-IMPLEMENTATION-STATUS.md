@@ -3,6 +3,27 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Independent lineage final gate (2026-09-15)
+
+At `8abe622acb2417a5008a66466316663e2885972c`, the outer lineage controller
+independently verifies each worker's signed closure against the authority,
+panel, scorer configuration, evaluator descriptor, and reference binding.
+An explicitly null or undeclared headless evaluator binding is rejected.
+A valid partial closure remains available as evidence but cannot make a whole
+panel eligible. A late usage-query failure preserves the latest authenticated
+cumulative per-cell usage snapshot as a lower bound; cumulative snapshots are
+never added together. Later bookkeeping failure does not erase score receipts.
+
+The frozen targeted gate passed 20 checks in 161.063 seconds with all 778
+source/document files byte-identical before and after. It includes a genuine
+synthetic-native/Docker partial-closure path, four actual stdio worker
+handshakes, signed client closure/tamper verification, root-alias rejection,
+and ten label-isolation checks. Model/account responses were synthetic.
+This verifies the changed engineering boundaries; it does not establish a
+complete real benchmark run, module effectiveness, or VAL acceptance. The
+separate 34-cell run uses earlier producer source `051b6a82` and must be
+reported with its own final process receipt and source scope.
+
 ## Frozen descriptors and actual M4/M5 attempt (2026-09-15)
 
 The private headless evaluator descriptor can now be computed without creating
