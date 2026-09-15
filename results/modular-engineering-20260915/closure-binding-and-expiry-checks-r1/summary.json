@@ -1,0 +1,45 @@
+{
+  "schema": "closure-binding-and-expiry-checks-v1",
+  "runs": [
+    {
+      "label": "closure-binding",
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scorer-observation-closure-binding-check-r1",
+      "commit": "205d7540b4048a7733b8cfd18821a27a232c184b",
+      "native_session_id": 8602,
+      "native_exit": 0,
+      "junit": {
+        "tests": 35,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 795,
+      "wall_seconds": 119.46899999998277,
+      "report_sha256": "f93be62f273e2e8a17b46968b6a8b504439103fab9e9ec38938b804a476cf8da",
+      "retained_originals": 178
+    },
+    {
+      "label": "synthetic-expiry",
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-synthetic-expiry-check-r1",
+      "commit": "83aefb74f15a72d421dd5e34002e36483b6ce6d0",
+      "native_session_id": null,
+      "native_exit": 0,
+      "junit": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 794,
+      "wall_seconds": 2.6570000000065193,
+      "report_sha256": "89e92178b39ca8e899120bf3932a94edf3bf64c3a322faa7eb3b8c936667d75c",
+      "retained_originals": 0
+    }
+  ],
+  "real_model_calls": 0,
+  "paid_api_calls": 0,
+  "validation_access": false,
+  "scientific_effectiveness_proven": false,
+  "originals_bytes_mtimes_unchanged": true,
+  "retained_noncredential_files": 178
+}
