@@ -2021,3 +2021,20 @@ fixture 准备调用另列，评分调用及用量仍为未知。没有延长或
 保留；追加用量观察不改写原闭合记录的未知值。
 见 [C5 截止归档](../results/modular-engineering-20260915/c5-common-digest-r1/README.md)。
 这保留未完成证据，不把工程成功状态解释为科学分数；全目标仍未完成。
+
+## 2026-09-15：谱系评分工厂及单格封存接入
+
+`67d38e11` 将私有 headless evaluator 接入 lineage 工厂与独立封存契约。
+冻结声明绑定完整配置，worker 的私有目录/配额/源码分别核验，pool 将共享
+参考材料与逐 panel 声明分开比较。封存将外层谱系评分、嵌套 primary 评分、
+原始返回、维度和端点一一核对；参考指针必须匹配该任务的冻结 reference。
+重新签名的指针替换、重启后原件修改及未知用量均被拒绝。
+
+41/41 冻结检查通过，146.594 秒，774 份源码/文档字节一致；包括实际单格
+driver、Docker、评分 worker 与合成原生进程、封存/失败重读，另回归 primary
+封存和标签隔离。11 个完整选定用例共 823 份原件保留并逐成员核验。
+见 [谱系评分封存检查](../results/modular-engineering-20260915/headless-lineage-closure-r1/README.md)。
+
+新 headless 完整四 panel stdio 流程和外层 TRAIN controller 的最终 gate
+仍需接入；此处的 client 回包与 pool 检查不冒充该完整流程。没有调用真实
+Grok、付费 API 或 VAL；实际模块及全部既定组合实验继续保留原验收要求。

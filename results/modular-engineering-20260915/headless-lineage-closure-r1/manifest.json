@@ -1,0 +1,76 @@
+{
+  "schema": "headless-lineage-closure-archive-v1",
+  "manifest_self_excluded": true,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "archive_headless_lineage_closure_r1.py",
+      "bytes": 4194,
+      "sha256": "b7840d8a7aa005e4c2ccee2dd76d34e61212c745ad7b84ae2346b59113f367a0"
+    },
+    {
+      "path": "before.json",
+      "bytes": 90874,
+      "sha256": "678ad50778ec1e24792860a15e67d3b7f10eb32e18f8e9dc20d08fdbcbfb8605"
+    },
+    {
+      "path": "checks.xml",
+      "bytes": 6142,
+      "sha256": "903178d9c3fdc6b763c591a231fa839e4232b8a163e24339cba61ac2ba145ca5"
+    },
+    {
+      "path": "closed.json",
+      "bytes": 90884,
+      "sha256": "8747b4a7ab96be74e2a64f91593e5b2c840a265be83d887df637f452a9a6508d"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1715,
+      "sha256": "5f4d80dcf311a38b49aafa4f3deb34974113fe9b3c39dea61235f3e0492c2dc6"
+    },
+    {
+      "path": "run_frozen_checks_with_source.py",
+      "bytes": 1826,
+      "sha256": "71e2e8ba100d264bd5a91be47c40866bda417e6099e21f6e87f284d08cf31c3a"
+    },
+    {
+      "path": "run_frozen_useful_checks.py",
+      "bytes": 1918,
+      "sha256": "3d2d958a94b7c0437c93e36ede68f2877c5118a67343faadebc8209b8e5fa3b7"
+    },
+    {
+      "path": "selected-originals.json",
+      "bytes": 401046,
+      "sha256": "0cd9abc9dd7335de6c21bd984b521639941b09108369e035627061fa949946bd"
+    },
+    {
+      "path": "selected-synthetic-originals.zip",
+      "bytes": 982316,
+      "sha256": "673c7283c15e742c121cacffccdd88abc263b04215522f491efc1f925fd5ced1"
+    },
+    {
+      "path": "source-members.json",
+      "bytes": 135874,
+      "sha256": "fc4459a6dd773a3cff9f4eee0774b8ed179d4d9d470d902717153d7a4ad6a553"
+    },
+    {
+      "path": "sources.zip",
+      "bytes": 2591411,
+      "sha256": "9530d1bc9b6abb349d0fad94fef82dc0bf59ab77f35240bd416b62876332b21c"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 721,
+      "sha256": "1a45a611abff64847b9fa85a1a3e6fcea6697832c103caa61a831eeef2198e2d"
+    },
+    {
+      "path": "verify-archive.py",
+      "bytes": 3617,
+      "sha256": "6b8264844928bd38995b381c4a3eee81425e4b0b290dba51b04bd866d1e3fce3"
+    }
+  ]
+}

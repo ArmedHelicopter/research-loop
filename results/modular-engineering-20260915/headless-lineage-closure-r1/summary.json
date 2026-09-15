@@ -1,0 +1,20 @@
+{
+  "source_commit": "67d38e1148a9342fdb447c65c4a3eceee4fc33bb",
+  "junit": {
+    "tests": 41,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "wall_seconds": 146.59399999998277,
+  "source_files_unchanged": 774,
+  "selected_original_files": 823,
+  "selected_original_roots": 11,
+  "limits": [
+    "No actual Grok, paid API or VAL calls.",
+    "Lineage factory/worker and individual scored-cell closure only.",
+    "The outer lineage controller and full four-panel stdio lifecycle are not covered.",
+    "Engineering checks do not establish benchmark effects or formal calibration."
+  ],
+  "preliminary_checks": "Agent focused native/worker checks preceded this freeze and are not added to its denominator."
+}

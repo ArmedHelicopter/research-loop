@@ -45,8 +45,19 @@ when final replay fails, but marks the contrast ineligible. This RPC makes no
 model or account calls. Earlier controller schemas retain their declared
 provider contracts and do not silently admit this lifecycle.
 
-The lineage scorer production factory and its final lifecycle still require
-separate integration. Frozen engineering coverage is recorded by source
-version in the implementation status; this contract alone is not a test result.
+The lineage factory separately binds its full declared evaluator configuration,
+immutable private descriptor, distinct rubric and per-panel allocation. Its
+versioned closure replays the outer lineage receipt, nested primary receipt,
+raw native response and derived dimensions. The lineage reference must match
+the frozen reference pin for the scored subject, even when a changed pointer
+has been re-signed. Shared references and each worker's private declarations
+are checked separately in the pool. Failed MAIN observations retain their
+known usage under the headless accounting contract.
+
+The outer lineage TRAIN controller must still pass each worker's descriptor,
+retain ordered per-panel receipts and consume that panel's final closure.
+Individual worker checks do not establish the complete four-panel stdio
+lifecycle. Frozen engineering coverage is recorded by source version in the
+implementation status; this contract alone is not a test result.
 Synthetic OS/HTTP checks do not establish real benchmark effects, calibration,
 independent operating-system principals, or VAL acceptance.
