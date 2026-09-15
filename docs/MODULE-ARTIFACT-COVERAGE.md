@@ -19,6 +19,14 @@
 快照，未宣称原运行全程源码不变。此记录补充失败前缀的保存范围，不改变完整
 组合实验、真实效果与 VAL 的验收要求。
 
+C5 共用 TRAIN 控制器现已接入配置绑定、评分器最终封存与选择前独立核验。
+用量声明必须与实际 worker 配置摘要相同；封存取得后先保存原签名，再进行后续
+日志、关闭和记账读取，部分封存保留已知用量但不获准选择。源码 `b937ad82`
+的[38 项冻结检查](../results/modular-engineering-20260915/headless-c5-evaluator-root-r1/README.md)
+通过，783 个源码/文档文件前后字节一致。其中实际 stdio 流程完成 59 个配方
+乘 3 个合成目标的 177 次评分，5,645 个非凭据原件已逐成员保留。该评分接口
+检查未执行完整 history→target 控制器，也不证明真实模型效果或 VAL 验收。
+
 最新封存记录补充了评分器启动前的纯配置摘要，以及一轮真实 M4/M5 TRAIN
 失败记录。[20 项集成检查](../results/modular-engineering-20260915/headless-descriptor-primary-r1/README.md)
 通过后，[真实八格批次](../results/modular-engineering-20260915/actual-m4m5-headless-r1/README.md)
