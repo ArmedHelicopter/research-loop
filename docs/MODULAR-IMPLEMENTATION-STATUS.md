@@ -27,6 +27,12 @@ they remain required for their own acceptance claims. Neither complete C5 nor
 Daybreak is introduced as a prerequisite. All original experiment obligations
 remain in scope, and the original C5 runtime is not restarted by this diagnostic.
 
+The [pinned model-state source study](../results/modular-engineering-20260915/grok-model-state-source-r4/grok-model-state-source-r4.md)
+subsequently located the synchronous call and its model-manager plus in-memory
+auth-manager lock reads. It found no token refresh/network operation in the
+reviewed accessor path. This identifies possible lock contention to investigate,
+not an observed lock owner, deadlock, or supported configuration workaround.
+
 ## Scorer observations and sealed M2 relations (2026-09-15)
 
 The [retained frozen attempts](../results/modular-engineering-20260915/admission-headless-evidence-r1/README.md)

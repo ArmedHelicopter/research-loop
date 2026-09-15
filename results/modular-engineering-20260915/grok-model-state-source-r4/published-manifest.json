@@ -1,0 +1,40 @@
+{
+  "schema": "published-files-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "acp_agent.rs",
+      "sha256": "4d4689029cbcaadca67c5c3561698f37f5cb02342098e5a7b9dc8fcc1f2bd56e",
+      "bytes": 137172
+    },
+    {
+      "path": "agent_ops.rs",
+      "sha256": "76069fb5502fe876b1065e9fd8d1e1b7a0f0ec425c495dc7671eb36d918f39b8",
+      "bytes": 216012
+    },
+    {
+      "path": "auth_manager.rs",
+      "sha256": "45d91d6cb34fd1eee29811f507434859e7c58b5f66b1087c9d4a3e951f38ee3e",
+      "bytes": 121825
+    },
+    {
+      "path": "grok-model-state-source-r4.md",
+      "sha256": "6f83441dedf67e9926e22d7ea95ec5bd3d792ce414159344940f2ac946e2519f",
+      "bytes": 3610
+    },
+    {
+      "path": "models.rs",
+      "sha256": "e9792d21e84224b736d035a8b1f04b7612ffd5b0909545ae4121176675876d44",
+      "bytes": 51836
+    },
+    {
+      "path": "source-manifest.json",
+      "sha256": "b15e99c324a666ad8c5873bb9ab3815cc26cf4d5285eb83c1a4fdd8bb3b34320",
+      "bytes": 1018
+    }
+  ]
+}
