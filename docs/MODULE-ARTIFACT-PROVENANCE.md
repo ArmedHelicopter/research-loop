@@ -7,6 +7,12 @@
 模块仍通过各自接口执行；目录不决定模块算法、实验选择或科学结论。
 同样的记录机制适用于对照臂，记录开销单独测量并计入资源对比。
 
+2026-09-15 补充：原生调用现在保留独占输出文件、stdin 关闭及最终退出码读回，
+固定的 TRAIN 调用时限与实际端口配置一致。M7×M8 完整八格消费端已验证私有
+评分封存及最终读回；[修复前失败](../results/modular-engineering-20260915/headless-capture-timeout-first-checks-r1/README.md)
+和[修复后通过](../results/modular-engineering-20260915/headless-capture-timeout-repaired-checks-r2/README.md)
+各保留其源码及原件。这补充已检验的入口，不自动覆盖其他模块或证明真实效果。
+
 ## 产物与运行记录
 
 一个产物由不可变内容、描述符和追加式运行事件组成。内容可以是规范 JSON，

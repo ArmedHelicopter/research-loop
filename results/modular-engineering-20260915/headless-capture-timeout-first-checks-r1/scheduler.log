@@ -1,0 +1,74 @@
+F..............                                                          [100%]
+================================== FAILURES ===================================
+____________ test_native_scheduler_closes_eight_evaluator_receipts ____________
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/scheduler-headless-seam-frozen-r1/test_native_scheduler_closes_e0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001648F1C4080>
+
+    def test_native_scheduler_closes_eight_evaluator_receipts(tmp_path, monkeypatch):
+        setup = prepare_controller(tmp_path / 'fixture', 'scheduler'); original = setup['config'].data()
+        provider, calls, _ = headless_train_provider(tmp_path / 'solver', monkeypatch, schemas=original['schemas'],
+            max_calls=16, response=_response)
+        with monkeypatch.context() as patch:
+            evaluator, _, _ = native_spec(tmp_path / 'evaluator-source', patch)
+        scorer = ScorerConfig(FrozenRecord.from_dict(original['scorer'])); root = tmp_path / 'evaluator'; root.mkdir(); (root/'home').mkdir()
+        evaluator.update(max_calls=8, max_tokens=800, evaluator_id=scorer.record.data()['evaluator_id'],
+            evaluator_version=scorer.record.data()['version'], work_root=str(root/'ledger'), private_home=str(root/'home'),
+            private_profile=str(root/'profile'), public_cwd=str(root/'context'))
+        descriptor = headless_evaluator_descriptor(evaluator); evaluator_provider = {'kind': 'grok-headless-frozen-evaluator-v1', 'configuration_digest': descriptor['configuration_digest']}
+        config = _native_config(setup, provider, evaluator_provider); compiled = compile_exploration_scheduler_train_panel(config, setup['packets'])
+        server = _server(tmp_path, compiled.panel, setup, scorer, evaluator); helper = Path(__file__).parent/'helpers'/'headless_scheduler_evaluator_process.py'
+        execution, scorer_authority = setup['module'].EXECUTION, setup['module'].SCORER
+        with ExitStack() as stack:
+            client = CombinationScorerProcessClient(panel=compiled.panel, config=scorer, exploration_scheduler=True,
+                evaluator_provider=evaluator_provider, command=[sys.executable, str(helper), '--config', str(server),
+                    '--config-sha256', hashlib.sha256(server.read_bytes()).hexdigest(), '--journal', str(tmp_path/'worker.jsonl')],
+                journal_path=tmp_path/'client.jsonl', task_handle_bindings=config.data()['scorer_handle_bindings'],
+                execution_authority_keys={execution.authority_id: execution.key}, scorer_authority_keys={scorer_authority.authority_id: scorer_authority.key},
+                environment={**os.environ, 'PYTHONIOENCODING': 'utf-8'})
+            stack.callback(client.close)
+            result = run_exploration_scheduler_train_panel(config, custody=None, prospective_exporter=setup['exporter'],
+                snapshot_root=Path(setup['exporter'].config['snapshot_root']), export_root=setup['exporter'].output_root,
+                run_root=tmp_path/'run', model=provider, audit_verifier=AuditVerifier({'a': b'a'*32, 'b': b'b'*32}),
+                execution_authority=execution, scoring_service=client, scorer_authority_keys={scorer_authority.authority_id: scorer_authority.key})
+        gate = result.receipt.data()['evaluator_final_verification']
+        assert len(calls) == 16 and len(result.scores) == 8 and gate['score_eligible'] is True
+        assert result.receipt.data()['eligible_scored_cells'] == 8 and result.receipt.data()['status'] == 'estimated'
+        assert all(row.data()['status'] == 'succeeded' for row in result.attempts)
+        assert gate['ordered_receipt_digests'] == [score.receipt.content_hash for score in result.scores]
+        assert gate['closure']['body']['scope']['unscored_cell_count'] == 0
+        assert gate['closure']['body']['evaluator_provider'] == evaluator_provider
+        assert gate['closure']['body']['scorer_config_digest'] == scorer.digest
+        assert gate['known_headless_main_tokens'] == 80
+        assert gate['title_and_all_opportunity_settlement'] == 'unknown'
+>       assert len(__import__('json').loads((root / 'ledger.json').read_text(encoding='utf-8'))['calls']) == 8
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_headless_scheduler_evaluator_stdio.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/scheduler-headless-seam-frozen-r1/test_native_scheduler_closes_e0/evaluator/ledger.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\scheduler-headless-seam-frozen-r1\\test_native_scheduler_closes_e0\\evaluator\\ledger.json'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1013: FileNotFoundError
+- generated xml file: E:\_ryanDev\AI\research-loop-modular\work\scheduler-headless-seam-frozen-r1.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_headless_scheduler_evaluator_stdio.py::test_native_scheduler_closes_eight_evaluator_receipts
+{"commit": "1a9fab22cce190dd798a151d77839ec354bf9090", "source_unchanged": true, "source_count": 809, "exit_code": 1, "wall_seconds": 2094.0469999999914, "new_paid_calls": 0, "report_sha256": "c657fa42a66f4893328eb259ed2e66d2e035820636aaff77d59e546701d6c1ba", "junit": {"tests": 15, "failures": 1, "errors": 0, "skipped": 0}}
+{"source_archive_matches_frozen_input": true, "source_files": 809, "source_archive_sha256": "c8523138cf8519d686193be8438a48f675143deab3c548c82e10554d212b7421"}

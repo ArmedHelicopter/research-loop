@@ -1,0 +1,74 @@
+..........F......F...                                                    [100%]
+================================== FAILURES ===================================
+_________ test_solver_nondefault_timeout_is_used_frozen_and_replayed __________
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/headless-capture-scheduler-root-r1/test_solver_nondefault_timeout0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D2E2D67F20>
+
+    def test_solver_nondefault_timeout_is_used_frozen_and_replayed(tmp_path, monkeypatch):
+        backend = port(tmp_path, timeout_seconds=240, max_calls=2)
+        calls, _ = synthetic_native(tmp_path, monkeypatch, backend)
+>       provider = GrokHeadlessTrainProvider(backend)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_headless_train_timeout.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\train_provider.py:265: in __init__
+    self.state_path=self.root/'state.json';config=_configuration(backend)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\train_provider.py:99: in _configuration
+    native=_native_config(backend);grok=type(backend) in (GrokTrainModelPort,GrokHeadlessTrainModelPort)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\train_provider.py:59: in _native_config
+    return headless.configuration(backend)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\train_provider_headless.py:51: in configuration
+    require(all(config.get(k) == v for k, v in expected.items()), 'headless launch or allocation drift')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = False, message = 'headless launch or allocation drift'
+
+    def require(value, message):
+>       if not value: raise ContractError(message)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       research_loop.ontology.ContractError: headless launch or allocation drift
+
+research_loop\modular\train_provider_headless.py:23: ContractError
+_____ test_m4m5_frozen_timeout_preflight_accepts_match_and_rejects_drift ______
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/headless-capture-scheduler-root-r1/test_m4m5_frozen_timeout_prefl0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D2E2DEF110>
+
+    def test_m4m5_frozen_timeout_preflight_accepts_match_and_rejects_drift(tmp_path, monkeypatch):
+        from test_headless_m4_m5_controller import setup_headless
+        from test_combination_prospective_train_source import processes
+        from research_loop.modular import combination_train_controller as controller
+        from research_loop.modular.contracts import FrozenRecord
+        setup, backend, calls, gets = setup_headless(tmp_path, monkeypatch, timeout_seconds=240)
+        with ExitStack() as stack:
+            service = processes(setup, stack)
+            keys = {setup['module'].SCORER.authority_id: setup['module'].SCORER.key}
+>           controller._service_preflight(setup['config'], backend, service, setup['module'].EXECUTION, keys)
+
+tests\test_headless_train_timeout.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\combination_train_controller.py:286: in _service_preflight
+    headless_configuration(model)
+research_loop\modular\train_provider_headless.py:51: in configuration
+    require(all(config.get(k) == v for k, v in expected.items()), 'headless launch or allocation drift')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = False, message = 'headless launch or allocation drift'
+
+    def require(value, message):
+>       if not value: raise ContractError(message)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       research_loop.ontology.ContractError: headless launch or allocation drift
+
+research_loop\modular\train_provider_headless.py:23: ContractError
+- generated xml file: E:\_ryanDev\AI\research-loop-modular\work\headless-capture-scheduler-root-r1.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_headless_train_timeout.py::test_solver_nondefault_timeout_is_used_frozen_and_replayed
+FAILED tests/test_headless_train_timeout.py::test_m4m5_frozen_timeout_preflight_accepts_match_and_rejects_drift
+{"commit": "914963a573e4e1d75dbc235d62c1830652420774", "source_unchanged": true, "source_count": 809, "exit_code": 1, "wall_seconds": 897.7039999999979, "new_paid_calls": 0, "report_sha256": "654aed0b753487b8400f3665eccc53d480d526e622632cf158ca9112b8ae3b1e", "junit": {"tests": 21, "failures": 2, "errors": 0, "skipped": 0}}
+{"source_archive_matches_frozen_input": true, "source_files": 809, "source_archive_sha256": "93df0b21009c55040f8e8f7613ccd46afe06392228058cd2885962e4ed8e2a18"}

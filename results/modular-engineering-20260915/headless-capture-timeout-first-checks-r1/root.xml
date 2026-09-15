@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="21" time="798.456" timestamp="2026-09-15T18:33:10.093640+08:00" hostname="SC-202507131830"><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="15.292" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="1.009" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.879" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.917" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.193" /><testcase classname="tests.test_headless_train_timeout" name="test_solver_nondefault_timeout_is_used_frozen_and_replayed" time="1.246"><failure message="research_loop.ontology.ContractError: headless launch or allocation drift">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/headless-capture-scheduler-root-r1/test_solver_nondefault_timeout0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D2E2D67F20&gt;
+
+    def test_solver_nondefault_timeout_is_used_frozen_and_replayed(tmp_path, monkeypatch):
+        backend = port(tmp_path, timeout_seconds=240, max_calls=2)
+        calls, _ = synthetic_native(tmp_path, monkeypatch, backend)
+&gt;       provider = GrokHeadlessTrainProvider(backend)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_headless_train_timeout.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\train_provider.py:265: in __init__
+    self.state_path=self.root/'state.json';config=_configuration(backend)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\train_provider.py:99: in _configuration
+    native=_native_config(backend);grok=type(backend) in (GrokTrainModelPort,GrokHeadlessTrainModelPort)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\train_provider.py:59: in _native_config
+    return headless.configuration(backend)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\train_provider_headless.py:51: in configuration
+    require(all(config.get(k) == v for k, v in expected.items()), 'headless launch or allocation drift')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = False, message = 'headless launch or allocation drift'
+
+    def require(value, message):
+&gt;       if not value: raise ContractError(message)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       research_loop.ontology.ContractError: headless launch or allocation drift
+
+research_loop\modular\train_provider_headless.py:23: ContractError</failure></testcase><testcase classname="tests.test_headless_train_timeout" name="test_solver_rejects_invalid_timeout_before_allocator[0]" time="0.381" /><testcase classname="tests.test_headless_train_timeout" name="test_solver_rejects_invalid_timeout_before_allocator[241]" time="0.028" /><testcase classname="tests.test_headless_train_timeout" name="test_solver_rejects_invalid_timeout_before_allocator[True]" time="0.019" /><testcase classname="tests.test_headless_train_timeout" name="test_solver_rejects_invalid_timeout_before_allocator[60.0]" time="0.014" /><testcase classname="tests.test_headless_train_timeout" name="test_evaluator_timeout_matches_pure_descriptor_and_both_primary_scores" time="421.024" /><testcase classname="tests.test_headless_train_timeout" name="test_headless_child_gets_stdin_eof_and_existing_evidence_is_not_overwritten" time="0.457" /><testcase classname="tests.test_headless_train_timeout" name="test_m4m5_frozen_timeout_preflight_accepts_match_and_rejects_drift" time="65.849"><failure message="research_loop.ontology.ContractError: headless launch or allocation drift">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/headless-capture-scheduler-root-r1/test_m4m5_frozen_timeout_prefl0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D2E2DEF110&gt;
+
+    def test_m4m5_frozen_timeout_preflight_accepts_match_and_rejects_drift(tmp_path, monkeypatch):
+        from test_headless_m4_m5_controller import setup_headless
+        from test_combination_prospective_train_source import processes
+        from research_loop.modular import combination_train_controller as controller
+        from research_loop.modular.contracts import FrozenRecord
+        setup, backend, calls, gets = setup_headless(tmp_path, monkeypatch, timeout_seconds=240)
+        with ExitStack() as stack:
+            service = processes(setup, stack)
+            keys = {setup['module'].SCORER.authority_id: setup['module'].SCORER.key}
+&gt;           controller._service_preflight(setup['config'], backend, service, setup['module'].EXECUTION, keys)
+
+tests\test_headless_train_timeout.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\combination_train_controller.py:286: in _service_preflight
+    headless_configuration(model)
+research_loop\modular\train_provider_headless.py:51: in configuration
+    require(all(config.get(k) == v for k, v in expected.items()), 'headless launch or allocation drift')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = False, message = 'headless launch or allocation drift'
+
+    def require(value, message):
+&gt;       if not value: raise ContractError(message)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       research_loop.ontology.ContractError: headless launch or allocation drift
+
+research_loop\modular\train_provider_headless.py:23: ContractError</failure></testcase><testcase classname="tests.test_grok_headless_transport" name="test_process_tree_keeps_acp_default_stdout_pipe" time="0.441" /><testcase classname="tests.test_headless_scheduler_evaluator_stdio" name="test_evaluator_descriptor_mismatch_rejects_before_export_or_model" time="83.629" /><testcase classname="tests.test_headless_scheduler_evaluator_stdio" name="test_return_readback_rejects_changed_retained_signed_gate" time="0.015" /></testsuite></testsuites>

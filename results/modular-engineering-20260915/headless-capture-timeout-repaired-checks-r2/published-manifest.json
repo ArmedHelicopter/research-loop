@@ -1,0 +1,110 @@
+{
+  "schema": "frozen-module-check-published-files-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "archive-helper.py",
+      "sha256": "c262317d0f001c67792de2d1312e9582dc162ae6a7164198ef9ada1f07f8ce74",
+      "bytes": 20685
+    },
+    {
+      "path": "private-retention-manifest.json",
+      "sha256": "1740bd950f7edf7472b96de0e12e2b1e86563698302f76396ff5e0ed77fd8d2a",
+      "bytes": 1926144
+    },
+    {
+      "path": "README.md",
+      "sha256": "16286361f1ee3321b65d3f233478832fdb8489b6d6c34ce227cfff281f76354a",
+      "bytes": 1293
+    },
+    {
+      "path": "retention-helper-source.py",
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840
+    },
+    {
+      "path": "root-before.json",
+      "sha256": "3f65b73e8afd07185dcf137db40d688f9c0290e814d8ce32e71e18f00fc83d5e",
+      "bytes": 95388
+    },
+    {
+      "path": "root-closed.json",
+      "sha256": "32d9273cbfbf3e4f598a814c9194713c4a69799c21e12d098910ddcdf402f9c2",
+      "bytes": 95163
+    },
+    {
+      "path": "root-native-join.json",
+      "sha256": "599d75468aa0cbe6a18f9f7e073e5cd318434de18fd8b91c5b5c41c6574d6149",
+      "bytes": 278
+    },
+    {
+      "path": "root-native-start.json",
+      "sha256": "8224cb0a9237e5766970cc91b4dba75040c5d41225ea9637a64944c0ab0a0cff",
+      "bytes": 109
+    },
+    {
+      "path": "root-source-members.json",
+      "sha256": "9c548292b05d675de35326931529535d4187156d30bb4b2cb18e6f6b6decaf88",
+      "bytes": 142192
+    },
+    {
+      "path": "root-sources.zip",
+      "sha256": "2739164200ba7beab876394e2f31213d59988f54e4acd8e953eb1913d3955c97",
+      "bytes": 2712205
+    },
+    {
+      "path": "root.log",
+      "sha256": "f4733ba284fc61ddf20d5ed9fd89e079b24d519daeb549c7d51930fb38346262",
+      "bytes": 675
+    },
+    {
+      "path": "root.xml",
+      "sha256": "95cd616a090e1635aff684fee34bb66356c67821e59cbd7c0d0bce9f74af13e5",
+      "bytes": 2968
+    },
+    {
+      "path": "scheduler-before.json",
+      "sha256": "2c7efe8bc48c9aaa54e49962e3e7712955c11434d4e4af0c09675ecb4f104fcf",
+      "bytes": 95082
+    },
+    {
+      "path": "scheduler-closed.json",
+      "sha256": "698cde3bd06a40a7fa0028ae387d21870654f243dae504f678418f66524dc635",
+      "bytes": 95162
+    },
+    {
+      "path": "scheduler-native-join.json",
+      "sha256": "a0dd467239dae4f48c57a3cf7a9e53f4bb914d23cc0dd70f1c8834ecc59bdd2c",
+      "bytes": 278
+    },
+    {
+      "path": "scheduler-native-start.json",
+      "sha256": "654ec3812158b620f6f9b45eca32825505507c0d6262e05226e6b7132604ca0d",
+      "bytes": 109
+    },
+    {
+      "path": "scheduler-source-members.json",
+      "sha256": "4369eb18b11d0e56078fe80d12bc7a513e9b3fee1504c5198272e9f4bc26ad3a",
+      "bytes": 142192
+    },
+    {
+      "path": "scheduler-sources.zip",
+      "sha256": "477b7c9b1e94573cf568cda11de9d4e0dbf519c9ebed6ef303330442f5f8c41c",
+      "bytes": 2712205
+    },
+    {
+      "path": "scheduler.log",
+      "sha256": "b9833d6830eea62eb48e29f61fc98e738e43b9b8ad906124b6622df2d8ee6f9d",
+      "bytes": 672
+    },
+    {
+      "path": "scheduler.xml",
+      "sha256": "5c54460ebe65d8c9aa7929245d1ed7d176246175ee31277b66b8b5b9e46a2c71",
+      "bytes": 399
+    }
+  ]
+}

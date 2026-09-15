@@ -3,6 +3,29 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Timeout repair verified; real r4 live; C5 r2 failed (2026-09-15)
+
+Source `d672c274` passed 21 ROOT checks and the separate complete eight-cell
+M7×M8 stdio/Docker test. The two exact 809-file source generations and native
+exit-0 results are [retained](../results/modular-engineering-20260915/headless-capture-timeout-repaired-checks-r2/README.md),
+with 1,589 noncredential runtime originals. The [first three reports](../results/modular-engineering-20260915/headless-capture-timeout-first-checks-r1/README.md)
+retain their original five failures and 7,767 originals; they are not relabeled.
+These tests establish the exercised engineering seams, not scientific effect.
+
+Real M4/M5 r4 started at 19:07 +08 with the separately frozen d672c274 actor,
+eight TRAIN cells, 40 solver and eight evaluator opportunities, no added paid-API
+budget and no MAIN retry. Its original native session 35109 is live at this update;
+no final score comparison or VAL acceptance is claimed.
+
+C5 r2 native session 4370 joined exit 1 after 15,543.109 seconds at source
+`83aefb74`, with all 794 source files unchanged. Of 46 builds, 37 succeeded,
+one failed and eight were blocked; all 118 targets were blocked. Synthetic
+reservation 187 failed context inspection before MAIN launch. Its original
+unknown exit/failed shutdown record remains intact; a later absent-PID observation
+does not rewrite it. A terminal controller receipt now exists, but no selection
+or registration completed. Exact failed-run archival is in progress. This source
+predates d672c274 capture repair and the pending selected-registration adapter.
+
 ## Scorer exchanges verified; actual M4/M5 r3 retained (2026-09-15)
 
 [Ordinary scorer exchange retention](../results/modular-engineering-20260915/scorer-exchange-observations-r1/README.md)
@@ -21,12 +44,11 @@ owned-tree closure. Known MAIN tokens are zero with incomplete usage; actual
 consumption and settlement are unknown. Its 110 noncredential originals are retained,
 source/input pins are unchanged, no cells are pruned and VAL remains unopened.
 
-Candidate `1a9fab22` separately contains owned-file process capture, final exit-code
-readback, an explicit frozen TRAIN timeout (60-second default, maximum 240), and
-the M7×M8 headless evaluator declaration/final-closure seam. Source-frozen checks
-are running. No passing outcome or new actual model run is inferred from dispatch.
-The existing full C5 r2 continues at its earlier frozen source; the candidate does
-not retroactively change that run or the separately tested C5 registration adapter.
+Candidate `1a9fab22` introduced owned-file process capture, final exit-code readback,
+an explicit frozen TRAIN timeout (60-second default, maximum 240), and the M7×M8
+headless evaluator declaration/final-closure seam. Its first tests exposed an
+adapter's remaining hardcoded timeout and a wrong test ledger path. Their separate
+d672c274 repair and verification are recorded above. C5 r2 kept its older source.
 
 ## Frozen freshness policy merged; C5 registration adapter checked (2026-09-15)
 
@@ -43,8 +65,8 @@ The same follow-up archive preserves fourteen isolated C5 selected-registration
 adapter checks at `bdbc01a6`. The new task-neutral raw retention performs final
 readback, rejects tampering, and safely completes only exact authenticated partial
 sidecars. Upstream authentication is stubbed in these storage-adapter checks;
-full controller integration remains pending, and the currently running C5 r2
-at its old frozen source cannot establish this new seam's integration.
+full controller integration remains pending, and the failed C5 r2 at its old
+frozen source cannot establish this new seam's integration.
 
 ## Actual M4/M5 r2 closed inconclusive (2026-09-15)
 

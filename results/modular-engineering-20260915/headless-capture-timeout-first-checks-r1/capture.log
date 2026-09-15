@@ -1,0 +1,75 @@
+........................................................................ [ 56%]
+........F......F........................................                 [100%]
+================================== FAILURES ===================================
+_________ test_solver_nondefault_timeout_is_used_frozen_and_replayed __________
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/headless-capture-timeout-frozen-r1/test_solver_nondefault_timeout0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002AECA358FB0>
+
+    def test_solver_nondefault_timeout_is_used_frozen_and_replayed(tmp_path, monkeypatch):
+        backend = port(tmp_path, timeout_seconds=240, max_calls=2)
+        calls, _ = synthetic_native(tmp_path, monkeypatch, backend)
+>       provider = GrokHeadlessTrainProvider(backend)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_headless_train_timeout.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\train_provider.py:265: in __init__
+    self.state_path=self.root/'state.json';config=_configuration(backend)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\train_provider.py:99: in _configuration
+    native=_native_config(backend);grok=type(backend) in (GrokTrainModelPort,GrokHeadlessTrainModelPort)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\train_provider.py:59: in _native_config
+    return headless.configuration(backend)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\train_provider_headless.py:51: in configuration
+    require(all(config.get(k) == v for k, v in expected.items()), 'headless launch or allocation drift')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = False, message = 'headless launch or allocation drift'
+
+    def require(value, message):
+>       if not value: raise ContractError(message)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       research_loop.ontology.ContractError: headless launch or allocation drift
+
+research_loop\modular\train_provider_headless.py:23: ContractError
+_____ test_m4m5_frozen_timeout_preflight_accepts_match_and_rejects_drift ______
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/headless-capture-timeout-frozen-r1/test_m4m5_frozen_timeout_prefl0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002AECA27A9F0>
+
+    def test_m4m5_frozen_timeout_preflight_accepts_match_and_rejects_drift(tmp_path, monkeypatch):
+        from test_headless_m4_m5_controller import setup_headless
+        from test_combination_prospective_train_source import processes
+        from research_loop.modular import combination_train_controller as controller
+        from research_loop.modular.contracts import FrozenRecord
+        setup, backend, calls, gets = setup_headless(tmp_path, monkeypatch, timeout_seconds=240)
+        with ExitStack() as stack:
+            service = processes(setup, stack)
+            keys = {setup['module'].SCORER.authority_id: setup['module'].SCORER.key}
+>           controller._service_preflight(setup['config'], backend, service, setup['module'].EXECUTION, keys)
+
+tests\test_headless_train_timeout.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\combination_train_controller.py:286: in _service_preflight
+    headless_configuration(model)
+research_loop\modular\train_provider_headless.py:51: in configuration
+    require(all(config.get(k) == v for k, v in expected.items()), 'headless launch or allocation drift')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = False, message = 'headless launch or allocation drift'
+
+    def require(value, message):
+>       if not value: raise ContractError(message)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       research_loop.ontology.ContractError: headless launch or allocation drift
+
+research_loop\modular\train_provider_headless.py:23: ContractError
+- generated xml file: E:\_ryanDev\AI\research-loop-modular\work\headless-capture-timeout-frozen-r1.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_headless_train_timeout.py::test_solver_nondefault_timeout_is_used_frozen_and_replayed
+FAILED tests/test_headless_train_timeout.py::test_m4m5_frozen_timeout_preflight_accepts_match_and_rejects_drift
+{"commit": "1a9fab22cce190dd798a151d77839ec354bf9090", "source_unchanged": true, "source_count": 809, "exit_code": 1, "wall_seconds": 2334.0469999999914, "new_paid_calls": 0, "report_sha256": "574d4d38e9264da366aae74b57ecfcf3ab9a38517f399f715769a776b11dddf1", "junit": {"tests": 128, "failures": 2, "errors": 0, "skipped": 0}}
+{"source_archive_matches_frozen_input": true, "source_files": 809, "source_archive_sha256": "66c9a63df385c9bacdd65b56055ee818b5f0642baf6dab1de2a4983e73a8092b"}
