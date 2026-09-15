@@ -1,0 +1,55 @@
+{
+  "schema": "grok130-normal-control-public-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "archive-helper.py",
+      "sha256": "fa43ee844e3e61a0ff425996aee8890e9f539dabac74985a951c0ca751c9752f",
+      "bytes": 5291
+    },
+    {
+      "path": "closure.json",
+      "sha256": "5a88edf1770d4c8c49f38ffa8f3c44ba1d6a65fb893fc88aeee243e62920115e",
+      "bytes": 654
+    },
+    {
+      "path": "control.py",
+      "sha256": "b214092bfcaf9ead2938bff93f716a9298978f9024558487a3cb2dae14d46bc3",
+      "bytes": 6957
+    },
+    {
+      "path": "driver.log",
+      "sha256": "dfb6e8128b3ce4d98a61d2d343edf4a467f1fef2c94f7b86e4997eeec400e745",
+      "bytes": 114
+    },
+    {
+      "path": "native-join.json",
+      "sha256": "8db4bfad36d9bd674746bbf9113c1e032eb9d07370d547cc66f0cbe42d4dad69",
+      "bytes": 283
+    },
+    {
+      "path": "native-start.json",
+      "sha256": "3c355872afffcc8e087b87d670db54bddabb5f44e50795a91e4b7b237fc21be1",
+      "bytes": 130
+    },
+    {
+      "path": "private-retention-manifest.json",
+      "sha256": "9ca2c4b9ca9609ecda6601e87993a885c596a595c915c6b736594b863342624f",
+      "bytes": 607956
+    },
+    {
+      "path": "README.md",
+      "sha256": "eb17059c8be80ad6daed570946c28f7df94a1f3cdf7d35827a11ee52a0aa6018",
+      "bytes": 1114
+    },
+    {
+      "path": "retention-helper-source.py",
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840
+    }
+  ]
+}
