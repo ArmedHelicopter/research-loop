@@ -13,7 +13,8 @@ from pathlib import Path
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.grok_acp_transport import TRAIN_OPPORTUNITY_CONTRACT
 from research_loop.modular.train_provider import (
-    CodexTrainProvider, GrokTrainProvider, GrokHeadlessTrainProvider, FrozenTrainProviderLedgerV2)
+    CodexTrainProvider, GrokTrainProvider, GrokHeadlessTrainProvider, FrozenTrainProviderLedgerV2,
+    _validate_eligibility_mode, _validate_event_binding_arguments)
 from research_loop.ontology import ContractError
 
 PROVIDERS = (CodexTrainProvider, GrokTrainProvider, GrokHeadlessTrainProvider)
@@ -259,11 +260,14 @@ class PhaseProviderLedger:
         verifying. They are not a reusable verification token or an eligible seal.
         Every invocation still replays current session and original provider files.
         """
+        _validate_eligibility_mode(require_eligible)
         verified=self.verify()
         calls=self._calls_for_scope_after_verified(scope_id)
         try:
+            expected_call_ids=tuple(c.data()['id'] for c in calls)
+            _validate_event_binding_arguments(expected_call_ids,require_eligible)
             ids=self.original._bind_events_after_verified(events,
-                expected_call_ids=tuple(c.data()['id'] for c in calls),require_eligible=require_eligible,
+                expected_call_ids=expected_call_ids,require_eligible=require_eligible,
                 verified=verified)
         except Exception as exc:
             self.original.provider._poison('runtime_binding_fault')
