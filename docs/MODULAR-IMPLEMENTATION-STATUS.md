@@ -3,6 +3,22 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## P0 custody transition retention merged (2026-09-15)
+
+Source `41f0c892` connects opt-in private retention to actual custody writes and
+signed receipt creation. The independent reader verifies exact state, receipt,
+ordering and source bindings; external anchors can close an expected retained
+tail. Capture failures are reported separately without falsifying the completed
+custody operation. The existing CLI exposes the optional private retention root.
+
+The [retained checks](../results/modular-engineering-20260915/custody-transition-retention-r1/README.md)
+preserve r3's 20 checks, r4's 10 after the ordering/source repairs, and merged
+ROOT `dac25750`'s 17 including label isolation, each with unchanged frozen sources
+and its own native completion. All 1,320 noncredential run files were retained
+and read back. Historical r1/r2 attempts keep their original evidence and lack
+of native completion records. No real private custody/VAL data was opened;
+optional retention does not prove complete history or retrofit existing stores.
+
 ## Exact scorer closure association verified and merged (2026-09-15)
 
 Source `205d7540` passed 35 focused checks and a separate complete 16-cell actual

@@ -1,0 +1,150 @@
+{
+  "schema": "frozen-module-check-published-files-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "archive-helper.py",
+      "sha256": "b5785f83f8fd1667b540c815b34ea55a7ea0604238deac2fdd8e8428ee926a85",
+      "bytes": 9926
+    },
+    {
+      "path": "private-retention-manifest.json",
+      "sha256": "48a21c6472562bc6ea6df47f9be1e80613706e38749338bac98d83d7378f0dac",
+      "bytes": 1402016
+    },
+    {
+      "path": "r3-before.json",
+      "sha256": "7279dd1476c9d9b95f6f6fbbb6f00ff5a641cf3f5d716b1ae36ec21096e1bee4",
+      "bytes": 94187
+    },
+    {
+      "path": "r3-closed.json",
+      "sha256": "40a582e86255159da2f0383b3ef2605be3e1a268ddeca03e12203e103a3661b1",
+      "bytes": 94199
+    },
+    {
+      "path": "r3-native-join.json",
+      "sha256": "b946a67a4857b66523c810d87372c046235ce5f45eee5cb33da275e4cd6e8864",
+      "bytes": 283
+    },
+    {
+      "path": "r3-native-start.json",
+      "sha256": "3ce80c4df77ed492910b32df1832fc8ca115a9243501be27f415c188e2b70318",
+      "bytes": 129
+    },
+    {
+      "path": "r3-source-members.json",
+      "sha256": "3cba73a2603e60b02b7f83f8a54de389cdd5c113d47f4ffc129760d7a7bec93d",
+      "bytes": 140765
+    },
+    {
+      "path": "r3-sources.zip",
+      "sha256": "992088ecec2ecfcc31d98780252df638d1d2a95d2a119810d721445f72d4dfe5",
+      "bytes": 2683228
+    },
+    {
+      "path": "r3.log",
+      "sha256": "84cb945e5e2534d30a12c1c268845416589de9fc66ebdc7b8394d45d7dafdfea",
+      "bytes": 678
+    },
+    {
+      "path": "r3.xml",
+      "sha256": "baff44295bbb8750e9856f663358ca4c2d6498ba8037f4943efd2278d1522274",
+      "bytes": 3194
+    },
+    {
+      "path": "r4-before.json",
+      "sha256": "7c782a5879b729c530e251f3d43a161dd39393738a2a8b131f077b5b7a381b2e",
+      "bytes": 94105
+    },
+    {
+      "path": "r4-closed.json",
+      "sha256": "e05077a9fca3b005683eb8d72bcc6afd85c6822f1b9e69929f0fe3a1b6d53a36",
+      "bytes": 94199
+    },
+    {
+      "path": "r4-native-join.json",
+      "sha256": "0589c3c1d89b487e9f193129cc0a7ce8929cd3321a2375dc738f924dab6679b8",
+      "bytes": 283
+    },
+    {
+      "path": "r4-native-start.json",
+      "sha256": "6df74713cfa1297d1b6f7267742a7e9efb32fdee0f5ef2d5e2f3258ba4137e1a",
+      "bytes": 130
+    },
+    {
+      "path": "r4-source-members.json",
+      "sha256": "d4b95566430f29063446f8663893c212e2fc87f714bef82ca63e896fd9fd3a6c",
+      "bytes": 140765
+    },
+    {
+      "path": "r4-sources.zip",
+      "sha256": "c1f265e4a07ae970298f345c5c38222565a9ad91ad268c7a25ddc88fecf504ce",
+      "bytes": 2683557
+    },
+    {
+      "path": "r4.log",
+      "sha256": "bc3b9b3d38e312fab14f2841c6d30c4292e1061861384d4532ebbaed2bb1f706",
+      "bytes": 678
+    },
+    {
+      "path": "r4.xml",
+      "sha256": "10081e9de238527025a35877bbd2f2c54143a31c25e4e91c65a814e04f48b9cb",
+      "bytes": 1802
+    },
+    {
+      "path": "README.md",
+      "sha256": "0837f63b464f0f153bd8143bcf16cf3dc25ae4930ad165c5f1295e3e2d85e141",
+      "bytes": 1093
+    },
+    {
+      "path": "retention-helper-source.py",
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840
+    },
+    {
+      "path": "root-before.json",
+      "sha256": "63fd31b75955c88f83ac8befce054761c45db67d43d625f5521444507959b5c3",
+      "bytes": 94096
+    },
+    {
+      "path": "root-closed.json",
+      "sha256": "c55fa13078a9280f856858e4ca7104359191a0248c490bb24e845d2ef58af4fa",
+      "bytes": 94199
+    },
+    {
+      "path": "root-native-join.json",
+      "sha256": "1913c260ba7236e2435707632feb8a7566557e175899b4df75b1747dc656d225",
+      "bytes": 283
+    },
+    {
+      "path": "root-native-start.json",
+      "sha256": "12d40bc5a9570c3eecfddc7bffc9a1d27ee8824a859ae44af632e82e3c419228",
+      "bytes": 130
+    },
+    {
+      "path": "root-source-members.json",
+      "sha256": "afa5aaac526a69eaa686ab970a3d35a001fbb80cbeae470e6736aa8a6ef12bbe",
+      "bytes": 140764
+    },
+    {
+      "path": "root-sources.zip",
+      "sha256": "fabe5a05f86e28a92421987391fbc42469b177660df84b34175d0c7ddb22d590",
+      "bytes": 2683125
+    },
+    {
+      "path": "root.log",
+      "sha256": "b700ceadcf27d85ca55de27b090fba7ec321e1b2685811deca32e1839694a7b1",
+      "bytes": 678
+    },
+    {
+      "path": "root.xml",
+      "sha256": "d2835a5d1a22bd6362f12ec376483cb82b70d55609203e5bdc4308a873960b35",
+      "bytes": 2464
+    }
+  ]
+}
