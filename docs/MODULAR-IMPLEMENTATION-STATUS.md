@@ -3,6 +3,31 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Scorer exchanges verified; actual M4/M5 r3 retained (2026-09-15)
+
+[Ordinary scorer exchange retention](../results/modular-engineering-20260915/scorer-exchange-observations-r1/README.md)
+passed 28 isolated checks at `4668c6e8` and 13 merged ROOT checks at `c10170e0`.
+Exact requests, raw responses, startup observations, held anchors, signed receipt
+bindings and durable success journals are checked before first and cached returns.
+The isolated batch includes a complete eight-cell stdio/Docker synthetic controller;
+ROOT includes ten label-isolation checks and both primary score routes. All 2,875
+noncredential runtime originals and both exact source generations are retained.
+
+[Actual M4/M5 r3](../results/modular-engineering-20260915/actual-m4m5-headless-grok130-r3/README.md)
+closed with one failed cell and seven blocked cells, zero scores or evaluator
+reservations. The first solver MAIN launched after account preflight but timed out.
+The original child record retains shutdown failure, a null exit code and final
+owned-tree closure. Known MAIN tokens are zero with incomplete usage; actual
+consumption and settlement are unknown. Its 110 noncredential originals are retained,
+source/input pins are unchanged, no cells are pruned and VAL remains unopened.
+
+Candidate `1a9fab22` separately contains owned-file process capture, final exit-code
+readback, an explicit frozen TRAIN timeout (60-second default, maximum 240), and
+the M7×M8 headless evaluator declaration/final-closure seam. Source-frozen checks
+are running. No passing outcome or new actual model run is inferred from dispatch.
+The existing full C5 r2 continues at its earlier frozen source; the candidate does
+not retroactively change that run or the separately tested C5 registration adapter.
+
 ## Frozen freshness policy merged; C5 registration adapter checked (2026-09-15)
 
 ROOT `a989a785` passed twelve checks including label isolation and genuine delayed

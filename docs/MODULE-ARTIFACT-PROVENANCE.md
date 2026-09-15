@@ -97,6 +97,11 @@ trace 与目录不一致、跨对象证据替换、VAL 及其索引泄漏，以�
 实际接入范围与未接入项见[产物审计覆盖清单](MODULE-ARTIFACT-COVERAGE.md)，
 具体版本的执行证据见[实施状态](MODULAR-IMPLEMENTATION-STATUS.md)。
 
+普通评分另有[实际交换留存契约](SCORER-EXCHANGE-OBSERVATIONS.md)：在解析前保留
+启动握手及逐格请求/返回文本，并在首次及缓存返回前核对原始字节、持久成功日志
+和签名评分。[已通过的冻结检查与原件](../results/modular-engineering-20260915/scorer-exchange-observations-r1/README.md)
+覆盖两个主 benchmark；中性观察不会被登记成某个算法模块已运行的证据。
+
 最新可检查的真实例子是[一次 Grok 4.6 TRAIN 调用及独立重放](../results/modular-engineering-20260915/grok130-normal-train-control-r2/README.md)：
 请求、固定部署、原始返回、账本和消费结果均有精确引用，非凭据原件私有保留。
 它只有一次真实调用，不能当作单模块或组合有效性结论。
