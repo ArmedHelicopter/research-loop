@@ -855,9 +855,13 @@ class LinkedScorerProcessClient:
                        "request_digest": request_digest, "status": "reserved"}
         _append(self.journal_path, reservation); self.states[canonical(list(cell_key))] = reservation
         request = {"schema": _REQUEST_SCHEMA, **material, "request_digest": request_digest}
+        request_text = canonical(request) + "\n"
+        _exchange(self, attempt_id=request_id, phase='reserved', cell_key=cell_key, request_text=request_text)
+        line = None
         try:
-            self.input.write(canonical(request) + "\n"); self.input.flush()
+            self.input.write(request_text); self.input.flush()
             line = self._readline_bounded()
+            _exchange(self, attempt_id=request_id, phase='received', cell_key=cell_key, request_text=request_text, response_text=line)
             response = json.loads(line) if line else None
             required = {"schema", "request_id", "request_digest", "cell_key", "status", "receipt"}
             if (not isinstance(response, dict) or set(response) != required or response.get("schema") != _RESPONSE_SCHEMA
@@ -866,6 +870,8 @@ class LinkedScorerProcessClient:
                 raise ContractError("scorer process did not return a bound receipt")
             receipt = FrozenRecord.from_dict(response["receipt"])
         except Exception as exc:
+            _exchange(self, attempt_id=request_id, phase='unknown' if line is None else 'rejected', cell_key=cell_key,
+                      request_text=request_text, response_text=line, error_type=type(exc).__name__)
             unknown = reservation | {"status": "unknown"}
             _append(self.journal_path, unknown); self.states[canonical(list(cell_key))] = unknown
             if not isinstance(exc, ContractError) or "timed out" in str(exc) or "unavailable" in str(exc):
@@ -873,6 +879,7 @@ class LinkedScorerProcessClient:
             if isinstance(exc, ContractError):
                 raise
             raise ContractError("scorer process result is unknown") from exc
+        _exchange(self, attempt_id=request_id, phase='authenticated', cell_key=cell_key, request_text=request_text, response_text=line)
         success = reservation | {"status": "succeeded", "receipt": receipt.data()}
         _append(self.journal_path, success); self.states[canonical(list(cell_key))] = success
         return ScientificScorerReceipt(cell_key, receipt)
@@ -918,15 +925,23 @@ class CombinationScorerProcessClient(LinkedScorerProcessClient):
         self.final_closure = None
         super().__init__(panel=panel, command=command, journal_path=journal_path,
                          environment=environment, response_timeout_seconds=response_timeout_seconds)
+        nonce = uuid.uuid4().hex
+        startup_text = canonical({"schema": "scorer-process-binding-request-v1", "nonce": nonce}) + "\n"
+        startup_line = None
+        _exchange(self, attempt_id=nonce, phase='reserved', cell_key=None, request_text=startup_text)
         try:
-            nonce = uuid.uuid4().hex
-            self.input.write(canonical({"schema": "scorer-process-binding-request-v1", "nonce": nonce}) + "\n")
+            self.input.write(startup_text)
             self.input.flush()
-            response = json.loads(self._readline_bounded())
+            startup_line = self._readline_bounded()
+            _exchange(self, attempt_id=nonce, phase='received', cell_key=None, request_text=startup_text, response_text=startup_line)
+            response = json.loads(startup_line)
             if response != {"schema": "scorer-process-binding-response-v1", "nonce": nonce, "binding": expected.data()}:
                 raise ContractError("combination scorer startup binding differs from frozen configuration")
             self.binding = expected
+            _exchange(self, attempt_id=nonce, phase='authenticated', cell_key=None, request_text=startup_text, response_text=startup_line)
         except Exception as exc:
+            _exchange(self, attempt_id=nonce, phase='unknown' if startup_line is None else 'rejected', cell_key=None,
+                      request_text=startup_text, response_text=startup_line, error_type=type(exc).__name__)
             self._stop_unknown_worker()
             if isinstance(exc, ContractError):
                 raise
@@ -1044,3 +1059,55 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+# Raw ordinary scorer client exchange custody.  These records are intentionally
+# separate from the legacy score reservation journal and do not authorize score
+# acceptance.  Text is retained before parsing for a later independent reader.
+_SCORER_EXCHANGE_SCHEMA = 'scorer-process-client-exchange-v1'
+
+
+def _exchange_path(client) -> Path:
+    return Path(str(client.journal_path) + '.exchange-observations.jsonl')
+
+
+def _exchange(client, *, attempt_id: str, phase: str, cell_key, request_text: str,
+              response_text: str | None = None, error_type: str | None = None) -> None:
+    path = _exchange_path(client)
+    rows = read_scorer_exchange_observations(path)
+    previous = rows[-1]['digest'] if rows else None
+    event = {'schema': _SCORER_EXCHANGE_SCHEMA, 'attempt_id': attempt_id, 'phase': phase,
+             'panel_digest': client.panel.digest, 'cell_key': list(cell_key) if cell_key is not None else None,
+             'scorer_config_digest': getattr(getattr(client, 'config', None), 'digest', None),
+             'producer_source_sha256': _sha(Path(__file__).read_bytes()),
+             'request_text': request_text, 'request_sha256': _sha(request_text),
+             'response_text': response_text, 'response_sha256': _sha(response_text) if response_text is not None else None,
+             'error_type': error_type, 'cost': {'known': False, 'units': None},
+             'authorization': 'none', 'scientific_status': 'not_measured'}
+    row = {'schema': 'scorer-process-client-exchange-chain-v1', 'sequence': len(rows) + 1,
+           'previous': previous, 'event': event}
+    row['digest'] = FrozenRecord.from_dict(row).content_hash
+    _append(path, row)
+
+
+def read_scorer_exchange_observations(path: Path) -> tuple[dict, ...]:
+    """Independently validate exact text digests and append order; no score authority."""
+    try:
+        rows=[]; previous=None
+        for line in (path.read_text(encoding='utf-8').splitlines() if path.exists() else []):
+            row=json.loads(line); event=row.get('event', {})
+            required={'schema','attempt_id','phase','panel_digest','cell_key','scorer_config_digest','producer_source_sha256',
+                      'request_text','request_sha256','response_text','response_sha256','error_type','cost','authorization','scientific_status'}
+            if (set(row)!={'schema','sequence','previous','event','digest'} or row['schema']!='scorer-process-client-exchange-chain-v1'
+                    or type(row['sequence']) is not int or row['sequence']!=len(rows)+1 or row['previous']!=previous
+                    or row['digest']!=FrozenRecord.from_dict({k:v for k,v in row.items() if k!='digest'}).content_hash
+                    or set(event)!=required or event['schema']!=_SCORER_EXCHANGE_SCHEMA
+                    or event['phase'] not in {'reserved','received','authenticated','rejected','unknown'}
+                    or _sha(event['request_text'])!=event['request_sha256']
+                    or (event['response_text'] is None)!=(event['response_sha256'] is None)
+                    or (event['response_text'] is not None and _sha(event['response_text'])!=event['response_sha256'])
+                    or event['cost']!={'known':False,'units':None} or event['authorization']!='none' or event['scientific_status']!='not_measured'):
+                raise ValueError('scorer exchange observation differs')
+            previous=row['digest']; rows.append(row)
+        return tuple(rows)
+    except (OSError, ValueError, TypeError, KeyError, AttributeError) as exc:
+        raise ContractError('scorer exchange observations are incomplete or altered') from exc
