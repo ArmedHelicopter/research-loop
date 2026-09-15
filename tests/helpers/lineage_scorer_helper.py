@@ -20,6 +20,36 @@ def main():
     args = parser.parse_args(); b = json.loads(Path(args.config).read_text(encoding='utf-8'))
     root = Path(args.journal).parent/'evaluator'
     spec = b['base']['evaluator']
+    if spec.get('provider_kind') == 'grok-headless-frozen-evaluator-v1':
+        # This launcher is test-only: replace the OS peer and account reads
+        # before loading the real frozen headless evaluator port.
+        import pytest
+        from research_loop.modular.grok_acp_transport import ProcessTree
+        from tests.helpers.headless_authoring_fixture import install_synthetic_native
+        import research_loop.modular.grok_headless_transport as native
+        patch = pytest.MonkeyPatch()
+        install_synthetic_native(patch, {'native_deployment': {'executable': spec['executable'],
+            'slots': {'lineage': {'private_home': spec['private_home']}}}})
+        peer = Path(__file__).resolve().parents[1] / 'fixtures' / 'headless_train_peer.py'
+        def spawn(command, cwd, env, stderr):
+            if 'inspect' in command:
+                child = ['inspect']
+            else:
+                schema = json.loads(command[command.index('--json-schema') + 1])
+                answer = {}
+                for name, definition in schema['properties'].items():
+                    if name == 'reason': answer[name] = 'synthetic headless lineage response'
+                    elif name == 'lineage_endpoints': answer[name] = {key: .5 for key in definition['properties']}
+                    elif name in {'context', 'relation'}: answer[name] = 1
+                    elif name == 'variable_f1': answer[name] = .5
+                    else: answer[name] = 1
+                answer_path = Path(command[command.index('--prompt-file') + 1]).parent.parent / 'synthetic-answer.json'
+                answer_path.write_text(json.dumps(answer), encoding='utf-8')
+                child = [command[command.index('--session-id') + 1], str(answer_path)]
+            return ProcessTree([sys.executable, str(peer), *child], cwd=cwd, env=env, stderr=stderr)
+        patch.setattr(native, 'ProcessTree', spawn)
+        panel, service = load_lineage_service(args.config, args.config_sha256)
+        return serve(LineageScorerWorker(service, panel, Path(args.journal)))
     count = 0
     def probe(argv, **kwargs):
         return SimpleNamespace(returncode=0, stdout='[{"role":"developer","content":[{"type":"input_text","text":"base"}]}]', stderr='')

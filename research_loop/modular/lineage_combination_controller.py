@@ -13,6 +13,8 @@ from research_loop.modular.combination_train_source import (
 from evaluation.modular.scoring_service import ScorerConfig
 from evaluation.modular.lineage_combination_scoring import (LineageCombinationScoringService,
     issue_lineage_score_input, verify_lineage_score)
+from evaluation.modular.combination_scoring import _signed_body
+from evaluation.modular.headless_evaluator_closure import verify_lineage_closure
 from research_loop.modular.combination_train_controller import _service_preflight, _usage, _ANALYSIS, _digest, _names
 from research_loop.modular.combination_panels import CombinationPanel, CombinationPanelVerifier
 from research_loop.modular.combination_contrasts import estimate_grouped_contrast
@@ -61,11 +63,12 @@ class FrozenLineageTrainConfig:
         source_body = b if native else source_contract_body(b, schema)
         schema_ok = (source_schema_matches(source_body, required, schema)
                      if schema == 'admission-combination-train-config-v1' else
-                     source_schema_matches(source_body, required, schema, optional=('lineage_reference_binding',)))
+                     source_schema_matches(source_body, required, schema,
+                         optional=('lineage_reference_binding', 'lineage_evaluator_bindings')))
         if native:
             from research_loop.modular.lineage_useful_controls import RECIPE
-            schema_ok = (native_source_fields(b, required|{'execution_recipe'}, family=family,
-                optional=('lineage_reference_binding',) if family=='lineage' else ())
+            schema_ok = (native_source_fields(b, required|{'execution_recipe', 'export_mode'}, family=family,
+                optional=('lineage_reference_binding', 'lineage_evaluator_bindings') if family=='lineage' else ())
                 and b.get('execution_recipe') == RECIPE.data())
         if (not schema_ok or b['domain'] != 'train'
                 or not isinstance(b['stage'], str) or not b['stage'].strip() or not _names(b['item_ids'])
@@ -105,6 +108,8 @@ class FrozenLineageTrainConfig:
         handles = b['scorer_handle_bindings']
         if not isinstance(handles, dict) or set(handles) != {FrozenRecord.from_dict(i.data()).content_hash for i in identities} or any(not _digest(v) for v in handles.values()):
             raise ContractError('exact independent scorer handle delegation required')
+        if 'lineage_evaluator_bindings' in b and b['lineage_evaluator_bindings'] is None:
+            raise ContractError('headless lineage evaluator bindings cannot be null')
         if 'lineage_reference_binding' in b:
             ref = b['lineage_reference_binding']
             if (not isinstance(ref, dict) or set(ref) != {'manifest_sha256', 'references', 'subjects', 'limits'}
@@ -115,12 +120,30 @@ class FrozenLineageTrainConfig:
                 'task_digest': row['task_digest'], 'material_digest': FrozenRecord.from_dict(b['materials_by_task'][row['task_digest']]).content_hash}
                 for row in bindings.values()}
             limits = ref['limits']
+            expected_scorer_model = 'grok-4.6' if 'lineage_evaluator_bindings' in b else 'gpt-5.6-luna'
             if (ref['subjects'] != expected_subjects or not isinstance(limits, dict)
                     or set(limits) != {'model', 'effort', 'tokens_per_cell', 'timeout_seconds'}
-                    or limits['model'] != 'gpt-5.6-luna' or limits['effort'] != 'low'
+                    or limits['model'] != expected_scorer_model or limits['effort'] != 'low'
                     or type(limits['tokens_per_cell']) is not int or limits['tokens_per_cell'] < 1
                     or type(limits['timeout_seconds']) is not int or not 1 <= limits['timeout_seconds'] <= 600):
                 raise ContractError('lineage scorer subject or per-cell budget drift')
+        bindings_by_obligation = b.get('lineage_evaluator_bindings')
+        if bindings_by_obligation is not None:
+            if not native or 'lineage_reference_binding' not in b or not isinstance(bindings_by_obligation, dict) or set(bindings_by_obligation) != set(DESIGNS):
+                raise ContractError('headless lineage evaluator bindings require the native v4 reference-bound envelope')
+            for obligation, value in bindings_by_obligation.items():
+                if not isinstance(value, dict) or set(value) != {'evaluator_usage', 'evaluator_provider'}:
+                    raise ContractError('headless lineage evaluator obligation binding is malformed')
+                declaration, provider = value['evaluator_usage'], value['evaluator_provider']
+                if (not isinstance(declaration, dict) or set(declaration) != {'schema', 'provider_kind', 'usage_contract', 'evaluator_config_digest'}
+                        or declaration['schema'] != 'lineage-headless-evaluator-usage-declaration-v1'
+                        or declaration['provider_kind'] != 'grok-headless-frozen-evaluator-v1'
+                        or declaration['usage_contract'] != 'grok-headless-lineage-usage-v1'
+                        or not _digest(declaration['evaluator_config_digest'])
+                        or not isinstance(provider, dict) or set(provider) != {'kind', 'configuration_digest'}
+                        or provider['kind'] != 'grok-headless-frozen-evaluator-v1'
+                        or not _digest(provider['configuration_digest'])):
+                    raise ContractError('headless lineage evaluator declaration or descriptor is malformed')
         if not isinstance(b['acceptance_criteria'], dict) or b['acceptance_criteria'].get('contrast_analysis') != _ANALYSIS:
             raise ContractError('registered incomplete-reject contrast criteria required')
         n = len(identities) * len(b['replicates']) * cell_count
@@ -272,6 +295,153 @@ def admission_qualification_drift(panel, rows):
     return drift or None
 
 
+def _headless_pool_has_evaluator_contract(pool):
+    return any(getattr(pool, field, None) is not None for field in
+               ('evaluator_usage_by_obligation', 'evaluator_providers_by_obligation'))
+
+
+def _assert_headless_lineage_gate_binding(config_data, scoring_service, *, native):
+    """Reject a process-pool headless contract unless the config froze it."""
+    frozen = config_data.get('lineage_evaluator_bindings')
+    configured = frozen is not None
+    pooled = _headless_pool_has_evaluator_contract(scoring_service)
+    if configured != pooled:
+        raise ContractError('headless lineage process pool and frozen final gate binding disagree')
+    if not configured:
+        return False
+    usage_by_obligation = getattr(scoring_service, 'evaluator_usage_by_obligation', None)
+    providers_by_obligation = getattr(scoring_service, 'evaluator_providers_by_obligation', None)
+    if (not native or not isinstance(usage_by_obligation, dict)
+            or not isinstance(providers_by_obligation, dict)
+            or set(usage_by_obligation) != set(DESIGNS) or set(providers_by_obligation) != set(DESIGNS)
+            or frozen != {obligation: {'evaluator_usage': scoring_service.evaluator_usage_by_obligation[obligation],
+                'evaluator_provider': scoring_service.evaluator_providers_by_obligation[obligation]}
+                for obligation in DESIGNS}):
+        raise ContractError('headless lineage evaluator bindings differ from the frozen configuration')
+    return True
+
+
+def _authenticated_headless_usage(usage_record, client, *, panel, declaration, provider, authority_keys):
+    """Return the signed worker's known MAIN lower bound before finalization.
+
+    A late replay or closure failure must not erase an already authenticated
+    native receipt.  Its total is a lower bound because incomplete usage is
+    still possible.
+    """
+    signed_usage = FrozenRecord.from_dict(usage_record)
+    body = _signed_body(signed_usage, authority_keys, message='lineage evaluator usage final gate')
+    expected = {'schema', 'authority', 'nonce', 'panel_digest', 'scorer_digest', 'ledger_sha256', 'calls',
+                'tokens', 'usage_incomplete', 'limits', 'max_calls', 'max_tokens', 'provider_kind',
+                'usage_contract', 'evaluator_config_digest', 'accounting_scope',
+                'title_and_all_opportunity_settlement'}
+    if (set(body) != expected or body['schema'] != 'lineage-scorer-headless-usage-v1'
+            or body['panel_digest'] != panel.digest or body['scorer_digest'] != client.config.digest
+            or body['provider_kind'] != provider['kind']
+            or body['usage_contract'] != declaration['usage_contract']
+            or body['evaluator_config_digest'] != declaration['evaluator_config_digest']
+            or body['accounting_scope'] != 'native_MAIN'
+            or body['title_and_all_opportunity_settlement'] != 'unknown'
+            or type(body['tokens']) is not int or body['tokens'] < 0
+            or type(body['usage_incomplete']) is not bool or body['limits'] != client.reference_binding['limits']
+            or body['max_calls'] != len(panel.cells)
+            or body['max_tokens'] != len(panel.cells) * body['limits']['tokens_per_cell']
+            or not isinstance(body['calls'], list) or len(body['calls']) > body['max_calls']):
+        raise ContractError('headless lineage evaluator usage differs from frozen final gate binding')
+    known = 0
+    for index, call in enumerate(body['calls'], start=1):
+        call_usage = call.get('known_headless_main_usage') if isinstance(call, dict) else None
+        if (not isinstance(call, dict) or set(call) != {'id', 'status', 'main_opportunity',
+                'known_headless_main_usage', 'main_dispatch_state', 'native_receipt_sha256',
+                'reservation_sha256', 'accepted'} or call['id'] != index
+                or call['status'] not in {'reserved', 'succeeded', 'unknown_or_failed'}
+                or call['main_opportunity'] != 1
+                or call['main_dispatch_state'] not in {'unknown', 'not_dispatched', 'possibly_dispatched'}
+                or call['accepted'] not in {True, False, None}):
+            raise ContractError('headless lineage evaluator usage call contract differs')
+        if call_usage is not None:
+            fields = {'input_tokens', 'cache_read_input_tokens', 'cache_creation_input_tokens',
+                      'output_tokens', 'reasoning_tokens', 'total_tokens'}
+            if (not isinstance(call_usage, dict) or set(call_usage) != fields
+                    or any(type(value) is not int or value < 0 for value in call_usage.values())
+                    or call_usage['reasoning_tokens'] > call_usage['output_tokens']
+                    or call_usage['total_tokens'] != call_usage['input_tokens'] + call_usage['cache_read_input_tokens']
+                        + call_usage['cache_creation_input_tokens'] + call_usage['output_tokens']):
+                raise ContractError('headless lineage evaluator usage token contract differs')
+            known += call_usage['total_tokens']
+    if known != body['tokens']:
+        raise ContractError('headless lineage evaluator usage lower bound differs')
+    return {'receipt': signed_usage.data(), 'receipt_digest': signed_usage.content_hash,
+            'known_tokens_lower_bound': body['tokens'], 'usage_incomplete': body['usage_incomplete']}
+
+
+def _finalize_headless_lineage_gate(*, panels, journal_cells, scoring_service, scorer_authority_keys):
+    """Build the durable four-panel closure gate without trusting client verification."""
+    closures = []
+    for panel in panels:
+        expected_cells = {FrozenRecord.from_dict(cell.data()).content_hash for cell in panel.cells}
+        # A receipt remains authentic evidence even when a later row check sets
+        # the row status to failed; do not make status a receipt selector.
+        receipt_digests = [FrozenRecord.from_dict(row['scorer_receipt']).content_hash
+            for row in journal_cells if FrozenRecord.from_dict(row['cell']).content_hash in expected_cells
+            and 'scorer_receipt' in row]
+        client = scoring_service.clients[panel.obligation_id]
+        declaration = scoring_service.evaluator_usage_by_obligation[panel.obligation_id]
+        provider = scoring_service.evaluator_providers_by_obligation[panel.obligation_id]
+        entry = {'obligation_id': panel.obligation_id, 'panel_digest': panel.digest,
+                 'receipt_digests': receipt_digests, 'evaluator_usage_declaration': declaration,
+                 'evaluator_provider': provider, 'title_and_all_opportunity_settlement': 'unknown',
+                 'native_MAIN_completeness': 'unknown'}
+        usage = None
+        try:
+            usage = _authenticated_headless_usage(client.usage(), client, panel=panel, declaration=declaration,
+                provider=provider, authority_keys=scorer_authority_keys)
+        except Exception as usage_exc:
+            # A final IPC refresh can fail after a valid per-cell worker usage
+            # receipt was persisted.  Use the newest independently verified
+            # cumulative snapshot, never a sum of those cumulative receipts.
+            for row in reversed(journal_cells):
+                if (FrozenRecord.from_dict(row['cell']).content_hash not in expected_cells
+                        or 'independent_scorer_usage' not in row):
+                    continue
+                try:
+                    usage = _authenticated_headless_usage(row['independent_scorer_usage'], client, panel=panel,
+                        declaration=declaration, provider=provider, authority_keys=scorer_authority_keys)
+                    entry['usage_refresh_error_type'] = type(usage_exc).__name__
+                    break
+                except Exception:
+                    continue
+        if usage is not None:
+            entry.update(authenticated_usage=usage['receipt'], authenticated_usage_digest=usage['receipt_digest'],
+                native_MAIN_known_tokens_lower_bound=usage['known_tokens_lower_bound'],
+                native_MAIN_usage_incomplete=usage['usage_incomplete'])
+        try:
+            closure = client.finalize_lineage(nonce=panel.digest, receipt_digests=receipt_digests)
+            # This controller-level verification deliberately repeats the
+            # client's check with the frozen authority/config/reference tuple.
+            verified_closure = verify_lineage_closure(closure, authority_keys=scorer_authority_keys, panel=panel,
+                config=client.config, provider=provider, reference_binding=client.reference_binding,
+                nonce=panel.digest, receipt_digests=receipt_digests)
+            body = verified_closure.data()
+            # A signed partial closure is still durable provenance.  Preserve
+            # it before the outer full-panel eligibility predicate rejects it.
+            entry.update(closure=closure.data(), closure_digest=closure.content_hash)
+            scope = body.get('scope')
+            if (not isinstance(scope, dict) or scope.get('unscored_cell_count') != 0
+                    or usage is None or body['known_main_tokens'] != usage['known_tokens_lower_bound']
+                    or usage['usage_incomplete']):
+                raise ContractError('headless lineage closure MAIN accounting is incomplete or inconsistent')
+            entry.update(status='eligible', native_MAIN=body['known_main_tokens'],
+                native_MAIN_completeness='complete')
+        except Exception as exc:
+            entry.update(status='inconclusive', reason='closure_unavailable_or_rejected',
+                         error_type=type(exc).__name__)
+            entry.setdefault('native_MAIN_known_tokens_lower_bound', None)
+        closures.append(entry)
+    return {'schema': 'lineage-evaluator-final-gate-v1',
+        'status': 'eligible' if all(row['status'] == 'eligible' for row in closures) else 'inconclusive',
+        'accounting_scope': 'native_MAIN', 'title_and_all_opportunity_settlement': 'unknown', 'panels': closures}
+
+
 def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run_root, model, audit_verifier,
         source_verifier, execution_authority, scoring_service, scorer_authority_keys, prospective_exporter=None):
     from evaluation.modular.lineage_scorer_process import LineageScorerProcessPool
@@ -299,6 +469,10 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
             raise ContractError('lineage process references not frozen in train configuration')
     elif 'lineage_reference_binding' in config.data():
         raise ContractError('reference-bound lineage configuration requires the process pool')
+    native = native_envelope(config.data(), ('admission' if admission else 'lineage'))
+    frozen_evaluator_bindings = config.data().get('lineage_evaluator_bindings') if not admission else None
+    headless_lineage = (False if admission else _assert_headless_lineage_gate_binding(
+        config.data(), scoring_service, native=native))
     for service in scoring_service.values() if admission else (scoring_service,):
         family_service_preflight(config, model, service, execution_authority, scorer_authority_keys, family=('admission' if admission else 'lineage'))
     score_verifier = verify_combination_adapted_receipt if admission else verify_lineage_score
@@ -306,7 +480,6 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
     def reference_options(cell):
         return {} if admission else {'expected_reference_digest': config.data().get('lineage_reference_binding', {}).get('references', {}).get(
             FrozenRecord.from_dict(cell.identity.data()).content_hash)}
-    native = native_envelope(config.data(), ('admission' if admission else 'lineage'))
     snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model_root(model, native=native))
     if root.exists() or exported.exists(): raise ContractError('closed controller requires unused roots and no retry')
     b = config.data()
@@ -400,10 +573,21 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
                 for line in result.runtime.trace_path.read_text(encoding='utf-8').splitlines()) if result else 0)
             results.append(result); persist()
     final_gate = final_provider_gate(provider_session, root/'final-provider-ledger.json')
+    lineage_evaluator_gate = None
+    if headless_lineage:
+        lineage_evaluator_gate = _finalize_headless_lineage_gate(panels=compiled.panels,
+            journal_cells=journal['cells'], scoring_service=scoring_service,
+            scorer_authority_keys=scorer_authority_keys)
+        journal['lineage_evaluator_final_gate'] = lineage_evaluator_gate
+        persist()
     contrasts = []
     for panel in compiled.panels:
         if native and not final_gate.data()['provider_evidence_eligible']:
             contrasts.append(unavailable_provider_contrast(panel, final_gate)); continue
+        if headless_lineage and lineage_evaluator_gate['status'] != 'eligible':
+            contrasts.append(FrozenRecord.from_dict({'schema': 'lineage-inconclusive-contrast-v1',
+                'panel_digest': panel.digest, 'status': 'inconclusive',
+                'reason': 'lineage_evaluator_final_provenance_unavailable', 'scientific_status': 'not_measured'})); continue
         service = scoring_service[panel.obligation_id] if admission else scoring_service
         def verify_score(score, cell, owner):
             score_verifier(score, authority_keys=scorer_authority_keys, config=service.config, panel=owner,
@@ -436,8 +620,10 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
         'unused_docker_opportunities': len(results) - sum(r['docker_attempts'] for r in journal['cells']),
         'scorer_usage_unknown': journal['actual_scorer_calls'] > 0,
         'source_calls': sum(len(r.get('source_verification', {}).get('calls', [])) for r in journal['cells']),
+        **({'lineage_evaluator_final_gate': lineage_evaluator_gate} if lineage_evaluator_gate is not None else {}),
         'contrasts': [c.data() for c in contrasts], 'pruned_cells': [], 'scientific_effectiveness_proven': False, 'validation_opened': False,
         'status': 'complete_train_engineering' if len(scores)==len(results)
+            and (lineage_evaluator_gate is None or lineage_evaluator_gate['status'] == 'eligible')
             and all(c.data()['status'] in {'estimated', 'not_identifiable'} for c in contrasts) else 'inconclusive'})
     _write(root/'controller-receipt.json', receipt.data()); journal['status'] = receipt.data()['status']; journal.update(actual_model_usage=receipt.data()['actual_model_usage']); _write(root/'controller-attempt.json',journal)
     return LineageTrainRun(compiled, tuple(results), tuple(scores), tuple(FrozenRecord.from_dict(r) for r in journal['cells']), tuple(contrasts), receipt)
