@@ -3,6 +3,18 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Exact scorer closure association verified and merged (2026-09-15)
+
+Source `205d7540` passed 35 focused checks and a separate complete 16-cell actual
+Docker/stdio integration: 48 synthetic solver and 16 synthetic evaluator calls,
+exact gate-to-observation closure association, returned catalogue seals and
+independent readback. Native session 63017 joined exit 0; 795 sources remained
+unchanged. The [complete run and separate ROOT checks](../results/modular-engineering-20260915/closure-binding-full16-and-root-r1/README.md)
+are archived alongside the prior source's successful run, whose association gap
+remains explicit. This code is now merged; the previous branch-under-verification
+entry below describes the earlier checkpoint. No real model or formal VAL
+acceptance is inferred from these synthetic engineering results.
+
 ## Independent P0 custody snapshot reader (2026-09-15)
 
 Source `35be4696` passed three synthetic integration checks with 797 unchanged

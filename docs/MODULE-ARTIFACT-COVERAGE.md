@@ -23,14 +23,18 @@ P0 新增[独立 custody 快照审计](P0-CUSTODY-AUDIT-SNAPSHOTS.md)：只解�
 尚无终态；不以这四项局部检查替代完整执行。
 
 评分观察目录的 28/31 项[定向检查原件](../results/modular-engineering-20260915/observation-and-terminal-checks-r1/README.md)
-现已保留，但独立复核又发现其与最终评分封存之间缺少精确摘要关联。该修复仍在
-独立工作树检验，不能把已有通过结果解释为这项关联或全部产物覆盖已完成。
+现已保留。随后独立复核发现的最终封存摘要关联缺口已修复：35 项定向检查及新版本
+完整 16 格 stdio/Docker 流程通过，精确关联与目录读回均在实际入口核验。
+对应[完整运行和独立 ROOT 检查](../results/modular-engineering-20260915/closure-binding-full16-and-root-r1/README.md)
+分别保留，旧版本的通过结果不被追认为已经验证新关联。
 
 最新接线补上了[评分封存消费端观察](SCORER-FINALIZATION-OBSERVATIONS.md)与
 [M2 封存关系读取](M2-TYPED-PROJECTION.md)。前者先保留请求及返回文本再解析验签，
 日志写失败不使评分获准消费；后者重放原 ledger 后仅投影已有类型化关系，保留
 撤回目标、观察记录、未启用和待复核状态。两者均记录实际读取器源码摘要。
-消费观察尚未全部成为通用目录节点；M2 查询也不证明跨模块的全部下游范围。
+admission 最终封存观察现已按真实 TRAIN panel 成员登记为独立封存目录，返回回执
+保留精确锚点；普通逐格评分、启动握手等其余观察仍未全部目录化。M2 查询也不证明
+跨模块的全部下游范围。
 
 对应[冻结检查和失败原件](../results/modular-engineering-20260915/admission-headless-evidence-r1/README.md)
 保留了 16 格 M1+M4+M7 控制器的实际 stdio/Docker 工程检查：48 次合成 solver、
