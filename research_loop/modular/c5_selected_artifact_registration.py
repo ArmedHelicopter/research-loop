@@ -145,13 +145,16 @@ def register_authenticated_selected_run(path: Path, run, *, parent: JointDeploym
         # after fresh authentication reconstructed exactly these bytes.
         if target.read_bytes() != expected:
             raise ContractError('existing selected registration differs; retention cannot resume')
+        original, sidecar = _provenance_paths(target)
+        if original.exists() and sidecar.exists():
+            _verify_retained_registration(target, result.record)
+            raise FileExistsError(str(target))
     else:
         with target.open("x", encoding="utf-8", newline="\n") as stream:
             stream.write(result.record.encoded + "\n")
             stream.flush()
             os.fsync(stream.fileno())
     held = _retain_registration_bytes(target, result.record)
-    _verify_retained_registration(target, result.record)
     if held != _verify_retained_registration(target, result.record):
         raise ContractError('selected registration retention changed before return')
     return result
