@@ -85,7 +85,7 @@ def _native_service(config_path, server, patch, *, invalid=False):
     }})
     peer = Path(__file__).parent / 'fixtures' / 'headless_train_peer.py'
 
-    def spawn(command, cwd, env, stderr):
+    def spawn(command, cwd, env, stderr, stdout=None):
         assert env['GROK_DISABLE_API_KEY_AUTH'] == '1'
         assert not {'XAI_API_KEY', 'GROK_API_KEY'} & set(env)
         if 'inspect' in command:
@@ -96,7 +96,7 @@ def _native_service(config_path, server, patch, *, invalid=False):
             answer_path = prompt_path.parent.parent / 'synthetic-lineage-answer.json'
             answer_path.write_text(json.dumps(_answer(schema, invalid=invalid)), encoding='utf-8')
             args = [command[command.index('--session-id') + 1], str(answer_path)]
-        return ProcessTree([sys.executable, str(peer), *args], cwd=cwd, env=env, stderr=stderr)
+        return ProcessTree([sys.executable, str(peer), *args], cwd=cwd, env=env, stderr=stderr, stdout=stdout)
 
     patch.setattr(transport, 'ProcessTree', spawn)
     return load_lineage_service(config_path, _file_sha(config_path))

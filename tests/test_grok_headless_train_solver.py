@@ -53,13 +53,13 @@ else:
  for row in ([{"type":"available_commands","tools":[],"commands":[]}] * 3 + [{"type":"text","data":json.dumps(answer)},{"type":"usage","usage":usage,"signature":"synthetic"},{"type":"end","stopReason":"end_turn","sessionId":session,"requestId":"synthetic-"+session,"usage":usage|{"total_tokens":10},"num_turns":1,"modelUsage":{"grok-4.6":{"inputTokens":8,"outputTokens":2,"cacheReadInputTokens":0,"cacheCreationInputTokens":0,"modelCalls":1}},"structuredOutput":answer}]): print(json.dumps(row),flush=True)
 ''',encoding="utf-8")
     calls=[]
-    def spawn(command,cwd,env,stderr):
+    def spawn(command,cwd,env,stderr,stdout=None):
         assert env["GROK_DISABLE_API_KEY_AUTH"] == "1"
         if "inspect" in command: args=["inspect"]
         else:
             calls.append(command)
             args=[command[command.index("--session-id")+1],command[command.index("--prompt-file")+1],command[command.index("--json-schema")+1]]
-        return ProcessTree([sys.executable,str(peer),*args],cwd=cwd,env=env,stderr=stderr)
+        return ProcessTree([sys.executable,str(peer),*args],cwd=cwd,env=env,stderr=stderr, stdout=stdout)
     monkeypatch.setattr(transport,"ProcessTree",spawn)
     return calls,gets
 

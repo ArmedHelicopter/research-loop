@@ -44,12 +44,12 @@ def _run_headless_subscription(tmp_path, monkeypatch, rejection=None, *, recover
     peer = tmp_path/'peer.py'; _peer(peer)
     from research_loop.modular.grok_acp_transport import ProcessTree
     main_calls = []
-    def spawn(command, cwd, env, stderr):
+    def spawn(command, cwd, env, stderr, stdout=None):
         if 'inspect' in command: args=['inspect']
         else:
             main_calls.append(command)
             args=[command[command.index('--session-id')+1], command[command.index('--prompt-file')+1], command[command.index('--json-schema')+1]]
-        return ProcessTree([sys.executable, str(peer), *args], cwd=cwd, env=env, stderr=stderr)
+        return ProcessTree([sys.executable, str(peer), *args], cwd=cwd, env=env, stderr=stderr, stdout=stdout)
     import sys
     monkeypatch.setattr(transport, 'EXECUTABLE_SHA256', subscription.sha(exe)); monkeypatch.setattr(transport, 'ProcessTree', spawn)
     # Reuse the existing synthetic account-only opener; it never reaches a provider.

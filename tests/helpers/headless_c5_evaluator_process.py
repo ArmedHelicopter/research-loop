@@ -31,7 +31,7 @@ def main() -> int:
         install_synthetic_native(patch, {"native_deployment": {
             "executable": spec["executable"], "slots": {"base": {"private_home": spec["private_home"]}}}})
 
-        def spawn(command, cwd, env, stderr):
+        def spawn(command, cwd, env, stderr, stdout=None):
             assert env["GROK_DISABLE_API_KEY_AUTH"] == "1"
             assert not {"XAI_API_KEY", "GROK_API_KEY"} & set(env)
             if "inspect" in command:
@@ -48,7 +48,7 @@ def main() -> int:
                 answer = prompt.parent.parent / "synthetic-answer.json"
                 answer.write_text(json.dumps(value), encoding="utf-8")
                 peer_args = [command[command.index("--session-id") + 1], str(answer)]
-            return ProcessTree([sys.executable, str(peer), *peer_args], cwd=cwd, env=env, stderr=stderr)
+            return ProcessTree([sys.executable, str(peer), *peer_args], cwd=cwd, env=env, stderr=stderr, stdout=stdout)
 
         patch.setattr(transport, "ProcessTree", spawn)
         return serve(ScorerWorker(build_service(config), config.panel, _absolute(args.journal, "journal")))

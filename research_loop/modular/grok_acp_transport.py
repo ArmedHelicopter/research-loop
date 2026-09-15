@@ -244,10 +244,10 @@ class AcpResult:
 
 class ProcessTree:
     """Own the subprocess tree; Windows job closure also kills surviving children."""
-    def __init__(self, command, cwd, env, stderr):
+    def __init__(self, command, cwd, env, stderr, stdout=subprocess.PIPE):
         self.job = None
         self.process = subprocess.Popen(command, cwd=cwd, env=env,
-            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=stderr,
+            stdin=subprocess.PIPE, stdout=stdout, stderr=stderr,
             creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0,
             start_new_session=os.name != 'nt')
         if os.name == 'nt':
@@ -289,8 +289,14 @@ class ProcessTree:
             except ProcessLookupError:
                 pass
         self.process.wait(timeout=5)
-        self.process.stdin.close()
-        self.process.stdout.close()
+        for stream in (self.process.stdin, self.process.stdout, self.process.stderr):
+            if stream is not None:
+                try:
+                    stream.close()
+                except (BrokenPipeError, OSError, ValueError):
+                    # Tree ownership and the child exit are already established;
+                    # a buffered stream may report its peer's earlier close.
+                    pass
 
 
 class SinglePromptACP:

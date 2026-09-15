@@ -32,7 +32,7 @@ def _install_native(monkeypatch, value):
     import research_loop.modular.grok_headless_transport as transport
     peer = Path(__file__).parent / "fixtures" / "headless_train_peer.py"; calls, gets = [], []
     monkeypatch.setattr(transport, "EXECUTABLE_SHA256", _sha(Path(value.executable).read_bytes()))
-    def spawn(command, cwd, env, stderr):
+    def spawn(command, cwd, env, stderr, stdout=None):
         assert env["GROK_DISABLE_API_KEY_AUTH"] == "1" and not {"XAI_API_KEY", "GROK_API_KEY"} & set(env)
         assert not any(Path(cwd).iterdir())
         if "inspect" in command: args = ["inspect"]
@@ -43,7 +43,7 @@ def _install_native(monkeypatch, value):
             answer = {"cvars": 2, "transform": 2, "model": 2, "reason": "synthetic"} if "cvars" in schema["properties"] else {"context": 1, "variable_f1": 1, "relation": 1, "reason": "synthetic"}
             answer_path = prompt_path.parent.parent / "synthetic-peer-answer.json"; answer_path.write_text(json.dumps(answer), encoding="utf-8")
             calls.append(prompt); args = [command[command.index("--session-id") + 1], str(answer_path)]
-        return ProcessTree([sys.executable, str(peer), *args], cwd=cwd, env=env, stderr=stderr)
+        return ProcessTree([sys.executable, str(peer), *args], cwd=cwd, env=env, stderr=stderr, stdout=stdout)
     class Response:
         status = 200
         def __init__(self, request): self.url = request.full_url; gets.append(self.url)
