@@ -12,6 +12,7 @@ from pathlib import Path
 
 import pytest
 
+import research_loop.modular.admission_prediction_exploration_controller as admission_controller
 from evaluation.modular.fresh_airs_custodian import CustodyError
 from evaluation.modular.scorer_process import CombinationScorerProcessClient, serialize_combination_panel, parse_combination_panel, parse_server_config
 from evaluation.modular.scoring_service import ScorerConfig, FrozenBenchmarkRubricEndpoint
@@ -305,6 +306,19 @@ def test_transition_external_tail_rejects_coherently_rehashed_checkpoint(tmp_pat
             'research_loop/modular/admission_prediction_exploration_controller.py'),
             config_digest=setup['config'].record.content_hash,current_checkpoint=root/'controller-attempt.json',
             external_tail=original['external_tail'])
+
+
+def test_return_rejects_tampered_persisted_transition_anchor(tmp_path,monkeypatch):
+    setup=prepare(tmp_path);original_write=admission_controller._write
+    def tampering_write(path,value):
+        original_write(path,value)
+        if Path(path).name=='controller-receipt.json':
+            changed=json.loads(Path(path).read_text(encoding='utf-8'))
+            changed['attempt_transition_receipt']['external_tail']='f'*64
+            original_write(path,changed)
+    monkeypatch.setattr(admission_controller,'_write',tampering_write)
+    with pytest.raises(ContractError,match='persisted controller receipt'):
+        invoke(setup,monkeypatch,'poison')
 
 
 @pytest.mark.parametrize('fault',['source_exception','source_unknown','phase','scorer'])

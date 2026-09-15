@@ -457,9 +457,19 @@ def run_admission_prediction_exploration_train_panels(config, *, custody, snapsh
         'contrasts': [c.data() for c in contrasts], 'pruned_cells': [], 'scientific_effectiveness_proven': False, 'validation_opened': False,
         'attempt_transition_receipt': transition_receipt.data(),
         'attempt_transition_verification': transition_verification.data(), 'status': status})
-    _write(root/'controller-receipt.json', receipt.data())
-    # Re-read the persisted receipt's tail and the current checkpoint before return.
-    anchored = FrozenRecord((root/'controller-receipt.json').read_text(encoding='utf-8')).data()['attempt_transition_receipt']
+    receipt_path = root/'controller-receipt.json'
+    _write(receipt_path, receipt.data())
+    # The returned record must be exactly the record just persisted.  The stored
+    # anchor must also equal the tail held before this final receipt write.
+    persisted_raw = receipt_path.read_bytes()
+    if persisted_raw != receipt.encoded.encode('utf-8'):
+        raise ContractError('persisted controller receipt bytes differ')
+    persisted = FrozenRecord(persisted_raw.decode('utf-8'))
+    if persisted.data() != receipt.data():
+        raise ContractError('persisted controller receipt differs')
+    anchored = persisted.data()['attempt_transition_receipt']
+    if anchored != transition_receipt.data():
+        raise ContractError('persisted attempt transition anchor differs')
     verify_attempt_transitions(root, anchored, producer_source=Path(__file__), config_digest=config.record.content_hash,
-                               current_checkpoint=root/'controller-attempt.json', external_tail=anchored['external_tail'])
+                               current_checkpoint=root/'controller-attempt.json', external_tail=transition_receipt.data()['external_tail'])
     return AdmissionPredictionExplorationTrainRun(compiled, tuple(results), tuple(scores), tuple(FrozenRecord.from_dict(r) for r in journal['cells']), tuple(contrasts), receipt)
