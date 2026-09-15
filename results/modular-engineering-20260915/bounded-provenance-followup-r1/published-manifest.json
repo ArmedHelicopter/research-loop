@@ -1,0 +1,110 @@
+{
+  "schema": "frozen-module-check-published-files-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "account-root-before.json",
+      "sha256": "68fac626129077b677ce1f5707b3f62615fdb8aba03e2d9d94e2ee3e715d4250",
+      "bytes": 94625
+    },
+    {
+      "path": "account-root-closed.json",
+      "sha256": "23e0289ccab920874345b0b41c86bdb444433fc8be6f9fb9c6a090d4b58eb12b",
+      "bytes": 94549
+    },
+    {
+      "path": "account-root-native-join.json",
+      "sha256": "07f5477f7b3984c4248f11f1c3a6aa869451d9fe52aeb1f6178af2a934ade9af",
+      "bytes": 232
+    },
+    {
+      "path": "account-root-native-start.json",
+      "sha256": "c9cc68aa9d7eab1fea23892957eefdb46588f563e3ac053cec75864e43e7f649",
+      "bytes": 108
+    },
+    {
+      "path": "account-root-source-members.json",
+      "sha256": "d5b972879fbf7adda69a94aad447568c209440101b3e1d95370ac2e5686bb7e1",
+      "bytes": 141299
+    },
+    {
+      "path": "account-root-sources.zip",
+      "sha256": "6b6450dab1230c366adcf7b8c7e95f009144c4837648e4a43e7a1a8f087a793d",
+      "bytes": 2695065
+    },
+    {
+      "path": "account-root.log",
+      "sha256": "5087fa3331f1bfdb4adfec41b721364a52556374c8a013b5d447d2a6d036293c",
+      "bytes": 666
+    },
+    {
+      "path": "account-root.xml",
+      "sha256": "8a1395578f005a74a2a6b6292e06bdb6edf954f39293eeb6b19c95d08acb9817",
+      "bytes": 1688
+    },
+    {
+      "path": "archive-helper.py",
+      "sha256": "1ec2c972ad9cff003bdef5692285054c56dcfb433d714bbc120775f52999feb0",
+      "bytes": 15874
+    },
+    {
+      "path": "c5-registration-isolated-before.json",
+      "sha256": "6e929dbccdd9ac84fa6aa18da0fc5dca684d6a27717cec942c586f5f1748281d",
+      "bytes": 94543
+    },
+    {
+      "path": "c5-registration-isolated-closed.json",
+      "sha256": "a07ecee3c09749f23a7a81c947ca0250483a0f087cbfd5e6139053d87b92c17b",
+      "bytes": 94679
+    },
+    {
+      "path": "c5-registration-isolated-native-join.json",
+      "sha256": "13e08b0e4c5df3c12dc40e4c27b9e70de4b4a75ea36da8e09bebd8358007933d",
+      "bytes": 233
+    },
+    {
+      "path": "c5-registration-isolated-native-start.json",
+      "sha256": "70876fc5d08f5156cd2ad23d68e0fb1d3a5fe97d8baed2132c7b3b7c5df10de8",
+      "bytes": 109
+    },
+    {
+      "path": "c5-registration-isolated-source-members.json",
+      "sha256": "6e3184f4c51bfa1c60e5bf240c28fa2ac7b92ff0b64b6944e31ad2dfc2bbb690",
+      "bytes": 141478
+    },
+    {
+      "path": "c5-registration-isolated-sources.zip",
+      "sha256": "0fd4e976ebca4c3ff98ec61d0a92ad0599134ca3d2a61692be7617f063c1fd71",
+      "bytes": 2696931
+    },
+    {
+      "path": "c5-registration-isolated.log",
+      "sha256": "a350e8f954944f27d08e3f4c50e9ed35e755e891f9aa5a019ef747c09986aba7",
+      "bytes": 672
+    },
+    {
+      "path": "c5-registration-isolated.xml",
+      "sha256": "29d0f11cb8776994d7f5b913047c152402d651dcc72b39c76df7f5ccddde487b",
+      "bytes": 2425
+    },
+    {
+      "path": "private-retention-manifest.json",
+      "sha256": "108d987e1788f7832d11ccb84797cc80e2b120fdd196119435c14e8781d4341d",
+      "bytes": 418689
+    },
+    {
+      "path": "README.md",
+      "sha256": "583c537465722c6a3f2412c621bb4620ef52cc74b0c544c15719e52f9abcf720",
+      "bytes": 1230
+    },
+    {
+      "path": "retention-helper-source.py",
+      "sha256": "9c72ae345cdd16de56db7f6e27d4d199a2535700e57712fba4510aaf93e8c61d",
+      "bytes": 7840
+    }
+  ]
+}

@@ -4,6 +4,19 @@
 每模块出现一条 `covered` 记录不表示该模块的全部输出都已覆盖。
 `covered` 是一条描述符有明确模块归属，完整覆盖须另与实际输出清单对账。
 
+账户读取时效已修复并合入：新预留记录固定 35 秒上限，配合三次各最多 10 秒的
+顺序读取与 5 秒交接余量，独立重放也核对该固定值。原 5 秒批次的失败不会被改写。
+[隔离检查原件](../results/modular-engineering-20260915/account-freshness-runtime-checks-r1/README.md)
+保留 66 项通过、一项合成 inspect 超时，以及同源码单项重查通过；
+[合入后 12 项检查](../results/modular-engineering-20260915/bounded-provenance-followup-r1/README.md)
+包含标签隔离、生产/重放和实际六秒合成账户读取延迟。
+
+C5 跨任务选中组合的原始登记留存已在独立分支 `bdbc01a6` 实现，14 项存储适配器
+检查通过。其原始字节、源码和 task-neutral sidecar 在返回前读回；不完整副本只在
+重新认证且原登记完全一致时补齐，已有完整登记仍拒绝覆盖。上述同一归档保留这组
+检查；它使用真实快照投影并替代昂贵的上游认证，尚不构成完整 C5 控制器认证检查。
+当前仍运行的完整 C5 r2 使用原冻结源码，不能被追认为验证了这处新接口。
+
 真实 M4/M5 八格 r2 已[关闭并封存原件](../results/modular-engineering-20260915/actual-m4m5-headless-grok130-r2/README.md)：
 1 格评分完成、3 格失败、4 格阻塞，最终可纳入效果估计的格数为零。
 17 次 solver 预留中启动 16 次 MAIN，2 次 evaluator 预留中启动 1 次；

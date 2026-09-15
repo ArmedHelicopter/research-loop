@@ -3,6 +3,24 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Frozen freshness policy merged; C5 registration adapter checked (2026-09-15)
+
+ROOT `a989a785` passed twelve checks including label isolation and genuine delayed
+synthetic account observation/replay. New reservations fix a 35-second oldest
+observation bound, with independent replay enforcing the same source policy.
+[Isolated evidence](../results/modular-engineering-20260915/account-freshness-runtime-checks-r1/README.md)
+preserves 66 passes, one synthetic inspect timeout, and its same-source focused
+recheck; [ROOT evidence](../results/modular-engineering-20260915/bounded-provenance-followup-r1/README.md)
+is recorded separately. This repair changes only subsequent attempts, not prior
+M4/M5 failure evidence, zero-paid checks, or the no-MAIN-retry policy.
+
+The same follow-up archive preserves fourteen isolated C5 selected-registration
+adapter checks at `bdbc01a6`. The new task-neutral raw retention performs final
+readback, rejects tampering, and safely completes only exact authenticated partial
+sidecars. Upstream authentication is stubbed in these storage-adapter checks;
+full controller integration remains pending, and the currently running C5 r2
+at its old frozen source cannot establish this new seam's integration.
+
 ## Actual M4/M5 r2 closed inconclusive (2026-09-15)
 
 The [frozen eight-cell TRAIN run](../results/modular-engineering-20260915/actual-m4m5-headless-grok130-r2/README.md)
