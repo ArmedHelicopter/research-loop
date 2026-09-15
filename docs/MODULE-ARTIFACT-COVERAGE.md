@@ -4,6 +4,13 @@
 每模块出现一条 `covered` 记录不表示该模块的全部输出都已覆盖。
 `covered` 是一条描述符有明确模块归属，完整覆盖须另与实际输出清单对账。
 
+最新封存记录补充了评分器启动前的纯配置摘要，以及一轮真实 M4/M5 TRAIN
+失败记录。[20 项集成检查](../results/modular-engineering-20260915/headless-descriptor-primary-r1/README.md)
+通过后，[真实八格批次](../results/modular-engineering-20260915/actual-m4m5-headless-r1/README.md)
+在首个 CLI 初始化阶段超时：一格失败、七格阻塞、零评分。原件、冻结配置和
+完整分母可回查；实际 MAIN 调用及用量仍为未知。这补充真实失败路径的审计
+证据，不构成模块效果、完整组合网格或 VAL 验收。
+
 | 模块/边界 | 当前实际接入 | 待补齐的逐产物覆盖 |
 | --- | --- | --- |
 | P0 | 运行任务锁、独立 run ID、冻结计划摘要；主 benchmark 与扩展导出器的实际 TRAIN 数据包、公共文件、逐包封存和原始批次完成锚点；普通/组合训练消费者及参考答案桥接校验；失败写入与曝光预约位置；旧 ExtendedTrainProjectionExporter 的公共输出、来源绑定、部分写入及实际返回关口；旧 TrainPacketExporter 的原始 CSV/public、首写前尝试 ID、独立 custody/source 核验和三处实际消费关口；模块启用前的共用材料资格评估逐调用记录、中间版本、源码/输入绑定、失败字节及实际返回/宿主消费核验 | 完整私有划分台账、权限/租约及其余资源/读取入口的独立登记 |

@@ -3,6 +3,29 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Frozen descriptors and actual M4/M5 attempt (2026-09-15)
+
+The private headless evaluator descriptor can now be computed without creating
+an allocator or ledger. Actual construction checks that its immutable record
+matches the precomputed record. Per-panel lineage configuration construction
+keeps distinct declarations and rejects equivalent or overlapping work roots.
+At `2113371268b30411712273623371cbcf49e0ccc8`, the primary descriptor and
+complete eight-cell v6 lifecycle passed 20 checks, including label isolation;
+775 source/document files remained byte-identical. The check's model/account
+responses were synthetic and its Docker/scorer processes were real. See the
+[frozen engineering gate](../results/modular-engineering-20260915/headless-descriptor-primary-r1/README.md).
+
+A separate label-free runtime then attempted the actual eight-cell TRAIN
+factorial using the first frozen TRAIN token per benchmark. Its first solver
+reservation launched Grok CLI but timed out during initialization with empty
+streams. One cell failed, seven remained blocked, and zero scores/evaluator
+calls were produced. Actual MAIN dispatch and usage remain unknown; zero known
+tokens is not zero usage. No combination was pruned and VAL stayed closed.
+The 109 retained noncredential files preserve the original failure, frozen
+configuration, exact input bindings, and complete denominator. See the
+[actual attempt and native diagnosis](../results/modular-engineering-20260915/actual-m4m5-headless-r1/README.md).
+This attempt is closed and supplies no module or combination effect estimate.
+
 ## Shared material qualification artifacts (2026-09-15)
 
 At `d1f6ca9fde8249ef0e45a0f6a1edba17c4584070`, the shared TRAIN qualifier
