@@ -66,7 +66,7 @@ def _response(setup, history, seen):
     return respond
 
 
-def prepare_headless_runtime(root, patch):
+def prepare_headless_runtime(root, patch, *, response_factory=None):
     """Reuse the actual C5 fixture originals, then replace only the provider ports."""
     import test_execution_improvement_train_controller as history_fixture
     from test_full_loo_runtime import prepare as old_prepare
@@ -90,9 +90,12 @@ def prepare_headless_runtime(root, patch):
         baseline_digest='a' * 64, history_binding_digest=history.binding.content_hash,
         builder_digest=old.fixed_builder.digest, context_bytes=24000).data()['recipes']]
     allocation = derive_allocation(recipes, target_count=len(setup['packets']))
+    respond = _response(setup, history, seen)
+    if response_factory is not None:
+        respond = response_factory(setup, history, seen, respond)
     provider, calls, gets = headless_train_provider(
         root / 'headless-solver', patch, schemas=model_schemas(), max_calls=allocation['model_calls'],
-        response=_response(setup, history, seen), wrapped=True)
+        response=respond, wrapped=True)
 
     # This descriptor is pure: it freezes the production evaluator configuration
     # without starting an evaluator worker or exposing any private reference bytes.
