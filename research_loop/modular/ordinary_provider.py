@@ -8,6 +8,92 @@ from research_loop.modular.train_provider_preflight import (native_envelope, res
 from research_loop.ontology import ContractError
 
 
+_HEADLESS_PROVIDER = 'grok-headless-frozen-evaluator-v1'
+
+
+def _digest(value):
+    return isinstance(value, str) and len(value) == 64 and all(char in '0123456789abcdef' for char in value)
+
+
+def headless_evaluator_binding(body, *, family, enabled):
+    """Validate an opt-in evaluator declaration without constructing its worker."""
+    usage_schema = f'{family}-headless-evaluator-usage-declaration-v1'
+    usage_contract = f'grok-headless-{family}-usage-v1'
+    usage_fields = {'schema', 'provider_kind', 'usage_contract', 'evaluator_config_digest'}
+    provider_fields = {'kind', 'configuration_digest'}
+    usage, provider = body.get('evaluator_usage'), body.get('evaluator_provider')
+    if not enabled:
+        if usage is not None or provider is not None:
+            raise ContractError('legacy ordinary controller cannot carry a headless evaluator declaration')
+        return None
+    if (not isinstance(usage, dict) or set(usage) != usage_fields
+            or usage.get('schema') != usage_schema or usage.get('provider_kind') != _HEADLESS_PROVIDER
+            or usage.get('usage_contract') != usage_contract or not _digest(usage.get('evaluator_config_digest'))
+            or not isinstance(provider, dict) or set(provider) != provider_fields
+            or provider.get('kind') != _HEADLESS_PROVIDER or not _digest(provider.get('configuration_digest'))
+            or usage['evaluator_config_digest'] != provider['configuration_digest']):
+        raise ContractError('headless evaluator declaration or provider differs')
+    return {'evaluator_usage': dict(usage), 'evaluator_provider': dict(provider)}
+
+
+def _headless_evaluator_gate(binding, *, family, failure_reason):
+    return {'schema': 'ordinary-headless-evaluator-final-gate-v1', 'family': family,
+            'status': 'inconclusive', 'score_eligible': False,
+            'evaluator_usage': binding['evaluator_usage'], 'evaluator_provider': binding['evaluator_provider'],
+            'ordered_receipt_digests': [], 'closure': None, 'known_headless_main_tokens': None,
+            'title_and_all_opportunity_settlement': 'unknown', 'failure_reason': failure_reason, 'error_type': None}
+
+
+def finalize_headless_evaluator_gate(*, binding, family, service, panel, scores, scorer_authority_keys, capture):
+    """Capture a signed closure before checking it; only full coverage is eligible."""
+    if (not isinstance(binding, dict) or type(family) is not str or not family
+            or not callable(capture)):
+        raise ContractError('headless evaluator finalization inputs are malformed')
+    gate = _headless_evaluator_gate(binding, family=family, failure_reason=None)
+    digests = []
+    try:
+        for score in scores:
+            digest = score.receipt.content_hash
+            if not _digest(digest):
+                raise ContractError('headless evaluator scorer receipt digest is malformed')
+            digests.append(digest)
+    except Exception as exc:
+        gate.update(failure_reason='invalid_scorer_receipts', error_type=type(exc).__name__)
+        capture(gate); return gate
+    gate['ordered_receipt_digests'] = digests
+    if not scores:
+        gate['failure_reason'] = 'no_scorer_receipts'
+        capture(gate); return gate
+    try:
+        closure = service.finalize_headless_evaluator(receipts=tuple(scores))
+        gate['closure'] = closure.data()
+        # This durable callback must not refresh provider usage or close a ledger.
+        capture(gate)
+        from evaluation.modular.headless_evaluator_closure import verify_closure
+        raw = closure.data(); nonce = raw.get('body', {}).get('nonce') if isinstance(raw.get('body'), dict) else None
+        if not isinstance(nonce, str) or not nonce:
+            raise ContractError('headless evaluator closure nonce is malformed')
+        verified = verify_closure(closure, authority_keys=scorer_authority_keys, panel=panel,
+            config=service.config, provider=binding['evaluator_provider'], nonce=nonce, receipt_digests=digests)
+        body = verified.data(); gate['known_headless_main_tokens'] = body['known_main_tokens']
+        capture(gate)
+        expected = {tuple(cell.key) for cell in panel.cells}
+        receipt_cells = tuple(score.cell_key for score in scores)
+        scoped = body['scope'].get('scored_cell_keys')
+        scoped_cells = tuple(tuple(value) for value in scoped) if isinstance(scoped, list) else ()
+        if (len(receipt_cells) != len(expected) or len(receipt_cells) != len(set(receipt_cells))
+                or set(receipt_cells) != expected or len(scoped_cells) != len(expected)
+                or len(scoped_cells) != len(set(scoped_cells)) or set(scoped_cells) != expected
+                or body['scope'].get('unscored_cell_count') != 0):
+            gate['failure_reason'] = 'incomplete_panel_closure'
+            capture(gate); return gate
+        gate.update(status='eligible', score_eligible=True)
+        capture(gate); return gate
+    except Exception as exc:
+        gate.update(failure_reason='closure_verification_failed', error_type=type(exc).__name__)
+        capture(gate); return gate
+
+
 def family_service_preflight(config, model, service, execution_authority, scorer_keys, *, family):
     body=config.data()
     if native_envelope(body,family):
