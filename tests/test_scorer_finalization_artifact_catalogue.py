@@ -31,7 +31,7 @@ def _cell(identity, label):
     return SimpleNamespace(identity=identity, key=(label,), data=lambda: body)
 
 
-def _write_observations(path, *, scorer, panel_digest, provider=_PROVIDER):
+def _write_observations(path, *, scorer, panel_digest, provider=_PROVIDER, rejected=False):
     source = hashlib.sha256((Path(__file__).parents[1] / "evaluation/modular/scorer_process.py").read_bytes()).hexdigest()
     base = {"schema": "headless-evaluator-client-observation-v1", "attempt_id": "attempt-1", "nonce": "n" * 32,
             "panel_digest": panel_digest, "scorer_config_digest": scorer.record.content_hash,
@@ -43,8 +43,11 @@ def _write_observations(path, *, scorer, panel_digest, provider=_PROVIDER):
         {**base, "status": "requested", "request_text": "{}\n"},
         {**base, "status": "response_received", "response_text": response,
          "response_sha256": hashlib.sha256(response.encode()).hexdigest(), "response_utf8_bytes": len(response.encode())},
-        {**base, "status": "authenticated", "closure_digest": FrozenRecord.from_dict(json.loads(response)["closure"]).content_hash,
-         "response_sha256": hashlib.sha256(response.encode()).hexdigest()},
+        ({**base, "status": "rejected", "error_type": "ContractError",
+          "response_sha256": hashlib.sha256(response.encode()).hexdigest(), "score_eligible": False}
+         if rejected else
+         {**base, "status": "authenticated", "closure_digest": FrozenRecord.from_dict(json.loads(response)["closure"]).content_hash,
+          "response_sha256": hashlib.sha256(response.encode()).hexdigest()}),
     ]
     previous = None; rows = []
     for sequence, event in enumerate(events, 1):
@@ -103,3 +106,17 @@ def test_reader_chain_is_rechecked_before_projection(tmp_path):
     with pytest.raises(ContractError):
         register_admission_headless_scorer_finalization_observations(root=root, config=config, panel=panel, service=service)
     assert not (root / "scorer-finalization-observations").exists()
+
+
+def test_rejected_terminal_is_catalogued_without_score_authority(tmp_path):
+    root, config, panel, service, _ = _inputs(tmp_path)
+    _write_observations(Path(str(service.journal_path) + ".headless-evaluator-client.jsonl"),
+                        scorer=service.config, panel_digest=panel.digest, rejected=True)
+    receipt = register_admission_headless_scorer_finalization_observations(
+        root=root, config=config, panel=panel, service=service)
+    for anchor in receipt.data()["catalogues"]:
+        rows = [json.loads(line)["descriptor"] for line in Path(anchor["path"]).read_text(encoding="utf-8").splitlines()]
+        terminal = rows[-1]
+        assert terminal["status"] == "rejected"
+        assert terminal["payload"]["canonical"]["authorization"] == "none"
+        assert terminal["payload"]["canonical"]["scientific_status"] == "not_measured"
