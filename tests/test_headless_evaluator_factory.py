@@ -6,7 +6,9 @@ import sys
 
 import pytest
 
-from evaluation.modular.scorer_process import _production_evaluator, build_service, parse_server_config
+from evaluation.modular.scorer_process import (headless_evaluator_descriptor, _production_evaluator,
+    build_service, parse_server_config)
+from evaluation.modular.headless_evaluator_closure import descriptor
 from evaluation.modular.linked_scoring import verify_linked_adapted_receipt
 from research_loop.modular.grok_acp_transport import ProcessTree
 from research_loop.ontology import ContractError
@@ -69,6 +71,18 @@ def test_primary_scorer_factory_consumes_both_benchmark_native_evaluator_results
     ledger = json.loads((Path(body['evaluator']['work_root']) / 'ledger.json').read_bytes())
     assert ledger['tokens'] == 20 and not ledger['usage_incomplete']
     assert all(row['status'] == 'succeeded' for row in ledger['calls'])
+
+
+@pytest.mark.parametrize('rubric_mode', ['primary_v1', 'lineage_v1'])
+def test_pure_descriptor_matches_constructed_port_without_allocator_side_effects(tmp_path, monkeypatch, rubric_mode):
+    spec, prompts, gets = native_spec(tmp_path / 'native', monkeypatch)
+    before = sorted(path.relative_to(tmp_path).as_posix() for path in tmp_path.rglob('*'))
+    pure = headless_evaluator_descriptor(spec, rubric_mode=rubric_mode)
+    after = sorted(path.relative_to(tmp_path).as_posix() for path in tmp_path.rglob('*'))
+    assert after == before and not (Path(spec['work_root']) / 'ledger.json').exists()
+    assert not prompts and not gets
+    port = _production_evaluator(spec, rubric_mode=rubric_mode)
+    assert pure == descriptor(port)
 
 
 @pytest.mark.parametrize('field,value', [('provider_kind', 'grok-acp-public-train-v1'),

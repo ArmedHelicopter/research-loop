@@ -312,9 +312,12 @@ class LineageScorerProcessClient(CombinationScorerProcessClient):
                 raise ContractError('lineage headless finalization response is malformed')
             from evaluation.modular.headless_evaluator_closure import verify_lineage_closure
             closure = FrozenRecord.from_dict(response['closure'])
-            return verify_lineage_closure(closure, authority_keys=self._scorer_keys, panel=self.panel, config=self.config,
+            # Verify the envelope before returning it, but retain the signed
+            # record for the outer controller's durable final gate.
+            verify_lineage_closure(closure, authority_keys=self._scorer_keys, panel=self.panel, config=self.config,
                 provider=self.evaluator_provider, reference_binding=self.reference_binding, nonce=nonce,
                 receipt_digests=receipt_digests)
+            return closure
         except Exception as exc:
             self._stop_unknown_worker()
             raise ContractError('lineage headless finalization failed') from exc

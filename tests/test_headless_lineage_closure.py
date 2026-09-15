@@ -125,7 +125,7 @@ def test_lineage_closure_rereads_tamper_after_restart_and_client_verifies_respon
         client._readline_bounded = lambda: canonical(response)
         client._stop_unknown_worker = lambda: None
         assert client.finalize_lineage(nonce=request['nonce'], receipt_digests=request['receipt_digests']).data() == \
-            FrozenRecord.from_dict(response['closure']).data()['body']
+            FrozenRecord.from_dict(response['closure']).data()
         path = Path(service.evaluator_port.ledger['calls'][0]['request']['path']).parent / 'response.private.json'
         path.write_bytes(path.read_bytes() + b'\n')
         restarted = LineageScorerWorker(service, panel, worker.journal_path)

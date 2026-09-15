@@ -327,8 +327,14 @@ def parse_server_config(value: object, *, lineage: bool = False) -> ScorerServer
     return ScorerServerConfig(panel, scorer, store_root, manifest_sha256, inventory_digest, split_digest, handles, execution_keys, scorer_authority, dict(value["evaluator"]))
 
 
-def _headless_evaluator(spec: Mapping[str, object], *, rubric_mode: str):
-    """Explicit private rubric transport; legacy Codex declarations stay distinct."""
+def _headless_evaluator_material(spec: Mapping[str, object], *, rubric_mode: str) -> tuple[dict[str, object], FrozenRecord]:
+    """Validate a native evaluator declaration without opening its ledger.
+
+    The returned immutable configuration is deliberately the same record that
+    ``GrokHeadlessEvaluatorModelPort`` would retain after construction.  This
+    lets a process client bind the descriptor before its worker owns any
+    allocator, call ledger, or private account state.
+    """
     from evaluation.modular.headless_evaluator_model_port import GrokHeadlessEvaluatorModelPort
     required = {"provider_kind", "executable", "work_root", "private_home", "private_profile", "public_cwd",
                 "frozen_files", "evaluator_id", "evaluator_version", "model", "effort", "max_calls",
@@ -353,15 +359,65 @@ def _headless_evaluator(spec: Mapping[str, object], *, rubric_mode: str):
         if str(path) in pins and pins[str(path)] != actual:
             raise ContractError("supplied headless factory source pin differs")
         pins[str(path)] = actual
-    return GrokHeadlessEvaluatorModelPort(
-        executable=_absolute(spec["executable"], "headless executable"),
-        work_root=_absolute(spec["work_root"], "headless work root"),
-        private_home=_absolute(spec["private_home"], "headless private home"),
-        private_profile=_absolute(spec["private_profile"], "headless private profile"),
-        public_cwd=_absolute(spec["public_cwd"], "headless public cwd"), frozen_files=pins,
-        evaluator_id=spec["evaluator_id"], evaluator_version=spec["evaluator_version"], rubric_mode=rubric_mode,
-        max_calls=spec["max_calls"], max_tokens=spec["max_tokens"], timeout_seconds=spec["timeout_seconds"],
-        account_read_recovery=spec["account_read_recovery"])
+    executable = _absolute(spec["executable"], "headless executable").resolve()
+    if pins.get(str(executable)) != _sha(executable.read_bytes()):
+        raise ContractError("supplied evaluator executable pin differs")
+    from evaluation.modular.headless_evaluator_model_port import (
+        RECOVERY, _INPUT_BYTE_CAP, _MAIN_OUTPUT_CAP, _OBSERVED_MAIN_TOKEN_CAP,
+        _REQUEST_SCHEMA as headless_request_schema, _source_pins)
+    if (not isinstance(spec["account_read_recovery"], Mapping)
+            or dict(spec["account_read_recovery"]) != RECOVERY):
+        raise ContractError("production headless evaluator recovery configuration is invalid")
+    generated = _source_pins(rubric_mode)
+    if any(path in pins and pins[path] != value for path, value in generated.items()):
+        raise ContractError("supplied evaluator source pin differs")
+    pins.update(generated)
+    if any(not isinstance(path, str) or _digest(value, "headless frozen source") != value
+           for path, value in pins.items()):
+        raise ContractError("invalid evaluator frozen file pin")
+    if rubric_mode == "lineage_v1":
+        from evaluation.modular.lineage_rubric import FrozenLineageRubricEndpoint as endpoint_type
+    elif rubric_mode == "primary_v1":
+        endpoint_type = FrozenBenchmarkRubricEndpoint
+    else:
+        raise ContractError("production headless evaluator rubric mode is invalid")
+    paths = {
+        "work_root": _absolute(spec["work_root"], "headless work root").resolve(),
+        "private_home": _absolute(spec["private_home"], "headless private home").resolve(),
+        "private_profile": _absolute(spec["private_profile"], "headless private profile").resolve(),
+        "public_cwd": _absolute(spec["public_cwd"], "headless public cwd").resolve(),
+    }
+    schemas = {benchmark: endpoint_type._output_schema(benchmark) for benchmark in ("discoverybench", "blade")}
+    config = FrozenRecord.from_dict({
+        "schema": "grok-headless-evaluator-port-v1", "provider_kind": GrokHeadlessEvaluatorModelPort.provider_kind,
+        "request_contract": headless_request_schema, "evaluator_id": spec["evaluator_id"],
+        "evaluator_version": spec["evaluator_version"], "rubric_mode": rubric_mode,
+        "rubric_digest": endpoint_type.rubric_digest(), "model": "grok-4.6", "reasoning_effort": "low",
+        "timeout_seconds": 60, "max_retries": 0, "paid_fallback": False,
+        "main_opportunities_per_request": 1, "max_calls": spec["max_calls"], "max_tokens": spec["max_tokens"],
+        "main_output_cap": _MAIN_OUTPUT_CAP, "observed_main_token_cap": _OBSERVED_MAIN_TOKEN_CAP,
+        "input_byte_cap": _INPUT_BYTE_CAP, "account_read_recovery": RECOVERY, "schemas": schemas,
+        "executable": str(executable), "executable_sha256": _sha(executable.read_bytes()),
+        "private_home": str(paths["private_home"]), "private_profile_root": str(paths["private_profile"]),
+        "public_cwd_root": str(paths["public_cwd"]), "frozen_files": json.loads(canonical(pins)),
+    })
+    return ({"executable": executable, **paths, "frozen_files": pins,
+             "evaluator_id": spec["evaluator_id"], "evaluator_version": spec["evaluator_version"],
+             "rubric_mode": rubric_mode, "max_calls": spec["max_calls"], "max_tokens": spec["max_tokens"],
+             "timeout_seconds": spec["timeout_seconds"], "account_read_recovery": RECOVERY}, config)
+
+
+def headless_evaluator_descriptor(spec: Mapping[str, object], *, rubric_mode: str = "primary_v1") -> dict[str, str]:
+    """Return the exact immutable worker binding without constructing a port."""
+    _, configuration = _headless_evaluator_material(spec, rubric_mode=rubric_mode)
+    return {"kind": "grok-headless-frozen-evaluator-v1", "configuration_digest": configuration.content_hash}
+
+
+def _headless_evaluator(spec: Mapping[str, object], *, rubric_mode: str):
+    """Explicit private rubric transport; legacy Codex declarations stay distinct."""
+    from evaluation.modular.headless_evaluator_model_port import GrokHeadlessEvaluatorModelPort
+    material, _ = _headless_evaluator_material(spec, rubric_mode=rubric_mode)
+    return GrokHeadlessEvaluatorModelPort(**material)
 
 
 def _production_evaluator(spec: Mapping[str, object], *, rubric_mode: str = "primary_v1"):

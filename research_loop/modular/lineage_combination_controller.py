@@ -61,11 +61,12 @@ class FrozenLineageTrainConfig:
         source_body = b if native else source_contract_body(b, schema)
         schema_ok = (source_schema_matches(source_body, required, schema)
                      if schema == 'admission-combination-train-config-v1' else
-                     source_schema_matches(source_body, required, schema, optional=('lineage_reference_binding',)))
+                     source_schema_matches(source_body, required, schema,
+                         optional=('lineage_reference_binding', 'lineage_evaluator_bindings')))
         if native:
             from research_loop.modular.lineage_useful_controls import RECIPE
             schema_ok = (native_source_fields(b, required|{'execution_recipe'}, family=family,
-                optional=('lineage_reference_binding',) if family=='lineage' else ())
+                optional=('lineage_reference_binding', 'lineage_evaluator_bindings') if family=='lineage' else ())
                 and b.get('execution_recipe') == RECIPE.data())
         if (not schema_ok or b['domain'] != 'train'
                 or not isinstance(b['stage'], str) or not b['stage'].strip() or not _names(b['item_ids'])
@@ -115,13 +116,30 @@ class FrozenLineageTrainConfig:
                 'task_digest': row['task_digest'], 'material_digest': FrozenRecord.from_dict(b['materials_by_task'][row['task_digest']]).content_hash}
                 for row in bindings.values()}
             limits = ref['limits']
-            expected_scorer_model = 'grok-4.6' if native else 'gpt-5.6-luna'
+            expected_scorer_model = 'grok-4.6' if 'lineage_evaluator_bindings' in b else 'gpt-5.6-luna'
             if (ref['subjects'] != expected_subjects or not isinstance(limits, dict)
                     or set(limits) != {'model', 'effort', 'tokens_per_cell', 'timeout_seconds'}
                     or limits['model'] != expected_scorer_model or limits['effort'] != 'low'
                     or type(limits['tokens_per_cell']) is not int or limits['tokens_per_cell'] < 1
                     or type(limits['timeout_seconds']) is not int or not 1 <= limits['timeout_seconds'] <= 600):
                 raise ContractError('lineage scorer subject or per-cell budget drift')
+        bindings_by_obligation = b.get('lineage_evaluator_bindings')
+        if bindings_by_obligation is not None:
+            if not native or 'lineage_reference_binding' not in b or not isinstance(bindings_by_obligation, dict) or set(bindings_by_obligation) != set(DESIGNS):
+                raise ContractError('headless lineage evaluator bindings require the native v4 reference-bound envelope')
+            for obligation, value in bindings_by_obligation.items():
+                if not isinstance(value, dict) or set(value) != {'evaluator_usage', 'evaluator_provider'}:
+                    raise ContractError('headless lineage evaluator obligation binding is malformed')
+                declaration, provider = value['evaluator_usage'], value['evaluator_provider']
+                if (not isinstance(declaration, dict) or set(declaration) != {'schema', 'provider_kind', 'usage_contract', 'evaluator_config_digest'}
+                        or declaration['schema'] != 'lineage-headless-evaluator-usage-declaration-v1'
+                        or declaration['provider_kind'] != 'grok-headless-frozen-evaluator-v1'
+                        or declaration['usage_contract'] != 'grok-headless-lineage-usage-v1'
+                        or not _digest(declaration['evaluator_config_digest'])
+                        or not isinstance(provider, dict) or set(provider) != {'kind', 'configuration_digest'}
+                        or provider['kind'] != 'grok-headless-frozen-evaluator-v1'
+                        or not _digest(provider['configuration_digest'])):
+                    raise ContractError('headless lineage evaluator declaration or descriptor is malformed')
         if not isinstance(b['acceptance_criteria'], dict) or b['acceptance_criteria'].get('contrast_analysis') != _ANALYSIS:
             raise ContractError('registered incomplete-reject contrast criteria required')
         n = len(identities) * len(b['replicates']) * cell_count
@@ -308,11 +326,15 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
         return {} if admission else {'expected_reference_digest': config.data().get('lineage_reference_binding', {}).get('references', {}).get(
             FrozenRecord.from_dict(cell.identity.data()).content_hash)}
     native = native_envelope(config.data(), ('admission' if admission else 'lineage'))
-    headless_lineage = (not admission and native and isinstance(scoring_service, LineageScorerProcessPool)
-                        and hasattr(scoring_service, 'evaluator_usage_by_obligation')
-                        and hasattr(scoring_service, 'evaluator_providers_by_obligation'))
-    if not admission and isinstance(scoring_service, LineageScorerProcessPool) and hasattr(scoring_service, 'evaluator_usage_by_obligation') and not native:
-        raise ContractError('headless lineage evaluator requires the native v4 train envelope')
+    frozen_evaluator_bindings = config.data().get('lineage_evaluator_bindings') if not admission else None
+    headless_lineage = frozen_evaluator_bindings is not None
+    if headless_lineage:
+        if (not native or not isinstance(scoring_service, LineageScorerProcessPool)
+                or getattr(scoring_service, 'evaluator_usage_by_obligation', None) is None
+                or getattr(scoring_service, 'evaluator_providers_by_obligation', None) is None
+                or frozen_evaluator_bindings != {obligation: {'evaluator_usage': scoring_service.evaluator_usage_by_obligation[obligation],
+                    'evaluator_provider': scoring_service.evaluator_providers_by_obligation[obligation]} for obligation in DESIGNS}):
+            raise ContractError('headless lineage evaluator bindings differ from the frozen configuration')
     snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model_root(model, native=native))
     if root.exists() or exported.exists(): raise ContractError('closed controller requires unused roots and no retry')
     b = config.data()
@@ -415,7 +437,7 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
             expected_cells = {FrozenRecord.from_dict(cell.data()).content_hash for cell in panel.cells}
             receipt_digests = [FrozenRecord.from_dict(row['scorer_receipt']).content_hash
                 for row in journal['cells'] if FrozenRecord.from_dict(row['cell']).content_hash in expected_cells
-                and row.get('status') == 'succeeded' and 'scorer_receipt' in row]
+                and 'scorer_receipt' in row]
             client = scoring_service.clients[panel.obligation_id]
             declaration = scoring_service.evaluator_usage_by_obligation[panel.obligation_id]
             provider = scoring_service.evaluator_providers_by_obligation[panel.obligation_id]
@@ -425,8 +447,16 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
                      'title_and_all_opportunity_settlement': 'unknown'}
             try:
                 closure = client.finalize_lineage(nonce=panel.digest, receipt_digests=receipt_digests)
+                body = closure.data()['body']
+                scope = body.get('scope')
+                if (body.get('unknown_title_usage') is not True or body.get('title_tokens') is not None
+                        or body.get('all_opportunity_tokens') is not None
+                        or body.get('evaluator_usage_declaration') != declaration or body.get('evaluator_provider') != provider
+                        or not isinstance(scope, dict) or scope.get('unscored_cell_count') != 0
+                        or body.get('receipt_digests') != receipt_digests):
+                    raise ContractError('headless lineage closure differs from its frozen obligation binding')
                 entry.update(status='eligible', closure=closure.data(), closure_digest=closure.content_hash,
-                             native_MAIN=closure.data().get('known_main_tokens'))
+                             native_MAIN=body.get('known_main_tokens'))
             except Exception as exc:
                 entry.update(status='inconclusive', reason='closure_unavailable_or_rejected',
                              error_type=type(exc).__name__, native_MAIN='unknown')
