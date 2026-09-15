@@ -405,7 +405,12 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
     accounting = _native_accounting(executor)
     actual = _actual(tuple([*builds, *[target for target in targets if target is not None]]), accounting, rows)
     persist(accounting)
-    final_provider_eligible = type(target_ledger) is PhaseProviderLedger and not scorer_provider_terminal
+    # A provider ledger alone is not enough to authorize final replay: a
+    # failed history stage leaves no sealed history barrier or compiled panel
+    # to replay.  Preserve that partial execution as an inconclusive receipt.
+    final_provider_eligible = (barrier is not None and panel is not None
+                               and type(target_ledger) is PhaseProviderLedger
+                               and not scorer_provider_terminal)
     if final_provider_eligible:
         try:
             # Recheck complete current stage provenance first.  The ledger verify

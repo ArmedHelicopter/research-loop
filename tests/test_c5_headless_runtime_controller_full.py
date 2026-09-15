@@ -74,6 +74,44 @@ def test_headless_full_controller_factory_preflight_has_no_grid_dispatch(tmp_pat
     assert not setup['common_calls'] and not setup['evaluator_prompts'] and not setup['evaluator_gets']
 
 
+def test_headless_history_contract_failure_returns_closed_inconclusive_receipt(tmp_path, monkeypatch):
+    """A failed history stage closes the full denominator without scorer use."""
+    def malformed_first_plan(_setup, _history, _seen, fallback):
+        def respond(request):
+            if request.data()['slot'] == 'm4_plan':
+                return {}
+            return fallback(request)
+        return respond
+
+    setup = prepare_headless_runtime(tmp_path, monkeypatch, response_factory=malformed_first_plan)
+    runner = executor(setup)
+    plan = runner.plan
+
+    def scorer_factory(_panel):
+        raise AssertionError('scorer factory must not start without a complete history barrier')
+
+    run = run_joint_common_train(runner, scorer_factory=scorer_factory,
+                                 execution_authority=EXEC, scorer_authority_keys={SCORER.authority_id: SCORER.key})
+    receipt = run.receipt.data()
+    allocation = plan.protocol.record.data()['allocation']
+    assert run.barrier is None and run.panel is None
+    assert len(run.builds) == 1 and run.builds[0].record.data()['status'] == 'failed'
+    assert len(run.targets) == allocation['target_cells'] == 118 and all(target is None for target in run.targets)
+    assert len(run.scores) == len(run.score_inputs) == 0
+    assert len(receipt['builds']) == allocation['unique_canonical_builds'] == 46
+    assert receipt['builds'][0]['status'] == 'failed' and receipt['builds'][0]['reason'] == 'history_stage_failed'
+    assert all(row['status'] == 'blocked' and row['reason'] == 'prior_history_failure_or_terminal'
+               for row in receipt['builds'][1:])
+    assert len(receipt['targets']) == 118
+    assert all(row['status'] == 'blocked' and row['reason'] == 'complete_history_barrier_unavailable'
+               for row in receipt['targets'])
+    assert receipt['allocation'] == allocation and receipt['actual']['scorer_calls'] == 0
+    assert receipt['final_provider_eligible'] is False and receipt['status'] == 'inconclusive'
+    assert receipt['scorer_process']['startup_attempts'] == 0
+    assert len(setup['common_calls']) == 1
+    assert not setup['evaluator_prompts'] and not setup['evaluator_gets']
+
+
 @pytest.mark.skipif(os.environ.get('RESEARCH_LOOP_RUN_FULL_C5_HEADLESS') != '1',
                     reason='set RESEARCH_LOOP_RUN_FULL_C5_HEADLESS=1 for the complete synthetic integration')
 def test_full_headless_c5_controller_then_registers_selected_bundle(tmp_path, monkeypatch):
