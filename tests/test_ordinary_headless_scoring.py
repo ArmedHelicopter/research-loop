@@ -55,7 +55,8 @@ def setup(root, patch):
     server = scorer_config(root, {'panel':compiled.panel, 'tasks':tasks, 'config':rubric})
     with pytest.MonkeyPatch.context() as private_patch:
         spec, _, _ = native_spec(root/'e', private_patch)
-    spec.update(max_calls=12, max_tokens=12*131072, timeout_seconds=600)
+    spec.update(max_calls=12, max_tokens=12*131072, timeout_seconds=600,
+        evaluator_id=rubric.record.data()['evaluator_id'], evaluator_version=rubric.record.data()['version'])
     server['evaluator'] = spec
     path = root/'server.json'; path.write_text(canonical(server),encoding='utf-8')
     return dict(root=root,snapshot=snapshot,custody=custody,provider=provider,calls=calls,gets=gets,
@@ -126,3 +127,14 @@ def test_incomplete_ordinary_binding_rejects_before_child_creation(tmp_path):
     with pytest.raises(ContractError,match='complete exact FrozenPanel'):
         LinkedScorerProcessClient(panel=None,config=object(),command=['must-not-run'],journal_path=tmp_path/'no.jsonl')
     assert not (tmp_path/'no.jsonl').exists()
+
+
+@pytest.mark.parametrize('field', ['evaluator_id','evaluator_version'])
+def test_worker_rejects_mismatched_native_identity_before_allocator(tmp_path,monkeypatch,field):
+    from evaluation.modular.scorer_process import build_service, parse_server_config
+    value=setup(tmp_path,monkeypatch)
+    server=value['server']; server['evaluator'][field]='foreign'
+    with pytest.raises(ContractError,match='identity or rubric differs'):
+        build_service(parse_server_config(server))
+    assert not value['calls']
+    assert not (Path(server['evaluator']['work_root'])/'ledger.json').exists()

@@ -458,6 +458,12 @@ def _production_evaluator(spec: Mapping[str, object], *, rubric_mode: str = "pri
 
 def build_service(config: ScorerServerConfig, *, evaluator: Callable[[FrozenRecord], FrozenRecord] | None = None) -> LinkedAdaptedScoringService | CombinationAdaptedScoringService:
     """Load and verify the full train store before an evaluator can be invoked."""
+    if config.evaluator.get('provider_kind') == 'grok-headless-frozen-evaluator-v1':
+        scorer = config.scorer.record.data()
+        if (config.evaluator.get('evaluator_id') != scorer['evaluator_id']
+                or config.evaluator.get('evaluator_version') != scorer['version']
+                or scorer['rubric_digest'] != FrozenBenchmarkRubricEndpoint.rubric_digest()):
+            raise ContractError('headless evaluator identity or rubric differs from frozen scorer configuration')
     resolver = FrozenTrainReferenceResolver(config.store_root, manifest_sha256=config.manifest_sha256,
         inventory_digest=config.inventory_digest, split_digest=config.split_digest)
     # Check every frozen identity/handle now, rather than discovering a store
