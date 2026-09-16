@@ -1,0 +1,64 @@
+{
+  "schema": "q63-headless-engineering-checks-v1",
+  "runs": [
+    {
+      "revision": 3,
+      "source_commit": "80c5edf397f0cda7e94504c8a2e527dc8ac4e125",
+      "junit": {
+        "tests": 3,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "native_session_id": 78730,
+      "exit_code": 1,
+      "wall_seconds": 421.2649999999994,
+      "source_count": 818,
+      "report_sha256": "e09047ad17a2dcdf86c57e2b49913f5612d7f4951ad6e6e69356f7a984107a95"
+    },
+    {
+      "revision": 4,
+      "source_commit": "cbc975286416adfb0c83843906af26cdbc1bde5e",
+      "junit": {
+        "tests": 3,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "native_session_id": 18418,
+      "exit_code": 1,
+      "wall_seconds": 173.875,
+      "source_count": 819,
+      "report_sha256": "8690fe277cc54d5b5e2ff77fd657984a1dd64480b56960785fd7f03e2844a601"
+    },
+    {
+      "revision": 5,
+      "source_commit": "c198a55a5d34ce31d0d4b5630c0b439ead620350",
+      "junit": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "native_session_id": 98389,
+      "exit_code": 0,
+      "wall_seconds": 1316.4530000000013,
+      "source_count": 819,
+      "report_sha256": "c8518b14ac93877de301756da6b1de3f0d2ced0efdb082074f705cd8be2d4f02"
+    }
+  ],
+  "positive_counts": {
+    "targets": 2,
+    "cells": 8,
+    "solver_main": 24,
+    "docker": 8,
+    "builder_executions": 8,
+    "evaluator_main": 8
+  },
+  "failure_r3": "known evaluator failure incorrectly closed worker before finalization",
+  "failure_r4": "duplicate candidate request hashes were mistaken for duplicate native opportunities",
+  "final_scientific_effect": "not_measured",
+  "activation": "not_authorized",
+  "new_paid_calls": 0,
+  "validation_opened": false
+}
