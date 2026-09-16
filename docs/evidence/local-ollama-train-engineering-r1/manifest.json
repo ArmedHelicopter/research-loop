@@ -1,0 +1,57 @@
+{
+  "source_commit": "5c9d27290ea6ca1fabd4694b9feb6c7658571065",
+  "tests": {
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "source_files_verified": 824,
+  "original_count": 7,
+  "originals": [
+    {
+      "path": "local-ollama-train-frozen-r1-before.json",
+      "bytes": 96780,
+      "sha256": "57c9e47ce850ac09b574ba4d8ab725c639a30456be619b45c4e4ff1a87207008"
+    },
+    {
+      "path": "local-ollama-train-frozen-r1-closed.json",
+      "bytes": 96964,
+      "sha256": "bae812e96c2c6d7566c106de1749902de99dfeb425b1ab2574fcd211ed4fe8c0"
+    },
+    {
+      "path": "local-ollama-train-frozen-r1-native-join.json",
+      "bytes": 963,
+      "sha256": "8e2a22d3694509f0ffd7dff77d01cf89944c136cc0110b3ee2a4ca853fb1cf6a"
+    },
+    {
+      "path": "local-ollama-train-frozen-r1-native-start.json",
+      "bytes": 822,
+      "sha256": "4953fee539df62041c9392451dfa24060f17bd2fb6b58c84ab7e7ab5139c11d8"
+    },
+    {
+      "path": "local-ollama-train-frozen-r1-source-members.json",
+      "bytes": 144871,
+      "sha256": "0639d2f04dc9f3730a36dfe9fd9fd32298b77462e9a486a2298e2735985a1f43"
+    },
+    {
+      "path": "local-ollama-train-frozen-r1-sources.zip",
+      "bytes": 2768441,
+      "sha256": "718318130a4d10908e8061f603501a876d3fc169da53ab2bb5f98adda84dd558"
+    },
+    {
+      "path": "local-ollama-train-frozen-r1.xml",
+      "bytes": 624,
+      "sha256": "6c0fcaf9a6acca799448d27c051188a08103eea3e745964efd137b897f8b38b4"
+    }
+  ],
+  "archive_sha256": "62e08eb9e37b6a49552eaf67d3359b91f4fee0799c262d5fd64c6faf4c5225ac",
+  "actual_model_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness": "not_measured",
+  "limits": [
+    "TRAIN transport only",
+    "Independent local evaluator/scorer/closure not implemented",
+    "No full benchmark panel or scientific effectiveness evidence"
+  ]
+}
