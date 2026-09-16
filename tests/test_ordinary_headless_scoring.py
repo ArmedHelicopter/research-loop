@@ -120,9 +120,14 @@ def test_all_twelve_cells_reach_native_solve_live_docker_private_score_and_signe
         # Keep the real worker journal unchanged; a second independent reader
         # rejects even correctly signed receipts from the wrong panel family.
         wrong_journal.write_text(''.join(canonical(item)+'\n' for item in journal),encoding='utf-8')
-        verifier=build_service(parse_server_config(value['server']))
-        with pytest.raises(ContractError,match='untrusted authority receipt'):
-            finalize(service=verifier,panel=result.compiled.panel,journal_path=wrong_journal,nonce='wrong-family',receipt_digests=altered)
+        from tests.helpers.headless_authoring_fixture import install_synthetic_native
+        spec=value['server']['evaluator']
+        with pytest.MonkeyPatch.context() as replay_patch:
+            install_synthetic_native(replay_patch,{'native_deployment':{'executable':spec['executable'],
+                'slots':{'base':{'private_home':spec['private_home']}}}})
+            verifier=build_service(parse_server_config(value['server']))
+            with pytest.raises(ContractError,match='untrusted authority receipt'):
+                finalize(service=verifier,panel=result.compiled.panel,journal_path=wrong_journal,nonce='wrong-family',receipt_digests=altered)
         (tmp_path/'independent-readback.json').write_text(canonical({'expected_cells':12,'producer_calls':48,
             'receipts':[r.receipt.data() for r in receipts],'closure':closure.data(),'scientific_effect':'not_measured'}),encoding='utf-8')
     finally:
