@@ -106,6 +106,27 @@ def test_all_twelve_cells_reach_native_solve_live_docker_private_score_and_signe
             service.submit(cell_key=result.linked_results[0].cell.key,linked_input=inputs[0])
         with pytest.raises(ContractError,match='sequence differs'):
             service.finalize_headless_evaluator(receipts=receipts[:-1])
+        from evaluation.modular.scorer_process import build_service, parse_server_config
+        from evaluation.modular.headless_evaluator_closure import finalize
+        journal=[json.loads(line) for line in (tmp_path/'worker.jsonl').read_text(encoding='utf-8').splitlines()]
+        altered=[]
+        for item in journal:
+            if item['status']=='succeeded':
+                wrong={**item['receipt']['body'],'schema':'combination-adapted-scored-cell-v1'}
+                item={**item,'receipt':SCORER.issue(wrong).data()}
+                altered.append(FrozenRecord.from_dict(item['receipt']).content_hash)
+        wrong_journal=tmp_path/'wrong-family.jsonl'
+        wrong_journal.write_text(''.join(canonical(item)+'\n' for item in journal),encoding='utf-8')
+        # Keep the real worker journal unchanged; a second independent reader
+        # rejects even correctly signed receipts from the wrong panel family.
+        for index,item in enumerate(journal):
+            if item['status']=='succeeded':
+                journal[index]={**item,'receipt':SCORER.issue({**item['receipt']['body'],
+                    'schema':'combination-adapted-scored-cell-v1'}).data()}
+        wrong_journal.write_text(''.join(canonical(item)+'\n' for item in journal),encoding='utf-8')
+        verifier=build_service(parse_server_config(value['server']))
+        with pytest.raises(ContractError,match='untrusted authority receipt'):
+            finalize(service=verifier,panel=result.compiled.panel,journal_path=wrong_journal,nonce='wrong-family',receipt_digests=altered)
         (tmp_path/'independent-readback.json').write_text(canonical({'expected_cells':12,'producer_calls':48,
             'receipts':[r.receipt.data() for r in receipts],'closure':closure.data(),'scientific_effect':'not_measured'}),encoding='utf-8')
     finally:

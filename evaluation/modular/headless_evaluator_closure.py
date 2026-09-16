@@ -97,6 +97,12 @@ def _panel_scope(panel, scored_cells: Sequence[tuple[str, ...]]) -> dict[str, ob
 def finalize(*, service, panel, journal_path: Path, nonce: str, receipt_digests: Sequence[str]) -> FrozenRecord:
     """Replay every original native call and bind it to the ordered scorer journal."""
     from evaluation.modular.headless_evaluator_model_port import replay_headless_evaluator_ledger
+    from research_loop.modular.panel_receipts import FrozenPanel
+    # The production worker parses an exact ordinary FrozenPanel or a typed
+    # combination panel. A signed receipt from the other family is not valid
+    # evidence merely because its common fields and native call match.
+    receipt_schema = ('linked-adapted-scored-cell-v1' if type(panel) is FrozenPanel
+                      else 'combination-adapted-scored-cell-v1')
     if not isinstance(nonce, str) or not nonce or not isinstance(receipt_digests, Sequence):
         raise ContractError("headless evaluator closure request is malformed")
     expected = [_digest(value, "closure receipt") for value in receipt_digests]
@@ -127,7 +133,7 @@ def finalize(*, service, panel, journal_path: Path, nonce: str, receipt_digests:
         if receipt.content_hash != receipt_digest:
             raise ContractError("headless evaluator closure receipt order differs")
         signed = verify_signed(receipt, {service._authority.authority_id: service._authority.key},
-                               schema="combination-adapted-scored-cell-v1")
+                               schema=receipt_schema)
         evidence = signed.get("evaluator_evidence")
         cell = cells.get(cell_key)
         request_path = Path(native.get("request", {}).get("path", ""))
