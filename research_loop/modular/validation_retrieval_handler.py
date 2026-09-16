@@ -7,7 +7,6 @@ records the native retrieval and final-model operation for independent replay.
 from __future__ import annotations
 
 import hashlib
-import hmac
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
@@ -29,10 +28,9 @@ _SCOPE_NAME = "validation_public_unvalidated_context"
 
 @dataclass(frozen=True)
 class ValidationRetrievalDependencies:
-    """Exact native ports and out-of-band source authority keys for this handler."""
-    source_verifier: object
+    """Exact ports for signed, unadmitted public validation retrieval sources."""
     retrieval_provider: object
-    source_keys: Mapping[str, bytes]
+    source_authority_keys: Mapping[str, bytes]
 
 
 def _record(path: Path, value: FrozenRecord) -> None:
@@ -128,16 +126,14 @@ def _verify_source_receipt(receipt: Mapping[str, Any], *, task: PublicTask, sour
 def _dependency_binding(dependencies) -> FrozenRecord:
     if type(dependencies) is not ValidationRetrievalDependencies:
         raise ContractError("validation retrieval requires exact handler dependencies")
-    verifier = getattr(dependencies, "source_verifier", None)
-    provider = getattr(dependencies, "retrieval_provider", None)
-    binding = getattr(verifier, "binding", None)
-    if not callable(binding) or not callable(getattr(provider, "search", None)):
-        raise ContractError("validation retrieval dependencies are not concrete native ports")
-    source = binding()
-    if type(source) is not FrozenRecord:
-        raise ContractError("validation retrieval source verifier binding must be frozen")
+    if not callable(getattr(dependencies.retrieval_provider, "search", None)):
+        raise ContractError("validation retrieval provider port lacks bounded search")
+    keys = dependencies.source_authority_keys
+    if not isinstance(keys, Mapping) or not keys or any(not isinstance(k, str) or not k or not isinstance(v, bytes) or len(v) < 32 for k, v in keys.items()):
+        raise ContractError("validation retrieval source authority keys are invalid")
     return FrozenRecord.from_dict({"schema": "validation-retrieval-dependency-binding-v1",
-        "source_verifier_binding": source.data(), "provider_port": "recorded-retrieval-provider-v1",
+        "source_authority_key_hashes": {k: hashlib.sha256(v).hexdigest() for k, v in sorted(keys.items())},
+        "provider_port": "recorded-retrieval-provider-v1",
         "source_receipt_scope": _SCOPE_NAME})
 
 
@@ -149,7 +145,7 @@ def export_dependencies(dependencies) -> FrozenRecord:
     binding = _dependency_binding(dependencies)
     # Deliberately omit source authority keys: replay receives them out of band.
     return FrozenRecord.from_dict({"schema": "validation-retrieval-dependencies-v1", "binding": binding.data(),
-        "source_verifier_binding": binding.data()["source_verifier_binding"],
+        "source_authority_key_hashes": binding.data()["source_authority_key_hashes"],
         "source_receipt_schema": _SOURCE_SCHEMA, "source_receipt_scope": _SCOPE_NAME})
 
 
@@ -168,6 +164,19 @@ def validate_material(*, cell, task, scenario, package, material):
         raise ContractError("validation retrieval package manifest is invalid") from exc
     if task.identity in manifest.identities():
         raise ContractError("TRAIN package manifest contains the validation identity")
+
+
+def verify_material_source(*, material, task, dependencies) -> FrozenRecord:
+    """Pre-I/O gate shared with the shell; source keys stay outside its manifest."""
+    binding = _dependency_binding(dependencies)
+    bundle = _bundle(task, material)
+    source_pool_digest = FrozenRecord.from_dict({"materials": bundle["materials"]}).content_hash
+    receipt = FrozenRecord.from_dict(bundle["source_receipt"])
+    verified = _verify_source_receipt(receipt.data(), task=task, source_pool_digest=source_pool_digest,
+        source_keys=dependencies.source_authority_keys)
+    if verified.data()["body"]["authority"] not in binding.data()["source_authority_key_hashes"]:
+        raise ContractError("validation retrieval source authority is outside frozen dependency binding")
+    return verified
 
 
 def slots_for(*, cell, material) -> tuple[str, ...]:
@@ -220,12 +229,9 @@ def _replay_selection(*, events, docs, query, budget, experiment, variant, enabl
 
 def execute(*, cell, task, scenario, package, material, session, workflow, model, root, dependencies) -> FrozenRecord:
     validate_material(cell=cell, task=task, scenario=scenario, package=package, material=material)
+    receipt = verify_material_source(material=material, task=task, dependencies=dependencies)
     bundle = _bundle(task, material); experiment, variant, selected = _selected(cell, bundle)
     docs = _docs(selected["sources"])
-    receipt = FrozenRecord.from_dict(bundle["source_receipt"])
-    source_pool_digest = FrozenRecord.from_dict({"materials": bundle["materials"]}).content_hash
-    _verify_source_receipt(receipt.data(), task=task, source_pool_digest=source_pool_digest,
-        source_keys=dependencies.source_keys)
     _record(Path(root) / "material.json", material); _record(Path(root) / "source-receipt.json", receipt)
     enabled = "M6" in cell.runtime_arm.data().get("enabled", [])
     projection, usage = _select_sources(dependencies.retrieval_provider, session, docs, bundle["query"], bundle["budget"],
@@ -254,10 +260,10 @@ def replay(*, cell, task, scenario, package, material, root, events, dependency_
     if type(dependency_manifest) is not FrozenRecord:
         raise ContractError("validation retrieval dependency manifest must be frozen")
     exported = dependency_manifest.data()
-    if set(exported) != {"schema", "binding", "source_verifier_binding", "source_receipt_schema", "source_receipt_scope"} or exported["schema"] != "validation-retrieval-dependencies-v1" or exported["source_receipt_schema"] != _SOURCE_SCHEMA or exported["source_receipt_scope"] != _SCOPE_NAME:
+    if set(exported) != {"schema", "binding", "source_authority_key_hashes", "source_receipt_schema", "source_receipt_scope"} or exported["schema"] != "validation-retrieval-dependencies-v1" or exported["source_receipt_schema"] != _SOURCE_SCHEMA or exported["source_receipt_scope"] != _SCOPE_NAME:
         raise ContractError("validation retrieval dependency manifest drift")
     binding = FrozenRecord.from_dict(exported["binding"])
-    if binding.data().get("source_verifier_binding") != exported["source_verifier_binding"]:
+    if binding.data().get("source_authority_key_hashes") != exported["source_authority_key_hashes"]:
         raise ContractError("validation retrieval manifest binding drift")
     root = Path(root); original_material = _read(root / "material.json")
     if original_material != material:

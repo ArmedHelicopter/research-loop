@@ -11,7 +11,7 @@ from research_loop.modular.retrieval_panel_drivers import _SCOPE, _material
 from research_loop.modular.runtime import AuditVerifier, RunSession
 from research_loop.modular.validation_retrieval_handler import (
     HANDLER_ID, _SOURCE_SCHEMA, _SCOPE_NAME, dependency_binding, execute, export_dependencies, replay,
-    ValidationRetrievalDependencies,
+    ValidationRetrievalDependencies, verify_material_source,
 )
 from research_loop.modular.workflow import ModularWorkflow
 from research_loop.ontology import ContractError, canonical
@@ -26,13 +26,8 @@ class Provider:
         return tuple(row for row in source_bundle.documents if row.lane == lane)[:source_limit]
 
 
-class Verifier:
-    def binding(self):
-        return FrozenRecord.from_dict({"schema": "synthetic-validation-source-verifier-v1", "source": "fixture"})
-
-
 def _dependencies():
-    return ValidationRetrievalDependencies(Verifier(), Provider(), {"fixture-source": KEY})
+    return ValidationRetrievalDependencies(Provider(), {"fixture-source": KEY})
 
 
 def _task(name="discoverybench"):
@@ -129,4 +124,11 @@ def test_dependency_export_binds_exact_verifier_without_exporting_keys():
     binding = dependency_binding(_dependencies())
     manifest = export_dependencies(_dependencies())
     assert FrozenRecord.from_dict(manifest.data()["binding"]) == binding
-    assert "key" not in manifest.encoded.lower()
+    assert KEY.hex() not in manifest.encoded
+
+
+def test_source_gate_rejects_bad_signature_before_provider_or_model_call():
+    task = _task(); material = _bundle(task)
+    with pytest.raises(ContractError, match="signature"):
+        verify_material_source(material=material, task=task,
+            dependencies=ValidationRetrievalDependencies(Provider(), {"fixture-source": b"x" * 32}))
