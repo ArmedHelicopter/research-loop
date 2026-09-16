@@ -1,0 +1,1 @@
+真实 Grok Q6.3 全8单元：5评分失败/未知、3生成失败、0成功评分，scientific_effect=not_measured。原生/worker退出0只证明控制器完整收尾；不是科学验收。18次producer机会已知124265 tokens且用量不完整；1次evaluator机会已知0且用量不完整，绝不解释为实际消费0。原分母、原始START/JOIN和失败均保留，未打开VAL、未剪除组合。

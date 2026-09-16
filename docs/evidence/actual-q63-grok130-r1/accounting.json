@@ -1,0 +1,40 @@
+{
+  "expected_cells": 8,
+  "scored_cells": 0,
+  "unscored_cells": 8,
+  "statuses": {
+    "evaluator_unknown_or_failed": 5,
+    "producer_failed": 3
+  },
+  "ledgers": {
+    "solver": {
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-q63-headless-grok130-r1\\solver-model\\ledger.json",
+      "sha256": "ebc39b438cad65192e049d81eb0ad6e60b60310e70b43e3a32bebf77dca6ac0c",
+      "opportunities": 18,
+      "statuses": {
+        "succeeded": 17,
+        "unknown_or_failed": 1
+      },
+      "known_main_tokens": 124265,
+      "usage_incomplete": true
+    },
+    "evaluator": {
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\actual-q63-headless-grok130-r1\\evaluator-model\\ledger.json",
+      "sha256": "9aa8d28fd69bb88670a0269c298d0f294ecd418fbc00fe99c95de256368ea7cb",
+      "opportunities": 1,
+      "statuses": {
+        "unknown_or_failed": 1
+      },
+      "known_main_tokens": 0,
+      "usage_incomplete": true
+    }
+  },
+  "native_exit_code": 0,
+  "worker_exit_code": 0,
+  "source_unchanged": true,
+  "scientific_effect": "not_measured",
+  "all_opportunity_tokens": null,
+  "settled_additional_charge_usd": null,
+  "validation_opened": false,
+  "scope_unchanged": true
+}
