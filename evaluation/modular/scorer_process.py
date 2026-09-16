@@ -439,7 +439,15 @@ def _headless_evaluator(spec: Mapping[str, object], *, rubric_mode: str):
     return port
 
 
+def messages_evaluator_descriptor(spec, *, rubric_mode='primary_v1'):
+    from evaluation.modular.messages_evaluator import descriptor
+    return descriptor(dict(spec), rubric_mode=rubric_mode)
+
+
 def _production_evaluator(spec: Mapping[str, object], *, rubric_mode: str = "primary_v1"):
+    if spec.get("provider_kind") == "anthropic-messages-independent-evaluator-v1":
+        from evaluation.modular.messages_evaluator import MessagesEvaluatorModelPort
+        return MessagesEvaluatorModelPort(dict(spec), rubric_mode=rubric_mode)
     if spec.get("provider_kind") == "grok-headless-frozen-evaluator-v1":
         return _headless_evaluator(spec, rubric_mode=rubric_mode)
     required = {"executable", "work_root", "evaluator_id", "evaluator_version", "model", "effort", "max_calls", "max_tokens", "timeout_seconds", "frozen_base_context"}
@@ -458,7 +466,7 @@ def _production_evaluator(spec: Mapping[str, object], *, rubric_mode: str = "pri
 
 def build_service(config: ScorerServerConfig, *, evaluator: Callable[[FrozenRecord], FrozenRecord] | None = None) -> LinkedAdaptedScoringService | CombinationAdaptedScoringService:
     """Load and verify the full train store before an evaluator can be invoked."""
-    if config.evaluator.get('provider_kind') == 'grok-headless-frozen-evaluator-v1':
+    if config.evaluator.get('provider_kind') in {'grok-headless-frozen-evaluator-v1','anthropic-messages-independent-evaluator-v1'}:
         scorer = config.scorer.record.data()
         if (config.evaluator.get('evaluator_id') != scorer['evaluator_id']
                 or config.evaluator.get('evaluator_version') != scorer['version']
@@ -484,6 +492,10 @@ def build_service(config: ScorerServerConfig, *, evaluator: Callable[[FrozenReco
         from evaluation.modular.headless_evaluator_closure import descriptor
         service.headless_evaluator_port = model
         service.evaluator_provider = descriptor(model)
+    from evaluation.modular.messages_evaluator import MessagesEvaluatorModelPort
+    if type(model) is MessagesEvaluatorModelPort:
+        service.messages_evaluator_port = model
+        service.evaluator_provider = {'kind':model.provider_kind,'configuration_digest':model._config_record.content_hash}
     return service
 
 
@@ -613,7 +625,7 @@ def _finalization_request(value: object) -> dict[str, object]:
         _digest(receipt, "headless evaluator closure receipt")
     provider = value["evaluator_provider"]
     if (set(provider) != {"kind", "configuration_digest"}
-            or provider.get("kind") != "grok-headless-frozen-evaluator-v1"):
+            or provider.get("kind") not in {"grok-headless-frozen-evaluator-v1","anthropic-messages-independent-evaluator-v1"}):
         raise ContractError("headless evaluator finalization provider is malformed")
     _digest(provider.get("configuration_digest"), "headless evaluator configuration")
     return {"schema": value["schema"], "nonce": value["nonce"],
@@ -694,7 +706,7 @@ class ScorerWorker:
             return {"schema": "scorer-process-binding-response-v1", "nonce": value["nonce"], "binding": binding.data()}
         if isinstance(value, Mapping) and value.get("schema") == "headless-evaluator-finalize-request-v1":
             request = _finalization_request(value)
-            if not hasattr(self.service, "headless_evaluator_port") or request["evaluator_provider"] != self.service.evaluator_provider:
+            if (not hasattr(self.service, "headless_evaluator_port") and not hasattr(self.service, "messages_evaluator_port")) or request["evaluator_provider"] != self.service.evaluator_provider:
                 raise ContractError("headless evaluator finalization provider differs")
             if _finalization_state(self.finalization_path) != self.finalization_state:
                 raise ContractError("headless evaluator finalization history changed")
@@ -789,7 +801,7 @@ class LinkedScorerProcessClient:
             if type(panel) is not FrozenPanel or any(value is None for value in optional):
                 raise ContractError("ordinary headless scorer requires a complete exact FrozenPanel binding")
             if (not isinstance(evaluator_provider, Mapping) or set(evaluator_provider) != {"kind", "configuration_digest"}
-                    or evaluator_provider.get("kind") != "grok-headless-frozen-evaluator-v1"):
+                    or evaluator_provider.get("kind") not in {"grok-headless-frozen-evaluator-v1","anthropic-messages-independent-evaluator-v1"}):
                 raise ContractError("headless evaluator provider descriptor is invalid")
             _digest(evaluator_provider.get("configuration_digest"), "headless evaluator configuration")
             binding = scorer_process_binding(panel=panel, config=config, task_handle_bindings=task_handle_bindings,
@@ -936,6 +948,11 @@ class LinkedScorerProcessClient:
         return ScientificScorerReceipt(cell_key, receipt)
 
 
+    def finalize_messages_evaluator(self, *, receipts) -> FrozenRecord:
+        if getattr(self,'evaluator_provider',{}).get('kind') != 'anthropic-messages-independent-evaluator-v1':
+            raise ContractError('Messages evaluator descriptor required')
+        return self.finalize_headless_evaluator(receipts=receipts)
+
     def finalize_headless_evaluator(self, *, receipts) -> FrozenRecord:
         if getattr(self, "evaluator_provider", None) is None:
             raise ContractError("scorer client has no declared headless evaluator")
@@ -1021,7 +1038,7 @@ class CombinationScorerProcessClient(LinkedScorerProcessClient):
             execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys)
         if evaluator_provider is not None:
             if (not isinstance(evaluator_provider, Mapping) or set(evaluator_provider) != {"kind", "configuration_digest"}
-                    or evaluator_provider.get("kind") != "grok-headless-frozen-evaluator-v1"):
+                    or evaluator_provider.get("kind") not in {"grok-headless-frozen-evaluator-v1","anthropic-messages-independent-evaluator-v1"}):
                 raise ContractError("headless evaluator provider descriptor is invalid")
             _digest(evaluator_provider.get("configuration_digest"), "headless evaluator configuration")
             expected = FrozenRecord.from_dict({**expected.data(), "evaluator_provider": dict(evaluator_provider)})

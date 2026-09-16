@@ -96,6 +96,9 @@ def _panel_scope(panel, scored_cells: Sequence[tuple[str, ...]]) -> dict[str, ob
 
 def finalize(*, service, panel, journal_path: Path, nonce: str, receipt_digests: Sequence[str]) -> FrozenRecord:
     """Replay every original native call and bind it to the ordered scorer journal."""
+    if getattr(service,'evaluator_provider',{}).get('kind') == 'anthropic-messages-independent-evaluator-v1':
+        from evaluation.modular.messages_evaluator_closure import finalize as messages_finalize
+        return messages_finalize(service=service,panel=panel,journal_path=journal_path,nonce=nonce,receipt_digests=receipt_digests)
     from evaluation.modular.headless_evaluator_model_port import replay_headless_evaluator_ledger
     from research_loop.modular.panel_receipts import FrozenPanel
     # The production worker parses an exact ordinary FrozenPanel or a typed
@@ -185,6 +188,9 @@ def finalize(*, service, panel, journal_path: Path, nonce: str, receipt_digests:
 
 def verify_closure(record: FrozenRecord, *, authority_keys: Mapping[str, bytes], panel, config, provider, nonce: str,
                    receipt_digests: Sequence[str]) -> FrozenRecord:
+    if provider.get('kind') == 'anthropic-messages-independent-evaluator-v1':
+        from evaluation.modular.messages_evaluator_closure import verify_closure as messages_verify
+        return messages_verify(record,authority_keys=authority_keys,panel=panel,config=config,provider=provider,nonce=nonce,receipt_digests=receipt_digests)
     body = verify_signed(record, authority_keys, schema=_SCHEMA)
     expected = [_digest(value, "closure receipt") for value in receipt_digests]
     required = {"schema", "authority", "nonce", "status", "eligible", "panel_digest", "scorer_config_digest",
