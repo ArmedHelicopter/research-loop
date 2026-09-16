@@ -772,7 +772,25 @@ def serve(worker: ScorerWorker, input_stream: TextIO | None = None, output_strea
 class LinkedScorerProcessClient:
     """Sequential stdio client with a local no-retry reservation journal."""
     def __init__(self, *, panel: FrozenPanel, command: list[str], journal_path: Path,
-                 environment: Mapping[str, str] | None = None, response_timeout_seconds: int = 240):
+                 environment: Mapping[str, str] | None = None, response_timeout_seconds: int = 240,
+                 config: ScorerConfig | None = None, task_handle_bindings: Mapping[str, str] | None = None,
+                 execution_authority_keys: Mapping[str, bytes] | None = None,
+                 scorer_authority_keys: Mapping[str, bytes] | None = None,
+                 evaluator_provider: Mapping[str, str] | None = None):
+        ordinary_binding = None
+        optional = (config, task_handle_bindings, execution_authority_keys, scorer_authority_keys, evaluator_provider)
+        if any(value is not None for value in optional):
+            if type(panel) is not FrozenPanel or any(value is None for value in optional):
+                raise ContractError("ordinary headless scorer requires a complete exact FrozenPanel binding")
+            if (not isinstance(evaluator_provider, Mapping) or set(evaluator_provider) != {"kind", "configuration_digest"}
+                    or evaluator_provider.get("kind") != "grok-headless-frozen-evaluator-v1"):
+                raise ContractError("headless evaluator provider descriptor is invalid")
+            _digest(evaluator_provider.get("configuration_digest"), "headless evaluator configuration")
+            binding = scorer_process_binding(panel=panel, config=config, task_handle_bindings=task_handle_bindings,
+                execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys)
+            ordinary_binding = FrozenRecord.from_dict({**binding.data(), "evaluator_provider": dict(evaluator_provider)})
+            self.config, self.evaluator_provider = config, dict(evaluator_provider)
+            self._scorer_authority_keys, self.final_closure = dict(scorer_authority_keys), None
         if not isinstance(panel, (FrozenPanel, CombinationPanel)) or not command or any(not isinstance(item, str) or not item for item in command):
             raise ContractError("scorer process client needs a panel and command")
         if environment is not None and (not isinstance(environment, Mapping)
@@ -791,6 +809,27 @@ class LinkedScorerProcessClient:
         if self.process.stdin is None or self.process.stdout is None:
             raise ContractError("scorer process stdio is unavailable")
         self.input, self.output = self.process.stdin, self.process.stdout
+        if ordinary_binding is not None:
+            nonce = uuid.uuid4().hex
+            request_text = canonical({"schema": "scorer-process-binding-request-v1", "nonce": nonce}) + "\n"
+            response_text = None
+            try:
+                _exchange(self, attempt_id=nonce, phase='reserved', cell_key=None, request_text=request_text)
+                self.input.write(request_text); self.input.flush()
+                response_text = self._readline_bounded()
+                _exchange(self, attempt_id=nonce, phase='received', cell_key=None, request_text=request_text, response_text=response_text)
+                if json.loads(response_text) != {"schema": "scorer-process-binding-response-v1", "nonce": nonce, "binding": ordinary_binding.data()}:
+                    raise ContractError("ordinary headless scorer startup binding differs from frozen configuration")
+                self.binding = ordinary_binding
+                _exchange(self, attempt_id=nonce, phase='authenticated', cell_key=None, request_text=request_text, response_text=response_text)
+            except Exception as exc:
+                try:
+                    _exchange(self, attempt_id=nonce, phase='unknown' if response_text is None else 'rejected', cell_key=None,
+                        request_text=request_text, response_text=response_text, error_type=type(exc).__name__)
+                finally:
+                    self._stop_unknown_worker()
+                if isinstance(exc, ContractError): raise
+                raise ContractError("ordinary headless scorer startup configuration is unavailable") from exc
 
     def close(self) -> None:
         if not self.input.closed:
@@ -838,6 +877,8 @@ class LinkedScorerProcessClient:
         return value if isinstance(value, str) else ""
 
     def submit(self, *, cell_key: tuple[str, ...], linked_input: FrozenRecord) -> ScientificScorerReceipt:
+        if getattr(self, "final_closure", None) is not None:
+            raise ContractError("headless evaluator scorer is finalized")
         if cell_key not in self.cells or not isinstance(linked_input, FrozenRecord):
             raise ContractError("scorer client input is not a frozen panel cell")
         state = self.states.get(canonical(list(cell_key)))
@@ -887,6 +928,72 @@ class LinkedScorerProcessClient:
                   receipt_digest=receipt.content_hash,
                   success_journal_digest=FrozenRecord.from_dict(success).content_hash)
         return ScientificScorerReceipt(cell_key, receipt)
+
+
+    def finalize_headless_evaluator(self, *, receipts) -> FrozenRecord:
+        if getattr(self, "evaluator_provider", None) is None:
+            raise ContractError("scorer client has no declared headless evaluator")
+        if not isinstance(receipts, (tuple, list)) or not receipts:
+            raise ContractError("headless evaluator closure needs ordered scorer receipts")
+        digests = []
+        for receipt in receipts:
+            if not isinstance(receipt, ScientificScorerReceipt) or receipt.cell_key not in self.cells:
+                raise ContractError("headless evaluator closure receipt is foreign")
+            digests.append(receipt.receipt.content_hash)
+        if getattr(self, "final_closure", None) is not None:
+            if self._final_receipt_digests != digests:
+                raise ContractError("headless evaluator finalization receipt sequence differs")
+            nonce = self.final_closure.data()["body"]["nonce"]
+        else:
+            nonce = uuid.uuid4().hex
+        request = {"schema": "headless-evaluator-finalize-request-v1", "nonce": nonce,
+                   "receipt_digests": digests, "evaluator_provider": self.evaluator_provider}
+        # Preserve the Python string handed to the text wrapper and the decoded
+        # string returned by it, not pre-decoding wire bytes. Keep it before
+        # interpretation so malformed or unauthenticated replies remain auditable.
+        request_text = canonical(request) + "\n"
+        evidence = {"schema": "headless-evaluator-client-observation-v1",
+                    "attempt_id": uuid.uuid4().hex, "nonce": nonce,
+                    "panel_digest": self.panel.digest, "scorer_config_digest": self.config.digest,
+                    "evaluator_provider": self.evaluator_provider, "request_sha256": _sha(request_text),
+                    "producer_source_sha256": _sha(Path(__file__).read_bytes()),
+                    "text_representation": "python_text_write_input_and_decoded_read_output"}
+        # Failure here must precede dispatch. An unfinished log is evidence of
+        # an incomplete attempt, never a substitute for a signed closure.
+        _append_headless_client_observation(self, {**evidence, "status": "requested", "request_text": request_text})
+        response_sha256 = None
+        try:
+            self.input.write(request_text); self.input.flush()
+            response_text = self._readline_bounded()
+            response_sha256 = _sha(response_text)
+            _append_headless_client_observation(self, {**evidence, "status": "response_received",
+                "response_text": response_text, "response_sha256": response_sha256,
+                "response_utf8_bytes": len(response_text.encode("utf-8"))})
+            response = json.loads(response_text)
+            if (not isinstance(response, dict) or set(response) != {"schema", "nonce", "closure"}
+                    or response.get("schema") != "headless-evaluator-finalize-response-v1" or response.get("nonce") != nonce):
+                raise ContractError("headless evaluator finalization response differs")
+            from evaluation.modular.headless_evaluator_closure import verify_closure
+            closure = FrozenRecord.from_dict(response["closure"])
+            verify_closure(closure, authority_keys=self._scorer_authority_keys, panel=self.panel, config=self.config,
+                           provider=self.evaluator_provider, nonce=nonce, receipt_digests=digests)
+            if self.final_closure is not None and closure != self.final_closure:
+                raise ContractError("headless evaluator closure changed after finalization")
+        except Exception as exc:
+            try:
+                _append_headless_client_observation(self, {**evidence, "status": "rejected", "error_type": type(exc).__name__,
+                    "response_sha256": response_sha256, "score_eligible": False})
+            except Exception as observation_exc:
+                raise ContractError(f"headless evaluator finalization failed ({type(exc).__name__}); "
+                    f"rejection observation unavailable ({type(observation_exc).__name__})") from exc
+            if isinstance(exc, ContractError):
+                raise
+            raise ContractError("headless evaluator finalization is unavailable") from exc
+        _append_headless_client_observation(self, {**evidence, "status": "authenticated", "closure_digest": closure.content_hash,
+            "response_sha256": response_sha256})
+        self.final_closure = closure
+        self._final_receipt_digests = digests
+        return closure
 
 
 class CombinationScorerProcessClient(LinkedScorerProcessClient):
@@ -972,70 +1079,6 @@ class CombinationScorerProcessClient(LinkedScorerProcessClient):
             raise ContractError("headless evaluator scorer is finalized")
         return super().submit(cell_key=cell_key, linked_input=linked_input)
 
-    def finalize_headless_evaluator(self, *, receipts) -> FrozenRecord:
-        if getattr(self, "evaluator_provider", None) is None:
-            raise ContractError("scorer client has no declared headless evaluator")
-        if not isinstance(receipts, (tuple, list)) or not receipts:
-            raise ContractError("headless evaluator closure needs ordered scorer receipts")
-        digests = []
-        for receipt in receipts:
-            if not isinstance(receipt, ScientificScorerReceipt) or receipt.cell_key not in self.cells:
-                raise ContractError("headless evaluator closure receipt is foreign")
-            digests.append(receipt.receipt.content_hash)
-        if getattr(self, "final_closure", None) is not None:
-            if self._final_receipt_digests != digests:
-                raise ContractError("headless evaluator finalization receipt sequence differs")
-            nonce = self.final_closure.data()["body"]["nonce"]
-        else:
-            nonce = uuid.uuid4().hex
-        request = {"schema": "headless-evaluator-finalize-request-v1", "nonce": nonce,
-                   "receipt_digests": digests, "evaluator_provider": self.evaluator_provider}
-        # Preserve the Python string handed to the text wrapper and the decoded
-        # string returned by it, not pre-decoding wire bytes. Keep it before
-        # interpretation so malformed or unauthenticated replies remain auditable.
-        request_text = canonical(request) + "\n"
-        evidence = {"schema": "headless-evaluator-client-observation-v1",
-                    "attempt_id": uuid.uuid4().hex, "nonce": nonce,
-                    "panel_digest": self.panel.digest, "scorer_config_digest": self.config.digest,
-                    "evaluator_provider": self.evaluator_provider, "request_sha256": _sha(request_text),
-                    "producer_source_sha256": _sha(Path(__file__).read_bytes()),
-                    "text_representation": "python_text_write_input_and_decoded_read_output"}
-        # Failure here must precede dispatch. An unfinished log is evidence of
-        # an incomplete attempt, never a substitute for a signed closure.
-        _append_headless_client_observation(self, {**evidence, "status": "requested", "request_text": request_text})
-        response_sha256 = None
-        try:
-            self.input.write(request_text); self.input.flush()
-            response_text = self._readline_bounded()
-            response_sha256 = _sha(response_text)
-            _append_headless_client_observation(self, {**evidence, "status": "response_received",
-                "response_text": response_text, "response_sha256": response_sha256,
-                "response_utf8_bytes": len(response_text.encode("utf-8"))})
-            response = json.loads(response_text)
-            if (not isinstance(response, dict) or set(response) != {"schema", "nonce", "closure"}
-                    or response.get("schema") != "headless-evaluator-finalize-response-v1" or response.get("nonce") != nonce):
-                raise ContractError("headless evaluator finalization response differs")
-            from evaluation.modular.headless_evaluator_closure import verify_closure
-            closure = FrozenRecord.from_dict(response["closure"])
-            verify_closure(closure, authority_keys=self._scorer_authority_keys, panel=self.panel, config=self.config,
-                           provider=self.evaluator_provider, nonce=nonce, receipt_digests=digests)
-            if self.final_closure is not None and closure != self.final_closure:
-                raise ContractError("headless evaluator closure changed after finalization")
-        except Exception as exc:
-            try:
-                _append_headless_client_observation(self, {**evidence, "status": "rejected", "error_type": type(exc).__name__,
-                    "response_sha256": response_sha256, "score_eligible": False})
-            except Exception as observation_exc:
-                raise ContractError(f"headless evaluator finalization failed ({type(exc).__name__}); "
-                    f"rejection observation unavailable ({type(observation_exc).__name__})") from exc
-            if isinstance(exc, ContractError):
-                raise
-            raise ContractError("headless evaluator finalization is unavailable") from exc
-        _append_headless_client_observation(self, {**evidence, "status": "authenticated", "closure_digest": closure.content_hash,
-            "response_sha256": response_sha256})
-        self.final_closure = closure
-        self._final_receipt_digests = digests
-        return closure
 
 
 def _load(path: Path, expected_sha256: str) -> ScorerServerConfig:
