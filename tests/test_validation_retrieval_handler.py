@@ -110,7 +110,7 @@ def test_q82_off_preserves_unused_provider_budget(tmp_path):
 
 def test_replay_rejects_bad_source_signature_and_final_context_drift(tmp_path):
     task, material, cell, scenario, package, session, _ = _run(tmp_path)
-    with pytest.raises(ContractError, match="signature"):
+    with pytest.raises(ContractError, match="source authority keys differ|signature"):
         replay(cell=cell, task=task, scenario=scenario, package=package, material=material, root=tmp_path / "handler",
             events=[x.data() for x in session._events], dependency_manifest=export_dependencies(_dependencies()), source_keys={"fixture-source": b"x" * 32})
     request = tmp_path / "handler" / "final-request-context.json"
