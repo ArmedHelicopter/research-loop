@@ -1,5 +1,13 @@
 # 模块实验当前状态（2026-09-16 11:40 +08）
 
+**12:14 更新：** 实际 Q6.3 已闭合为 8 单元、0 评分，原生退出 0 仅表示控制器完成收尾；[174 份原件与独立核算](evidence/actual-q63-grok130-r1/README.md)已归档。Q5.1/Q5.2 的 36 单元工程链路已完成，[8147 份原件](evidence/feasibility-linked-engineering-r1/README.md)保留原 r2 的两项测试错误及 r3 零派发补充验证。实际模型效果与 VAL 仍未测量。
+
+本地模型已完成 4 次 CPU 可用性调用和 6 次 Docker 检验；最后一版程序通过 2/2 输入，但模型自报预期计数仍错误。[全部本地尝试](evidence/local-qwen7b-readiness-r1/README.md)独立保留，仅属部分可用性证据。本地 TRAIN transport 的 3 项冻结检查通过，独立 evaluator/scorer/closure 尚未实现。M8 的 9 变体完整集成仍未运行，不能将 projection 提交算作完成。
+
+Messages 实际 actor 的同源码[10 项标签隔离检查](evidence/messages-actual-label-isolation-r1/README.md)已通过。运行 helper 已修正为接受现有额度的有限 token 或金额授权，不再要求新增正额美元付款；禁止充值/付费后备。额度授权仍 pending，金额/总 token 强制限额未建立，未发起真实 supplier prepare/run。
+
+C5 原生会话 45472 仍运行；最近快照为 46 个构建中 40 成功、6 未开始，118 个目标未开始。账户剩余 1%，原 9% 上限不变。完整目标尚未完成；以下保留 11:40 的历史快照。
+
 目标尚未完成。范围保持全部 48 个问题、P0/M1–M9、独立 Q6.3 阶段、全部单模块与条件变体、36 个 pair、5 个 triple、C4 full/LOO 和 C5 TRAIN 选出的组合。单模块阴性不删除组合。问题明细沿用 [48 项接线审计](MODULAR-48Q-REAL-EXECUTION-GAP-AUDIT-20260913.md)；其中 9 月 13 日的运行状态是历史快照，不能当作当前状态。
 
 ## 固定实验边界
