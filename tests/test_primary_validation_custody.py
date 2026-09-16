@@ -240,3 +240,39 @@ def test_verifier_time_mutation_rejected_at_final_readback(tmp_path):
     trusted.verify = mutating_verify
     with pytest.raises(ContractError, match="changed during verification"):
         custodian.replay(panel=panel, lease_id=lease_id, verifier=trusted)
+
+
+def test_qualified_subset_preserves_full_denominator_and_refuses_partial_family(tmp_path):
+    _, _, args, _, qualified, _ = fixture(tmp_path/'initial')
+    audit = args['sealed_audit'].data(); rows = []; groups = []
+    for source in primary.SOURCES:
+        for group_index in range(4):
+            tokens = sorted(digest([source, group_index, item]) for item in range(2))
+            groups.append({'group_sha256': digest({'schema': primary.GROUP_SCHEMA, 'members': tokens}),
+                'member_tokens': tokens, 'member_count': 2, 'known_train_member_count': 0,
+                'source_counts': {name: 2 if name == source else 0 for name in primary.SOURCES}})
+            rows.extend({'token': token, 'source': source, 'forced_train': False} for token in tokens)
+    audit['rows'] = rows
+    split = primary.partition_primary(audit, groups)
+    selected = []
+    for source in primary.SOURCES:
+        selected.append(next(g for g in split['groups'] if g['split'] == 'validation' and g['source_counts'][source]))
+    by_token = {r['token']: r for r in rows}
+    qualified.update(split_digest=digest(split), audit_digest=digest(audit), sources=[
+        {'token': token, 'benchmark': by_token[token]['source'], 'metadata_sha256': digest(['metadata', token]),
+         'csv_sha256': digest(['csv', token]), 'official_split': 'synthetic'}
+        for g in selected for token in g['member_tokens']])
+    excluded = [{'group': g['group_sha256'], 'reason': 'synthetic unsupported source projection'}
+                for g in split['groups'] if g['split'] == 'validation' and g not in selected]
+    qualified['source_evidence_digests'].append(digest(excluded))
+    args.update(private_root=tmp_path/'subset', sealed_split=record(split), sealed_audit=record(audit),
+                qualification=SignedAuthority('qualified', b'q'*32).issue(qualified))
+    custodian = PrimaryValidationCustodian(**args)
+    assert len(custodian.identities()) == 4 and len(custodian._rows) == 16
+    assert sum(r['domain'] == 'validation' and not r['custodian_qualified'] for r in custodian._allocation['rows']) == 4
+    assert custodian.qualification_denominator().data()['benchmarks'] == {
+        name: {'original_heldout': 4, 'qualified_heldout': 2, 'unqualified_heldout': 2} for name in primary.SOURCES}
+    qualified['sources'].pop()
+    args.update(private_root=tmp_path/'partial', qualification=SignedAuthority('qualified', b'q'*32).issue(qualified))
+    with pytest.raises(ContractError, match='whole held-out groups'):
+        PrimaryValidationCustodian(**args)

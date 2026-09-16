@@ -153,10 +153,18 @@ class PrimaryValidationCustodian:
                 raise ContractError("primary validation duplicate or malformed source")
             sources[source["token"]] = source
         held = {row["token"]: row for row in rows if row["domain"] == "validation"}
-        if (set(sources) != set(held) or {r["benchmark"] for r in sources.values()} != set(primary.SOURCES)
-                or any(sources[token]["benchmark"] != row["source"] for token, row in held.items())
-                or any(by_token[token].get("forced_train") is not False for token in held)):
+        if (not set(sources) <= set(held) or {r["benchmark"] for r in sources.values()} != set(primary.SOURCES)
+                or any(sources[token]["benchmark"] != held[token]["source"] for token in sources)
+                or any(by_token[token].get("forced_train") is not False for token in sources)):
             raise ContractError("qualification must cover only the exact held-out primary family")
+        # Input compatibility may qualify a predeclared subset, never a partial
+        # related family. Missing members remain held out and unqualified in
+        # the complete original allocation; the signed source-evidence chain
+        # retains the custodian's exclusion reasons, not optimizer feedback.
+        for group in split['groups']:
+            selected = set(group['member_tokens']) & set(sources)
+            if selected and selected != set(group['member_tokens']):
+                raise ContractError('primary validation qualification must select whole held-out groups')
         freeze = verify_signed(self.freeze, self._freeze_keys, schema="primary-validation-train-freeze-v1")
         fields = {"schema", "authority", "status", "domain", "candidate_digest", "config_digest", "rubric_digest",
                   "selection_rule_digest", "training_receipts_digest", "scorer_digest", "protocol_digest",
@@ -183,7 +191,17 @@ class PrimaryValidationCustodian:
         self._check_state()
         return tuple(DataIdentity(row["source"], row["token"], row["group"], digest(self._inventory),
                                   self._allocation["digest"], "validation")
-                     for row in self._rows if row["domain"] == "validation")
+                     for row in self._rows if row["domain"] == "validation" and row['token'] in self._sources)
+
+    def qualification_denominator(self) -> FrozenRecord:
+        """Aggregate source compatibility accounting, without held-out tokens."""
+        self._check_state()
+        return FrozenRecord.from_dict({'schema': 'primary-validation-source-denominator-v1',
+            'primary_split_digest': self.split.content_hash, 'qualification_digest': self.qualification.content_hash,
+            'benchmarks': {name: {'original_heldout': sum(r['source'] == name and r['domain'] == 'validation' for r in self._rows),
+                                 'qualified_heldout': sum(r['source'] == name and r['token'] in self._sources for r in self._rows),
+                                 'unqualified_heldout': sum(r['source'] == name and r['domain'] == 'validation' and r['token'] not in self._sources for r in self._rows)}
+                           for name in primary.SOURCES}})
 
     def _panel(self, panel):
         self._check_state()

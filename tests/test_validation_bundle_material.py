@@ -62,6 +62,8 @@ def test_validation_material_has_real_two_process_source_measurements_and_replay
     task, csv, material, verifier = materials(tmp_path)
     binding = R({'cell_digest': 'c'*64, 'scenario_digest': 'd'*64})
     source = tmp_path / 'cell' / 'source.json'
+    assert 'research_loop/modular/validation_bundle_material.py' in verifier.binding().data()['implementation_sources']
+    assert verifier.request(material.admission, binding).data()['consumer_binding_digest'] == verifier.binding().content_hash
     verifier.qualify(material.admission, source, cell_binding=binding)
     assessments = verifier.assessments(material.admission, source, cell_binding=binding)
     assert assessments['before']['rows']['state']['validity'] == 'valid'

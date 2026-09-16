@@ -100,9 +100,11 @@ def retrieval_panel_injection(experiment: str, variant: str, *, task: FrozenReco
     return {"schema": "retrieval-panel-controller-v1", "bundle": remade.data()}
 
 
-def _select_sources(provider, session, docs, query, budget, experiment, variant, enabled):
+def _select_sources(provider, session, docs, query, budget, experiment, variant, enabled, *, material_domain='train'):
     """Equal total opportunities; policies allocate calls across lanes before I/O."""
-    source_bundle = FrozenSourceBundle("public-train-retrieval-pool-v1", docs)
+    if material_domain not in {'train', 'validation'}:
+        raise ContractError('retrieval material domain must be explicit')
+    source_bundle = FrozenSourceBundle('public-'+material_domain+'-retrieval-pool-v1', docs)
     recorded = RecordedRetrievalProvider(provider, session, provider_calls=budget["provider_calls"], source_cap=budget["source_cap"])
     # Q8.2 off receives no external material. The same allowance is recorded unused.
     policy_name = variant if enabled and experiment == "Q8.3" else "neutral"
@@ -113,7 +115,7 @@ def _select_sources(provider, session, docs, query, budget, experiment, variant,
     by_lane = {lane: [] for lane in LANES}
     result = {"source_bundle_digest": source_bundle.content_hash,
               "policy_digest": FrozenRecord.from_dict({"policy": policy_name, "budget": budget, "source_context_enabled": enabled or experiment == "Q8.3"}).content_hash,
-              "by_lane": by_lane, "source_qualification": "caller_declared_public_train_unvalidated",
+              "by_lane": by_lane, "source_qualification": 'caller_declared_public_'+material_domain+'_unvalidated',
               "scientific_admission": False}
     seen, dropped, excluded = set(), set(), []
     for ordinal in range(budget["provider_calls"]):

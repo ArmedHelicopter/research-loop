@@ -4,6 +4,8 @@ These inputs describe a fixed diagnostic on one already leased task. No API
 selects a strategy, changes a learned package or exports observations to TRAIN.
 """
 from dataclasses import dataclass
+from pathlib import Path
+import hashlib
 
 from research_loop.modular.admission_combination import FrozenAdmissionMaterial, _validate_admission_record
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask
@@ -29,6 +31,21 @@ class ValidationAdmissionMaterial(FrozenAdmissionMaterial):
 class ValidationCsvMeasurementVerifier(CsvMeasurementAdmissionMaterialVerifier):
     material_type = ValidationAdmissionMaterial
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._implementation_sources = self._sources()
+
+    @staticmethod
+    def _sources():
+        root = Path(__file__).resolve().parents[2]
+        names = ('research_loop/modular/validation_bundle_material.py',
+                 'research_loop/modular/csv_measurement_authorities.py',
+                 'research_loop/modular/admission_combination.py',
+                 'research_loop/modular/lineage_combination_material.py',
+                 'research_loop/modular/material_qualification_artifacts.py',
+                 'evaluation/modular/linked_scoring.py', 'evaluation/modular/combination_scoring.py')
+        return {name: hashlib.sha256((root/name).read_bytes()).hexdigest() for name in names}
+
     def _require_domain(self, request):
         ValidationAdmissionMaterial(R(request.data()['material']))
         if DataIdentity.parse(request.data()['material']['identity']).domain != 'validation':
@@ -37,6 +54,14 @@ class ValidationCsvMeasurementVerifier(CsvMeasurementAdmissionMaterialVerifier):
     def binding(self):
         body = super().binding().data()
         body['domain_contract'] = 'fixed-validation-csv-measurement-v1'
+        body['implementation_sources'] = self._sources()
+        if body['implementation_sources'] != getattr(self, '_implementation_sources', body['implementation_sources']):
+            raise ContractError('validation source verifier implementation changed')
+        return R(body)
+
+    def request(self, material, cell_binding):
+        body = super().request(material, cell_binding).data()
+        body['consumer_binding_digest'] = self.binding().content_hash
         return R(body)
 
 
@@ -99,9 +124,41 @@ def validation_retrieval(session, task, material, provider, enabled):
     session._record('validation_retrieval_binding', {'material_digest': material.content_hash,
         'original_sources_digest': R({'sources': body['original_sources']}).content_hash})
     projection, usage = _select_sources(provider, session, docs, body['query'], BUDGET,
-                                        'Q8.3', 'three_lane', enabled)
+                                        'Q8.3', 'three_lane', enabled, material_domain='validation')
     session._record('retrieval_review_sources', {'projection': projection, 'usage': usage})
     return public_retrieval(projection)
+
+
+def replay_validation_retrieval(events, task, material, enabled):
+    """Reconstruct the existing retrieval kernel from recorded item returns."""
+    observed = [(e['stage'], e['data']) for e in events
+                if e['stage'].startswith('q8_') or e['stage'] in ('validation_retrieval_binding', 'retrieval_review_sources')]
+    calls = []; current = None
+    known = {R(doc.data()).content_hash: doc for doc in _docs(material.data()['sources'])}
+    for stage, data in observed:
+        if stage == 'q8_retrieval_request':
+            current = []; calls.append(current)
+        elif stage == 'q8_retrieval_item':
+            if current is None or data['source_digest'] not in known:
+                raise ContractError('validation retrieval returned an unbound source')
+            current.append(known[data['source_digest']])
+        elif stage == 'q8_retrieval_result': current = None
+        elif stage == 'q8_retrieval_failure':
+            raise ContractError('failed retrieval cannot produce a scored fixed target')
+    class Journal:
+        def __init__(self): self.rows = []
+        def _record(self, stage, data): self.rows.append((stage, data))
+    class Replayer:
+        def __init__(self): self.cursor = 0
+        def search(self, **unused):
+            if self.cursor >= len(calls): raise ContractError('validation retrieval has missing returns')
+            rows = calls[self.cursor]; self.cursor += 1
+            return rows
+    journal, provider = Journal(), Replayer()
+    result = validation_retrieval(journal, task, material, provider, enabled)
+    if journal.rows != observed or provider.cursor != len(calls):
+        raise ContractError('validation retrieval policy or original event replay differs')
+    return result
 
 
 @dataclass(frozen=True)
