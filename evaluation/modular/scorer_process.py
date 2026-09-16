@@ -26,6 +26,7 @@ from evaluation.modular.combination_scoring import CombinationAdaptedScoringServ
 from evaluation.modular.reference_store import FrozenTrainReferenceResolver
 from evaluation.modular.scoring_service import FrozenBenchmarkRubricEndpoint, FrozenRubricTransport, ScorerConfig
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
+from research_loop.modular.grok_headless_transport import HEADLESS_TRAIN_TIMEOUT_MAX_SECONDS
 from research_loop.modular.combination_panels import CombinationPanel
 from research_loop.modular.model_port import FrozenBaseContextPolicy
 from research_loop.modular.panel_receipts import CombinationObligations, FrozenPanel, PanelCell, ScientificScorerReceipt
@@ -342,7 +343,7 @@ def _headless_evaluator_material(spec: Mapping[str, object], *, rubric_mode: str
     versioned_required = required | {"native_deployment"}
     if (set(spec) not in (required, versioned_required) or spec.get("provider_kind") != "grok-headless-frozen-evaluator-v1"
             or spec.get("model") != "grok-4.6" or spec.get("effort") != "low"
-            or type(spec.get("timeout_seconds")) is not int or not 1 <= spec["timeout_seconds"] <= 240
+            or type(spec.get("timeout_seconds")) is not int or not 1 <= spec["timeout_seconds"] <= HEADLESS_TRAIN_TIMEOUT_MAX_SECONDS
             or not isinstance(spec.get("frozen_files"), Mapping) or not spec["frozen_files"]):
         raise ContractError("production headless evaluator configuration is invalid")
     for name in ("max_calls", "max_tokens"):

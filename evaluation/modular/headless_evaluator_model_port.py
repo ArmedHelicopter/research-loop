@@ -12,7 +12,8 @@ from typing import Any, Mapping
 from evaluation.modular.scoring_service import FrozenBenchmarkRubricEndpoint
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.grok_acp_transport import MODEL, diagnostic_config
-from research_loop.modular.grok_headless_transport import HeadlessResult, run_headless_diagnostic, verify_headless_request_binding
+from research_loop.modular.grok_headless_transport import (HEADLESS_TRAIN_TIMEOUT_MAX_SECONDS, HeadlessResult,
+    run_headless_diagnostic, verify_headless_request_binding)
 from research_loop.modular.grok_native_deployment import checked_headless_train_deployment
 from research_loop.modular.model_port import _validate_schema
 from research_loop.ontology import ContractError, canonical
@@ -106,7 +107,7 @@ class GrokHeadlessEvaluatorModelPort:
         if (rubric_mode not in {"primary_v1", "lineage_v1"} or not isinstance(evaluator_id, str) or not evaluator_id
                 or not isinstance(evaluator_version, str) or not evaluator_version or type(max_calls) is not int
                 or max_calls < 1 or type(max_tokens) is not int or max_tokens < 1
-                or type(timeout_seconds) is not int or not 1 <= timeout_seconds <= 240
+                or type(timeout_seconds) is not int or not 1 <= timeout_seconds <= HEADLESS_TRAIN_TIMEOUT_MAX_SECONDS
                 or not isinstance(account_read_recovery, Mapping) or dict(account_read_recovery) != RECOVERY
                 or type(account_read_recovery.get("max_attempts")) is not int):
             raise ContractError("invalid headless evaluator configuration")
@@ -313,7 +314,7 @@ class GrokHeadlessEvaluatorModelPort:
 
 
 def _verify_live_config(port: GrokHeadlessEvaluatorModelPort) -> dict[str, Any]:
-    if type(port.timeout_seconds) is not int or not 1 <= port.timeout_seconds <= 240:
+    if type(port.timeout_seconds) is not int or not 1 <= port.timeout_seconds <= HEADLESS_TRAIN_TIMEOUT_MAX_SECONDS:
         raise ContractError("headless evaluator timeout drifted")
     frozen = port._config_record.data()
     expected = {"provider_kind": port.provider_kind, "request_contract": _REQUEST_SCHEMA,

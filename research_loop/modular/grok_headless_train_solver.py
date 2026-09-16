@@ -11,7 +11,8 @@ from typing import Any, Mapping
 
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.grok_acp_transport import MODEL, TRAIN_OPPORTUNITY_CONTRACT, diagnostic_config
-from research_loop.modular.grok_headless_transport import HeadlessResult, run_headless_diagnostic, verify_headless_request_binding
+from research_loop.modular.grok_headless_transport import (HEADLESS_TRAIN_TIMEOUT_MAX_SECONDS, HeadlessResult,
+    run_headless_diagnostic, verify_headless_request_binding)
 from research_loop.modular.grok_native_deployment import checked_headless_train_deployment
 from research_loop.modular.model_port import _schema_witness, _validate_schema
 from research_loop.ontology import ContractError, canonical
@@ -62,8 +63,8 @@ def _source_pins(deployment=None) -> dict[str, str]:
 
 def validate_headless_train_timeout(seconds: int) -> int:
     """Freeze an integer per-call limit within the existing transport maximum."""
-    if type(seconds) is not int or not 1 <= seconds <= 240:
-        raise ContractError("headless TRAIN timeout must be an integer from 1 to 240 seconds")
+    if type(seconds) is not int or not 1 <= seconds <= HEADLESS_TRAIN_TIMEOUT_MAX_SECONDS:
+        raise ContractError(f"headless TRAIN timeout must be an integer from 1 to {HEADLESS_TRAIN_TIMEOUT_MAX_SECONDS} seconds")
     return seconds
 
 

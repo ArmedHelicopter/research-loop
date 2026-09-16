@@ -43,6 +43,9 @@ INSPECT_EMPTY_COLLECTIONS = ('skills', 'hooks', 'plugins', 'mcpServers', 'projec
 # rereader, so it is a per-attempt frozen transport policy rather than ambient
 # timing.
 ACCOUNT_PRELAUNCH_MAX_AGE_SECONDS = 35
+# The transport remains 240 seconds by default.  Explicit frozen TRAIN
+# configurations may request up to this bounded maximum.
+HEADLESS_TRAIN_TIMEOUT_MAX_SECONDS = 600
 
 
 @dataclass(frozen=True)
@@ -427,7 +430,7 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
     _require(type(main_output_cap) is int and main_output_cap > 0
         and type(observed_main_token_cap) is int and observed_main_token_cap >= main_output_cap
         and type(input_byte_cap) is int and 0 < len(prompt.encode()) <= input_byte_cap
-        and type(timeout) in (int, float) and 0 < timeout <= 240, 'headless request bounds')
+        and type(timeout) in (int, float) and 0 < timeout <= HEADLESS_TRAIN_TIMEOUT_MAX_SECONDS, 'headless request bounds')
     _require(reasoning_effort is None or reasoning_effort in ALLOWED_REASONING_EFFORTS,
         'unsupported headless reasoning effort')
     recovery = _recovery(account_read_recovery)
@@ -631,6 +634,9 @@ def _verify_headless_request_binding(result, entry, directory, spec, frozen_file
              or (recovery is not None and _recovery(recovery) == bound.get('account_read_recovery') == receipt.get('account_read_recovery')
                  and receipt['schema'] == RECOVERY_RECEIPT_SCHEMA), 'account recovery contract binding')
     expected_effort = spec.get('reasoning_effort')
+    _require(type(spec.get('timeout_seconds')) is int
+        and 0 < spec['timeout_seconds'] <= HEADLESS_TRAIN_TIMEOUT_MAX_SECONDS,
+        'native timeout bounds')
     context = bound['context']
     _require(context.get('reasoning_effort') == expected_effort
         and spec['native_context'].get('reasoning_effort') == expected_effort
