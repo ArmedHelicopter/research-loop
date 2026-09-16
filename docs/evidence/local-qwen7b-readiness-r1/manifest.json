@@ -1,0 +1,342 @@
+{
+  "schema": "separate-local-readiness-v1",
+  "model_series": "local/qwen2.5-7b-instruct-q4_K_M",
+  "members": [
+    {
+      "name": "r1/model-show.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r1\\model-show.json",
+      "sha256": "fad138a33ce41616b1859732dda671125b7a8cd20a9d3d4497442df0948cf36f"
+    },
+    {
+      "name": "r1/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r1\\receipt.json",
+      "sha256": "85d5a53ef46febc71958f8e74091066e5c52d89b66f5da42817a646b24bf9b0e"
+    },
+    {
+      "name": "r1/request.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r1\\request.json",
+      "sha256": "ed8c6717c16513129d96296bb6f00cb4c4ffca6bcd013c76f6dad3e1971e8621"
+    },
+    {
+      "name": "r1/reservation.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r1\\reservation.json",
+      "sha256": "d134b5e1b4dcff1ed08eacc66c5d89c2bb41791a403b70b04d5681d3adf63ca9"
+    },
+    {
+      "name": "r1/response.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r1\\response.json",
+      "sha256": "8533d4f64574167ad43d468db8fc64e4aa07e5f142b1ff63fd921eb2d333ac72"
+    },
+    {
+      "name": "r1/runtime-observation-r1.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r1\\runtime-observation-r1.json",
+      "sha256": "3fee936c91b19e7a91bd9b4f554346fcb07dca3c115cc5e703c96377561bf417"
+    },
+    {
+      "name": "r2/answer.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2\\answer.json",
+      "sha256": "ff4014aff8a8376048965d08caa279644ebdb2661437087def150f7bb557504d"
+    },
+    {
+      "name": "r2/execution-verification/given/public_csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2\\execution-verification\\given\\public_csv",
+      "sha256": "c3bf99486a626ed953c739dc62ed8f269a2d50e8f905ed663c4ae05e6b8206cd"
+    },
+    {
+      "name": "r2/execution-verification/given/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2\\execution-verification\\given\\receipt.json",
+      "sha256": "59365978e341566bcba6523f837378b8f8562d3ab7d0e276029e58ce8f29668e"
+    },
+    {
+      "name": "r2/execution-verification/given/stderr.txt",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2\\execution-verification\\given\\stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "r2/execution-verification/given/stdout.txt",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2\\execution-verification\\given\\stdout.txt",
+      "sha256": "f8c82e9c286acfa1440d17e698d25e08c23a8dc1cb65727c7b35d2cc01329e22"
+    },
+    {
+      "name": "r2/execution-verification/missing/public_csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2\\execution-verification\\missing\\public_csv",
+      "sha256": "541a59965cbb2078a50b59f28cf4b1d41bf3edb3e34a3e2afb8632958dcd51a3"
+    },
+    {
+      "name": "r2/execution-verification/missing/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2\\execution-verification\\missing\\receipt.json",
+      "sha256": "fe5541ed9f6fd30182beb2d1e6787281c8bce5abff8e7a61d022827b9c4dd128"
+    },
+    {
+      "name": "r2/execution-verification/missing/stderr.txt",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2\\execution-verification\\missing\\stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "r2/execution-verification/missing/stdout.txt",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2\\execution-verification\\missing\\stdout.txt",
+      "sha256": "f8c82e9c286acfa1440d17e698d25e08c23a8dc1cb65727c7b35d2cc01329e22"
+    },
+    {
+      "name": "r2/execution-verification/program.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2\\execution-verification\\program.py",
+      "sha256": "b66c473afdc8b366b9f3851abe37ba8432c7e496545e9b267d59f87d4443557a"
+    },
+    {
+      "name": "r2/execution-verification.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2\\execution-verification.json",
+      "sha256": "fd3b53e36961113eaa5ee7a273c49820b277e773124de879068d748f133c5a68"
+    },
+    {
+      "name": "r2/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2\\receipt.json",
+      "sha256": "54f28fb755803c303e4fee5ab4e75dfcf15e021bd727c98d754e775cba11aba4"
+    },
+    {
+      "name": "r2/request.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2\\request.json",
+      "sha256": "acb42b5e2edb5a8c04a56c2867ca4d99979b861535ab650426b1ccf11ce00a11"
+    },
+    {
+      "name": "r2/reservation.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2\\reservation.json",
+      "sha256": "139f02562b4602dd05b886872958e10e5d34c992515cdce645d1cdd0e3647b8b"
+    },
+    {
+      "name": "r2/response.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2\\response.json",
+      "sha256": "7c60522cab9ae8ad6475cd9891e8ec2b8e021222cd14d1e308ba0b7590ad7be9"
+    },
+    {
+      "name": "r3/answer.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3\\answer.json",
+      "sha256": "900b5a34491627c5bad4e7ef4a34ad477beadd8bd32754f9a2ba759f0c1e35d7"
+    },
+    {
+      "name": "r3/execution-verification/given/public_csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3\\execution-verification\\given\\public_csv",
+      "sha256": "c3bf99486a626ed953c739dc62ed8f269a2d50e8f905ed663c4ae05e6b8206cd"
+    },
+    {
+      "name": "r3/execution-verification/given/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3\\execution-verification\\given\\receipt.json",
+      "sha256": "325d9cd785c70587075ff22547e5553634d03fdbc9f1df8c51af591f621757ab"
+    },
+    {
+      "name": "r3/execution-verification/given/stderr.txt",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3\\execution-verification\\given\\stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "r3/execution-verification/given/stdout.txt",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3\\execution-verification\\given\\stdout.txt",
+      "sha256": "34fbf49a9b61be8297c8ca9e37709706a3004c33ca8a62651b8788631ebdf7a4"
+    },
+    {
+      "name": "r3/execution-verification/missing/public_csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3\\execution-verification\\missing\\public_csv",
+      "sha256": "541a59965cbb2078a50b59f28cf4b1d41bf3edb3e34a3e2afb8632958dcd51a3"
+    },
+    {
+      "name": "r3/execution-verification/missing/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3\\execution-verification\\missing\\receipt.json",
+      "sha256": "1db37b400f285cca36b7def44e0c8b774ffe97196d2c3fac5c857b64985a728b"
+    },
+    {
+      "name": "r3/execution-verification/missing/stderr.txt",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3\\execution-verification\\missing\\stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "r3/execution-verification/missing/stdout.txt",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3\\execution-verification\\missing\\stdout.txt",
+      "sha256": "68fd75d8de8b416ef5d84764221b7955fe74a8088a7c765e81a3047ac318ee5e"
+    },
+    {
+      "name": "r3/execution-verification/program.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3\\execution-verification\\program.py",
+      "sha256": "94e31ced05d4c9e84d74286abe96ae39d3def1f6d13c54db3304c26c8a8372d3"
+    },
+    {
+      "name": "r3/execution-verification.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3\\execution-verification.json",
+      "sha256": "ec06e6a2b4154bafdca6c3e28aa991a2d12b201660582986f325e2d902d5daf7"
+    },
+    {
+      "name": "r3/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3\\receipt.json",
+      "sha256": "a41e4a1af9ebbe97e994151bdb2aa4b96658d1764e1e7a56d3194a08e5aa3056"
+    },
+    {
+      "name": "r3/request.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3\\request.json",
+      "sha256": "f3a688f8161c7736dea491736d5e4b93a8ad86fc69649306dc095a54b52f874d"
+    },
+    {
+      "name": "r3/reservation.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3\\reservation.json",
+      "sha256": "9be43ceeeb4bae91e8bdc92ec0cec5248c47485aab303fc062679ffd2d8d01e8"
+    },
+    {
+      "name": "r3/response.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3\\response.json",
+      "sha256": "2ec7c8ca9820b9270965076952c37779dd9305db3d6e2dfd70a4b85326a7a4af"
+    },
+    {
+      "name": "r4/answer.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4\\answer.json",
+      "sha256": "3d16302bc2d43b6faabda2461564bb3344488c9ef740b90ebc144566f231da62"
+    },
+    {
+      "name": "r4/execution-verification/given/public_csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4\\execution-verification\\given\\public_csv",
+      "sha256": "c3bf99486a626ed953c739dc62ed8f269a2d50e8f905ed663c4ae05e6b8206cd"
+    },
+    {
+      "name": "r4/execution-verification/given/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4\\execution-verification\\given\\receipt.json",
+      "sha256": "13c7fea65f67163ca492ef22c4f61609a0042ced24f5938bcc79ac6e3816e3ca"
+    },
+    {
+      "name": "r4/execution-verification/given/stderr.txt",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4\\execution-verification\\given\\stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "r4/execution-verification/given/stdout.txt",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4\\execution-verification\\given\\stdout.txt",
+      "sha256": "34fbf49a9b61be8297c8ca9e37709706a3004c33ca8a62651b8788631ebdf7a4"
+    },
+    {
+      "name": "r4/execution-verification/missing/public_csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4\\execution-verification\\missing\\public_csv",
+      "sha256": "541a59965cbb2078a50b59f28cf4b1d41bf3edb3e34a3e2afb8632958dcd51a3"
+    },
+    {
+      "name": "r4/execution-verification/missing/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4\\execution-verification\\missing\\receipt.json",
+      "sha256": "0cd80841953a4bd9987debb2f00e9d64672496b587f1f42b775742125c2b3447"
+    },
+    {
+      "name": "r4/execution-verification/missing/stderr.txt",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4\\execution-verification\\missing\\stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "r4/execution-verification/missing/stdout.txt",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4\\execution-verification\\missing\\stdout.txt",
+      "sha256": "6c2609a3c72b9ea4cdf7bdd96d985d4799646ca2c584340dfb3846e1134da492"
+    },
+    {
+      "name": "r4/execution-verification/program.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4\\execution-verification\\program.py",
+      "sha256": "c71cc995d445c410feebfd2eb8a011b43451603b80ca8f92c5796a1b6c05087f"
+    },
+    {
+      "name": "r4/execution-verification.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4\\execution-verification.json",
+      "sha256": "da4ec7b37e97084f3951a39f17cee0c2cee59666c0b4193d070c6ba4a3125cf7"
+    },
+    {
+      "name": "r4/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4\\receipt.json",
+      "sha256": "4a76db3de246d1ed790951a91d62dcc26c73dd77280239d36a18d6fc1428986b"
+    },
+    {
+      "name": "r4/request.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4\\request.json",
+      "sha256": "97b84d161a376b7eccdd95a68402d705fa33eecb2aedbfa03c1f9fa3c090c8fd"
+    },
+    {
+      "name": "r4/reservation.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4\\reservation.json",
+      "sha256": "a8b176ae7763d844dd3683ee45af5f1e36c2f5c2ea1497eaeed18e94937bebc8"
+    },
+    {
+      "name": "r4/response.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4\\response.json",
+      "sha256": "984c42f5b77628e9ebc5e852bf8fed25482dc3d8ca95bfc5ab2c242acb3c6469"
+    },
+    {
+      "name": "receipts/local-qwen7b-model-binding-r1.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-model-binding-r1.json",
+      "sha256": "b5732cf090107e73f1d391d28ead90381d39bfc7f97d63e35cbdac205c6dbbcb"
+    },
+    {
+      "name": "receipts/probe_local_qwen7b_r1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\probe_local_qwen7b_r1.py",
+      "sha256": "0ee0540d8fd2ee409d120e7c8049350c6a31ff75684fe68fecbf63ddb490783f"
+    },
+    {
+      "name": "receipts/probe_local_qwen7b_structured_r2.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\probe_local_qwen7b_structured_r2.py",
+      "sha256": "3ea045b65190abadb649ae02d6a3f8d43d07cb48c84f6cd1a4c8887149fab346"
+    },
+    {
+      "name": "receipts/probe_local_qwen7b_structured_r3.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\probe_local_qwen7b_structured_r3.py",
+      "sha256": "c0cbef649b0534c11baa8e87d0551a2d0af2c9acdb4207d616efc0c3dd3ee8e6"
+    },
+    {
+      "name": "receipts/probe_local_qwen7b_structured_r4.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\probe_local_qwen7b_structured_r4.py",
+      "sha256": "5116d3636fd0dcd1db2edf1fc88571029740408d59bbc4fea202b31cedfadf96"
+    },
+    {
+      "name": "receipts/local-model-runtime-r1/materialized-qwen7b-r1.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-model-runtime-r1\\materialized-qwen7b-r1.json",
+      "sha256": "b9399ce3e8db4b611037bd3fd27ebf407e2f8cd219429e446f68608d9ab38c44"
+    },
+    {
+      "name": "receipts/local-qwen7b-selection-r2-native-start.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2-native-start.json",
+      "sha256": "4e4e2f7e0c4b177c0dd9be3cac270d1f5a970d990ad145e11443a3bcda661f56"
+    },
+    {
+      "name": "receipts/local-qwen7b-selection-r2-native-join-original.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r2-native-join-original.json",
+      "sha256": "fb2d6f96bd098ce796affc2ad5db400372313e0e5cf0255afd5d3e84b5cc551c"
+    },
+    {
+      "name": "receipts/local-qwen7b-selection-r3-native-start.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3-native-start.json",
+      "sha256": "9480f2fd35ccbdd1d638c94cfb7158f8cbe3b47776fc6f8ddee573ff281d9fd1"
+    },
+    {
+      "name": "receipts/local-qwen7b-selection-r3-native-join-original.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r3-native-join-original.json",
+      "sha256": "549fa14cddc71551dedd7d73f642aa60a0f8b27e757449b1c58344b38e1e9a53"
+    },
+    {
+      "name": "receipts/local-qwen7b-selection-r4-native-start.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4-native-start.json",
+      "sha256": "e0b189b1ef0ad5a38d133f510ee79451f7a3f8266fe4db77b9cbd687821750ab"
+    },
+    {
+      "name": "receipts/local-qwen7b-selection-r4-native-join-original.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-selection-r4-native-join-original.json",
+      "sha256": "000b53ef021937bef9d08287c305fa5f84ab19ba595ffa06ccea404c68d3b4c1"
+    },
+    {
+      "name": "receipts/local-qwen7b-readiness-r1-native-start.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-readiness-r1-native-start.json",
+      "sha256": "3b904b7ee884698c48fd4f9d7fd2be1a5b1865a73674a0cce709ef8374a855e6"
+    },
+    {
+      "name": "receipts/local-qwen7b-readiness-r1-native-join-original.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-readiness-r1-native-join-original.json",
+      "sha256": "47170b62ace3bc9ba56b8aee728a84bc5de12bf07579c1730df945e4f9744df4"
+    },
+    {
+      "name": "receipts/local-qwen7b-import-materialized-r1-native-start.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-import-materialized-r1-native-start.json",
+      "sha256": "a0088b295b7f2d51934926ea768f8ad9bb2f1ac1ef9264edfee7c5c123cfa1a4"
+    },
+    {
+      "name": "receipts/local-qwen7b-import-materialized-r1-native-join-original.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\local-qwen7b-import-materialized-r1-native-join-original.json",
+      "sha256": "a839a8431caa068425074abe94843d837c6fc47ef2ed75ca48171eb80c1e243e"
+    }
+  ],
+  "zip_sha256": "a67e61d1105fe6863307aa2aeaf9ce5324bc0483e62f4e85df21d2de0d085557"
+}

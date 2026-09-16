@@ -1,0 +1,73 @@
+{
+  "model_calls": 4,
+  "actual_api_spend": 0,
+  "attempts": [
+    {
+      "attempt": 1,
+      "schema_accepted": false,
+      "usage": {
+        "input_tokens": 141,
+        "output_tokens": 356
+      },
+      "elapsed_seconds": 63.375,
+      "docker_passed": null,
+      "docker_total": 0,
+      "declared_expected_matches": null
+    },
+    {
+      "attempt": 2,
+      "schema_accepted": true,
+      "usage": {
+        "prompt_eval_count": 141,
+        "eval_count": 358,
+        "load_duration": 126678100,
+        "prompt_eval_duration": 78769400,
+        "eval_duration": 29316368100,
+        "total_duration": 36160544300
+      },
+      "elapsed_seconds": 36.25,
+      "docker_passed": 1,
+      "docker_total": 2,
+      "declared_expected_matches": null
+    },
+    {
+      "attempt": 3,
+      "schema_accepted": true,
+      "usage": {
+        "prompt_eval_count": 224,
+        "eval_count": 273,
+        "load_duration": 74903500,
+        "prompt_eval_duration": 2687798600,
+        "eval_duration": 23500757000,
+        "total_duration": 31118333800
+      },
+      "elapsed_seconds": 31.172,
+      "docker_passed": 1,
+      "docker_total": 2,
+      "declared_expected_matches": true
+    },
+    {
+      "attempt": 4,
+      "schema_accepted": true,
+      "usage": {
+        "prompt_eval_count": 261,
+        "eval_count": 277,
+        "load_duration": 71272600,
+        "prompt_eval_duration": 2554892000,
+        "eval_duration": 22701144900,
+        "total_duration": 29914856100
+      },
+      "elapsed_seconds": 29.969,
+      "docker_passed": 2,
+      "docker_total": 2,
+      "declared_expected_matches": false
+    }
+  ],
+  "latest_program_docker_passes": 2,
+  "latest_program_docker_denominator": 2,
+  "latest_declared_expected_stdout_correct": false,
+  "benchmark_effect_measured": false,
+  "validation_opened": false,
+  "readiness_state": "partial; executable program tests pass but declared prediction remains wrong",
+  "optimization_data": "synthetic readiness TRAIN examples only; no held-out acceptance claim"
+}
