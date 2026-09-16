@@ -110,19 +110,15 @@ def test_all_twelve_cells_reach_native_solve_live_docker_private_score_and_signe
         from evaluation.modular.headless_evaluator_closure import finalize
         journal=[json.loads(line) for line in (tmp_path/'worker.jsonl').read_text(encoding='utf-8').splitlines()]
         altered=[]
-        for item in journal:
+        for index,item in enumerate(journal):
             if item['status']=='succeeded':
                 wrong={**item['receipt']['body'],'schema':'combination-adapted-scored-cell-v1'}
                 item={**item,'receipt':SCORER.issue(wrong).data()}
+                journal[index]=item
                 altered.append(FrozenRecord.from_dict(item['receipt']).content_hash)
         wrong_journal=tmp_path/'wrong-family.jsonl'
-        wrong_journal.write_text(''.join(canonical(item)+'\n' for item in journal),encoding='utf-8')
         # Keep the real worker journal unchanged; a second independent reader
         # rejects even correctly signed receipts from the wrong panel family.
-        for index,item in enumerate(journal):
-            if item['status']=='succeeded':
-                journal[index]={**item,'receipt':SCORER.issue({**item['receipt']['body'],
-                    'schema':'combination-adapted-scored-cell-v1'}).data()}
         wrong_journal.write_text(''.join(canonical(item)+'\n' for item in journal),encoding='utf-8')
         verifier=build_service(parse_server_config(value['server']))
         with pytest.raises(ContractError,match='untrusted authority receipt'):
