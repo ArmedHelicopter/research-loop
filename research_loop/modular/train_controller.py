@@ -37,7 +37,7 @@ from research_loop.modular.protocol_panel_driver import (ProtocolAuditPort, Prot
     verify_protocol_replay_receipt, _no_links)
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.modular.train_provider_preflight import (native_envelope, native_fields,
-    response_schemas, validate_native_declaration, native_provider_preflight)
+    response_schemas, validate_native_declaration, native_provider_preflight, native_provider_type)
 from research_loop.modular.ordinary_provider import (model_root as provider_root, provider_scope,
     provider_usage, bind_singleton_originals, final_provider_gate)
 from research_loop.modular.phase_provider import PhaseProviderSession
@@ -230,7 +230,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
         raise ContractError("trusted typed controller inputs required")
     data = config.data()
     native = native_envelope(data, 'singleton')
-    native_provider = GrokHeadlessTrainProvider if native and data.get('provider',{}).get('provider_kind')=='grok-headless-public-train-v1' else GrokTrainProvider
+    native_provider = native_provider_type(data['provider']['provider_kind']) if native else None
     if (not (type(model) is native_provider if native else isinstance(model, CodexModelPort))
             or not isinstance(audit_verifier, AuditVerifier)):
         raise ContractError("controller requires the real model port and trusted audit verifier")
