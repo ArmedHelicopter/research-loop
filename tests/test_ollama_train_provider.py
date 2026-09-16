@@ -16,7 +16,7 @@ SCHEMA={'type':'object','properties':{'ok':{'type':'boolean'}},'required':['ok']
 DIGEST='405af0433597057d18d68ef22b3f1a1ae7d67f2329aeb85f4d468bc07e83f182'
 
 @contextmanager
-def server(*, malformed=False):
+def server(*, malformed=False, mismatch=False):
     calls=[]
     class Handler(BaseHTTPRequestHandler):
         def log_message(self,*args): pass
@@ -27,6 +27,8 @@ def server(*, malformed=False):
             assert body['messages'][0]['content'].startswith(PREFIX)
             response={'model':'research-loop-qwen25-7b-q4-r1:latest','message':{'role':'assistant','content':'not-json' if malformed else '{"ok":true}'},'done':True,'done_reason':'stop','prompt_eval_count':11,'eval_count':7,'total_duration':100,'load_duration':0,'prompt_eval_duration':10,'eval_duration':20}
             data=json.dumps(response).encode();self.send_response(200);self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data)
+        def do_GET(self):
+            assert self.path=='/api/tags';data=json.dumps({'models':[{'name':'research-loop-qwen25-7b-q4-r1:latest','digest':'0'*64 if mismatch else DIGEST}]}).encode();self.send_response(200);self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data)
     http=ThreadingHTTPServer(('127.0.0.1',0),Handler);thread=threading.Thread(target=http.serve_forever,daemon=True);thread.start()
     try: yield f'http://127.0.0.1:{http.server_port}/api/chat',calls
     finally: http.shutdown();http.server_close();thread.join()
@@ -53,3 +55,8 @@ def test_malformed_response_is_retained_and_closes_denominator(tmp_path):
         with pytest.raises(ContractError): p(request())
         assert len(calls)==1 and p.backend.ledger['calls'][0]['status']=='unknown_or_failed'
         assert (p.backend.calls_root/'0001-plan/http-response.bin').is_file()
+
+def test_digest_mismatch_stops_before_chat(tmp_path):
+    with server(mismatch=True) as (endpoint,calls):
+        with pytest.raises(ContractError): provider(tmp_path,endpoint)(request())
+        assert calls==[]

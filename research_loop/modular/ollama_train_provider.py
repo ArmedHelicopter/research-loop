@@ -56,6 +56,23 @@ def parse_response(raw, config, slot):
     usage=parse_usage(raw); require(usage is not None and usage['eval_count']<=OPTIONS['num_predict'] and usage['total_tokens']<=config['observed_main_token_cap'], 'Ollama usage missing or over bound')
     return answer,usage
 
+def verify_model_binding(port, phase):
+    """Bind a mutable local tag to its expected digest before and after inference."""
+    require(phase in ('before','after'), 'Ollama binding phase differs')
+    path=port.root/f'model-binding-{phase}.json'; url=urlsplit(port.config.data()['endpoint'])
+    connection=None
+    try:
+        connection=http.client.HTTPConnection(url.hostname,url.port,timeout=port.config.data()['timeout_seconds'])
+        connection.request('GET','/api/tags'); response=connection.getresponse(); raw=response.read(port.config.data()['max_response_bytes']+1)
+        require(response.status==200 and len(raw)<=port.config.data()['max_response_bytes'],'Ollama model inventory rejected')
+        original(path,raw); body=json.loads(raw); models=body.get('models')
+        require(type(models) is list and any(type(row) is dict and row.get('name')==port.model and row.get('digest')==port.model_digest for row in models),'Ollama model tag/digest binding differs')
+        return body
+    except FileExistsError:
+        raw=path.read_bytes(); body=json.loads(raw); require(any(type(row) is dict and row.get('name')==port.model and row.get('digest')==port.model_digest for row in body.get('models',[])),'Ollama retained model binding differs'); return body
+    finally:
+        if connection is not None: connection.close()
+
 class OllamaChatTrainModelPort:
     provider_kind=KIND
     def __init__(self, *, work_root, endpoint, model, model_digest, schemas, max_calls, slot_output_caps, slot_input_byte_caps, observed_main_token_cap, timeout_seconds=120, max_response_bytes=2097152):
@@ -78,12 +95,13 @@ class OllamaChatTrainModelPort:
         with allocation_lock(self.root/'allocator.lock'): return self._dispatch(request)
     def _dispatch(self,request):
         native_configuration(self);require(read(self.ledger_path)==self.ledger and not self.ledger['usage_incomplete'],'Ollama ledger closed or changed')
+        verify_model_binding(self,'before')
         require(type(request) is FrozenRecord and set(request.data())==FIELDS,'exact public TRAIN request required');b=request.data();slot=b['slot'];require(b['schema']=='public-model-request-v1' and slot in self.schemas,'Ollama public slot differs');DataIdentity.parse(b['task'].get('identity',{})).require_train();require(len(self.ledger['calls'])<self.max_calls,'Ollama allocation exhausted')
         prompt=PREFIX+canonical({'output_schema':self.schemas[slot],'request':b});require(len(prompt.encode())<=self.slot_input_byte_caps[slot],'Ollama prompt over bound')
         body={'model':self.model,'messages':[{'role':'user','content':prompt}],'format':self.schemas[slot],'stream':False,'options':OPTIONS};number=len(self.ledger['calls'])+1;directory=self.calls_root/f'{number:04d}-{slot}';directory.mkdir();original(directory/'request.json',request.encoded.encode());original(directory/'http-request.json',canonical(body).encode());row={'id':number,'slot':slot,'request_sha256':request.content_hash,'status':'reserved','response_sha256':None,'usage':None,'original_files':{}};self.ledger['calls'].append(row);self._event({'kind':'reserved','id':number,'request_digest':request.content_hash});write(self.ledger_path,self.ledger)
         connection=None;failure=None
         try:
-            url=urlsplit(self.config.data()['endpoint']);connection=http.client.HTTPConnection(url.hostname,url.port,timeout=self.config.data()['timeout_seconds']);connection.request('POST',url.path,body=(directory/'http-request.json').read_bytes(),headers={'Content-Type':'application/json'});response=connection.getresponse();original(directory/'http-status.json',canonical({'status':response.status,'redirect_followed':False}).encode());raw=response.read(self.config.data()['max_response_bytes']+1);require(len(raw)<=self.config.data()['max_response_bytes'] and response.status==200,'Ollama HTTP response rejected');original(directory/'http-response.bin',raw);answer,usage=parse_response(raw,self.config.data(),slot);original(directory/'response.json',answer.encoded.encode());row.update(status='succeeded',response_sha256=answer.content_hash,usage=usage)
+            url=urlsplit(self.config.data()['endpoint']);connection=http.client.HTTPConnection(url.hostname,url.port,timeout=self.config.data()['timeout_seconds']);connection.request('POST',url.path,body=(directory/'http-request.json').read_bytes(),headers={'Content-Type':'application/json'});response=connection.getresponse();original(directory/'http-status.json',canonical({'status':response.status,'redirect_followed':False}).encode());raw=response.read(self.config.data()['max_response_bytes']+1);require(len(raw)<=self.config.data()['max_response_bytes'] and response.status==200,'Ollama HTTP response rejected');original(directory/'http-response.bin',raw);answer,usage=parse_response(raw,self.config.data(),slot);verify_model_binding(self,'after');original(directory/'response.json',answer.encoded.encode());row.update(status='succeeded',response_sha256=answer.content_hash,usage=usage)
         except Exception as exc:
             failure=exc;raw=(directory/'http-response.bin').read_bytes() if (directory/'http-response.bin').exists() else b'';row.update(status='unknown_or_failed',error_type=type(exc).__name__,usage=parse_usage(raw));self.ledger['usage_incomplete']=True
         finally:
