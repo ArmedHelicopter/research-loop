@@ -265,6 +265,10 @@ def replay(*, cell, task, scenario, package, material, root, events, dependency_
     binding = FrozenRecord.from_dict(exported["binding"])
     if binding.data().get("source_authority_key_hashes") != exported["source_authority_key_hashes"]:
         raise ContractError("validation retrieval manifest binding drift")
+    if (not isinstance(source_keys, Mapping)
+            or {name: hashlib.sha256(key).hexdigest() for name, key in source_keys.items() if isinstance(key, bytes)}
+            != exported["source_authority_key_hashes"]):
+        raise ContractError("validation retrieval replay source authority keys differ from frozen binding")
     root = Path(root); original_material = _read(root / "material.json")
     if original_material != material:
         raise ContractError("validation retrieval material original drift")
