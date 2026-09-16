@@ -23,7 +23,7 @@ from research_loop.modular.selected_bundle_validation import (
     SelectedBundleValidationPanel, serialize_selected_panel, parse_selected_panel)
 from research_loop.modular.selected_bundle_validation_executor import (
     run_validation_target, verify_validation_target, derive_validation_score_input,
-    validation_score_request, replay_validation_score_request)
+    validation_score_request, replay_validation_score_request, load_validation_target, evaluate_selected_primary_bundles)
 from research_loop.ontology import ContractError, digest
 from test_primary_validation_custody import fixture as primary_fixture, verifier as panel_verifier
 from test_modular_custody_panel import DIGEST, calibration, obligations, acceptance
@@ -58,7 +58,7 @@ def bundle(role):
             'state': {'schema': 'c5-selected-component-state-v1', 'template_state': template.record.data()['state'],
                 'selected_package': package.record.data(), 'selection_digest': digest('synthetic train choice'),
                 'history_receipt_digest': digest('synthetic complete TRAIN original')}}))
-    return JointDeploymentBundle.create(parent_digest=None, baseline_digest='a'*64, p0_digest='p'.replace('p', 'd')*64,
+    return JointDeploymentBundle.create(parent_digest=None, baseline_digest='a'*64, p0_digest='d'*64,
         resource_schedule=R({'schema': 'c5-selected-target-schedule-v1', 'recipe': recipe,
             'slots': list(slots(recipe, 'target')), 'context_budget_bytes': 16000, 'timeout_seconds': 20}), components=components)
 
@@ -146,18 +146,9 @@ def verification(setup, cell, lease):
 def execute_fixture(setup, *, fail=False):
     panel = setup['panel']; custodian = setup['custodian']; results = []; requests = []; seen = []
     calibrated = calibration(panel.digest, panel.required_benchmarks); lease_id = custodian.lease(panel, calibrated)
-    def evaluate(frozen, materials_from_custody, lease):
-        assert {v.task for v in materials_from_custody} == set(setup['tasks'].values())
-        for index, cell in enumerate(frozen.cells):
-            args = verification(setup, cell, lease)
-            result = run_validation_target(cell=cell, **args, retrieval_provider=Provider([]),
-                model=synthetic_model(seen, fail=fail), model_config=R(setup['execution']['model_config']),
-                audit_verifier=AuditVerifier({'a': b'a'*32, 'b': b'b'*32}), root=setup['root']/'run'/str(index))
-            results.append(result)
-            score_input = derive_validation_score_input(result, **args)
-            assert score_input.data()['runtime_status'] == ('failed' if fail else 'succeeded')
-            requests.append(validation_score_request(result, **{k: args[k] for k in
-                ('panel', 'task', 'material', 'source_verifier', 'inputs', 'lease')}))
+    def score_and_accept(frozen, manifests, rows, lease):
+        requests.extend(manifests)
+        results.extend(load_validation_target(Path(r.data()['result_root'])) for r in manifests)
         # The separate scorer test owner supplies the real worker; this tiny
         # synthetic child is limited to proving this custody/executor seam.
         import subprocess, sys
@@ -173,11 +164,20 @@ def execute_fixture(setup, *, fail=False):
         output = json.loads(worker.stdout); assert output['pid'] != __import__('os').getpid()
         from research_loop.modular.panel_receipts import ScientificScorerReceipt
         scores = tuple(ScientificScorerReceipt(tuple(v['cell_key']), R(v['receipt'])) for v in output['scores'])
-        rows = tuple(r.runtime for r in results)
         return PrimaryValidationResult(rows, scores, acceptance(frozen, rows, scores, lease))
+    def evaluate(frozen, materials_from_custody, lease):
+        assert {v.task for v in materials_from_custody} == set(setup['tasks'].values())
+        setup['leased_materials'] = materials_from_custody
+        return evaluate_selected_primary_bundles(frozen, materials_from_custody, lease,
+            root=setup['root']/'fixed-pair', materials_by_task=setup['materials'], source_verifiers=setup['sources'],
+            inputs_by_task={k: {'public_csv': v} for k, v in setup['csvs'].items()},
+            broker=DockerExecutionBroker([setup['root']]), model=synthetic_model(seen, fail=fail),
+            model_config=R(setup['execution']['model_config']), retrieval_provider=Provider([]),
+            audit_verifier=AuditVerifier({'a': b'a'*32, 'b': b'b'*32}), freeze_keys=FREEZE_KEYS, custody_keys=CUSTODY_KEYS,
+            score_and_accept=score_and_accept)
     aggregate = custodian.run(panel=panel, lease_id=lease_id, calibration=calibrated,
         source_provider=lambda token: setup['buffers'][token], evaluate=evaluate, verifier=panel_verifier())
-    setup.update(results=results, score_requests=requests, aggregate=aggregate, lease_id=lease_id, seen=seen)
+    setup.update(results=results, score_requests=requests, aggregate=aggregate, lease_id=lease_id, seen=seen, evaluator=evaluate)
     return setup
 
 
@@ -200,6 +200,8 @@ def test_fixed_bundles_reach_primary_custody_real_operations_and_independent_chi
     assert setup['custodian'].replay(panel=setup['panel'], lease_id=setup['lease_id'], verifier=panel_verifier()) == setup['aggregate']
     assert all(token not in setup['aggregate'].encoded for token in setup['buffers'])
     assert parse_selected_panel(serialize_selected_panel(setup['panel'])).digest == setup['panel'].digest
+    assert setup['aggregate'].data()['source_denominator']['benchmarks'] == {
+        name: {'original_heldout': 1, 'qualified_heldout': 1, 'unqualified_heldout': 0} for name in ('blade', 'discoverybench')}
 
 
 def test_fixed_panel_refuses_scope_domain_bundle_and_recipe_changes(completed):
@@ -221,6 +223,9 @@ def test_independent_replay_rejects_changed_original_and_reused_primary_lease(co
     finally: program.write_bytes(original)
     with pytest.raises(ContractError):
         completed['custodian'].lease(completed['panel'], calibration(completed['panel'].digest, completed['panel'].required_benchmarks))
+    with pytest.raises(FileExistsError):
+        completed['evaluator'](completed['panel'], completed['leased_materials'],
+            completed['custodian'].store.issued_validation_receipt(completed['lease_id']))
 
 
 def test_fixed_target_failure_is_replayed_without_score_or_retry(tmp_path):

@@ -28,7 +28,7 @@ from research_loop.modular.modules.predictions import PredictionRegistry
 from research_loop.modular.modules.review import ReviewEngine
 from research_loop.modular.panel_receipts import PanelReceiptVerifier, opaque_panel_cell_binding, verify_signed
 from research_loop.modular.runtime import RunSession
-from research_loop.modular.selected_bundle_validation import SelectedBundleValidationPanel
+from research_loop.modular.selected_bundle_validation import SelectedBundleValidationPanel, verify_selected_validation_lease
 from research_loop.modular.validation_bundle_material import (
     ValidationBundleMaterial, ValidationCsvMeasurementVerifier, validation_retrieval,
     replay_validation_retrieval, run_validation_phase,
@@ -54,14 +54,7 @@ def _validate(panel, cell, task, material, source_verifier, broker, inputs, free
             or material.record.content_hash != cell.scenario_digest):
         raise ContractError('fixed validation cell, material and measured source verifier required')
     panel.verify_freeze(freeze_keys); material.__post_init__()
-    body = verify_signed(lease, custody_keys, schema='custody-panel-lease-v2')
-    if (body.get('status') != 'consumed' or body.get('panel_digest') != panel.digest
-            or body.get('candidate_digest') != panel.candidate_digest or body.get('stage') != panel.stage
-            or tuple(body.get('arm_schedule', ())) != panel.arm_schedule
-            or tuple(sorted(body.get('groups', ()))) != panel.validation_groups
-            or body.get('task_identities_digest') != hashlib.sha256(canonical(sorted(
-                [c.identity.data() for c in panel.cells], key=canonical)).encode()).hexdigest()):
-        raise ContractError('fixed target requires the exact consumed primary custody lease')
+    verify_selected_validation_lease(panel, lease, custody_keys)
     check_material_inputs(material.admission, task, broker, inputs)
     public = [{'artifact': a.record.data(), 'container_path': '/input/'+a.artifact_id}
               for a in broker.validate_inputs(task.identity, inputs)]
@@ -86,6 +79,54 @@ class ValidationTargetResult:
     solver: object
     joint_mechanism: FrozenRecord | None
     phase: FrozenRecord | None
+
+
+def evaluate_selected_primary_bundles(panel, materials, lease, *, root, materials_by_task, source_verifiers,
+        inputs_by_task, broker, model, model_config, retrieval_provider, audit_verifier, freeze_keys, custody_keys,
+        score_and_accept):
+    """Private evaluator for PrimaryValidationCustodian.run, one complete pair.
+
+    The custodian calls this only after durable lease consumption. A fixed
+    service-owned root reserves the entire opportunity before any target run;
+    a second call cannot replace an earlier failed or successful prefix.
+    The independent scoring service receives the complete original manifests.
+    """
+    from evaluation.modular.primary_validation_custody import PrimaryValidationMaterial, PrimaryValidationResult
+    if type(panel) is not SelectedBundleValidationPanel or not callable(score_and_accept):
+        raise ContractError('fixed selected panel and independent scoring port required')
+    panel.verify_freeze(freeze_keys)
+    verify_selected_validation_lease(panel, lease, custody_keys)
+    tasks = {m.task.content_hash: m for m in materials if type(m) is PrimaryValidationMaterial}
+    wanted = {c.task_digest for c in panel.cells}
+    if (len(tasks) != len(materials) or set(tasks) != wanted or set(materials_by_task) != wanted
+            or set(source_verifiers) != wanted or set(inputs_by_task) != wanted):
+        raise ContractError('fixed pair must consume the complete leased task/material inventory')
+    for key, source in tasks.items():
+        inputs = inputs_by_task[key]
+        if set(inputs) != {'public_csv'} or Path(inputs['public_csv']).read_bytes() != source.csv:
+            raise ContractError('fixed pair input is not the custody-extracted public CSV')
+    root = Path(root); root.mkdir(parents=True, exist_ok=False)
+    _exclusive(root/'fixed-pair-reservation.json', R({'schema': 'selected-bundle-validation-reservation-v1',
+        'panel_digest': panel.digest, 'lease_digest': lease.content_hash,
+        'cell_digests': [R(c.data()).content_hash for c in panel.cells]}))
+    rows, requests = [], []
+    for cell in panel.cells:
+        key = cell.task_digest
+        args = dict(panel=panel, task=tasks[key].task, material=materials_by_task[key], source_verifier=source_verifiers[key],
+                    inputs=inputs_by_task[key], lease=lease)
+        result = run_validation_target(cell=cell, **args, root=root/'cells'/R(cell.data()).content_hash,
+            broker=broker, model=model, model_config=model_config, retrieval_provider=retrieval_provider,
+            audit_verifier=audit_verifier, freeze_keys=freeze_keys, custody_keys=custody_keys)
+        rows.append(result.runtime); requests.append(validation_score_request(result, **args))
+    result = score_and_accept(panel, tuple(requests), tuple(rows), lease)
+    if type(result) is not PrimaryValidationResult or result.runtime != tuple(rows):
+        raise ContractError('independent scoring cannot replace original fixed-pair runtime cells')
+    _exclusive(root/'fixed-pair-closed.json', R({'schema': 'selected-bundle-validation-closed-v1',
+        'panel_digest': panel.digest, 'scope_ids': list(panel.scope_ids), 'variants': ['fixed_acceptance'],
+        'lease_digest': lease.content_hash, 'replay_request_digests': [r.content_hash for r in requests],
+        'runtime': [PanelReceiptVerifier._runtime_data(r) for r in rows],
+        'scorer_receipts': [r.receipt.content_hash for r in result.scores], 'acceptance_digest': result.acceptance.content_hash}))
+    return result
 
 
 def run_validation_target(*, panel, cell, task, material, source_verifier, retrieval_provider, broker, inputs,

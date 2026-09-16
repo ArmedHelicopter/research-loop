@@ -6,16 +6,17 @@ The envelope is a trust boundary, not evidence of an operator's independence.
 """
 from dataclasses import dataclass
 from types import MappingProxyType
+import hashlib
 
 from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.full_loo_composition import MODULES, SCHEMA, _arm
 from research_loop.modular.full_loo_modules import slots
-from research_loop.modular.joint_deployment import JointDeploymentBundle, _hash
+from research_loop.modular.joint_deployment import JointDeploymentBundle, JointComponentVersion, _hash
 from research_loop.modular.joint_train_runtime import CONSUMERS, ROOT, runtime_sources
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
 from research_loop.modular.panel_receipts import FrozenPanel, PanelCell, verify_signed
-from research_loop.ontology import ContractError
+from research_loop.ontology import ContractError, canonical
 
 R = FrozenRecord.from_dict
 SCOPES = {'C4': 'C4-final-bundle', 'C5': 'C5-final-bundle'}
@@ -64,6 +65,11 @@ def bundle_spec(bundle):
         current = CandidatePackage(R(state['selected_package']))
         manifest = TrainingManifest(R(value['training_manifest']))
         learned = TrainingManifest(R(current.record.data()['training_manifest']))
+        expected_sources = {CONSUMERS[name], 'research_loop/modular/full_loo_modules.py', 'research_loop/modular/full_loo_driver.py'}
+        template = JointComponentVersion(R({**value, 'config': config['consumer_config'],
+            'state': state['template_state'], 'training_manifest': learned.record.data()}))
+        if set(value['source_files']) != expected_sources or template.digest != config['template_digest']:
+            raise ContractError('selected component does not reconstruct its original native TRAIN template')
         if not set(learned.identities()) <= set(manifest.identities()):
             raise ContractError('selected component omitted learned TRAIN exposure')
         if package is not None and (package != current or selection != state['selection_digest'] or provenance != manifest):
@@ -185,3 +191,22 @@ def parse_selected_panel(value):
     if serialize_selected_panel(panel) != value:
         raise ContractError('selected panel serialization differs from canonical subject')
     return panel
+
+
+def verify_selected_validation_lease(panel, lease, custody_keys):
+    if type(panel) is not SelectedBundleValidationPanel:
+        raise ContractError('exact fixed validation panel required')
+    panel.__post_init__()
+    body = verify_signed(lease, custody_keys, schema='custody-panel-lease-v2')
+    if (body.get('status') != 'consumed' or body.get('panel_digest') != panel.digest
+            or body.get('candidate_digest') != panel.candidate_digest or body.get('stage') != panel.stage
+            or body.get('split_digest') != panel.split_digest
+            or body.get('scorer_digest') != panel.cells[0].scorer_digest
+            or body.get('protocol_digest') != panel.design.data()['train_freeze']['body']['protocol_digest']
+            or tuple(body.get('required_benchmarks', ())) != panel.required_benchmarks
+            or tuple(body.get('arm_schedule', ())) != panel.arm_schedule
+            or tuple(sorted(body.get('groups', ()))) != panel.validation_groups
+            or body.get('task_identities_digest') != hashlib.sha256(canonical(sorted(
+                [c.identity.data() for c in panel.cells], key=canonical)).encode()).hexdigest()):
+        raise ContractError('fixed target requires the exact consumed primary custody lease')
+    return R(body)

@@ -308,6 +308,7 @@ class PrimaryValidationCustodian:
             "role": "acceptance_only", "candidate_digest": panel.candidate_digest, "panel_digest": panel.digest,
             "decision": verdict.decision, "observed_cells": verdict.observed_cells, "failures": verdict.failures,
             "unscored": verdict.unscored, "blocked": verdict.blocked, "private_evidence_digest": digest(evidence),
+            "source_denominator": self.qualification_denominator().data(),
             "optimization_feedback_permitted": False})
         output = _safe_path(destination / "aggregate.json")
         if output.exists():
