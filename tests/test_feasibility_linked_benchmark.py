@@ -50,7 +50,7 @@ def setup(root, patch, *, fail=False):
     schemas={'subjective':_closed_shape({'feasibility':'feasible','rationale':'assessment'}),
         'diagnostic':_closed_shape({'decision':'continue','rationale':'observations'}),
         'final':final,'analysis_program':ANALYSIS,'final_answer':FINAL}
-    old.update(stage='feasibility-linked',scope_ids=list(scopes),evidence_by_task=bundles,
+    old.update(engineering_scope='train_only_panel_engineering',stage='feasibility-linked',scope_ids=list(scopes),evidence_by_task=bundles,
         packages_by_arm={arm.content_hash:package for grid in grids.values() for arm in executable_arms(grid).values()},
         budget={'model_calls':3,'execution_limit':1},max_calls=180,schemas=schemas,execution_mode='linked_benchmark_solve')
     seen=[]; mechanism=_model(seen)
