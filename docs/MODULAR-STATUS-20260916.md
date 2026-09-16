@@ -1,5 +1,7 @@
 # 模块实验当前状态（2026-09-16 11:40 +08）
 
+**12:20 更新：** 本地 TRAIN 接口的 [7 份冻结原件](evidence/local-ollama-train-engineering-r1/README.md)已独立归档（提交 `f13bfb7e`）：3 项检查通过，824 份源码逐字节核验，零实际模型/VAL 调用；独立本地评分器仍未实现。C5 原生会话 45472 经原句柄核查仍在运行，40/46 构建成功、118 目标未开始，选择和 VAL 均未开启。账户实时查询仍为已用 99%、剩余 1%；完整目标仍未完成。
+
 **12:14 更新：** 实际 Q6.3 已闭合为 8 单元、0 评分，原生退出 0 仅表示控制器完成收尾；[174 份原件与独立核算](evidence/actual-q63-grok130-r1/README.md)已归档。Q5.1/Q5.2 的 36 单元工程链路已完成，[8147 份原件](evidence/feasibility-linked-engineering-r1/README.md)保留原 r2 的两项测试错误及 r3 零派发补充验证。实际模型效果与 VAL 仍未测量。
 
 本地模型已完成 4 次 CPU 可用性调用和 6 次 Docker 检验；最后一版程序通过 2/2 输入，但模型自报预期计数仍错误。[全部本地尝试](evidence/local-qwen7b-readiness-r1/README.md)独立保留，仅属部分可用性证据。本地 TRAIN transport 的 3 项冻结检查通过，独立 evaluator/scorer/closure 尚未实现。M8 的 9 变体完整集成仍未运行，不能将 projection 提交算作完成。
