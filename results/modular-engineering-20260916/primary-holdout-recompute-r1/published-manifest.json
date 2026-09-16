@@ -1,0 +1,50 @@
+{
+  "schema": "primary-holdout-recompute-archive-v1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "archive.py",
+      "sha256": "8a5faaaa4745e61fa3afb431cc72c9a3df4e5df0aea9f0a876818833f0cac7b7",
+      "bytes": 3747
+    },
+    {
+      "path": "native-join.json",
+      "sha256": "48429f8776db597d7afc76bc5fc7d310c0ac7c768e56258b5abdd38ea9f150c4",
+      "bytes": 431
+    },
+    {
+      "path": "native-start.json",
+      "sha256": "6a080002e97e857d7e823d640fd041af4e7643bf46b06d22ae925c7c2959e147",
+      "bytes": 109
+    },
+    {
+      "path": "README.md",
+      "sha256": "ff1a1b9cf9687074eeb980e9389a56b13293dee35373c385367e5785fc5d381c",
+      "bytes": 1149
+    },
+    {
+      "path": "recompute.py",
+      "sha256": "09e7fbf0b7b44c4c59ecd6d3ab28529738f819355da1788fd9d6b2e251cba146",
+      "bytes": 6786
+    },
+    {
+      "path": "result.json",
+      "sha256": "7559b7789512db3265530606d00847217487072ef0c235cf92b573910294888b",
+      "bytes": 2856
+    },
+    {
+      "path": "source-exact.zip",
+      "sha256": "716f914fe73e5fb7e1bb58d87b14723be589bc163f6fb7aa85d871d30e73f045",
+      "bytes": 2732472
+    },
+    {
+      "path": "source-members.json",
+      "sha256": "9e3b5f7b17b4a767cb815bf0d7c7e04cdacc32528c089ad02e70ec824c2fee39",
+      "bytes": 147107
+    }
+  ]
+}

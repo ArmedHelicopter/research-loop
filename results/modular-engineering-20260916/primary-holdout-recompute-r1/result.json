@@ -1,0 +1,73 @@
+{
+  "acceptance_ready": false,
+  "complete_read_manifest_scope": "all declared inputs observed by this auditor only; not OS-wide history",
+  "counts": {
+    "train": 308,
+    "validation": 95
+  },
+  "created_at_utc": "2026-09-16T00:14:39.907391+00:00",
+  "declared_read_count": 1540,
+  "group_count": 76,
+  "historical_gaps_unchanged": [
+    "os_access_not_audited",
+    "unlogged_historical_access_not_established",
+    "model_pretraining_not_assessed",
+    "cross_source_independence_not_proven",
+    "metadata_relationship_coverage_incomplete",
+    "upstream_data_terms_not_qualified",
+    "selection_does_not_prove_model_call",
+    "nonprimary_snapshot_bytes_not_reaudited",
+    "complete_canonical_read_manifest_may_be_unavailable"
+  ],
+  "independent_clean_attestation_issued": false,
+  "model_calls": 0,
+  "network_calls": 0,
+  "next_step": "bind bounded source and exposure qualification to the frozen candidate and isolated validation adapter; do not invent absolute independence",
+  "observed_family_partition_recomputed": true,
+  "original_audit_and_split_bytes_unchanged": true,
+  "private_evidence_pins": {
+    "audit-original.json": {
+      "bytes": 365036,
+      "sha256": "0f92162a1ef586e731e671c27ba4cad5d9e04078eaec4b6128baf9809b26e147"
+    },
+    "audit-recomputed.json": {
+      "bytes": 436751,
+      "sha256": "da26103efa8fc0eff9d15de9da1662f9ab0deaf8ec4e0b12e492087e33a1533e"
+    },
+    "config-original.json": {
+      "bytes": 5445,
+      "sha256": "1310f8e1ab2b25a4fdc2879e0f98e813be198f4550e8c74d899207cfb3204130"
+    },
+    "declared-read-manifest.json": {
+      "bytes": 542258,
+      "sha256": "19d21d180c635187a1f97d5f7c124363fc5434c88b00230ce4eb145c0f9ed37d"
+    },
+    "groups-recomputed.json": {
+      "bytes": 54413,
+      "sha256": "c3bac8e2b95d070239d40877bbf54f21809b2353aca1e2863bbcc8e0047e50ce"
+    },
+    "intent.json": {
+      "bytes": 95219,
+      "sha256": "7da424df24118485c926789d4cefe1f7c961098daf80aa493d51f250ae4a8a8c"
+    },
+    "source-after.json": {
+      "bytes": 92954,
+      "sha256": "f15f42b21d7e287777f970cc2a281c49440cc7a726dab3e69d48e94143295811"
+    },
+    "split-original.json": {
+      "bytes": 48074,
+      "sha256": "7653200478fa02a3890ff61a2972102a8ba6f547356e3abafcc3482c6b52fd54"
+    }
+  },
+  "private_evidence_root": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\primary-holdout-recompute-20260916-r1",
+  "recorded_forced_train_overlap_with_validation": 0,
+  "schema": "primary-holdout-independent-recompute-v1",
+  "scope": "pinned recorded exposure, recorded relationship graph and exact declared source bytes",
+  "source_commit": "64b4d55822e4877b93db9efebcbcda08d7ce5e58",
+  "source_files": 814,
+  "source_unchanged": true,
+  "status": "recomputed_equal",
+  "validation_lease_issued": false,
+  "validation_payload_decoded": false,
+  "validation_payload_exported": false
+}
