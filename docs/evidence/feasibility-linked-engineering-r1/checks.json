@@ -1,0 +1,64 @@
+{
+  "schema": "bounded-native-engineering-checks-v1",
+  "runs": [
+    {
+      "commit": "f50578f8b011a30ef62c9724585cc89551ac6dfa",
+      "source_unchanged": true,
+      "source_count": 817,
+      "exit_code": 1,
+      "wall_seconds": 7.171999999998661,
+      "new_paid_calls": 0,
+      "report_sha256": "81d935ed596065edf75fb4bb7071456769a7645b6e0a5530f1dac7ffd1b6d1ed",
+      "junit": {
+        "tests": 22,
+        "failures": 1,
+        "errors": 8,
+        "skipped": 0
+      },
+      "native_session_id": 33923,
+      "completion_mode": "joined",
+      "prefix": "feasibility-linked-r1"
+    },
+    {
+      "commit": "1e42f159efb124be6f961b46137311f9fdbd60dd",
+      "source_unchanged": true,
+      "source_count": 817,
+      "exit_code": 1,
+      "wall_seconds": 3256.625,
+      "new_paid_calls": 0,
+      "report_sha256": "42326dedb3caad294f80995c521bb65e63744eeca7776b067668e5dc0fc733ee",
+      "junit": {
+        "tests": 22,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "native_session_id": 83008,
+      "completion_mode": "joined",
+      "prefix": "feasibility-linked-r2"
+    },
+    {
+      "commit": "ec468fd5bf61be44fdac85829f1e2b61c671b00b",
+      "source_unchanged": true,
+      "source_count": 818,
+      "exit_code": 0,
+      "wall_seconds": 1.0780000000013388,
+      "new_paid_calls": 0,
+      "report_sha256": "67382e50ea9aeba08b627d4cb4106cd640cc76ed971fe9b7778e78900df6d6ba",
+      "junit": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "native_session_id": null,
+      "completion_mode": "immediate",
+      "prefix": "feasibility-linked-readback-r3"
+    }
+  ],
+  "scope": "synthetic fixtures, real local native OS peers/stdio and Docker; no protected dataset payload",
+  "real_model_calls": 0,
+  "additional_paid_calls": 0,
+  "scientific_effect": "not_measured",
+  "activation": "not_authorized"
+}
