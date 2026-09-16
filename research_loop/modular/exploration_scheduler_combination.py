@@ -63,43 +63,52 @@ def _write_bytes_new(path, body):
         stream.write(body); stream.flush(); os.fsync(stream.fileno())
 
 
+def _validate_phase_record(record, *, domain='train', schema='exploration-scheduler-material-v1'):
+    if type(record) is not FrozenRecord: raise ContractError('frozen job material required')
+    b = record.data()
+    if set(b) != {'schema','identity','task_digest','public_artifacts','jobs','context_budget_bytes'} or b['schema'] != schema:
+        raise ContractError('closed exploration scheduler material required')
+    identity = DataIdentity.parse(b['identity'])
+    if domain == 'train':
+        identity.require_train()
+    elif identity.domain != domain:
+        raise ContractError('phase material domain differs from its exact typed contract')
+    if not _digest(b['task_digest']) or type(b['context_budget_bytes']) is not int or not 4000 <= b['context_budget_bytes'] <= 32000:
+        raise ContractError('task and bounded public context required')
+    inputs = b['public_artifacts']
+    if not isinstance(inputs, list) or len(inputs) != 1 or set(inputs[0]) != {'artifact','container_path'}:
+        raise ContractError('one exact custody input required')
+    a = inputs[0]['artifact']
+    if (set(a) != {'artifact_id','sha256','byte_count'} or a['artifact_id'] != 'public_csv'
+            or not _digest(a['sha256']) or type(a['byte_count']) is not int or a['byte_count'] < 1
+            or inputs[0]['container_path'] != '/input/public_csv'):
+        raise ContractError('exact public CSV pin required')
+    jobs = b['jobs']
+    if not isinstance(jobs, list) or len(jobs) != 3: raise ContractError('exact three frozen candidates required')
+    ids = []
+    for index, job in enumerate(jobs):
+        if (not isinstance(job, dict) or set(job) != {'id','purpose','program','dependencies','resources','cost_units'}
+                or not _digest(job['id']) or job['id'] in ids or job['purpose'] != ('probe' if index == 2 else 'main')
+                or type(job['cost_units']) is not int or job['cost_units'] != 1
+                or not isinstance(job['program'], str) or not job['program'].strip() or len(job['program'].encode()) > 6000
+                or '\r' in job['program'] or re.search(r'M[1-9]|Q\d+\.\d+|expected_correct|arm_id|validation|PRIVATE', job['program'], re.I)):
+            raise ContractError('frozen neutral literal job contract invalid')
+        for field in ('dependencies','resources'):
+            values = job[field]
+            if not isinstance(values, list) or len(set(values)) != len(values) or any(not _digest(v) for v in values):
+                raise ContractError('opaque unique dependency and resource identifiers required')
+        # Both alternative second jobs may depend only on the common first.
+        if any(v not in ids[:1] for v in job['dependencies']): raise ContractError('dependency must exist in both selected arms')
+        ids.append(job['id'])
+
+
+
 @dataclass(frozen=True)
 class FrozenExplorationSchedulerMaterial:
     record: FrozenRecord
 
     def __post_init__(self):
-        if type(self.record) is not FrozenRecord: raise ContractError('frozen job material required')
-        b = self.data()
-        if set(b) != {'schema','identity','task_digest','public_artifacts','jobs','context_budget_bytes'} or b['schema'] != 'exploration-scheduler-material-v1':
-            raise ContractError('closed exploration scheduler material required')
-        DataIdentity.parse(b['identity']).require_train()
-        if not _digest(b['task_digest']) or type(b['context_budget_bytes']) is not int or not 4000 <= b['context_budget_bytes'] <= 32000:
-            raise ContractError('task and bounded public context required')
-        inputs = b['public_artifacts']
-        if not isinstance(inputs, list) or len(inputs) != 1 or set(inputs[0]) != {'artifact','container_path'}:
-            raise ContractError('one exact custody input required')
-        a = inputs[0]['artifact']
-        if (set(a) != {'artifact_id','sha256','byte_count'} or a['artifact_id'] != 'public_csv'
-                or not _digest(a['sha256']) or type(a['byte_count']) is not int or a['byte_count'] < 1
-                or inputs[0]['container_path'] != '/input/public_csv'):
-            raise ContractError('exact public CSV pin required')
-        jobs = b['jobs']
-        if not isinstance(jobs, list) or len(jobs) != 3: raise ContractError('exact three frozen candidates required')
-        ids = []
-        for index, job in enumerate(jobs):
-            if (not isinstance(job, dict) or set(job) != {'id','purpose','program','dependencies','resources','cost_units'}
-                    or not _digest(job['id']) or job['id'] in ids or job['purpose'] != ('probe' if index == 2 else 'main')
-                    or type(job['cost_units']) is not int or job['cost_units'] != 1
-                    or not isinstance(job['program'], str) or not job['program'].strip() or len(job['program'].encode()) > 6000
-                    or '\r' in job['program'] or re.search(r'M[1-9]|Q\d+\.\d+|expected_correct|arm_id|validation|PRIVATE', job['program'], re.I)):
-                raise ContractError('frozen neutral literal job contract invalid')
-            for field in ('dependencies','resources'):
-                values = job[field]
-                if not isinstance(values, list) or len(set(values)) != len(values) or any(not _digest(v) for v in values):
-                    raise ContractError('opaque unique dependency and resource identifiers required')
-            # Both alternative second jobs may depend only on the common first.
-            if any(v not in ids[:1] for v in job['dependencies']): raise ContractError('dependency must exist in both selected arms')
-            ids.append(job['id'])
+        _validate_phase_record(self.record)
 
     def data(self): return self.record.data()
 
@@ -146,6 +155,13 @@ def run_phase(*, material, cell, objective, root, broker, inputs, image, timeout
         raise ContractError('typed bound auxiliary phase required')
     if artifact_bridge is not None and type(artifact_bridge) is not PhaseArtifactBridge:
         raise ContractError('typed optional phase artifact bridge required')
+    return _run_phase_operations(material=material, cell=cell, objective=objective, root=root, broker=broker,
+        inputs=inputs, image=image, timeout_seconds=timeout_seconds, selected_job_id=selected_job_id, artifact_bridge=artifact_bridge)
+
+
+def _run_phase_operations(*, material, cell, objective, root, broker, inputs, image, timeout_seconds,
+                          selected_job_id=None, artifact_bridge=None):
+    """Shared fixed-job execution kernel; typed domain entrypoints validate first."""
     artifacts=broker.validate_inputs(cell.identity,inputs)
     if [{'artifact':a.record.data(),'container_path':'/input/'+a.artifact_id} for a in artifacts]!=material.data()['public_artifacts']:
         raise ContractError('data feasibility requires exact actual public bytes before permit')

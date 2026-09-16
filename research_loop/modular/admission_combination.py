@@ -5,7 +5,7 @@ import re
 from evaluation.modular.combination_scoring import _signed_body, _score_input_payload
 from research_loop.modular.contracts import FrozenRecord, DataIdentity
 from research_loop.modular.combinations import default_compatibility
-from research_loop.modular.lineage_combination_material import FrozenLineageMaterial, DualMaterialVerifier
+from research_loop.modular.lineage_combination_material import FrozenLineageMaterial, DualMaterialVerifier, _validate_lineage_record
 from research_loop.modular.modules.admission import EvidenceAdmission, ScientificState, AuditItem
 from research_loop.modular.modules.context import ContextBuilder
 from research_loop.ontology import ContractError
@@ -18,37 +18,42 @@ def registered_design(name, baseline):
     return default_compatibility(baseline).conditional_factorial(DESIGNS[name])
 
 
+def _validate_admission_record(record, *, domain='train', schema='admission-combination-material-v1'):
+    if not isinstance(record, FrozenRecord): raise ContractError('frozen admission material required')
+    b = record.data(); base = {k: v for k, v in b.items() if k != 'qualification_observations'}
+    if b.get('schema') != schema: raise ContractError('admission material schema')
+    base['schema'] = 'lineage-combination-material-v1'
+    _validate_lineage_record(FrozenRecord.from_dict(base), domain=domain)
+    q = b.get('qualification_observations')
+    if (len(record.encoded.encode('utf-8')) > 262144 or b['withdrawals'] != []
+            or not isinstance(q, dict) or set(q) != {'before', 'after'}):
+        raise ContractError('qualification phases replace scripted withdrawals')
+    keys = {r['key'] for r in b['originals']}
+    for phase in q.values():
+        if (not isinstance(phase, dict) or set(phase) != keys
+                or any(not isinstance(v, dict) or not v for v in phase.values())):
+            raise ContractError('qualification observations must cover exact originals in both phases')
+    public = {k: b[k] for k in ('originals','representations','claims','question','ordinary_summary')}
+    def check(v):
+        if isinstance(v, dict): return all(check(k) and check(x) for k,x in v.items())
+        if isinstance(v, list): return all(check(x) for x in v)
+        return not isinstance(v, str) or not re.search(r'(?i)(\bM[1-9]\b|\bQ\d+\.\d+\b|arm_id|expected_correct|source_group|gold|validation|[A-Z]:[\\/]|/input/)', v)
+    if not check(public): raise ContractError('public material contains experiment labels or host paths')
+    for row in b['originals']:
+        if row['subject_bindings'].get('task') != b['identity']['task_id']:
+            raise ContractError('each observation must bind this exact train task')
+    by_key = {r['key']: r for r in b['originals']}
+    for claim in b['claims']:
+        if any(by_key[k]['subject_bindings'] != claim['subject_bindings'] for k in claim['supports']+claim['refutes']):
+            raise ContractError('claim relations require the same exact observation subject')
+    root_ids = [FrozenRecord.from_dict({'root': r['root_material'], 'bindings': r['subject_bindings']}).content_hash for r in b['originals']]
+    if len(set(root_ids)) != len(root_ids): raise ContractError('duplicate originals must be explicit representations')
+
+
+
 class FrozenAdmissionMaterial(FrozenLineageMaterial):
     def __post_init__(self):
-        if not isinstance(self.record, FrozenRecord): raise ContractError('frozen admission material required')
-        b = self.data(); base = {k: v for k, v in b.items() if k != 'qualification_observations'}
-        if b.get('schema') != 'admission-combination-material-v1': raise ContractError('admission material schema')
-        base['schema'] = 'lineage-combination-material-v1'
-        FrozenLineageMaterial(FrozenRecord.from_dict(base))
-        q = b.get('qualification_observations')
-        if (len(self.record.encoded.encode('utf-8')) > 262144 or b['withdrawals'] != []
-                or not isinstance(q, dict) or set(q) != {'before', 'after'}):
-            raise ContractError('qualification phases replace scripted withdrawals')
-        keys = {r['key'] for r in b['originals']}
-        for phase in q.values():
-            if (not isinstance(phase, dict) or set(phase) != keys
-                    or any(not isinstance(v, dict) or not v for v in phase.values())):
-                raise ContractError('qualification observations must cover exact originals in both phases')
-        public = {k: b[k] for k in ('originals','representations','claims','question','ordinary_summary')}
-        def check(v):
-            if isinstance(v, dict): return all(check(k) and check(x) for k,x in v.items())
-            if isinstance(v, list): return all(check(x) for x in v)
-            return not isinstance(v, str) or not re.search(r'(?i)(\bM[1-9]\b|\bQ\d+\.\d+\b|arm_id|expected_correct|source_group|gold|validation|[A-Z]:[\\/]|/input/)', v)
-        if not check(public): raise ContractError('public material contains experiment labels or host paths')
-        for row in b['originals']:
-            if row['subject_bindings'].get('task') != b['identity']['task_id']:
-                raise ContractError('each observation must bind this exact train task')
-        by_key = {r['key']: r for r in b['originals']}
-        for claim in b['claims']:
-            if any(by_key[k]['subject_bindings'] != claim['subject_bindings'] for k in claim['supports']+claim['refutes']):
-                raise ContractError('claim relations require the same exact observation subject')
-        root_ids = [FrozenRecord.from_dict({'root': r['root_material'], 'bindings': r['subject_bindings']}).content_hash for r in b['originals']]
-        if len(set(root_ids)) != len(root_ids): raise ContractError('duplicate originals must be explicit representations')
+        _validate_admission_record(self.record)
 
     def subjects(self):
         b = self.data()
@@ -73,8 +78,9 @@ def _assessment(row, subject):
 
 
 class AdmissionMaterialVerifier(DualMaterialVerifier):
+    material_type = FrozenAdmissionMaterial
     def request(self, material, cell_binding):
-        if type(material) is not FrozenAdmissionMaterial: raise ContractError('typed admission subjects required')
+        if type(material) is not self.material_type: raise ContractError('typed admission subjects required')
         b = super().request(material, cell_binding).data()
         b.update(schema='admission-material-request-v1', subjects=material.subjects())
         return FrozenRecord.from_dict(b)

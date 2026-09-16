@@ -213,7 +213,7 @@ class CsvMeasurementAdmissionMaterialVerifier(AdmissionMaterialVerifier):
 
     def request(self, material, cell_binding):
         request = super().request(material, cell_binding)
-        if type(material) is not FrozenAdmissionMaterial:
+        if type(material) is not self.material_type:
             raise ContractError("CSV measurements require typed admission material")
         task_digest, dataset = _dataset_for_request(self.datasets, request)
         _validate_dataset_material(dataset, material)
@@ -448,6 +448,13 @@ def _run_worker(request: FrozenRecord, dataset: CsvMeasurementDataset, authority
 def build_csv_measurement_admission_verifier(*, authorities: tuple[LinkedExecutionAuthority, LinkedExecutionAuthority],
         datasets: Mapping[str, CsvMeasurementDataset], receipt_root: Path) -> CsvMeasurementAdmissionMaterialVerifier:
     """Build two source-pinned callbacks plus the replaying admission consumer."""
+    return _build_csv_measurement_admission_verifier(authorities=authorities, datasets=datasets,
+        receipt_root=receipt_root, verifier_type=CsvMeasurementAdmissionMaterialVerifier)
+
+
+def _build_csv_measurement_admission_verifier(*, authorities: tuple[LinkedExecutionAuthority, LinkedExecutionAuthority],
+        verifier_type, datasets: Mapping[str, CsvMeasurementDataset], receipt_root: Path) -> CsvMeasurementAdmissionMaterialVerifier:
+    """Build two source-pinned callbacks plus the replaying admission consumer."""
     if (type(authorities) is not tuple or len(authorities) != 2
             or any(type(authority) is not LinkedExecutionAuthority for authority in authorities)):
         raise ContractError("two exact linked CSV worker authorities are required")
@@ -490,6 +497,6 @@ def build_csv_measurement_admission_verifier(*, authorities: tuple[LinkedExecuti
 
     material_authorities = tuple(MaterialAuthority(authority, group, callback(authority, group))
         for authority, group in zip(authorities, _GROUPS, strict=True))
-    verifier = CsvMeasurementAdmissionMaterialVerifier(material_authorities, datasets=datasets, receipt_root=receipt_root)
+    verifier = verifier_type(material_authorities, datasets=datasets, receipt_root=receipt_root)
     holder["verifier"] = verifier
     return verifier
