@@ -23,7 +23,7 @@ from research_loop.ontology import ContractError
 
 
 ModelPort = Callable[[FrozenRecord], FrozenRecord]
-_SUPPORTED_MECHANISMS = frozenset({"Q1.1", "Q1.2", "Q1.3", "Q1.4", "Q1.5", "Q3.1", "Q3.2", "Q4.3", "Q5.3", "Q8.2", "Q8.3"})
+_SUPPORTED_MECHANISMS = frozenset({"Q1.1", "Q1.2", "Q1.3", "Q1.4", "Q1.5", "Q3.1", "Q3.2", "Q4.3", "Q5.1", "Q5.2", "Q5.3", "Q8.2", "Q8.3"})
 
 
 @dataclass(frozen=True)
@@ -44,7 +44,8 @@ def run_benchmark_cell(*, cell: PanelCell, task: PublicTask, scenario: FrozenRec
                        public_inputs: Mapping[str, Path], image: str,
                        broker: DockerExecutionBroker, model: ModelPort,
                        audit_verifier: AuditVerifier, timeout_seconds: int = 20,
-                       retrieval_provider=None, retrieval_admission_port=None, history_admission_port=None) -> LinkedBenchmarkCellResult:
+                       retrieval_provider=None, retrieval_admission_port=None, history_admission_port=None,
+                       feasibility_broker=None, feasibility_input_resolver=None, feasibility_authority=None) -> LinkedBenchmarkCellResult:
     """Run a registered linked mechanism first, then solve from its trace.
 
     A failed mechanism remains an explicit row and does not call the solver.
@@ -58,7 +59,9 @@ def run_benchmark_cell(*, cell: PanelCell, task: PublicTask, scenario: FrozenRec
     mechanism = run_train_cell(cell, task=task, scenario=scenario, package=package,
                                objective=objective, sidecar=mechanism_sidecar, model=model,
                                audit_verifier=audit_verifier, retrieval_provider=retrieval_provider,
-                               retrieval_admission_port=retrieval_admission_port, history_admission_port=history_admission_port)
+                               retrieval_admission_port=retrieval_admission_port, history_admission_port=history_admission_port,
+                               feasibility_broker=feasibility_broker, feasibility_input_resolver=feasibility_input_resolver,
+                               feasibility_authority=feasibility_authority)
     if mechanism.runtime.status != "succeeded":
         return _result(cell, mechanism, None, None, "mechanism_" + mechanism.runtime.status)
     try:
@@ -100,7 +103,8 @@ def verified_mechanism_provenance(*, cell: PanelCell, task: PublicTask, scenario
               and (lineage or event["data"].get("stage") in {"stage_1", "stage_7", "stage_9",
                                                    "operation_m4_control", "operation_m5_control",
                                                    "stage_0.5", "operation_m6_ordinary_baseline",
-                                                   "prediction_artifacts"})]
+                                                   "prediction_artifacts", "stage_3", "operation_m7_control", "m4_prediction_rejected",
+                                                   "prediction_outcome_bound", "feasibility_diagnostic_decision"})]
     if not stages:
         raise ContractError("mechanism trace lacks an executed mechanism stage")
     calls = _model_calls(events)
@@ -114,6 +118,10 @@ def verified_mechanism_provenance(*, cell: PanelCell, task: PublicTask, scenario
     if lineage:
         from research_loop.modular.lineage_singleton_replay import verify_lineage_trace
         replay = {"lineage_replay": verify_lineage_trace(cell=cell, task=task, scenario=scenario, package=package, events=events, sidecar=mechanism.runtime.trace_path.parent)}
+    if cell.coverage_id in {"Q5.1", "Q5.2"}:
+        from research_loop.modular.linked_feasibility_projection import verify_feasibility_originals
+        replay = {"feasibility_replay": verify_feasibility_originals(cell=cell, task=task, scenario=scenario,
+            package=package, events=events, sidecar=mechanism.runtime.trace_path.parent).data()}
     return FrozenRecord.from_dict({
         **replay, "schema": "verified-mechanism-provenance-v1",
         "panel_cell": _binding(cell).data(),

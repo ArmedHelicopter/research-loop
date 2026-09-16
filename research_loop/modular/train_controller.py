@@ -135,7 +135,7 @@ class FrozenTrainControllerConfig:
                 or type(data["max_tokens"]) is not int or data["max_tokens"] < 1):
             raise ContractError("production controller requires frozen Luna/low budgets")
         mode = data.get("execution_mode", "mechanism_pilot")
-        if mode not in {"mechanism_pilot", "linked_benchmark_solve"} or (mode == "linked_benchmark_solve" and set(scope) - {"Q1.1", "Q1.2", "Q1.3", "Q1.4", "Q1.5", "Q3.1", "Q3.2", "Q4.3", "Q5.3", "Q8.2", "Q8.3"}):
+        if mode not in {"mechanism_pilot", "linked_benchmark_solve"} or (mode == "linked_benchmark_solve" and set(scope) - {"Q1.1", "Q1.2", "Q1.3", "Q1.4", "Q1.5", "Q3.1", "Q3.2", "Q4.3", "Q5.1", "Q5.2", "Q5.3", "Q8.2", "Q8.3"}):
             raise ContractError("controller linked mode has an unsupported scope")
         expected_slots = {slot for coverage in scope for slot in DRIVERS[coverage].slots}
         if mode == "linked_benchmark_solve": expected_slots |= {"analysis_program", "final_answer"}
@@ -438,7 +438,10 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                             public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
                             broker=DockerExecutionBroker([exported, root]), model=scoped_model, audit_verifier=audit_verifier,
                             retrieval_provider=retrieval_provider, retrieval_admission_port=retrieval_admission_port,
-                            history_admission_port=history_admission_port)
+                            history_admission_port=history_admission_port,
+                            feasibility_broker=feasibility_broker,
+                            feasibility_input_resolver=feasibility_inputs if feasibility else None,
+                            feasibility_authority=feasibility_authority)
                         verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
                             scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
                         if verification.data().get("engineering_verified") is not True:

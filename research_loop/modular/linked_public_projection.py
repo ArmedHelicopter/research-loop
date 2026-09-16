@@ -14,7 +14,7 @@ from research_loop.modular.modules.review import ReviewEngine
 from research_loop.modular.panel_receipts import PanelCell, opaque_panel_cell_binding
 from research_loop.ontology import ContractError
 
-_SUPPORTED = frozenset({"Q1.1", "Q1.2", "Q1.3", "Q1.4", "Q1.5", "Q3.1", "Q3.2", "Q4.3", "Q5.3", "Q8.2", "Q8.3"})
+_SUPPORTED = frozenset({"Q1.1", "Q1.2", "Q1.3", "Q1.4", "Q1.5", "Q3.1", "Q3.2", "Q4.3", "Q5.1", "Q5.2", "Q5.3", "Q8.2", "Q8.3"})
 
 
 def project_linked_public_context(*, provenance: FrozenRecord, cell: PanelCell,
@@ -40,6 +40,9 @@ def project_linked_public_context(*, provenance: FrozenRecord, cell: PanelCell,
         material = _q43_material(cell, body["mechanism_stages"], responses)
     elif coverage in {"Q8.2", "Q8.3"}:
         material = _retrieval_material(cell, task, scenario, body)
+    elif coverage in {"Q5.1", "Q5.2"}:
+        from research_loop.modular.linked_feasibility_projection import feasibility_public_material
+        material = feasibility_public_material(cell, task, scenario, body, responses)
     elif coverage in {"Q3.2", "Q5.3"}:
         from research_loop.modular.linked_prediction_projection import prediction_public_material
         material = prediction_public_material(cell, task, scenario, body, responses)
@@ -48,6 +51,7 @@ def project_linked_public_context(*, provenance: FrozenRecord, cell: PanelCell,
     return FrozenRecord.from_dict({
         "schema": "linked-public-mechanism-context-v1",
         "mechanism": ("public-source-context" if coverage in {"Q1.1", "Q1.2", "Q1.3", "Q1.4"}
+                      else "public_feasibility" if coverage in {"Q5.1", "Q5.2"}
                       else "operational_prediction" if coverage in {"Q3.2", "Q5.3"} else coverage),
         "identity": task.identity.data(),
         "task_digest": task.content_hash,
@@ -87,6 +91,8 @@ def _verified_body(provenance: FrozenRecord, *, cell: PanelCell, task: PublicTas
                 "runtime_trace_digest", "runtime_output_digest", "mechanism_stages", "responses"}
     if cell.coverage_id in {"Q1.1", "Q1.2", "Q1.3", "Q1.4"}:
         required.add("lineage_replay")
+    if cell.coverage_id in {"Q5.1", "Q5.2"}:
+        required.add("feasibility_replay")
     if set(body) != required or body["schema"] != "verified-mechanism-provenance-v1":
         raise ContractError("linked provenance has an unexpected schema")
     if (body["panel_cell"] != _full_binding(cell) or body["identity"] != task.identity.data()
