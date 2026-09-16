@@ -14,11 +14,11 @@ from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.grok_acp_transport import TRAIN_OPPORTUNITY_CONTRACT
 from research_loop.modular.grok_headless_transport import HEADLESS_TRAIN_TIMEOUT_MAX_SECONDS
 from research_loop.modular.train_provider import (
-    CodexTrainProvider, GrokTrainProvider, GrokHeadlessTrainProvider, AnthropicTrainProvider, FrozenTrainProviderLedgerV2,
+    CodexTrainProvider, GrokTrainProvider, GrokHeadlessTrainProvider, AnthropicTrainProvider, OllamaTrainProvider, FrozenTrainProviderLedgerV2,
     _validate_event_binding_arguments)
 from research_loop.ontology import ContractError
 
-PROVIDERS = (CodexTrainProvider, GrokTrainProvider, GrokHeadlessTrainProvider, AnthropicTrainProvider)
+PROVIDERS = (CodexTrainProvider, GrokTrainProvider, GrokHeadlessTrainProvider, AnthropicTrainProvider, OllamaTrainProvider)
 
 
 def _require(value, message):
@@ -86,6 +86,9 @@ def validate_configuration(config, *, schemas, main_opportunities, exact=True):
             'native observed MAIN bound differs')
     elif b.get('provider_kind')=='anthropic-messages-public-train-v1':
         from research_loop.modular.anthropic_train_provider import validate_configuration_declaration
+        validate_configuration_declaration(b, schemas=schemas)
+    elif b.get('provider_kind')=='ollama-local-chat-public-train-v1':
+        from research_loop.modular.ollama_train_provider import validate_configuration_declaration
         validate_configuration_declaration(b, schemas=schemas)
     elif b.get('provider_kind')=='codex-cli-public-train-v1':
         _require(b.get('model')=='gpt-5.6-luna' and b.get('execution_mode')=='low'

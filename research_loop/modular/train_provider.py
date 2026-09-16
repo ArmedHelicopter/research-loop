@@ -13,6 +13,8 @@ from research_loop.modular.grok_headless_train_solver import GrokHeadlessTrainMo
 from research_loop.modular import train_provider_headless as headless
 from research_loop.modular import anthropic_train_provider as anthropic
 from research_loop.modular.anthropic_train_provider import AnthropicMessagesTrainModelPort
+from research_loop.modular import ollama_train_provider as ollama
+from research_loop.modular.ollama_train_provider import OllamaChatTrainModelPort
 from research_loop.modular.grok_acp_transport import known_usage, run_native_train, TRAIN_OPPORTUNITY_CONTRACT, MODEL
 from research_loop.modular.model_port import (CodexModelPort, _events, _usage, _tool_events,
     _context_diagnostics, _base_context_bytes, _validate_schema)
@@ -99,6 +101,7 @@ def _native_config(backend):
 
 def _configuration(backend):
     if type(backend) is AnthropicMessagesTrainModelPort: return anthropic.configuration(backend)
+    if type(backend) is OllamaChatTrainModelPort: return ollama.configuration(backend)
     native=_native_config(backend);grok=type(backend) in (GrokTrainModelPort,GrokHeadlessTrainModelPort)
     sources=[Path(__file__),Path(__file__).with_name('contracts.py'),
         Path(__file__).with_name('grok_train_solver.py'),Path(__file__).with_name('grok_acp_transport.py'),
@@ -126,6 +129,7 @@ def _configuration(backend):
 def _verify_call(backend, row, ledger):
     """Return checked originals and reported usage; failed attempts are never eligible."""
     if type(backend) is AnthropicMessagesTrainModelPort: return anthropic.observation(backend,row)
+    if type(backend) is OllamaChatTrainModelPort: return ollama.observation(backend,row)
     if type(backend) is GrokHeadlessTrainModelPort:
         return headless.observation(backend,row)
     number=row['id'];slot=row['slot'];grok=type(backend) is GrokTrainModelPort
@@ -233,6 +237,7 @@ def _failed_observation(backend,row,error):
     survives. This record is never a response or a successful provenance claim.
     """
     if type(backend) is AnthropicMessagesTrainModelPort: return anthropic.observation(backend,row,failure=error)
+    if type(backend) is OllamaChatTrainModelPort: return ollama.observation(backend,row,failure=error)
     if type(backend) is GrokHeadlessTrainModelPort:
         return headless.observation(backend,row,failure=error)
     grok=type(backend) is GrokTrainModelPort
@@ -264,7 +269,7 @@ class _TrainProvider:
     def __init__(self, backend):
         wanted={CodexTrainProvider:CodexModelPort,GrokTrainProvider:GrokTrainModelPort,
             GrokHeadlessTrainProvider:GrokHeadlessTrainModelPort,
-            AnthropicTrainProvider:AnthropicMessagesTrainModelPort}.get(type(self))
+            AnthropicTrainProvider:AnthropicMessagesTrainModelPort,OllamaTrainProvider:OllamaChatTrainModelPort}.get(type(self))
         _require(wanted is not None and type(backend) is wanted, 'exact admitted public TRAIN backend required')
         self.backend=backend;self.root=backend.root/'train-provider-v1';self.root.mkdir(exist_ok=True)
         self._last_verified_accounting=None
@@ -300,7 +305,7 @@ class _TrainProvider:
         not assert that any current original is still valid, or that no further
         opportunity occurred. It contains no request/response or eligible view.
         """
-        _require(type(self) in (CodexTrainProvider,GrokTrainProvider,GrokHeadlessTrainProvider,AnthropicTrainProvider), 'closed provider required')
+        _require(type(self) in (CodexTrainProvider,GrokTrainProvider,GrokHeadlessTrainProvider,AnthropicTrainProvider,OllamaTrainProvider), 'closed provider required')
         durable=_read(self.state_path)
         _require(durable.get('terminal_fault') is True and self.state.get('terminal_fault') is True,
             'existing durable terminal fault required')
@@ -449,12 +454,16 @@ class GrokHeadlessTrainProvider(_TrainProvider):
 class AnthropicTrainProvider(_TrainProvider):
     """Checked wrapper over original Messages HTTP TRAIN calls."""
 
+class OllamaTrainProvider(_TrainProvider):
+    """Checked wrapper over original CPU-only local Ollama TRAIN calls."""
 
-TrainProvider: TypeAlias = CodexTrainProvider | GrokTrainProvider | GrokHeadlessTrainProvider | AnthropicTrainProvider
+
+TrainProvider: TypeAlias = CodexTrainProvider | GrokTrainProvider | GrokHeadlessTrainProvider | AnthropicTrainProvider | OllamaTrainProvider
 
 
-def wrap_train_provider(backend: CodexModelPort | GrokTrainModelPort | GrokHeadlessTrainModelPort) -> TrainProvider:
+def wrap_train_provider(backend: CodexModelPort | GrokTrainModelPort | GrokHeadlessTrainModelPort | AnthropicMessagesTrainModelPort | OllamaChatTrainModelPort) -> TrainProvider:
     if type(backend) is AnthropicMessagesTrainModelPort:return AnthropicTrainProvider(backend)
+    if type(backend) is OllamaChatTrainModelPort:return OllamaTrainProvider(backend)
     if type(backend) is CodexModelPort:return CodexTrainProvider(backend)
     if type(backend) is GrokTrainModelPort:return GrokTrainProvider(backend)
     if type(backend) is GrokHeadlessTrainModelPort:return GrokHeadlessTrainProvider(backend)
@@ -470,11 +479,11 @@ class FrozenTrainProviderLedgerV2:
     def verify_originals(self) -> FrozenRecord:
         try:return self._verify_originals()
         except Exception as exc:
-            if type(self.provider) in (CodexTrainProvider,GrokTrainProvider,GrokHeadlessTrainProvider,AnthropicTrainProvider):self.provider._poison('sealed_provenance_fault')
+            if type(self.provider) in (CodexTrainProvider,GrokTrainProvider,GrokHeadlessTrainProvider,AnthropicTrainProvider,OllamaTrainProvider):self.provider._poison('sealed_provenance_fault')
             raise ContractError('sealed provider provenance fault; dispatch closed') from exc
 
     def _verify_originals(self):
-        _require(type(self) is FrozenTrainProviderLedgerV2 and type(self.provider) in (CodexTrainProvider,GrokTrainProvider,GrokHeadlessTrainProvider,AnthropicTrainProvider), 'typed provider seal required')
+        _require(type(self) is FrozenTrainProviderLedgerV2 and type(self.provider) in (CodexTrainProvider,GrokTrainProvider,GrokHeadlessTrainProvider,AnthropicTrainProvider,OllamaTrainProvider), 'typed provider seal required')
         _require(self.path.read_bytes()==self.record.encoded.encode('utf-8'), 'sealed provider record drift')
         b=self.record.data();self.provider.inspect()
         # inspect() already bound the in-memory state and native ledger to their
@@ -494,7 +503,7 @@ class FrozenTrainProviderLedgerV2:
                     require_eligible: bool=True) -> tuple[int, ...]:
         try:return self._bind_events(events,expected_call_ids=expected_call_ids,require_eligible=require_eligible)
         except Exception as exc:
-            if type(self.provider) in (CodexTrainProvider,GrokTrainProvider,GrokHeadlessTrainProvider,AnthropicTrainProvider):self.provider._poison('runtime_binding_fault')
+            if type(self.provider) in (CodexTrainProvider,GrokTrainProvider,GrokHeadlessTrainProvider,AnthropicTrainProvider,OllamaTrainProvider):self.provider._poison('runtime_binding_fault')
             raise ContractError('runtime provider binding fault; dispatch closed') from exc
 
     def _bind_events(self,events,*,expected_call_ids,require_eligible):
