@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import uuid
 from typing import Any, Mapping
 
 from evaluation.modular.scoring_service import FrozenBenchmarkRubricEndpoint
@@ -434,6 +435,32 @@ def _verify_row(port: GrokHeadlessEvaluatorModelPort, row: Mapping[str, Any], re
     return binding
 
 
+def _preserve_replay_failure(port: GrokHeadlessEvaluatorModelPort, error: Exception) -> dict[str, str]:
+    """Save the disk original and stale memory claim before any poison write."""
+    root = port.root / "provenance-faults"
+    root.mkdir(exist_ok=True)
+    directory = root / uuid.uuid4().hex
+    directory.mkdir()  # No prior fault may be replaced, even on a name collision.
+    files = {}
+    def save(name: str, raw: bytes) -> None:
+        with (directory / name).open("xb") as stream:
+            stream.write(raw)
+            stream.flush()
+            os.fsync(stream.fileno())
+        files[name] = {"sha256": _sha(raw), "byte_count": len(raw)}
+    disk_exists = port.ledger_path.exists()
+    if disk_exists:
+        save("disk-ledger.original.json", port.ledger_path.read_bytes())
+    save("memory-ledger.claim.json", canonical(port.ledger).encode("utf-8"))
+    manifest = {"schema": "headless-evaluator-replay-fault-v1", "ledger_path": str(port.ledger_path),
+        "reason": "headless_evaluator_provenance_replay_failed", "error_type": type(error).__name__,
+        "error": str(error), "disk_original_present": disk_exists, "files": files,
+        "score_eligible": False}
+    raw = canonical(manifest).encode("utf-8")
+    save("fault.json", raw)
+    return {"path": str(directory / "fault.json"), "sha256": _sha(raw)}
+
+
 def replay_headless_evaluator_ledger(port: GrokHeadlessEvaluatorModelPort, *, preserve_failure: bool = False) -> None:
     try:
         frozen = _verify_live_config(port)
@@ -463,7 +490,17 @@ def replay_headless_evaluator_ledger(port: GrokHeadlessEvaluatorModelPort, *, pr
             raise ContractError("headless evaluator known MAIN accounting differs")
     except Exception as exc:
         if not preserve_failure:
-            port.ledger["usage_incomplete"] = True
-            port.ledger["terminal_reason"] = "headless_evaluator_provenance_replay_failed"
-            _write(port.ledger_path, port.ledger)
+            try:
+                fault = _preserve_replay_failure(port, exc)
+            except Exception as preservation_error:
+                # If retaining the original fails, never overwrite it with a
+                # possibly stale claim. This port still closes immediately.
+                port.ledger["usage_incomplete"] = True
+                port.ledger["terminal_reason"] = "headless_evaluator_fault_preservation_failed"
+                exc.add_note("fault preservation failed: " + type(preservation_error).__name__)
+            else:
+                port.ledger["usage_incomplete"] = True
+                port.ledger["terminal_reason"] = "headless_evaluator_provenance_replay_failed"
+                port.ledger["provenance_fault"] = fault
+                _write(port.ledger_path, port.ledger)
         raise ContractError("headless evaluator provenance replay failed; ledger closed") from exc

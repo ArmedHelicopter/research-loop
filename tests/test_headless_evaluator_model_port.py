@@ -169,3 +169,54 @@ def test_prompt_template_rejects_rehashed_substitution_before_native(tmp_path, m
         "reference_digest": "a" * 64, "rubric_digest": value.rubric_digest}
     with pytest.raises(ContractError): value(FrozenRecord.from_dict(body))
     assert not calls and not gets and not value.ledger["calls"]
+
+
+def test_stale_memory_preserves_all24_native_disk_originals_and_stays_terminal(tmp_path, monkeypatch):
+    value = port(tmp_path, max_calls=25)
+    def reopen():
+        return GrokHeadlessEvaluatorModelPort(executable=value.executable, work_root=value.root,
+            private_home=value.private_home, private_profile=value.private_profile,
+            public_cwd=value.public_cwd, frozen_files=value.frozen_files,
+            evaluator_id=value.evaluator_id, evaluator_version=value.evaluator_version,
+            max_calls=25, max_tokens=1000)
+    stale = reopen()
+    memory_original = canonical(stale.ledger).encode('utf-8')
+    calls, _ = _install_native(monkeypatch, value)
+    for i in range(24):
+        endpoint(value)(request('blade' if i % 2 else 'discoverybench'))
+    headless_port.replay_headless_evaluator_ledger(value)
+    disk_original = value.ledger_path.read_bytes()
+    assert len(json.loads(disk_original)['calls']) == len(calls) == 24
+    with pytest.raises(ContractError, match='ledger closed'):
+        headless_port.replay_headless_evaluator_ledger(stale)
+    fault = stale.ledger['provenance_fault']; path = Path(fault['path'])
+    assert _sha(path.read_bytes()) == fault['sha256']
+    manifest = json.loads(path.read_bytes())
+    assert manifest['score_eligible'] is False and manifest['disk_original_present'] is True
+    assert (path.parent/'disk-ledger.original.json').read_bytes() == disk_original
+    assert (path.parent/'memory-ledger.claim.json').read_bytes() == memory_original
+    for name, pin in manifest['files'].items():
+        raw = (path.parent/name).read_bytes()
+        assert {'sha256':_sha(raw), 'byte_count':len(raw)} == pin
+    first = {p.name:p.read_bytes() for p in path.parent.iterdir()}
+    with pytest.raises(ContractError): endpoint(stale)(request())
+    with pytest.raises(ContractError): endpoint(value)(request())
+    with pytest.raises(ContractError, match='not replayable'): reopen()
+    with pytest.raises(ContractError, match='ledger closed'):
+        headless_port.replay_headless_evaluator_ledger(stale)
+    assert first == {p.name:p.read_bytes() for p in path.parent.iterdir()}
+    assert len(list((value.root/'provenance-faults').iterdir())) == 2
+    assert stale.ledger['usage_incomplete'] is True and len(calls) == 24
+
+
+def test_fault_preservation_failure_never_overwrites_disk(tmp_path, monkeypatch):
+    value = port(tmp_path)
+    disk = value.ledger_path.read_bytes()
+    value.ledger['memory_only_claim'] = True
+    def unavailable(*args, **kwargs): raise OSError('synthetic snapshot failure')
+    monkeypatch.setattr(headless_port, '_preserve_replay_failure', unavailable)
+    with pytest.raises(ContractError, match='ledger closed'):
+        headless_port.replay_headless_evaluator_ledger(value)
+    assert value.ledger_path.read_bytes() == disk
+    assert value.ledger['usage_incomplete'] is True
+    assert value.ledger['terminal_reason'] == 'headless_evaluator_fault_preservation_failed'
