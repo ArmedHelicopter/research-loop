@@ -1,5 +1,8 @@
 # Modular implementation ledger
 
+Latest verified snapshot: [2026-09-16 status and separate model series](MODULAR-STATUS-20260916.md).
+Entries below retain their original dates and must not be read as current process status.
+
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
