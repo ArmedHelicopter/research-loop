@@ -160,7 +160,7 @@ def test_original_replay_rejects_missing_tamper_and_cross_cell(complete,fault):
     elif fault=='response': events[i]['data']['receipt']['cost']['units']=999
     elif fault=='order': events[i-1],events[i]=events[i],events[i-1]
     elif fault=='masked':
-        e=next(e for e in events if e['stage']=='modular_workflow' and e['data'].get('stage')=='stage_3')
+        e=next(e for e in events if e['stage']=='modular_workflow' and e['data'].get('stage') in {'stage_3','operation_m7_control'})
         e['data']['public_observation']['prediction']['identifiable']=None
     elif fault=='cross_cell':
         cell=next(r.cell for r in result.linked_results if r.cell.coverage_id=='Q5.1')
@@ -180,6 +180,8 @@ def test_failed_producer_retains_complete_36_cell_null_score_denominator(tmp_pat
         assert len(attempt['cells'])==36
         assert all(r['status']!='succeeded' for r in attempt['cells'])
         assert not value['authority'].calls
-        closure=service.finalize_headless_evaluator(receipts=[])
-        assert closure.data()['body']['scope']['unscored_cell_count']==36
+        with pytest.raises(ContractError,match='ordered scorer receipts'):
+            service.finalize_headless_evaluator(receipts=[])
+        assert not (tmp_path/'worker.jsonl').exists()
+        assert not result.linked_results or all(r.solver is None for r in result.linked_results)
     finally:service.close()
