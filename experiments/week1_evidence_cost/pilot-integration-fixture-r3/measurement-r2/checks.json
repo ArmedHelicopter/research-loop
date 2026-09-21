@@ -1,0 +1,28 @@
+[
+  {
+    "B_cold_python_tracemalloc_peak_bytes": 18297,
+    "claims": 1,
+    "context_bytes": 4252,
+    "evidence_roots": 1,
+    "exact_context": true,
+    "exact_request_other_fields_frozen": true,
+    "opportunity": "week1-domain-1-r1",
+    "prompt_matches_request": true,
+    "request_bytes": 8333,
+    "scope": "peak Python allocations for one cold build only; not process RSS or full-system peak",
+    "slot": "plan"
+  },
+  {
+    "B_cold_python_tracemalloc_peak_bytes": 29861,
+    "claims": 2,
+    "context_bytes": 6394,
+    "evidence_roots": 2,
+    "exact_context": true,
+    "exact_request_other_fields_frozen": true,
+    "opportunity": "week1-domain-1-r1",
+    "prompt_matches_request": true,
+    "request_bytes": 11488,
+    "scope": "peak Python allocations for one cold build only; not process RSS or full-system peak",
+    "slot": "final"
+  }
+]

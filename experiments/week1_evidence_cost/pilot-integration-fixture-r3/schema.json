@@ -1,0 +1,23 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "type": "string"
+    },
+    "conclusion": {
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "code",
+    "conclusion",
+    "limitations"
+  ],
+  "type": "object"
+}

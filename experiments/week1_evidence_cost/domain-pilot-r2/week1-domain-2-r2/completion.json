@@ -1,0 +1,42 @@
+{
+  "analysis_execution_status": "succeeded",
+  "decision": {
+    "candidate_digest": "c5e72f2018964eda861db6ef454d4a2dec8a8d5f2e1bbf113aed1b774efc8c91",
+    "decision": "unknown",
+    "execution_attempts": 2,
+    "identity": {
+      "benchmark": "discoverybench",
+      "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+      "domain": "train",
+      "group_id": "f99e4d461ccef0ab2fe2728e980c0cadd6311d760626c73da25101b020371256",
+      "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+      "task_id": "real:test:worldbank_education_gdp"
+    },
+    "lock_digest": "f11fd9297da9a39bcd6c2793444ae604ea67a36ebf7abfaeb462a312940a3fc4",
+    "model_calls": 2,
+    "programme_complete": false,
+    "reasons": [],
+    "schema": "run-decision-v1",
+    "scientific_validated": false
+  },
+  "scientific_validated": false,
+  "status": "completed",
+  "trace": {
+    "events": 10,
+    "lock_digest": "f11fd9297da9a39bcd6c2793444ae604ea67a36ebf7abfaeb462a312940a3fc4",
+    "stages": [
+      "objective_lock",
+      "execution_request",
+      "execution_result",
+      "model_request",
+      "model_response",
+      "execution_request",
+      "execution_result",
+      "model_request",
+      "model_response",
+      "final_decision"
+    ],
+    "terminal": true,
+    "trace_digest": "bb7260b3efc6d9a4f8a39f234536eb9e9b3ea1ddb710edb63ca3aa065d6e80e0"
+  }
+}

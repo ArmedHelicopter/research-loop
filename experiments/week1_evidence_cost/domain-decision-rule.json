@@ -1,0 +1,9 @@
+{
+  "recorded_at": "2026-09-21T10:01:45.037696+00:00",
+  "stage": "before live trajectory cost aggregation",
+  "scope": "resource decision within observed bounded workflow, not a significance criterion",
+  "rule": "If eliminating all measured context cache and dependency-refresh work yields less than 1 percent of observed client+tool wall time on every completed trace, do not implement S/C in this week scope. Also report the broader invocation overhead, append cost, limited ledger size and failed opportunities.",
+  "denominator": "official client wall plus tool wall, deliberately excluding quota checks; historical model time and offline replay never added as repeated domain outcomes",
+  "failed_opportunities": "retain failures and missing stages; do not infer completed scientific findings",
+  "differences": "exact canonical bytes; no normalization"
+}

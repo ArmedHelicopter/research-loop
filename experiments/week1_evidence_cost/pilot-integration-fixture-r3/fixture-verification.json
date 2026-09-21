@@ -1,0 +1,16 @@
+{
+  "model_calls": 0,
+  "cli_stub_calls": [
+    {
+      "slot": "plan",
+      "roots": 1,
+      "claims": 1
+    },
+    {
+      "slot": "final",
+      "roots": 2,
+      "claims": 2
+    }
+  ],
+  "scope": "real Docker and RunSession, substituted model transport only"
+}

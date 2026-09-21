@@ -1,0 +1,8 @@
+{
+  "error_type": "ContractError",
+  "message": "two registered audit authorities required",
+  "opportunity_reusable": false,
+  "scientific_validated": false,
+  "status": "failed",
+  "traceback": "Traceback (most recent call last):\n  File \"E:\\_ryanDev\\AI\\research-loop-week1\\experiments\\week1_evidence_cost\\domain_pilot.py\", line 93, in run_one\n    objective=objective,slots=('plan','final'),execution_limit=2,sidecar=folder/'runtime',verifier=AuditVerifier({'unused':b'not-an-audit'}),\n                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E:\\_ryanDev\\AI\\research-loop-week1\\research_loop\\modular\\runtime.py\", line 93, in __init__\n    raise ContractError(\"two registered audit authorities required\")\nresearch_loop.ontology.ContractError: two registered audit authorities required\n"
+}
