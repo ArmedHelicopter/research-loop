@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "tasks": 3,
+  "observed_group_tokens": 3,
+  "broad_source_families": 2,
+  "independent_scientific_tasks": "not established",
+  "export_event_chain_length": 6,
+  "checks": [
+    {
+      "task_id": "real:test:nls_ses",
+      "csv_bytes": 679598,
+      "header_columns": 9,
+      "declared_columns": 8,
+      "declared_absent_from_header": [],
+      "reference_keys_absent": true,
+      "project_partition": "train",
+      "source_kind": "real"
+    },
+    {
+      "task_id": "real:test:worldbank_education_gdp",
+      "csv_bytes": 6773,
+      "header_columns": 45,
+      "declared_columns": 45,
+      "declared_absent_from_header": [],
+      "reference_keys_absent": true,
+      "project_partition": "train",
+      "source_kind": "real"
+    },
+    {
+      "task_id": "real:test:nls_incarceration",
+      "csv_bytes": 343144,
+      "header_columns": 6,
+      "declared_columns": 6,
+      "declared_absent_from_header": [],
+      "reference_keys_absent": true,
+      "project_partition": "train",
+      "source_kind": "real"
+    }
+  ],
+  "model_calls": 0,
+  "validation_exports": 0
+}

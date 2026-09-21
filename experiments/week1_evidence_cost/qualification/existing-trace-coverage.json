@@ -1,0 +1,1011 @@
+{
+  "observed_at_utc": "2026-09-21T09:21:35.894922+00:00",
+  "selection": "all direct actual-*-run-* roots; trace first lines and ledger sizes only",
+  "roots": [
+    "actual-admission-prediction-exploration-grok130-run-r8",
+    "actual-admission-prediction-exploration-grok130-run-r9",
+    "actual-execution-improvement-history-grok130-run-r1",
+    "actual-exploration-scheduler-grok130-run-r1",
+    "actual-exploration-scheduler-grok130-run-r2",
+    "actual-exploration-scheduler-grok130-run-r3",
+    "actual-exploration-scheduler-grok130-run-r4",
+    "actual-m4m5-headless-grok130-run-r2",
+    "actual-m4m5-headless-grok130-run-r3",
+    "actual-m4m5-headless-grok130-run-r4",
+    "actual-m4m5-headless-run-r1",
+    "actual-ordinary-q31-grok130-run-r2",
+    "actual-q63-headless-grok130-run-r1",
+    "actual-q63-history-grok130-run-r1"
+  ],
+  "trace_headers": 53,
+  "rows": [
+    {
+      "root": "actual-admission-prediction-exploration-grok130-run-r9",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-run-r9\\controller\\cells\\1aaf15cb6a4de1ec1fe91d9a4245ce9317fdd85d97daa2fce6f35b11cdab09b7\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M4",
+        "M7"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-admission-prediction-exploration-grok130-run-r9",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-run-r9\\controller\\cells\\3ea92210b5422b555ec3a8a6ddfabaeb0911476359e11719217b49a331807ad7\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M1",
+        "M7"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-admission-prediction-exploration-grok130-run-r9",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-run-r9\\controller\\cells\\3eafc7d95be5975976c3a80487a65517ef54f93e6569f2f3e4a97d219a5f7600\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M1"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-admission-prediction-exploration-grok130-run-r9",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-run-r9\\controller\\cells\\79dc331c2e569e8c267bdf35feef63b2df2359c3188de0c47e11edd8256a8c35\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M7"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-admission-prediction-exploration-grok130-run-r9",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-run-r9\\controller\\cells\\e0fc727f5120433f488970d64f1828e17697485b67244e97c96c1ca39b564cec\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-admission-prediction-exploration-grok130-run-r9",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-run-r9\\controller\\cells\\e5e7d0aafe6e33e4c1cc39a88cbd13c28c35b73650a83667d16ec02a120c073e\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M4"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-execution-improvement-history-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-execution-improvement-history-grok130-run-r1\\target\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "cc81084493711fa766174946a64c2401ef690b8e3205d93be593f2e6d00cb2a7",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:machine-learning_0_2"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-exploration-scheduler-grok130-run-r2",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r2\\controller\\cells\\43908b98a000f45a0764ed6c8002bafd20aca471951595cf015c82265aa14933\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-exploration-scheduler-grok130-run-r3",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r3\\controller\\cells\\90dc6b240f4d1002fa19d3fe4847dcc5fe7eccfb2e66c36cdd849421ed7f2ae7\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-exploration-scheduler-grok130-run-r4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\30897d41e5e2499f789b1d23565e2fa57a49196ab03c785dc4a2a3b4a0522ecd\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M8"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-exploration-scheduler-grok130-run-r4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\55d0bc7cd10510c16309f0a125520ab3725a5e17ee4537dee851880042d4c74d\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-exploration-scheduler-grok130-run-r4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\72e0a8d513f7954f98db465adb04858510872f2ab68a0930d6616cf6b9327e59\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M7"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-exploration-scheduler-grok130-run-r4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\85a6cb9de745423e0af49e14d164fa502a466d7441027a4c7d74464aa8464917\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M8"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-exploration-scheduler-grok130-run-r4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\ae2a7a9f06bb9f0e70792167e2c484b36c124c2a1cf3e484d3f8cb5300475227\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M7",
+        "M8"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-exploration-scheduler-grok130-run-r4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\baf755ce831743311aabfa3c9e55ff472fddd491b1fb41a3a39e8a7476cdb7f7\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-exploration-scheduler-grok130-run-r4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\bf68f1d16a47ccef11618aa4979a5c9f92dcbe8835221420ac1b4b15f195c7ea\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M7"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-exploration-scheduler-grok130-run-r4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\dbb241f802eeaa831e134511ad7f4ec03d6983218df5f53133205274e24e09a0\\runtime\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M7",
+        "M8"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-m4m5-headless-grok130-run-r2",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r2\\controller\\cells\\2000e8b6f1720a21c0336c091927eaae76c61014c0b549376e073733cc29b6f8\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M4"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-m4m5-headless-grok130-run-r2",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r2\\controller\\cells\\433411c95160c22bb4c93995238c0dfbbf8a41b0c5eb6f6805e5c197de47ecfd\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-m4m5-headless-grok130-run-r2",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r2\\controller\\cells\\48b73b77959484a113cd02db2f4d7a62efcdf33576d9d6ff6cf0074444f4e0fa\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M4",
+        "M5"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-m4m5-headless-grok130-run-r2",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r2\\controller\\cells\\58d59300d2ac1cb519fbc301360c44fdc786ac62846cb3eb313e1f01e17dd9c8\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M5"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-m4m5-headless-grok130-run-r3",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r3\\controller\\cells\\4624b72522a873da7361f05eb2aded1a263796325d592263915ada28454fa84b\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-m4m5-headless-grok130-run-r4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r4\\controller\\cells\\2c2f992a98d5cc42a04dfa1e4b003f38d3a6485fe2c3903a2daa05eda0218651\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-m4m5-headless-grok130-run-r4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r4\\controller\\cells\\3acf0f8b950fde5212dcc879f87439f20a6d3f1437fd0eef07d852fafcb2a41b\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-m4m5-headless-grok130-run-r4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r4\\controller\\cells\\4fee393ec3e1927067fc53b2e3441a97496b77bf09b5e4fbb0dab5dabaaf4b5e\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M5"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-m4m5-headless-grok130-run-r4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r4\\controller\\cells\\5ca4e7035d2e99c23194b8e30249b71151ceb19ac57dc00d7d9ffacd7372ea61\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M4"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-m4m5-headless-grok130-run-r4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r4\\controller\\cells\\7b73afe5aeb3ae8aa56b957907aa3512b618e093159b01f6abc52bcc2c51def9\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M4",
+        "M5"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-m4m5-headless-grok130-run-r4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r4\\controller\\cells\\b5df356ec1e1cb56726be19e3a0a50152689848018ed00b5c909c33c1bacb1f1\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M5"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-m4m5-headless-grok130-run-r4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-grok130-run-r4\\controller\\cells\\c842572170ae9ad91112f07a65a58bc7640dcd115e1e204f3d00f36538250242\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M4"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-m4m5-headless-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-m4m5-headless-run-r1\\controller\\cells\\1be212a023ab79fceff40ea34b0a851f8115b3a90cd164e51ec6ada9465df9e0\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-ordinary-q31-grok130-run-r2",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-ordinary-q31-grok130-run-r2\\controller\\cells\\77263162c7edd457a7cbc83d63a895ea34bf3ca06fc9012edb4899700d81c303\\mechanism\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M4"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-ordinary-q31-grok130-run-r2",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-ordinary-q31-grok130-run-r2\\controller\\cells\\77263162c7edd457a7cbc83d63a895ea34bf3ca06fc9012edb4899700d81c303\\solver\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M4"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-ordinary-q31-grok130-run-r2",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-ordinary-q31-grok130-run-r2\\controller\\cells\\a00572c8303310704458bc3400c566fedf1deac18dc93e00c1c2d6871032f69e\\mechanism\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M4"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-ordinary-q31-grok130-run-r2",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-ordinary-q31-grok130-run-r2\\controller\\cells\\c1e5fe85168e987837a2bce795361d5eb70feb6b8931858620281c4220f344ac\\mechanism\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-ordinary-q31-grok130-run-r2",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-ordinary-q31-grok130-run-r2\\controller\\cells\\c1e5fe85168e987837a2bce795361d5eb70feb6b8931858620281c4220f344ac\\solver\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-ordinary-q31-grok130-run-r2",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-ordinary-q31-grok130-run-r2\\controller\\cells\\fb87feaa840b0267ac9372d7af648f72cf0f2165391f23a0ace1bd8239f46c5a\\mechanism\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-ordinary-q31-grok130-run-r2",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-ordinary-q31-grok130-run-r2\\controller\\cells\\fb87feaa840b0267ac9372d7af648f72cf0f2165391f23a0ace1bd8239f46c5a\\solver\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-headless-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-headless-grok130-run-r1\\controller\\producer\\cells\\17b7c733e50ec923f6510fec0fd22019135bc779f9696c4aa2b94556c496eb51\\proposal\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M2",
+        "M9"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-headless-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-headless-grok130-run-r1\\controller\\producer\\cells\\183a7ad80f44c9f8ab6b90579730100512825e6395adeb29005bbb3fccd6748b\\proposal\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M2",
+        "M9"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-headless-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-headless-grok130-run-r1\\controller\\producer\\cells\\183a7ad80f44c9f8ab6b90579730100512825e6395adeb29005bbb3fccd6748b\\solver\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M2",
+        "M9"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-headless-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-headless-grok130-run-r1\\controller\\producer\\cells\\3800662fd32517afc400d268bed8dd29523e7dbb859e54f3e850883c83a95b75\\proposal\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M2"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-headless-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-headless-grok130-run-r1\\controller\\producer\\cells\\4f876d0d65004895336fe5475e45a0214b2724ba73e4b419b2792fc853c8af77\\proposal\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M2",
+        "M9"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-headless-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-headless-grok130-run-r1\\controller\\producer\\cells\\4f876d0d65004895336fe5475e45a0214b2724ba73e4b419b2792fc853c8af77\\solver\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M2",
+        "M9"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-headless-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-headless-grok130-run-r1\\controller\\producer\\cells\\8dd60fae24af6739db64448d1061531f5dbccaa812d151461fb900305bf2ceab\\proposal\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M2"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-headless-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-headless-grok130-run-r1\\controller\\producer\\cells\\8dd60fae24af6739db64448d1061531f5dbccaa812d151461fb900305bf2ceab\\solver\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M2"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-headless-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-headless-grok130-run-r1\\controller\\producer\\cells\\a607e12d285cac906b2f27535c2d878a9bf33c4a21af8e96999504df80bf2f77\\proposal\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M2"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-headless-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-headless-grok130-run-r1\\controller\\producer\\cells\\a607e12d285cac906b2f27535c2d878a9bf33c4a21af8e96999504df80bf2f77\\solver\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M2"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-headless-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-headless-grok130-run-r1\\controller\\producer\\cells\\e1c30d0715693156a0f1e5819d39b6fe6b527ba9283430535cf89068493151ab\\proposal\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M2"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-headless-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-headless-grok130-run-r1\\controller\\producer\\cells\\e1c30d0715693156a0f1e5819d39b6fe6b527ba9283430535cf89068493151ab\\solver\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [
+        "M2"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-headless-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-headless-grok130-run-r1\\controller\\producer\\cells\\eb1594fb561da46c2e71989e7a01cc6bb0ca7a5e912eb021f0d2e1aadd3a7ddf\\proposal\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M2",
+        "M9"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-headless-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-headless-grok130-run-r1\\controller\\producer\\cells\\eb1594fb561da46c2e71989e7a01cc6bb0ca7a5e912eb021f0d2e1aadd3a7ddf\\solver\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [
+        "M2",
+        "M9"
+      ],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-history-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-history-grok130-run-r1\\target-0\\trace.jsonl",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    },
+    {
+      "root": "actual-q63-history-grok130-run-r1",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-q63-history-grok130-run-r1\\target-1\\trace.jsonl",
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "arm": [],
+      "ledger_bytes": {
+        "evidence.jsonl": 0,
+        "claims.jsonl": 0
+      }
+    }
+  ],
+  "nonempty_discovery_train": [],
+  "scope": "file metadata only; no model output or reference answers read"
+}

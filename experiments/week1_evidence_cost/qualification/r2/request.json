@@ -1,0 +1,30 @@
+{
+  "schema": "week1-public-train-qualification-v1",
+  "frozen_at": "2026-09-21T09:29:17.280471+00:00",
+  "rule": "three preselected real social-science tasks already in frozen TRAIN; original upstream test/train names do not alter project partition; no model/scorer calls",
+  "items": [
+    {
+      "source": "discoverybench",
+      "token": "1b52acaa3ff431b270ed1cfc7a40e77d799fc9ffb02c6d0b14d5020ad7b93526",
+      "group_sha256": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+      "input_bindings_digest": "027cb25796a15fdfff697bdf3e2f70d3c71555c4ef4cda91050ccd679d2538a2"
+    },
+    {
+      "source": "discoverybench",
+      "token": "1d9d7bb2f64652a51fc1179feef706167fe764ff41718e50bd19067c8518e801",
+      "group_sha256": "c64ce8b0929334b68d109a88544c860e903d10f920707431eccf9f00f863a10f",
+      "input_bindings_digest": "027cb25796a15fdfff697bdf3e2f70d3c71555c4ef4cda91050ccd679d2538a2"
+    },
+    {
+      "source": "discoverybench",
+      "token": "76aae31f85e666c7b0010269d6170ac7e7e335149788d15890c2df58fe816863",
+      "group_sha256": "f99e4d461ccef0ab2fe2728e980c0cadd6311d760626c73da25101b020371256",
+      "input_bindings_digest": "027cb25796a15fdfff697bdf3e2f70d3c71555c4ef4cda91050ccd679d2538a2"
+    }
+  ],
+  "split_digest": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+  "audit_digest": "5c2454599abc71ab735923960f14862b2d8be23a9f7ed5e01c4918da7a2f7377",
+  "source_script_sha256": "8f99facbf9adae4b91982e7d0d0a63129ef7b3259415cf255a156f98e60a861b",
+  "exporter_sha256": "b037d1e83c6dc00657febbacec0389939dc3b2795677eb456f0158b2f854264a",
+  "original_request_sha256": "8713df0bccbd7dfd499e4461790bb5c983fe0b89b37d3eac98867df250cb6685"
+}

@@ -2,3 +2,5 @@
 * -text whitespace=cr-at-eol
 # The measured harness keeps its original terminal blank line.
 measure.py whitespace=cr-at-eol,-blank-at-eof
+qualify_domain.py whitespace=cr-at-eol,-blank-at-eof
+qualification/*/producer.py whitespace=cr-at-eol,-blank-at-eof

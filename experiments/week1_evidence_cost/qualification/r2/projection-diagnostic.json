@@ -1,0 +1,68 @@
+[
+  {
+    "token": "1b52acaa3ff431b270ed1cfc7a40e77d799fc9ffb02c6d0b14d5020ad7b93526",
+    "status": "fails",
+    "error_type": "ContractError",
+    "locations": [
+      {
+        "file": "<stdin>",
+        "line": 23,
+        "function": "<module>"
+      },
+      {
+        "file": "primary_prospective_exporter.py",
+        "line": 187,
+        "function": "_read_selected"
+      },
+      {
+        "file": "train_io.py",
+        "line": 89,
+        "function": "prepare_primary_public_task"
+      }
+    ]
+  },
+  {
+    "token": "1d9d7bb2f64652a51fc1179feef706167fe764ff41718e50bd19067c8518e801",
+    "status": "fails",
+    "error_type": "ContractError",
+    "locations": [
+      {
+        "file": "<stdin>",
+        "line": 23,
+        "function": "<module>"
+      },
+      {
+        "file": "primary_prospective_exporter.py",
+        "line": 187,
+        "function": "_read_selected"
+      },
+      {
+        "file": "train_io.py",
+        "line": 89,
+        "function": "prepare_primary_public_task"
+      }
+    ]
+  },
+  {
+    "token": "76aae31f85e666c7b0010269d6170ac7e7e335149788d15890c2df58fe816863",
+    "status": "fails",
+    "error_type": "ContractError",
+    "locations": [
+      {
+        "file": "<stdin>",
+        "line": 23,
+        "function": "<module>"
+      },
+      {
+        "file": "primary_prospective_exporter.py",
+        "line": 187,
+        "function": "_read_selected"
+      },
+      {
+        "file": "train_io.py",
+        "line": 89,
+        "function": "prepare_primary_public_task"
+      }
+    ]
+  }
+]

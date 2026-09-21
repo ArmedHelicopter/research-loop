@@ -1,0 +1,89 @@
+[
+  {
+    "token": "1b52acaa3ff431b270ed1cfc7a40e77d799fc9ffb02c6d0b14d5020ad7b93526",
+    "task_id": "real:test:nls_ses",
+    "columns_shape": {
+      "raw": {
+        "length": 8,
+        "first": {
+          "name": "str",
+          "description": "str"
+        }
+      }
+    },
+    "status": "fails",
+    "error_type": "ContractError",
+    "locations": [
+      {
+        "file": "<stdin>",
+        "line": 25
+      },
+      {
+        "file": "qualify_domain.py",
+        "line": 50
+      },
+      {
+        "file": "train_io.py",
+        "line": 96
+      }
+    ]
+  },
+  {
+    "token": "76aae31f85e666c7b0010269d6170ac7e7e335149788d15890c2df58fe816863",
+    "task_id": "real:test:worldbank_education_gdp",
+    "columns_shape": {
+      "raw": {
+        "length": 45,
+        "first": {
+          "name": "str",
+          "description": "str"
+        }
+      }
+    },
+    "status": "fails",
+    "error_type": "ContractError",
+    "locations": [
+      {
+        "file": "<stdin>",
+        "line": 25
+      },
+      {
+        "file": "qualify_domain.py",
+        "line": 50
+      },
+      {
+        "file": "train_io.py",
+        "line": 96
+      }
+    ]
+  },
+  {
+    "token": "8324372de50618750f25da98efa60d6bcff803eaf5bb9e2a9ab9f9a760c6b66e",
+    "task_id": "real:test:nls_incarceration",
+    "columns_shape": {
+      "raw": {
+        "length": 6,
+        "first": {
+          "name": "str",
+          "description": "str"
+        }
+      }
+    },
+    "status": "fails",
+    "error_type": "ContractError",
+    "locations": [
+      {
+        "file": "<stdin>",
+        "line": 25
+      },
+      {
+        "file": "qualify_domain.py",
+        "line": 50
+      },
+      {
+        "file": "train_io.py",
+        "line": 96
+      }
+    ]
+  }
+]

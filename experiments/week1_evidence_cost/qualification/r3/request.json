@@ -1,0 +1,30 @@
+{
+  "schema": "week1-public-train-qualification-v1",
+  "frozen_at": "2026-09-21T09:34:12.983337+00:00",
+  "rule": "NLS SES, NLS incarceration, World Bank education/GDP; real, preassigned TRAIN, single CSV; two broad source families; fixed first question /queries/0/0; no model/scorer calls",
+  "items": [
+    {
+      "source": "discoverybench",
+      "token": "1b52acaa3ff431b270ed1cfc7a40e77d799fc9ffb02c6d0b14d5020ad7b93526",
+      "group_sha256": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+      "input_bindings_digest": "027cb25796a15fdfff697bdf3e2f70d3c71555c4ef4cda91050ccd679d2538a2"
+    },
+    {
+      "source": "discoverybench",
+      "token": "76aae31f85e666c7b0010269d6170ac7e7e335149788d15890c2df58fe816863",
+      "group_sha256": "f99e4d461ccef0ab2fe2728e980c0cadd6311d760626c73da25101b020371256",
+      "input_bindings_digest": "027cb25796a15fdfff697bdf3e2f70d3c71555c4ef4cda91050ccd679d2538a2"
+    },
+    {
+      "source": "discoverybench",
+      "token": "8324372de50618750f25da98efa60d6bcff803eaf5bb9e2a9ab9f9a760c6b66e",
+      "group_sha256": "9b0484d1584950a1769c6b0c4ff77648564f329ac1fdd891cc1ec2d5aa373d8e",
+      "input_bindings_digest": "027cb25796a15fdfff697bdf3e2f70d3c71555c4ef4cda91050ccd679d2538a2"
+    }
+  ],
+  "split_digest": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+  "audit_digest": "5c2454599abc71ab735923960f14862b2d8be23a9f7ed5e01c4918da7a2f7377",
+  "source_script_sha256": "5433e87089e4cb9c7847135ad7a4ddec6b73839fe6036b5bbad7b4278360cc4f",
+  "exporter_sha256": "b037d1e83c6dc00657febbacec0389939dc3b2795677eb456f0158b2f854264a",
+  "original_request_sha256": "8713df0bccbd7dfd499e4461790bb5c983fe0b89b37d3eac98867df250cb6685"
+}
