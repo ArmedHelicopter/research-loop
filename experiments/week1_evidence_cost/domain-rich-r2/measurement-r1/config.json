@@ -1,0 +1,12 @@
+{
+  "candidate": null,
+  "inner": 10,
+  "manifest_sha256": "fb78dc098bca5a17ea233f8e062017be08c34dbad67848d05546aae9abb0521b",
+  "normalization": "none, exact canonical bytes",
+  "repeats": 30,
+  "sample_units": "one new operation sequence for an existing TRAIN NLS SES task; no new independent task",
+  "schema": "week1-domain-replay-v1",
+  "seed": 20260921,
+  "source_sha256": "fa788461c7036f8024fd0abe8cdc131c0417b9ea4a55d4ff3826d93e90825abc",
+  "timeout_seconds": 120
+}

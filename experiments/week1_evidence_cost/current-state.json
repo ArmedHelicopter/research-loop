@@ -1,19 +1,20 @@
 {
   "schema": "week1-current-state-v1",
-  "recorded_at_utc": "2026-09-21T11:14:04.911620+00:00",
+  "recorded_at_utc": "2026-09-21T11:21:54.000539+00:00",
   "status": "research_incomplete",
   "completed": "native S, original RBS replay, and first richer natural workflow with retained qualification failure",
   "supersedes_closure_commit": "42dc2729d91dce93f84d9cf1653c6c65a25b79b5",
   "raw_results_unchanged": true,
   "frozen_criteria_unchanged": true,
-  "missing": "successful natural qualification/dependency observation if achievable in last allowed opportunity; final audit and mentor decision",
+  "missing": "richer native RBS comparison and final requirement-by-requirement audit/mentor decision",
   "candidate_development": "conditional; not justified by the current short-pilot evidence",
   "correction": "CORRECTION-20260921.md",
   "app_goal_completion": "active; whole-week completion remains unproven",
   "implementation_packages_completed": 6,
   "review_packages_completed": 6,
-  "live_trajectories_started": 5,
-  "quota_used_percent": 12,
+  "live_trajectories_started": 6,
+  "quota_used_percent": 16,
   "latest_replay": "RBS-replay-r1",
-  "next": "one final original opportunity with explicit mounted-file instruction; no additional paid spend"
+  "next": "CPU-only replay; no more live trajectories",
+  "active_implementation_package": 7
 }

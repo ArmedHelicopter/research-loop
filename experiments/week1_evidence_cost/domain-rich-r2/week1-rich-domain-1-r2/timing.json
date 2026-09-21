@@ -1,0 +1,105 @@
+[
+  {
+    "ns": 80319900,
+    "operation": "session_startup"
+  },
+  {
+    "ns": 965009700,
+    "operation": "tool_profile",
+    "status": "succeeded"
+  },
+  {
+    "ns": 232963400,
+    "operation": "evidence_and_claim_append_profile"
+  },
+  {
+    "ns": 17200,
+    "operation": "dependency_refresh"
+  },
+  {
+    "ns": 333100,
+    "operation": "B_context_get_or_build"
+  },
+  {
+    "ns": 76408535200,
+    "operation": "official_client_plan"
+  },
+  {
+    "ns": 79412467300,
+    "operation": "model_port_total_plan"
+  },
+  {
+    "ns": 79759663300,
+    "operation": "invoke_total_plan"
+  },
+  {
+    "ns": 2905890200,
+    "operation": "tool_primary",
+    "status": "succeeded"
+  },
+  {
+    "ns": 1198727900,
+    "operation": "evidence_and_claim_append_primary"
+  },
+  {
+    "ns": 8298814900,
+    "operation": "register_domain_primary"
+  },
+  {
+    "ns": 27500,
+    "operation": "dependency_refresh"
+  },
+  {
+    "ns": 1715700,
+    "operation": "B_context_get_or_build"
+  },
+  {
+    "ns": 59414826700,
+    "operation": "official_client_check"
+  },
+  {
+    "ns": 63100030100,
+    "operation": "model_port_total_check"
+  },
+  {
+    "ns": 63780917400,
+    "operation": "invoke_total_check"
+  },
+  {
+    "ns": 1366706900,
+    "operation": "tool_qualification",
+    "status": "succeeded"
+  },
+  {
+    "ns": 1236247700,
+    "operation": "evidence_and_claim_append_qualification"
+  },
+  {
+    "ns": 6250138800,
+    "operation": "register_domain_qualification"
+  },
+  {
+    "ns": 45700,
+    "operation": "dependency_refresh"
+  },
+  {
+    "ns": 3320600,
+    "operation": "B_context_get_or_build"
+  },
+  {
+    "ns": 90492745000,
+    "operation": "official_client_final"
+  },
+  {
+    "ns": 93653918000,
+    "operation": "model_port_total_final"
+  },
+  {
+    "ns": 94607826400,
+    "operation": "invoke_total_final"
+  },
+  {
+    "ns": 264215963700,
+    "operation": "trajectory_wall_including_quota_checks"
+  }
+]

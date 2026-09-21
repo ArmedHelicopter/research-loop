@@ -1,0 +1,72 @@
+{
+  "dependency_status": "model-declared, not independently validated",
+  "execution_digest": "511db68999ea1b565073edeb93a0262d5e64b4d3669a83ac8b0388deac70c09a",
+  "facts": [
+    {
+      "claim_id": "4693a4de7e8febda3cfee2bd97403acdf0399b7bc0b09cdd1e95bcee4aac01cc",
+      "depends_on": [],
+      "fact_digest": "c314d83923b4b406113ca6d4b3cea6c1b1fbe948c54b64221a9c9eeb5bde9e38",
+      "json_pointer": "/facts/0",
+      "key": "sample_n",
+      "root_id": "8e74d0a0739cd7ee395c38c6b8b8e1c7075593311036f29380f90caf0b3eab67"
+    },
+    {
+      "claim_id": "ab3dc0abd1526fc81c6375c4f569fb6dd9cb32a60db333e2d76ec4d44f2b8ca4",
+      "depends_on": [],
+      "fact_digest": "39514802a718a146df67b785eb1d74053af19b63f42a9c17ca48e66dc87b78ec",
+      "json_pointer": "/facts/1",
+      "key": "ba_rate",
+      "root_id": "4bac8ed9eabc998161ee9c3ec02f46a8ae6daa6e42c119d994c629bb1bdd4885"
+    },
+    {
+      "claim_id": "bcce9a0fcc5db4d1aa51f175fe0886ac2696bc5d6f721992440b849964c7338a",
+      "depends_on": [],
+      "fact_digest": "f07d0811d99943592a536271e2d10be171c2794c50bbf87934bfae9b6e9f8fd0",
+      "json_pointer": "/facts/2",
+      "key": "low_rate",
+      "root_id": "ad13d8edd82545bbf80baeb9f668a8f565c98a33fa2cf60dd604a6a25bc9fe14"
+    },
+    {
+      "claim_id": "053b7ef226e33b5a3fe977d0e9dcadb3b9e77451a1c6ef35bc052abec966244f",
+      "depends_on": [],
+      "fact_digest": "d65faac69b3c7a73151246e2c5784515875690dbb5fb5182de59bfea197cb94c",
+      "json_pointer": "/facts/3",
+      "key": "high_rate",
+      "root_id": "f56e46b3228c53d740681ef55db4105afc947f5a3f2448f6ecc2a4c4d909ec5e"
+    },
+    {
+      "claim_id": "727a1c9ebcedcae36301a68b10070fc0340214c19f81c160bc4f147e789ea8c5",
+      "depends_on": [],
+      "fact_digest": "622300b4db299162f6d6fbdaea003399fdbcb6bd2806d0567e09417703a1e6d4",
+      "json_pointer": "/facts/4",
+      "key": "rate_gap",
+      "root_id": "baf18a56487439a9d2818b25b262e265d78408684488ec4b9b1239cb41291572"
+    },
+    {
+      "claim_id": "5028d13f17201d4798aac40620ef13d8cfb56a64419b93913904c5727141755a",
+      "depends_on": [],
+      "fact_digest": "1d1cdba52a4391d69abfc9db7df3a5dbf95c3e890b15de21d7fcea1db131973a",
+      "json_pointer": "/facts/5",
+      "key": "ses_ba_r",
+      "root_id": "21c66d60d30daef5fba6e4fd3cfff15e207764277f919c407101dbc71bac905f"
+    },
+    {
+      "claim_id": "6dbf41faee72f95f35da32f161ddf49fb6dff8e5729df4e2e415d84c9ee9bdb6",
+      "depends_on": [],
+      "fact_digest": "6d6e86a54e2f6d50821e44349f1dc729eacaf7f8a5868bba3ef3b0cd53a0fdf0",
+      "json_pointer": "/facts/6",
+      "key": "ses_or",
+      "root_id": "b53eddbf52234846424cfde46716147d414b57e3fcac37a87d152e4e0b38d12b"
+    },
+    {
+      "claim_id": "44d431e018aea9a5772c1fd3e91a0c9c401435859f9d9dda9b0fa5863bfe2903",
+      "depends_on": [],
+      "fact_digest": "66e6919c626065652495af36752ac76f94b2f6703506b5b466c6e2a2f418026c",
+      "json_pointer": "/facts/7",
+      "key": "ses_or_ci",
+      "root_id": "dc507cf6f660e6e7c5ceba47cb87555a4a1e7d5c0f2ba369f436fa875dcf073a"
+    }
+  ],
+  "scientific_validated": false,
+  "stdout_sha256": "cc54e7cc74754d62d10c9c671fcc9f701e0ebabdb61f84798dace79d5e2a3305"
+}

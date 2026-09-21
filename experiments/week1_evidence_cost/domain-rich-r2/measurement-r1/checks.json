@@ -1,0 +1,41 @@
+[
+  {
+    "B_cold_python_tracemalloc_peak_bytes": 18297,
+    "claims": 1,
+    "context_bytes": 4252,
+    "evidence_roots": 1,
+    "exact_context": true,
+    "exact_request_other_fields_frozen": true,
+    "opportunity": "week1-rich-domain-1-r2",
+    "prompt_matches_request": true,
+    "request_bytes": 9353,
+    "scope": "peak Python allocations for one cold build only; not process RSS or full-system peak",
+    "slot": "plan"
+  },
+  {
+    "B_cold_python_tracemalloc_peak_bytes": 158894,
+    "claims": 10,
+    "context_bytes": 27563,
+    "evidence_roots": 10,
+    "exact_context": true,
+    "exact_request_other_fields_frozen": true,
+    "opportunity": "week1-rich-domain-1-r2",
+    "prompt_matches_request": true,
+    "request_bytes": 37121,
+    "scope": "peak Python allocations for one cold build only; not process RSS or full-system peak",
+    "slot": "check"
+  },
+  {
+    "B_cold_python_tracemalloc_peak_bytes": 284010,
+    "claims": 17,
+    "context_bytes": 48269,
+    "evidence_roots": 17,
+    "exact_context": true,
+    "exact_request_other_fields_frozen": true,
+    "opportunity": "week1-rich-domain-1-r2",
+    "prompt_matches_request": true,
+    "request_bytes": 60676,
+    "scope": "peak Python allocations for one cold build only; not process RSS or full-system peak",
+    "slot": "final"
+  }
+]

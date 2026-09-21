@@ -1,0 +1,272 @@
+[
+  {
+    "batch_count": 30,
+    "max_us": 198.72,
+    "median_us": 171.25,
+    "min_us": 165.61,
+    "operation": "B_cache_hit",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 217.39,
+    "median_us": 174.68,
+    "min_us": 167.13,
+    "operation": "B_object_cold",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 160.14,
+    "median_us": 152.825,
+    "min_us": 142.0,
+    "operation": "R_full_builder",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 21.5,
+    "median_us": 19.06,
+    "min_us": 17.53,
+    "operation": "bundle_hash_including_serialization",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 20.41,
+    "median_us": 17.19,
+    "min_us": 15.9,
+    "operation": "bundle_serialize",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 1.99,
+    "median_us": 1.57,
+    "min_us": 1.28,
+    "operation": "dependency_refresh_no_change",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 84.94,
+    "median_us": 65.495,
+    "min_us": 61.02,
+    "operation": "full_request_freeze",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 362.68,
+    "median_us": 286.705,
+    "min_us": 253.69,
+    "operation": "ledger_load_semantic_replay",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 265.63,
+    "median_us": 210.35,
+    "min_us": 191.14,
+    "operation": "ledger_read_format_check",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 7.25,
+    "median_us": 5.455,
+    "min_us": 5.12,
+    "operation": "public_context_expand",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 1547.49,
+    "median_us": 1347.405,
+    "min_us": 1231.24,
+    "operation": "B_cache_hit",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "check"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 1494.12,
+    "median_us": 1332.345,
+    "min_us": 1255.75,
+    "operation": "B_object_cold",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "check"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 1423.25,
+    "median_us": 1191.465,
+    "min_us": 1113.24,
+    "operation": "R_full_builder",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "check"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 163.49,
+    "median_us": 128.915,
+    "min_us": 117.55,
+    "operation": "bundle_hash_including_serialization",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "check"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 149.64,
+    "median_us": 118.755,
+    "min_us": 109.99,
+    "operation": "bundle_serialize",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "check"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 11.56,
+    "median_us": 9.345,
+    "min_us": 8.95,
+    "operation": "dependency_refresh_no_change",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "check"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 339.35,
+    "median_us": 268.2,
+    "min_us": 242.59,
+    "operation": "full_request_freeze",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "check"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 1207.11,
+    "median_us": 1047.04,
+    "min_us": 977.25,
+    "operation": "ledger_load_semantic_replay",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "check"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 575.91,
+    "median_us": 501.145,
+    "min_us": 463.94,
+    "operation": "ledger_read_format_check",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "check"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 44.01,
+    "median_us": 40.505,
+    "min_us": 37.57,
+    "operation": "public_context_expand",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "check"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 3094.44,
+    "median_us": 2423.27,
+    "min_us": 2191.33,
+    "operation": "B_cache_hit",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 3223.63,
+    "median_us": 2411.865,
+    "min_us": 2179.68,
+    "operation": "B_object_cold",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 2817.85,
+    "median_us": 2092.415,
+    "min_us": 1933.17,
+    "operation": "R_full_builder",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 422.39,
+    "median_us": 222.575,
+    "min_us": 209.03,
+    "operation": "bundle_hash_including_serialization",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 312.53,
+    "median_us": 209.26,
+    "min_us": 196.67,
+    "operation": "bundle_serialize",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 24.4,
+    "median_us": 15.58,
+    "min_us": 14.35,
+    "operation": "dependency_refresh_no_change",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 629.89,
+    "median_us": 424.405,
+    "min_us": 403.39,
+    "operation": "full_request_freeze",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 2603.55,
+    "median_us": 1768.59,
+    "min_us": 1562.7,
+    "operation": "ledger_load_semantic_replay",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 1159.85,
+    "median_us": 747.12,
+    "min_us": 694.98,
+    "operation": "ledger_read_format_check",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 117.33,
+    "median_us": 72.21,
+    "min_us": 63.04,
+    "operation": "public_context_expand",
+    "opportunity": "week1-rich-domain-1-r2",
+    "slot": "final"
+  }
+]

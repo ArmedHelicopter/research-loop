@@ -1,0 +1,294 @@
+{
+  "actual_client_invocations": 3,
+  "declared_dependency_edges": 1,
+  "exact_context_checks": 3,
+  "exact_domain_fact_bindings": 14,
+  "facts": [
+    {
+      "claim_id": "4693a4de7e8febda3cfee2bd97403acdf0399b7bc0b09cdd1e95bcee4aac01cc",
+      "fact": {
+        "key": "sample_n",
+        "label": "Complete-case analysis sample",
+        "method": "Retain finite numeric SES and BA labels True/False or 1/0; input rows=8773",
+        "population": "Respondents with finite SES and recognized nonmissing BA status; n=8773",
+        "premise_claim_ids": [],
+        "unit": "respondents",
+        "value": 8773
+      },
+      "needs_review": false,
+      "stage": "primary"
+    },
+    {
+      "claim_id": "ab3dc0abd1526fc81c6375c4f569fb6dd9cb32a60db333e2d76ec4d44f2b8ca4",
+      "fact": {
+        "key": "ba_rate",
+        "label": "BA degree completion rate",
+        "method": "100 times mean of the binary BA indicator",
+        "population": "Respondents with finite SES and recognized nonmissing BA status; n=8773",
+        "premise_claim_ids": [],
+        "unit": "percent",
+        "value": 2.690072
+      },
+      "needs_review": false,
+      "stage": "primary"
+    },
+    {
+      "claim_id": "bcce9a0fcc5db4d1aa51f175fe0886ac2696bc5d6f721992440b849964c7338a",
+      "fact": {
+        "key": "low_rate",
+        "label": "BA completion at or below SES 25th percentile",
+        "method": "Empirical SES 25th percentile; boundary ties included; mean BA indicator times 100",
+        "population": "Complete-case respondents with SES <= -0.478232; n=2194",
+        "premise_claim_ids": [],
+        "unit": "percent",
+        "value": 1.048314
+      },
+      "needs_review": false,
+      "stage": "primary"
+    },
+    {
+      "claim_id": "053b7ef226e33b5a3fe977d0e9dcadb3b9e77451a1c6ef35bc052abec966244f",
+      "fact": {
+        "key": "high_rate",
+        "label": "BA completion at or above SES 75th percentile",
+        "method": "Empirical SES 75th percentile; boundary ties included; mean BA indicator times 100",
+        "population": "Complete-case respondents with SES >= 0.41291; n=2196",
+        "premise_claim_ids": [],
+        "unit": "percent",
+        "value": 3.59745
+      },
+      "needs_review": false,
+      "stage": "primary"
+    },
+    {
+      "claim_id": "727a1c9ebcedcae36301a68b10070fc0340214c19f81c160bc4f147e789ea8c5",
+      "fact": {
+        "key": "rate_gap",
+        "label": "High-SES minus low-SES BA completion rate",
+        "method": "100 times upper-group completion proportion minus lower-group proportion",
+        "population": "Complete-case lower SES group n=2194 and upper SES group n=2196",
+        "premise_claim_ids": [],
+        "unit": "percentage points",
+        "value": 2.549136
+      },
+      "needs_review": false,
+      "stage": "primary"
+    },
+    {
+      "claim_id": "5028d13f17201d4798aac40620ef13d8cfb56a64419b93913904c5727141755a",
+      "fact": {
+        "key": "ses_ba_r",
+        "label": "SES and BA completion point-biserial correlation",
+        "method": "Pearson correlation between continuous SES and BA indicator coded 0/1",
+        "population": "Respondents with finite SES and recognized nonmissing BA status; n=8773",
+        "premise_claim_ids": [],
+        "unit": "correlation coefficient",
+        "value": 0.061233
+      },
+      "needs_review": false,
+      "stage": "primary"
+    },
+    {
+      "claim_id": "6dbf41faee72f95f35da32f161ddf49fb6dff8e5729df4e2e415d84c9ee9bdb6",
+      "fact": {
+        "key": "ses_or",
+        "label": "BA completion odds ratio per one sample SD higher SES",
+        "method": "Unadjusted binomial logistic GLM with intercept and SES standardized by sample SD=0.742382",
+        "population": "Respondents with finite SES and recognized nonmissing BA status; n=8773",
+        "premise_claim_ids": [],
+        "unit": "odds ratio",
+        "value": 1.420623
+      },
+      "needs_review": false,
+      "stage": "primary"
+    },
+    {
+      "claim_id": "44d431e018aea9a5772c1fd3e91a0c9c401435859f9d9dda9b0fa5863bfe2903",
+      "fact": {
+        "key": "ses_or_ci",
+        "label": "95% confidence interval for SES odds ratio",
+        "method": "Unadjusted binomial logistic GLM with intercept and SES standardized by sample SD=0.742382; exponentiated coefficient +/- 1.959964 times HC0 robust standard error",
+        "population": "Respondents with finite SES and recognized nonmissing BA status; n=8773",
+        "premise_claim_ids": [],
+        "unit": "odds ratio interval",
+        "value": "[1.269144, 1.590182]"
+      },
+      "needs_review": false,
+      "stage": "primary"
+    },
+    {
+      "claim_id": "afb6ee2dfb885d8444987ca72bb98c6b659d41cf29b75193b952e9ab5c4ffe53",
+      "fact": {
+        "key": "sample_n",
+        "label": "Quartile analysis sample",
+        "method": "Retain finite numeric SES and BA labels True/False or 1/0, including equivalent numeric strings.",
+        "population": "Respondents with finite numeric SES and recognized binary BA status; n=8773",
+        "premise_claim_ids": [],
+        "unit": "respondents",
+        "value": 8773
+      },
+      "needs_review": false,
+      "stage": "qualification"
+    },
+    {
+      "claim_id": "8f4c1c3de5edeedd432e92be1f0c89d3f8c9e6969492e50b36ac22faedaae2f2",
+      "fact": {
+        "key": "q1_rate",
+        "label": "BA completion in SES quartile group 1",
+        "method": "100 times BA successes / group size; successes=23. Cutpoints are empirical 25th, 50th and 75th percentiles using linear interpolation; boundary ties are assigned to the lower interval. Empty groups return null.",
+        "population": "Eligible respondents with SES <= -0.4782319515; n=2194",
+        "premise_claim_ids": [],
+        "unit": "percent",
+        "value": 1.048314
+      },
+      "needs_review": false,
+      "stage": "qualification"
+    },
+    {
+      "claim_id": "e3213e87fe9323444d7a2cc46b518dba0775ef1db47899234007bf0e5243c2d5",
+      "fact": {
+        "key": "q2_rate",
+        "label": "BA completion in SES quartile group 2",
+        "method": "100 times BA successes / group size; successes=68. Cutpoints are empirical 25th, 50th and 75th percentiles using linear interpolation; boundary ties are assigned to the lower interval. Empty groups return null.",
+        "population": "Eligible respondents with -0.4782319515 < SES <= -0.07950252718; n=2193",
+        "premise_claim_ids": [],
+        "unit": "percent",
+        "value": 3.100775
+      },
+      "needs_review": false,
+      "stage": "qualification"
+    },
+    {
+      "claim_id": "dc3b6e057b8ae1f8552d98396fa0313f85945214d7d7e2d70db281860f98548e",
+      "fact": {
+        "key": "q3_rate",
+        "label": "BA completion in SES quartile group 3",
+        "method": "100 times BA successes / group size; successes=66. Cutpoints are empirical 25th, 50th and 75th percentiles using linear interpolation; boundary ties are assigned to the lower interval. Empty groups return null.",
+        "population": "Eligible respondents with -0.07950252718 < SES <= 0.4129103215; n=2194",
+        "premise_claim_ids": [],
+        "unit": "percent",
+        "value": 3.008204
+      },
+      "needs_review": false,
+      "stage": "qualification"
+    },
+    {
+      "claim_id": "177191186e4392b725659662b9e2d666769cf0a4de002a5ef881ec144e4a3159",
+      "fact": {
+        "key": "q4_rate",
+        "label": "BA completion in SES quartile group 4",
+        "method": "100 times BA successes / group size; successes=79. Cutpoints are empirical 25th, 50th and 75th percentiles using linear interpolation; boundary ties are assigned to the lower interval. Empty groups return null.",
+        "population": "Eligible respondents with SES > 0.4129103215; n=2192",
+        "premise_claim_ids": [],
+        "unit": "percent",
+        "value": 3.604015
+      },
+      "needs_review": false,
+      "stage": "qualification"
+    },
+    {
+      "claim_id": "3b307389d3a30851f1b356e9f6b06e341f173826aee880d87a22af874a427770",
+      "fact": {
+        "key": "quartile_gap",
+        "label": "Upper minus lower SES quartile-group BA completion rate",
+        "method": "100 times recomputed upper-group BA proportion minus lower-group proportion. This qualifies the prior tail-gap statistic by using mutually exclusive quartile intervals: the upper group uses SES > the 75th percentile, whereas the prior statistic used >=. It is a related descriptive contrast, not an exact replication or an adjusted effect.",
+        "population": "Eligible lower group n=2194 and upper group n=2192",
+        "premise_claim_ids": [
+          "727a1c9ebcedcae36301a68b10070fc0340214c19f81c160bc4f147e789ea8c5"
+        ],
+        "unit": "percentage points",
+        "value": 2.555701
+      },
+      "needs_review": true,
+      "stage": "qualification"
+    }
+  ],
+  "historical_client_tool_ms": 231553.7137,
+  "historical_context_and_refresh_ms": 5.4598,
+  "historical_domain_and_execution_registration_ms": 17216.8927,
+  "historical_operations_ms": {
+    "B_context_get_or_build": 5.3694,
+    "dependency_refresh": 0.0904,
+    "evidence_and_claim_append_primary": 1198.7279,
+    "evidence_and_claim_append_profile": 232.9634,
+    "evidence_and_claim_append_qualification": 1236.2477,
+    "invoke_total_check": 63780.9174,
+    "invoke_total_final": 94607.8264,
+    "invoke_total_plan": 79759.6633,
+    "model_port_total_check": 63100.0301,
+    "model_port_total_final": 93653.918,
+    "model_port_total_plan": 79412.4673,
+    "official_client_check": 59414.8267,
+    "official_client_final": 90492.745,
+    "official_client_plan": 76408.5352,
+    "register_domain_primary": 8298.8149,
+    "register_domain_qualification": 6250.1388,
+    "session_startup": 80.3199,
+    "tool_primary": 2905.8902,
+    "tool_profile": 965.0097,
+    "tool_qualification": 1366.7069,
+    "trajectory_wall_including_quota_checks": 264215.9637
+  },
+  "known_client_turn_usage": [
+    {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 0,
+      "input_tokens": 19265,
+      "output_tokens": 2180,
+      "reasoning_output_tokens": 105
+    },
+    {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 0,
+      "input_tokens": 27875,
+      "output_tokens": 1663,
+      "reasoning_output_tokens": 310
+    },
+    {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 34944,
+      "input_tokens": 35142,
+      "output_tokens": 1416,
+      "reasoning_output_tokens": 0
+    }
+  ],
+  "native_AND": "unsupported; not manufactured",
+  "new_independent_tasks": 0,
+  "new_operation_sequences": 1,
+  "query_fraction_of_client_plus_tool_percent": 0.002357897834052316,
+  "registration_fraction_of_client_plus_tool_percent": 7.435377487534548,
+  "requests": [
+    {
+      "budget_bytes": 60000,
+      "claims": 1,
+      "context_bytes": 4252,
+      "domain_claims": 0,
+      "roots": 1,
+      "slot": "plan",
+      "visible_domain_claims": 0
+    },
+    {
+      "budget_bytes": 60000,
+      "claims": 10,
+      "context_bytes": 27563,
+      "domain_claims": 8,
+      "roots": 10,
+      "slot": "check",
+      "visible_domain_claims": 8
+    },
+    {
+      "budget_bytes": 60000,
+      "claims": 17,
+      "context_bytes": 48269,
+      "domain_claims": 14,
+      "roots": 17,
+      "slot": "final",
+      "visible_domain_claims": 14
+    }
+  ],
+  "scientific_validated": false,
+  "source_families_in_this_run": 1,
+  "statistical_correctness_independently_validated": false,
+  "status": "complete_binding_audit",
+  "timing_note": "Ratios compare measured components in this observed B workflow; not a counterfactual speedup or sum of nested wall times."
+}

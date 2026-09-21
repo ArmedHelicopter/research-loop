@@ -1,0 +1,58 @@
+{
+  "dependency_status": "model-declared, not independently validated",
+  "execution_digest": "f8eec861749ac82fcc4a03adc6c58e32218a793cbebfcea8e0e43446ac16c991",
+  "facts": [
+    {
+      "claim_id": "afb6ee2dfb885d8444987ca72bb98c6b659d41cf29b75193b952e9ab5c4ffe53",
+      "depends_on": [],
+      "fact_digest": "8197e0ad9134c2a7c4072ee16170b42d9f15d45ce4f3c63218fada7a278f1c10",
+      "json_pointer": "/facts/0",
+      "key": "sample_n",
+      "root_id": "faeaf29c0dd275bfada62d25a358667f8e9d186f8fafe01731463c2510a618f9"
+    },
+    {
+      "claim_id": "8f4c1c3de5edeedd432e92be1f0c89d3f8c9e6969492e50b36ac22faedaae2f2",
+      "depends_on": [],
+      "fact_digest": "cbd0d6f3254aa7ddccceebb54d2f516810b0d475ec749b80304706154be597a9",
+      "json_pointer": "/facts/1",
+      "key": "q1_rate",
+      "root_id": "1cb68dcdab4dd392f717b180ebd3520f694a5799994e011216af4796d7be5409"
+    },
+    {
+      "claim_id": "e3213e87fe9323444d7a2cc46b518dba0775ef1db47899234007bf0e5243c2d5",
+      "depends_on": [],
+      "fact_digest": "382dde6cd4721740d376b563732553efb5f479f34c424c5214c4c4db48835e3a",
+      "json_pointer": "/facts/2",
+      "key": "q2_rate",
+      "root_id": "cdb3aa20ab2c42837ec33eb182159576b9b093e1309890835e85b6c4d233d6d5"
+    },
+    {
+      "claim_id": "dc3b6e057b8ae1f8552d98396fa0313f85945214d7d7e2d70db281860f98548e",
+      "depends_on": [],
+      "fact_digest": "42e32043bf829d56585c8f3f9ff8fc39afed1e9ee8de1c794caf28ffd3e8ef2d",
+      "json_pointer": "/facts/3",
+      "key": "q3_rate",
+      "root_id": "75cdbb94314b84cc743dc28f7c67d9dc67b46d1aebda6094cd860d3c3cc7f376"
+    },
+    {
+      "claim_id": "177191186e4392b725659662b9e2d666769cf0a4de002a5ef881ec144e4a3159",
+      "depends_on": [],
+      "fact_digest": "0fcc6d4f8b0b063419c38c299c8ba41b2346e60c967f38abccc9b8293d3765ff",
+      "json_pointer": "/facts/4",
+      "key": "q4_rate",
+      "root_id": "67eed04ef3584c955e4a9e265d3b945a131505113ac5f459a000159bbfbf1f02"
+    },
+    {
+      "claim_id": "3b307389d3a30851f1b356e9f6b06e341f173826aee880d87a22af874a427770",
+      "depends_on": [
+        "727a1c9ebcedcae36301a68b10070fc0340214c19f81c160bc4f147e789ea8c5"
+      ],
+      "fact_digest": "4f607815df868a1eb705c0a6196a9c9f2e7c39c28574c8c904fba524befccfe8",
+      "json_pointer": "/facts/5",
+      "key": "quartile_gap",
+      "root_id": "7f2f4d2c56dd93e18e5ef619acd04c0a1c74608db8e868cf64455aa54557e18a"
+    }
+  ],
+  "scientific_validated": false,
+  "stdout_sha256": "7e95e790e544c5978580cc30bbee8727e0e96c0185fbb5b3ace636a51c7a0d2f"
+}

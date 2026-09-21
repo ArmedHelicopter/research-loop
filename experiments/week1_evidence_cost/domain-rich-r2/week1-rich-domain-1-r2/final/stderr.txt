@@ -1,0 +1,2 @@
+2026-09-21T11:18:46.987156Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+2026-09-21T11:19:28.330386Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (1/5 in 205ms)... turn_id=01a0c3b0-9fbd-7533-8829-7a0a0e43f642 retries=1 max_retries=5 sampling_error=stream disconnected before completion: WebSocket protocol error: Connection reset without closing handshake
