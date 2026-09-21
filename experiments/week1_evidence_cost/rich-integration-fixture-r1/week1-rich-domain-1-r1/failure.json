@@ -1,0 +1,8 @@
+{
+  "error_type": "KeyError",
+  "message": "'items'",
+  "opportunity_reusable": false,
+  "scientific_validated": false,
+  "status": "failed",
+  "traceback": "Traceback (most recent call last):\n  File \"E:\\_ryanDev\\AI\\research-loop-week1\\experiments\\week1_evidence_cost\\domain_rich.py\", line 251, in run_one\n    plan=session.invoke('plan',model,instruction=PLAN)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E:\\_ryanDev\\AI\\research-loop-week1\\research_loop\\modular\\runtime.py\", line 405, in invoke\n    response = model(request)\n               ^^^^^^^^^^^^^^\n  File \"E:\\_ryanDev\\AI\\research-loop-week1\\experiments\\week1_evidence_cost\\domain_rich.py\", line 232, in model\n    result=subprocess.run(args,input=prompt.encode(),stdout=log,stderr=err,timeout=240,creationflags=subprocess.CREATE_NO_WINDOW,env={k:v for k,v in os.environ.items() if k not in ('OPENAI_API_KEY','CODEX_API_KEY')})\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E:\\_ryanDev\\AI\\research-loop-week1\\experiments\\week1_evidence_cost\\check_domain_rich.py\", line 17, in transport\n    facts=[x for x in request['context']['items'] if x.get('kind')=='claim' and x['statement'].startswith('Program-reported domain statistic: ')]\n                      ~~~~~~~~~~~~~~~~~~^^^^^^^^^\nKeyError: 'items'\n"
+}

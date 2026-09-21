@@ -1,0 +1,20 @@
+{
+  "control_flow_completed": true,
+  "primary_reported_fact_count": 8,
+  "qualification_fact_count": 0,
+  "qualification_measurement_completed": false,
+  "qualification_limitations": [
+    "Family 2: sensitivity to SES operationalization/functional form. Five prespecified empirical SES bins qualify the primary linear-logit summary by describing the association across the SES distribution.",
+    "Unadjusted observational descriptions are noncausal; demographic and academic confounding remain possible.",
+    "No survey weights or sampling-design information are available; estimates describe analyzed respondents.",
+    "Binning discards within-bin information and depends on empirical cutpoints. Ties remain together, so bin sizes can differ.",
+    "The fifth bin uses SES strictly above the 80th-percentile threshold; the primary top-quintile definition includes equality. Boundary ties can therefore change the reported gap.",
+    "Program-reported statistics are not independently validated scientific findings.",
+    "Frozen check could not be completed: ValueError: Expected exactly one nls_ses_processed.csv under /input/data."
+  ],
+  "cause": "Generated check treated the mounted /input/data file as a directory. Exception was caught and emitted in limitations.",
+  "domain_workload_status": "primary recorded; qualification not measured",
+  "new_independent_tasks": 0,
+  "retained_original_opportunity": true,
+  "eligible_as_successful_natural_dependency_workload": false
+}

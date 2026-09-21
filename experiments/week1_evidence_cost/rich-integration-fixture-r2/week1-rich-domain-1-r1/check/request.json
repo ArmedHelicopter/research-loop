@@ -1,0 +1,229 @@
+{
+  "context": {
+    "budget_bytes": 60000,
+    "claim_version": "278c64075219b3e4153e3f061609b754f0d6bd5896d1c1f9d9b944d30045802d",
+    "entries": {
+      "entries": [
+        {
+          "claim_id": "13a0bb0157d04df13fd9714c73acbfc761c6be6b9b820cf35655a2ed13ae717e",
+          "depends_on": [],
+          "kind": "claim",
+          "needs_review": false,
+          "refute_roots": [],
+          "revision": 1,
+          "statement": "The recorded profile execution has status succeeded. This asserts execution only.",
+          "status": "supported",
+          "support_roots": [
+            "8ac557b2e262c1b1f807aeda6c7b64026c8245c4345260a2c625267fe9729ae2"
+          ]
+        },
+        {
+          "claim_id": "4e021e1096729ca605bfb1e6ea7b3c30c4544308c1f258ede84652dcc559954a",
+          "depends_on": [],
+          "kind": "claim",
+          "needs_review": false,
+          "refute_roots": [],
+          "revision": 1,
+          "statement": "Program-reported domain statistic: {\"execution_digest\":\"1d52cc635b41920ab549a926156323bdf3a4ba3197dc3100ac43d9a81a0d6127\",\"json_pointer\":\"/facts/0\",\"label\":\"rows with observed SES\",\"method\":\"direct recomputation from CSV; fixture only\",\"population\":\"all CSV rows; fixture only\",\"stage\":\"primary\",\"unit\":\"rows\",\"value\":8773}",
+          "status": "supported",
+          "support_roots": [
+            "74442e33d80599551e2d38d043abd12666e3f744ebcbb7af035aad1b504465b6"
+          ]
+        },
+        {
+          "claim_id": "a25c3bb9cb79460ac6edc9a2f4f166b09be217cc6b5f0f37170fe2e7f074c620",
+          "depends_on": [],
+          "kind": "claim",
+          "needs_review": false,
+          "refute_roots": [],
+          "revision": 1,
+          "statement": "The recorded primary execution has status succeeded. This asserts execution only.",
+          "status": "supported",
+          "support_roots": [
+            "7ce33a204fb1e292c28b72ad34292bcd3341b8e4a86bb166d7bcbce4874ae3ba"
+          ]
+        },
+        {
+          "kind": "evidence",
+          "payload": {
+            "content": {
+              "fact": {
+                "key": "count",
+                "label": "rows with observed SES",
+                "method": "direct recomputation from CSV; fixture only",
+                "population": "all CSV rows; fixture only",
+                "premise_claim_ids": [],
+                "unit": "rows",
+                "value": 8773
+              },
+              "json_pointer": "/facts/0",
+              "scientific_validated": false,
+              "stage": "primary",
+              "validation_scope": "exact program output and input/receipt binding only; statistics and dependency entailment not independently validated"
+            },
+            "kind": "measurement",
+            "root_material": {
+              "csv_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3",
+              "execution_digest": "1d52cc635b41920ab549a926156323bdf3a4ba3197dc3100ac43d9a81a0d6127",
+              "fact_digest": "8b12451d71e3e1e052ef90852c71fe6625434d641dbcd89432042382496e2ccc",
+              "identity": {
+                "benchmark": "discoverybench",
+                "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+                "domain": "train",
+                "group_id": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+                "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+                "task_id": "real:test:nls_ses"
+              },
+              "json_pointer": "/facts/0",
+              "program_sha256": "f4323e87c98f115dcfa8235050d8a53305d57903fd4eaa061c0442a171b9c3fd"
+            },
+            "trusted_validator": "week1-program-output-binding-only",
+            "validator_verified": true
+          },
+          "root_id": "74442e33d80599551e2d38d043abd12666e3f744ebcbb7af035aad1b504465b6",
+          "subject_bindings": {
+            "dataset_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3"
+          }
+        },
+        {
+          "kind": "evidence",
+          "payload": {
+            "content": {
+              "scientific_validated": false,
+              "stage": "primary",
+              "status": "succeeded",
+              "stderr": "",
+              "stdout": "{\"facts\": [{\"key\": \"count\", \"label\": \"rows with observed SES\", \"value\": 8773, \"unit\": \"rows\", \"population\": \"all CSV rows; fixture only\", \"method\": \"direct recomputation from CSV; fixture only\", \"premise_claim_ids\": []}], \"limitations\": [\"Integration fixture, not scientific evidence\"]}\n",
+              "validation_scope": "identity, input hash, original execution receipt only"
+            },
+            "kind": "observation",
+            "root_material": {
+              "csv_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3",
+              "execution_digest": "1d52cc635b41920ab549a926156323bdf3a4ba3197dc3100ac43d9a81a0d6127"
+            },
+            "trusted_validator": "week1-execution-receipt-only",
+            "validator_verified": true
+          },
+          "root_id": "7ce33a204fb1e292c28b72ad34292bcd3341b8e4a86bb166d7bcbce4874ae3ba",
+          "subject_bindings": {
+            "dataset_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3"
+          }
+        },
+        {
+          "kind": "evidence",
+          "payload": {
+            "content": {
+              "scientific_validated": false,
+              "stage": "profile",
+              "status": "succeeded",
+              "stderr": "",
+              "stdout": "{\"rows\": 8773, \"columns\": {\"Unnamed: 0\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 8773, \"min\": 0.0, \"max\": 8772.0}, \"CASE ID\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 8773, \"min\": 2.0, \"max\": 12583.0}, \"SAMPLE_RACE\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 3, \"examples\": [\"White\", \"Black\", \"Hispanic\"]}, \"SAMPLE_SEX\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"Female\", \"Male\"]}, \"FAMILY SIZE OF SAMPLE\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 1.0, \"max\": 12.0}, \"ABILITY: COMPOSITE OF ASVAB SCORE\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 1504, \"min\": 1016.0, \"max\": 3068.0}, \"BA DEGREE COMPLETED\": {\"dtype\": \"bool\", \"missing\": 0, \"unique\": 2, \"min\": 0.0, \"max\": 1.0}, \"PERCENTILE IN CLASS\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 8453, \"min\": 0.0372930286867756, \"max\": 99.93614303959131}, \"SES\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 5753, \"min\": -2.4454531999442155, \"max\": 2.7182217284791017}}}\n",
+              "validation_scope": "identity, input hash, original execution receipt only"
+            },
+            "kind": "observation",
+            "root_material": {
+              "csv_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3",
+              "execution_digest": "ac047ec33137e7c7f03456f14940bd5c299803aea49d4e8cceae56e26b25f87a"
+            },
+            "trusted_validator": "week1-execution-receipt-only",
+            "validator_verified": true
+          },
+          "root_id": "8ac557b2e262c1b1f807aeda6c7b64026c8245c4345260a2c625267fe9729ae2",
+          "subject_bindings": {
+            "dataset_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3"
+          }
+        }
+      ]
+    },
+    "evidence_version": "a730ab9af0ca630e6c387a8576d269e663fa906210f75c1fb9825aa68b8de860",
+    "identity": {
+      "benchmark": "discoverybench",
+      "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+      "domain": "train",
+      "group_id": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+      "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+      "task_id": "real:test:nls_ses"
+    },
+    "question": "{\"dataset\":[{\"columns\":[{\"description\":\"Unique ID of each respondent\",\"name\":\"CASE ID\"},{\"description\":\"Race of the respondent (Hispanic, Black or White)\",\"name\":\"SAMPLE_RACE\"},{\"description\":\"Sex of the respondent (Male or Female)\",\"name\":\"SAMPLE_SEX\"},{\"description\":\"Family size of the respondent\",\"name\":\"FAMILY SIZE OF SAMPLE\"},{\"description\":\"Composite variable created by summing following variables:\\n\\nASVAB - Arithmetic Reasoning Z Score (rounded), 1981\\nASVAB - Word Knowledge Z Score (rounded), 1981\\nASVAB - Paragraph Comprehension Z Score (rounded), 1981\\nASVAB - Mathematics Knowledge Z Score (rounded), 1981\",\"name\":\"ABILITY: COMPOSITE OF ASVAB SCORE\"},{\"description\":\"Boolean variable that equals 1 if the BA Degree was completed by the respondent else 0\",\"name\":\"BA DEGREE COMPLETED\"},{\"description\":\"Respondent's percentile in the class that he attended in school last year\",\"name\":\"PERCENTILE IN CLASS\"},{\"description\":\"Socioeconomic Status of the respondent\",\"name\":\"SES\"}],\"description\":\"This dataset contains social background factors (race, gender, and socioeconomic status) and academic resources at the time of secondary school graduation (standardized test scores, class rank, and curriculum) for the participants of the NLS.\",\"name\":\"nls_ses_processed.csv\"}],\"difficulty\":null,\"question\":\"How strongly does BA degree completion vary with socioeconomic status?\",\"source_kind\":\"real\",\"task_id\":\"real:test:nls_ses\"}",
+    "used_bytes": 5578
+  },
+  "execution_feedback": [
+    {
+      "id": "ac047ec33137e7c7f03456f14940bd5c299803aea49d4e8cceae56e26b25f87a",
+      "status": "succeeded",
+      "stderr": "",
+      "stdout": "{\"rows\": 8773, \"columns\": {\"Unnamed: 0\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 8773, \"min\": 0.0, \"max\": 8772.0}, \"CASE ID\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 8773, \"min\": 2.0, \"max\": 12583.0}, \"SAMPLE_RACE\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 3, \"examples\": [\"White\", \"Black\", \"Hispanic\"]}, \"SAMPLE_SEX\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"Female\", \"Male\"]}, \"FAMILY SIZE OF SAMPLE\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 1.0, \"max\": 12.0}, \"ABILITY: COMPOSITE OF ASVAB SCORE\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 1504, \"min\": 1016.0, \"max\": 3068.0}, \"BA DEGREE COMPLETED\": {\"dtype\": \"bool\", \"missing\": 0, \"unique\": 2, \"min\": 0.0, \"max\": 1.0}, \"PERCENTILE IN CLASS\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 8453, \"min\": 0.0372930286867756, \"max\": 99.93614303959131}, \"SES\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 5753, \"min\": -2.4454531999442155, \"max\": 2.7182217284791017}}}\n"
+    },
+    {
+      "id": "1d52cc635b41920ab549a926156323bdf3a4ba3197dc3100ac43d9a81a0d6127",
+      "status": "succeeded",
+      "stderr": "",
+      "stdout": "{\"facts\": [{\"key\": \"count\", \"label\": \"rows with observed SES\", \"value\": 8773, \"unit\": \"rows\", \"population\": \"all CSV rows; fixture only\", \"method\": \"direct recomputation from CSV; fixture only\", \"premise_claim_ids\": []}], \"limitations\": [\"Integration fixture, not scientific evidence\"]}\n"
+    }
+  ],
+  "instruction": "Write a Python program that performs one scientifically relevant qualification or sensitivity check on the preceding primary analysis, using only /input/data and the observed profile.\nSelect exactly one appropriate family from this predeclared menu: (1) sensitivity to missing/sentinel sample handling, (2) sensitivity to SES operationalization/functional form, (3) descriptive adjustment for observed demographic or academic covariates with explicit noncausal interpretation. State which family and why. Freeze the chosen method in the emitted program before execution; no post-result replacement. If none is defensible, report that gap.\nDo not manufacture dependency changes or withdraw evidence.\nRecompute quantities from the CSV. Do not just copy the prior output as a result.\nIf comparing to a previous program-reported statistic, cite its exact claim ID in premise_claim_ids and explain the relationship in method.\nA dependency records a model-declared interpretive relationship, not verified logical entailment or AND support.\nNo network, installs or tools. pandas/numpy/scipy/statsmodels; CPU 1, memory 1GB, 60 seconds.\nReturn program in code and describe the planned check in conclusion/limitations. If no check is defensible, print facts:[] with the actual reason.\nPrint exactly one finite JSON object, <=12000 characters, with keys facts, limitations.\nfacts is a list of at most 8 objects, each with exactly: key (unique short identifier),\nlabel (measured variable or contrast), value (finite number, boolean, string or null),\nunit (string), population (explicit analysis sample and n), method (specific calculation),\npremise_claim_ids (list of existing claim IDs actually used to define or interpret this check).\nUse [] if no actual prior claim is a premise; never invent links to inflate a graph.\nThese are program-reported statistics, not established scientific truth.\nNo causal claims. Do not force significance. limitations is a list of strings.\nUse json.dumps(...,allow_nan=False); round sensibly and handle undefined statistics with null.",
+  "lock_digest": "c3c58a7a1aaff3b3b7173f3783d4c494d188f2155492b38a858af8607cff95fd",
+  "module_context": {},
+  "objective": {
+    "question": "How strongly does BA degree completion vary with socioeconomic status?",
+    "scope": "bounded TRAIN observational analysis, no scoring"
+  },
+  "schema": "public-model-request-v1",
+  "slot": "check",
+  "task": {
+    "identity": {
+      "benchmark": "discoverybench",
+      "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+      "domain": "train",
+      "group_id": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+      "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+      "task_id": "real:test:nls_ses"
+    },
+    "payload": {
+      "dataset": [
+        {
+          "columns": [
+            {
+              "description": "Unique ID of each respondent",
+              "name": "CASE ID"
+            },
+            {
+              "description": "Race of the respondent (Hispanic, Black or White)",
+              "name": "SAMPLE_RACE"
+            },
+            {
+              "description": "Sex of the respondent (Male or Female)",
+              "name": "SAMPLE_SEX"
+            },
+            {
+              "description": "Family size of the respondent",
+              "name": "FAMILY SIZE OF SAMPLE"
+            },
+            {
+              "description": "Composite variable created by summing following variables:\n\nASVAB - Arithmetic Reasoning Z Score (rounded), 1981\nASVAB - Word Knowledge Z Score (rounded), 1981\nASVAB - Paragraph Comprehension Z Score (rounded), 1981\nASVAB - Mathematics Knowledge Z Score (rounded), 1981",
+              "name": "ABILITY: COMPOSITE OF ASVAB SCORE"
+            },
+            {
+              "description": "Boolean variable that equals 1 if the BA Degree was completed by the respondent else 0",
+              "name": "BA DEGREE COMPLETED"
+            },
+            {
+              "description": "Respondent's percentile in the class that he attended in school last year",
+              "name": "PERCENTILE IN CLASS"
+            },
+            {
+              "description": "Socioeconomic Status of the respondent",
+              "name": "SES"
+            }
+          ],
+          "description": "This dataset contains social background factors (race, gender, and socioeconomic status) and academic resources at the time of secondary school graduation (standardized test scores, class rank, and curriculum) for the participants of the NLS.",
+          "name": "nls_ses_processed.csv"
+        }
+      ],
+      "difficulty": null,
+      "question": "How strongly does BA degree completion vary with socioeconomic status?",
+      "source_kind": "real",
+      "task_id": "real:test:nls_ses"
+    }
+  }
+}

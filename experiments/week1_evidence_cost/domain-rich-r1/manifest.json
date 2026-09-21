@@ -1,0 +1,111 @@
+{
+  "allowed_indices": [
+    0
+  ],
+  "base_commit": "117fb0b8ae374e631d52b81f12e7eeae97c5a4d0",
+  "cli_version": "codex-cli 0.153.4",
+  "client_timeout_seconds": 240,
+  "context_budget_bytes": 60000,
+  "core_sha256": {
+    "research_loop/modular/benchmarks/execution.py": "21d9c34afdf135b7f58911d1236b74f4b20d3a23826b7ef0c8dcbbfbbf1d72ba",
+    "research_loop/modular/contracts.py": "c774d9f77bf0efdfcdcf2dc64da1a9c73e1d38372d1faa38cfdf9a6d2099311b",
+    "research_loop/modular/modules/context.py": "a50f5cc6e11f1526a776309b94d991fffa90be48c51706777169c57480dfbf15",
+    "research_loop/modular/modules/evidence.py": "c2aefe1d1faa32499e4aac67cd953ed0cb013026f3b6a4cffa359065d8c2db1c",
+    "research_loop/modular/runtime.py": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+    "research_loop/ontology.py": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb"
+  },
+  "domain_contract_sha256": "9b73925b383833a4810df9570f400d35fe38f726199dfa62562f32b53b14e539",
+  "frozen_at": "2026-09-21T11:08:18.993054+00:00",
+  "image": "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+  "input_index_sha256": "53eb3d57c337a5a1ee64d77d9ad65e68f2248a05361d019ab8748bb3d5c3f6cd",
+  "instructions": {
+    "check": "Write a Python program that performs one scientifically relevant qualification or sensitivity check on the preceding primary analysis, using only /input/data and the observed profile.\nSelect exactly one appropriate family from this predeclared menu: (1) sensitivity to missing/sentinel sample handling, (2) sensitivity to SES operationalization/functional form, (3) descriptive adjustment for observed demographic or academic covariates with explicit noncausal interpretation. State which family and why. Freeze the chosen method in the emitted program before execution; no post-result replacement. If none is defensible, report that gap.\nDo not manufacture dependency changes or withdraw evidence.\nRecompute quantities from the CSV. Do not just copy the prior output as a result.\nIf comparing to a previous program-reported statistic, cite its exact claim ID in premise_claim_ids and explain the relationship in method.\nA dependency records a model-declared interpretive relationship, not verified logical entailment or AND support.\nNo network, installs or tools. pandas/numpy/scipy/statsmodels; CPU 1, memory 1GB, 60 seconds.\nReturn program in code and describe the planned check in conclusion/limitations. If no check is defensible, print facts:[] with the actual reason.\nPrint exactly one finite JSON object, <=12000 characters, with keys facts, limitations.\nfacts is a list of at most 8 objects, each with exactly: key (unique short identifier),\nlabel (measured variable or contrast), value (finite number, boolean, string or null),\nunit (string), population (explicit analysis sample and n), method (specific calculation),\npremise_claim_ids (list of existing claim IDs actually used to define or interpret this check).\nUse [] if no actual prior claim is a premise; never invent links to inflate a graph.\nThese are program-reported statistics, not established scientific truth.\nNo causal claims. Do not force significance. limitations is a list of strings.\nUse json.dumps(...,allow_nan=False); round sensibly and handle undefined statistics with null.",
+    "final": "Interpret the actual profile and analysis execution output in this request. Answer the research question with concrete numbers where available, note missing data, outcome/indicator mismatches and uncertainty. Failed code is a failed opportunity: report the limitation, do not pretend it succeeded. The ledger validator validates recorded execution only; scientific truth is not established. Cite evidence root IDs in your conclusion. Set code to an empty string; do not call tools or write another program.\nSeparate the primary result from the actual qualification/sensitivity result. Cite claim IDs and evidence root IDs, preserving population/method qualifiers.\nSupported ledger status means faithfully recorded program output only. Declared dependencies do not prove joint support or scientific validity.\nDo not claim that rerunning statistics establishes the benchmark answer or a causal effect.",
+    "plan": "Write a complete Python analysis program for the public research question. Read only /input/data CSV. Available: pandas, numpy, scipy, statsmodels. No network, no installs, no other input. CPU 1, memory 1GB, 60 seconds. Print one compact JSON object under 9000 characters. Use the observed profile to choose sensible missing/sentinel handling; report sample counts, descriptive effect sizes and limitations. Distinguish association from causality. Check actual indicator labels, never substitute a different outcome silently. No benchmark answers available. Return code without markdown in the code field; conclusion and limitations describe the planned analysis, not invented results. Do not call tools yourself.\nPrint exactly one finite JSON object, <=12000 characters, with keys facts, limitations.\nfacts is a list of at most 8 objects, each with exactly: key (unique short identifier),\nlabel (measured variable or contrast), value (finite number, boolean, string or null),\nunit (string), population (explicit analysis sample and n), method (specific calculation),\npremise_claim_ids (list of existing claim IDs actually used to define or interpret this check).\nUse [] if no actual prior claim is a premise; never invent links to inflate a graph.\nThese are program-reported statistics, not established scientific truth.\nNo causal claims. Do not force significance. limitations is a list of strings.\nUse json.dumps(...,allow_nan=False); round sensibly and handle undefined statistics with null.\nThis is the primary observational analysis; all premise_claim_ids must be []."
+  },
+  "items": [
+    {
+      "csv_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\week1-domain-export-20260921-r4\\public-train\\1b52acaa3ff431b270ed1cfc7a40e77d799fc9ffb02c6d0b14d5020ad7b93526\\data.csv",
+      "csv_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3",
+      "dataset": [
+        {
+          "columns": [
+            {
+              "description": "Unique ID of each respondent",
+              "name": "CASE ID"
+            },
+            {
+              "description": "Race of the respondent (Hispanic, Black or White)",
+              "name": "SAMPLE_RACE"
+            },
+            {
+              "description": "Sex of the respondent (Male or Female)",
+              "name": "SAMPLE_SEX"
+            },
+            {
+              "description": "Family size of the respondent",
+              "name": "FAMILY SIZE OF SAMPLE"
+            },
+            {
+              "description": "Composite variable created by summing following variables:\n\nASVAB - Arithmetic Reasoning Z Score (rounded), 1981\nASVAB - Word Knowledge Z Score (rounded), 1981\nASVAB - Paragraph Comprehension Z Score (rounded), 1981\nASVAB - Mathematics Knowledge Z Score (rounded), 1981",
+              "name": "ABILITY: COMPOSITE OF ASVAB SCORE"
+            },
+            {
+              "description": "Boolean variable that equals 1 if the BA Degree was completed by the respondent else 0",
+              "name": "BA DEGREE COMPLETED"
+            },
+            {
+              "description": "Respondent's percentile in the class that he attended in school last year",
+              "name": "PERCENTILE IN CLASS"
+            },
+            {
+              "description": "Socioeconomic Status of the respondent",
+              "name": "SES"
+            }
+          ],
+          "description": "This dataset contains social background factors (race, gender, and socioeconomic status) and academic resources at the time of secondary school graduation (standardized test scores, class rank, and curriculum) for the participants of the NLS.",
+          "name": "nls_ses_processed.csv"
+        }
+      ],
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "real:test:nls_ses"
+      },
+      "public_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\week1-domain-export-20260921-r4\\public-train\\1b52acaa3ff431b270ed1cfc7a40e77d799fc9ffb02c6d0b14d5020ad7b93526\\public.json",
+      "public_sha256": "40a1053b49a8a9b14065db2ade854f929376bed2bd3cd10ee84a12b10927e6df",
+      "question": "How strongly does BA degree completion vary with socioeconomic status?",
+      "source_kind": "real",
+      "token": "1b52acaa3ff431b270ed1cfc7a40e77d799fc9ffb02c6d0b14d5020ad7b93526"
+    }
+  ],
+  "max_client_invocations": 3,
+  "max_new_trajectories": 1,
+  "model": "gpt-6-astra",
+  "normalization": "none; exact canonical context and requests",
+  "official_cli_sha256": "444a3f0008050605cae73cd9b7a2dcac61294062dfaab56dd20430fd6498518b",
+  "opportunity_ids": [
+    "week1-rich-domain-1-r1"
+  ],
+  "paid_spend_limit": 0,
+  "predecessor": "Four previous live opportunities, three complete and one failed. Fifth original opportunity, one of remaining two; richer natural domain-statistic workflow.",
+  "profile_code": "import pandas as pd,json\nd=pd.read_csv('/input/data')\np={'rows':len(d),'columns':{}}\nfor c in d:\n s=d[c]; v={'dtype':str(s.dtype),'missing':int(s.isna().sum()),'unique':int(s.nunique())}\n if pd.api.types.is_numeric_dtype(s):\n  v.update(min=float(s.min()) if s.notna().any() else None,max=float(s.max()) if s.notna().any() else None)\n else:v['examples']=[str(x)[:100] for x in s.dropna().unique()[:3]]\n p['columns'][str(c)]=v\nprint(json.dumps(p,allow_nan=False))\n",
+  "quota_helper_sha256": "1e702f0090741e10d355dcad6a4e049de19838e54a2def0d9fd1cc124389729e",
+  "reasoning_effort": "low",
+  "reset_epoch": 1790579847,
+  "response_schema_sha256": "478c8115007fd881a92933b7ea09c1d2139a0349e823e9f7dc22d1b99ecc887f",
+  "schema": "week1-real-domain-pilot-v1",
+  "scope": "Official client feasibility pilot, not bare-model or official leaderboard reproduction. Raw execution visibility is not scientific validation.",
+  "selection": "single preselected existing TRAIN NLS SES question; no score-based selection",
+  "slots": [
+    "plan",
+    "check",
+    "final"
+  ],
+  "source_sha256": "018ddff0253ec00fcf6eee2922d9829ba0502cbc03b4778487ba30fc3412fb53",
+  "stop_used_percent": 61,
+  "tool_timeout_seconds": 60
+}

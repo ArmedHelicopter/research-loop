@@ -1,0 +1,18 @@
+{
+  "dependency_status": "model-declared, not independently validated",
+  "execution_digest": "03b07c247a830196e698ac635c76f500c7742395e95e5debbc6f56964c41eda6",
+  "facts": [
+    {
+      "claim_id": "08ff3462136c9f67a8813cd1b6d697a41b81dcfabc610394f44cac26e0d6f126",
+      "depends_on": [
+        "4e021e1096729ca605bfb1e6ea7b3c30c4544308c1f258ede84652dcc559954a"
+      ],
+      "fact_digest": "79fb9e321a5790c4c845ccd650522864808b902ff80e7bc68652fa2777baef4a",
+      "json_pointer": "/facts/0",
+      "key": "fraction",
+      "root_id": "e718149e53b3ea761852d09d34bf4b94548d730a792bc6dca32768a25816d077"
+    }
+  ],
+  "scientific_validated": false,
+  "stdout_sha256": "ede2964b7fe32513387b1eb2f446cf3bf4c26941f889bd9a89d87e3783384f94"
+}

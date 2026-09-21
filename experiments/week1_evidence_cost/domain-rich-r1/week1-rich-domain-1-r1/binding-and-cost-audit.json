@@ -1,0 +1,208 @@
+{
+  "actual_client_invocations": 3,
+  "declared_dependency_edges": 0,
+  "exact_context_checks": 3,
+  "exact_domain_fact_bindings": 8,
+  "facts": [
+    {
+      "claim_id": "d0f77e0584c2dcbe534f3b7b5cb2cf0bd4b8c541787effd35cfec1f77a0cf7cc",
+      "fact": {
+        "key": "analysis_n",
+        "label": "Complete-case analysis sample",
+        "method": "Of 8773 input rows, exclude 0; invalid/missing SES=0; missing outcome=0; exclusion counts may overlap",
+        "population": "Respondents with finite numeric SES and valid observed BA completion; n=8773",
+        "premise_claim_ids": [],
+        "unit": "respondents",
+        "value": 8773
+      },
+      "needs_review": false,
+      "stage": "primary"
+    },
+    {
+      "claim_id": "7990590cdd1ab3aab072eb6199137a27bfd07557d82e9d7fd72a407b212e9aa7",
+      "fact": {
+        "key": "ba_rate",
+        "label": "BA degree completion prevalence",
+        "method": "100 times completed BA count / n; completed=236",
+        "population": "Respondents with finite numeric SES and valid observed BA completion; n=8773",
+        "premise_claim_ids": [],
+        "unit": "percent",
+        "value": 2.690072
+      },
+      "needs_review": false,
+      "stage": "primary"
+    },
+    {
+      "claim_id": "cd531cb148206025ceb1a010a6a02d6c5d7c42343a9a987022811b9fbe36d77f",
+      "fact": {
+        "key": "ses_ba_r",
+        "label": "SES and BA completion correlation",
+        "method": "Pearson point-biserial correlation of continuous SES and binary BA completion",
+        "population": "Respondents with finite numeric SES and valid observed BA completion; n=8773",
+        "premise_claim_ids": [],
+        "unit": "correlation",
+        "value": 0.061233
+      },
+      "needs_review": false,
+      "stage": "primary"
+    },
+    {
+      "claim_id": "e5998efe5c38415817d3204f84721f3d2ec4540e3096315d5df8343adeb46a38",
+      "fact": {
+        "key": "low_ses_ba",
+        "label": "BA completion in bottom SES quintile",
+        "method": "Empirical completion fraction; SES threshold=-0.587465; boundary ties retained",
+        "population": "Respondents with finite numeric SES and valid observed BA completion; n=8773; SES <= sample 20th percentile; subgroup n=1755",
+        "premise_claim_ids": [],
+        "unit": "percent",
+        "value": 0.683761
+      },
+      "needs_review": false,
+      "stage": "primary"
+    },
+    {
+      "claim_id": "52738ef48d1ed93103f3c2ceabf7a306013d46ed17f540132560dd1856c4feaa",
+      "fact": {
+        "key": "high_ses_ba",
+        "label": "BA completion in top SES quintile",
+        "method": "Empirical completion fraction; SES threshold=0.543081; boundary ties retained",
+        "population": "Respondents with finite numeric SES and valid observed BA completion; n=8773; SES >= sample 80th percentile; subgroup n=1755",
+        "premise_claim_ids": [],
+        "unit": "percent",
+        "value": 3.532764
+      },
+      "needs_review": false,
+      "stage": "primary"
+    },
+    {
+      "claim_id": "002a2d8b3122c915df6b5e16b64e8c493de661eecb56991d0ef4bf412d9e93a4",
+      "fact": {
+        "key": "ses_rate_gap",
+        "label": "Top minus bottom SES quintile BA completion",
+        "method": "100 times (top-quintile completion fraction minus bottom-quintile completion fraction)",
+        "population": "Respondents with finite numeric SES and valid observed BA completion; n=8773; bottom n=1755; top n=1755",
+        "premise_claim_ids": [],
+        "unit": "percentage points",
+        "value": 2.849003
+      },
+      "needs_review": false,
+      "stage": "primary"
+    },
+    {
+      "claim_id": "ca6b265d589cc4896226b29dada2be05f421f0fbcc63daacb522f1535877b31f",
+      "fact": {
+        "key": "ses_or",
+        "label": "BA completion odds ratio per one sample SD higher SES",
+        "method": "Unadjusted binomial-logit GLM with intercept; exp(SES coefficient), SES standardized using sample SD",
+        "population": "Respondents with finite numeric SES and valid observed BA completion; n=8773",
+        "premise_claim_ids": [],
+        "unit": "odds ratio",
+        "value": 1.420623
+      },
+      "needs_review": false,
+      "stage": "primary"
+    },
+    {
+      "claim_id": "d533d9b4dde05c526faa99adfc10379ebada7524421dd243a285128d7029c253",
+      "fact": {
+        "key": "ses_or_ci",
+        "label": "95% confidence interval for SES odds ratio",
+        "method": "Exponentiated coefficient Wald interval using HC0 robust covariance; independent-respondent assumption",
+        "population": "Respondents with finite numeric SES and valid observed BA completion; n=8773",
+        "premise_claim_ids": [],
+        "unit": "odds ratio interval",
+        "value": "[1.269144, 1.590182]"
+      },
+      "needs_review": false,
+      "stage": "primary"
+    }
+  ],
+  "historical_client_tool_ms": 177419.8237,
+  "historical_context_and_refresh_ms": 4.6163,
+  "historical_domain_and_execution_registration_ms": 3077.7005,
+  "historical_operations_ms": {
+    "B_context_get_or_build": 4.5585,
+    "dependency_refresh": 0.0578,
+    "evidence_and_claim_append_primary": 274.8835,
+    "evidence_and_claim_append_profile": 220.7701,
+    "evidence_and_claim_append_qualification": 424.8311,
+    "invoke_total_check": 67949.1767,
+    "invoke_total_final": 38142.3856,
+    "invoke_total_plan": 78109.2798,
+    "model_port_total_check": 67543.9441,
+    "model_port_total_final": 37813.1905,
+    "model_port_total_plan": 77876.3989,
+    "official_client_check": 64595.6915,
+    "official_client_final": 34708.5168,
+    "official_client_plan": 74753.1332,
+    "register_domain_primary": 2156.7102,
+    "register_domain_qualification": 0.5056,
+    "session_startup": 83.0898,
+    "tool_primary": 1622.754,
+    "tool_profile": 965.1726,
+    "tool_qualification": 774.5556,
+    "trajectory_wall_including_quota_checks": 192504.5117
+  },
+  "known_client_turn_usage": [
+    {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 7552,
+      "input_tokens": 19224,
+      "output_tokens": 2271,
+      "reasoning_output_tokens": 221
+    },
+    {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 0,
+      "input_tokens": 27774,
+      "output_tokens": 1871,
+      "reasoning_output_tokens": 291
+    },
+    {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 0,
+      "input_tokens": 28293,
+      "output_tokens": 876,
+      "reasoning_output_tokens": 0
+    }
+  ],
+  "native_AND": "unsupported; not manufactured",
+  "new_independent_tasks": 0,
+  "new_operation_sequences": 1,
+  "query_fraction_of_client_plus_tool_percent": 0.0026019076694641084,
+  "registration_fraction_of_client_plus_tool_percent": 1.7346993339391983,
+  "requests": [
+    {
+      "budget_bytes": 60000,
+      "claims": 1,
+      "context_bytes": 4252,
+      "domain_claims": 0,
+      "roots": 1,
+      "slot": "plan",
+      "visible_domain_claims": 0
+    },
+    {
+      "budget_bytes": 60000,
+      "claims": 10,
+      "context_bytes": 27850,
+      "domain_claims": 8,
+      "roots": 10,
+      "slot": "check",
+      "visible_domain_claims": 8
+    },
+    {
+      "budget_bytes": 60000,
+      "claims": 11,
+      "context_bytes": 29870,
+      "domain_claims": 8,
+      "roots": 11,
+      "slot": "final",
+      "visible_domain_claims": 8
+    }
+  ],
+  "scientific_validated": false,
+  "source_families_in_this_run": 1,
+  "statistical_correctness_independently_validated": false,
+  "status": "complete_binding_audit",
+  "timing_note": "Ratios compare measured components in this observed B workflow; not a counterfactual speedup or sum of nested wall times."
+}

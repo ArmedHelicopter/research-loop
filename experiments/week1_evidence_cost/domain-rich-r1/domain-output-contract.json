@@ -1,0 +1,39 @@
+{
+  "allowed_pointers": [
+    "/facts/0",
+    "/facts/1",
+    "/facts/2",
+    "/facts/3",
+    "/facts/4",
+    "/facts/5",
+    "/facts/6",
+    "/facts/7"
+  ],
+  "duplicate_json_keys": "reject",
+  "later_dependencies": "existing same-subject program-reported domain statistics only",
+  "max_facts": 8,
+  "max_stdout_characters": 12000,
+  "primary_dependencies": "empty",
+  "required_fact_keys": [
+    "key",
+    "label",
+    "value",
+    "unit",
+    "population",
+    "method",
+    "premise_claim_ids"
+  ],
+  "required_report_keys": [
+    "facts",
+    "limitations"
+  ],
+  "schema": "strict-program-report-v1",
+  "scientific_validation": false,
+  "strict_parser_source_sha256": "018ddff0253ec00fcf6eee2922d9829ba0502cbc03b4778487ba30fc3412fb53",
+  "value_types": [
+    "string",
+    "finite_number",
+    "boolean",
+    "null"
+  ]
+}

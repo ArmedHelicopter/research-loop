@@ -1,0 +1,131 @@
+{
+  "context": {
+    "budget_bytes": 60000,
+    "claim_version": "5e2f423173d844fcd67ea735c10c043617dc9cbcfc4fad42fc993efc3cc64941",
+    "entries": {
+      "entries": [
+        {
+          "claim_id": "13a0bb0157d04df13fd9714c73acbfc761c6be6b9b820cf35655a2ed13ae717e",
+          "depends_on": [],
+          "kind": "claim",
+          "needs_review": false,
+          "refute_roots": [],
+          "revision": 1,
+          "statement": "The recorded profile execution has status succeeded. This asserts execution only.",
+          "status": "supported",
+          "support_roots": [
+            "8ac557b2e262c1b1f807aeda6c7b64026c8245c4345260a2c625267fe9729ae2"
+          ]
+        },
+        {
+          "kind": "evidence",
+          "payload": {
+            "content": {
+              "scientific_validated": false,
+              "stage": "profile",
+              "status": "succeeded",
+              "stderr": "",
+              "stdout": "{\"rows\": 8773, \"columns\": {\"Unnamed: 0\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 8773, \"min\": 0.0, \"max\": 8772.0}, \"CASE ID\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 8773, \"min\": 2.0, \"max\": 12583.0}, \"SAMPLE_RACE\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 3, \"examples\": [\"White\", \"Black\", \"Hispanic\"]}, \"SAMPLE_SEX\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"Female\", \"Male\"]}, \"FAMILY SIZE OF SAMPLE\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 1.0, \"max\": 12.0}, \"ABILITY: COMPOSITE OF ASVAB SCORE\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 1504, \"min\": 1016.0, \"max\": 3068.0}, \"BA DEGREE COMPLETED\": {\"dtype\": \"bool\", \"missing\": 0, \"unique\": 2, \"min\": 0.0, \"max\": 1.0}, \"PERCENTILE IN CLASS\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 8453, \"min\": 0.0372930286867756, \"max\": 99.93614303959131}, \"SES\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 5753, \"min\": -2.4454531999442155, \"max\": 2.7182217284791017}}}\n",
+              "validation_scope": "identity, input hash, original execution receipt only"
+            },
+            "kind": "observation",
+            "root_material": {
+              "csv_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3",
+              "execution_digest": "ac047ec33137e7c7f03456f14940bd5c299803aea49d4e8cceae56e26b25f87a"
+            },
+            "trusted_validator": "week1-execution-receipt-only",
+            "validator_verified": true
+          },
+          "root_id": "8ac557b2e262c1b1f807aeda6c7b64026c8245c4345260a2c625267fe9729ae2",
+          "subject_bindings": {
+            "dataset_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3"
+          }
+        }
+      ]
+    },
+    "evidence_version": "4bea1367da90a96de3d8040cad9aea9b72615c9e0a30c99d24e6d36841d7c62d",
+    "identity": {
+      "benchmark": "discoverybench",
+      "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+      "domain": "train",
+      "group_id": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+      "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+      "task_id": "real:test:nls_ses"
+    },
+    "question": "{\"dataset\":[{\"columns\":[{\"description\":\"Unique ID of each respondent\",\"name\":\"CASE ID\"},{\"description\":\"Race of the respondent (Hispanic, Black or White)\",\"name\":\"SAMPLE_RACE\"},{\"description\":\"Sex of the respondent (Male or Female)\",\"name\":\"SAMPLE_SEX\"},{\"description\":\"Family size of the respondent\",\"name\":\"FAMILY SIZE OF SAMPLE\"},{\"description\":\"Composite variable created by summing following variables:\\n\\nASVAB - Arithmetic Reasoning Z Score (rounded), 1981\\nASVAB - Word Knowledge Z Score (rounded), 1981\\nASVAB - Paragraph Comprehension Z Score (rounded), 1981\\nASVAB - Mathematics Knowledge Z Score (rounded), 1981\",\"name\":\"ABILITY: COMPOSITE OF ASVAB SCORE\"},{\"description\":\"Boolean variable that equals 1 if the BA Degree was completed by the respondent else 0\",\"name\":\"BA DEGREE COMPLETED\"},{\"description\":\"Respondent's percentile in the class that he attended in school last year\",\"name\":\"PERCENTILE IN CLASS\"},{\"description\":\"Socioeconomic Status of the respondent\",\"name\":\"SES\"}],\"description\":\"This dataset contains social background factors (race, gender, and socioeconomic status) and academic resources at the time of secondary school graduation (standardized test scores, class rank, and curriculum) for the participants of the NLS.\",\"name\":\"nls_ses_processed.csv\"}],\"difficulty\":null,\"question\":\"How strongly does BA degree completion vary with socioeconomic status?\",\"source_kind\":\"real\",\"task_id\":\"real:test:nls_ses\"}",
+    "used_bytes": 2138
+  },
+  "execution_feedback": [
+    {
+      "id": "ac047ec33137e7c7f03456f14940bd5c299803aea49d4e8cceae56e26b25f87a",
+      "status": "succeeded",
+      "stderr": "",
+      "stdout": "{\"rows\": 8773, \"columns\": {\"Unnamed: 0\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 8773, \"min\": 0.0, \"max\": 8772.0}, \"CASE ID\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 8773, \"min\": 2.0, \"max\": 12583.0}, \"SAMPLE_RACE\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 3, \"examples\": [\"White\", \"Black\", \"Hispanic\"]}, \"SAMPLE_SEX\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"Female\", \"Male\"]}, \"FAMILY SIZE OF SAMPLE\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 1.0, \"max\": 12.0}, \"ABILITY: COMPOSITE OF ASVAB SCORE\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 1504, \"min\": 1016.0, \"max\": 3068.0}, \"BA DEGREE COMPLETED\": {\"dtype\": \"bool\", \"missing\": 0, \"unique\": 2, \"min\": 0.0, \"max\": 1.0}, \"PERCENTILE IN CLASS\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 8453, \"min\": 0.0372930286867756, \"max\": 99.93614303959131}, \"SES\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 5753, \"min\": -2.4454531999442155, \"max\": 2.7182217284791017}}}\n"
+    }
+  ],
+  "instruction": "Write a complete Python analysis program for the public research question. Read only /input/data CSV. Available: pandas, numpy, scipy, statsmodels. No network, no installs, no other input. CPU 1, memory 1GB, 60 seconds. Print one compact JSON object under 9000 characters. Use the observed profile to choose sensible missing/sentinel handling; report sample counts, descriptive effect sizes and limitations. Distinguish association from causality. Check actual indicator labels, never substitute a different outcome silently. No benchmark answers available. Return code without markdown in the code field; conclusion and limitations describe the planned analysis, not invented results. Do not call tools yourself.\nPrint exactly one finite JSON object, <=12000 characters, with keys facts, limitations.\nfacts is a list of at most 8 objects, each with exactly: key (unique short identifier),\nlabel (measured variable or contrast), value (finite number, boolean, string or null),\nunit (string), population (explicit analysis sample and n), method (specific calculation),\npremise_claim_ids (list of existing claim IDs actually used to define or interpret this check).\nUse [] if no actual prior claim is a premise; never invent links to inflate a graph.\nThese are program-reported statistics, not established scientific truth.\nNo causal claims. Do not force significance. limitations is a list of strings.\nUse json.dumps(...,allow_nan=False); round sensibly and handle undefined statistics with null.\nThis is the primary observational analysis; all premise_claim_ids must be [].",
+  "lock_digest": "c3c58a7a1aaff3b3b7173f3783d4c494d188f2155492b38a858af8607cff95fd",
+  "module_context": {},
+  "objective": {
+    "question": "How strongly does BA degree completion vary with socioeconomic status?",
+    "scope": "bounded TRAIN observational analysis, no scoring"
+  },
+  "schema": "public-model-request-v1",
+  "slot": "plan",
+  "task": {
+    "identity": {
+      "benchmark": "discoverybench",
+      "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+      "domain": "train",
+      "group_id": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+      "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+      "task_id": "real:test:nls_ses"
+    },
+    "payload": {
+      "dataset": [
+        {
+          "columns": [
+            {
+              "description": "Unique ID of each respondent",
+              "name": "CASE ID"
+            },
+            {
+              "description": "Race of the respondent (Hispanic, Black or White)",
+              "name": "SAMPLE_RACE"
+            },
+            {
+              "description": "Sex of the respondent (Male or Female)",
+              "name": "SAMPLE_SEX"
+            },
+            {
+              "description": "Family size of the respondent",
+              "name": "FAMILY SIZE OF SAMPLE"
+            },
+            {
+              "description": "Composite variable created by summing following variables:\n\nASVAB - Arithmetic Reasoning Z Score (rounded), 1981\nASVAB - Word Knowledge Z Score (rounded), 1981\nASVAB - Paragraph Comprehension Z Score (rounded), 1981\nASVAB - Mathematics Knowledge Z Score (rounded), 1981",
+              "name": "ABILITY: COMPOSITE OF ASVAB SCORE"
+            },
+            {
+              "description": "Boolean variable that equals 1 if the BA Degree was completed by the respondent else 0",
+              "name": "BA DEGREE COMPLETED"
+            },
+            {
+              "description": "Respondent's percentile in the class that he attended in school last year",
+              "name": "PERCENTILE IN CLASS"
+            },
+            {
+              "description": "Socioeconomic Status of the respondent",
+              "name": "SES"
+            }
+          ],
+          "description": "This dataset contains social background factors (race, gender, and socioeconomic status) and academic resources at the time of secondary school graduation (standardized test scores, class rank, and curriculum) for the participants of the NLS.",
+          "name": "nls_ses_processed.csv"
+        }
+      ],
+      "difficulty": null,
+      "question": "How strongly does BA degree completion vary with socioeconomic status?",
+      "source_kind": "real",
+      "task_id": "real:test:nls_ses"
+    }
+  }
+}

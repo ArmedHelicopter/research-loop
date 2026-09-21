@@ -1,0 +1,13 @@
+# Natural domain-statistic workflow, package 6
+
+One new operation sequence for the previously qualified TRAIN NLS SES task, not a new independent task. Four prior live opportunities (three complete and one failed) are retained. This opportunity can use at most three official Codex CLI turns and three constrained container executions. No paid API, scoring, labels or VAL access.
+
+The fixed sequence is profile -> plan request -> primary analysis -> exact program-output facts -> check request -> qualification execution -> facts and native declared dependencies -> final request. The check selects one of three predeclared sensitivity families from the actual task/data before executing. Empty facts with an explicit lack-of-applicability reason are allowed; failed/schema-invalid reports are retained as failed opportunities. No retry under the same original opportunity.
+
+Only reports of specific computed domain statistics become claims. Each fact is linked by identity, dataset hash, program hash, receipt digest, JSON pointer and canonical fact digest. A supported status attests that the named program reported that value; it is not validation of the statistical estimator, causal interpretation or scientific truth. Dependency IDs are model-declared change-propagation relations, stored through native link_dependencies and marked needs_review; they are not AND support. All report fields and prior dependencies are checked before any domain fact is appended. Raw execution receipts, code and pre-request ledger snapshots remain available.
+
+No withdrawal or revision is manufactured to exercise a feature. Any missing natural operation remains a workload limitation. Correctness of unsupported AND semantics is not claimed. The richer prompt/trajectory is a new workload condition, not a paired performance or capability improvement over the earlier two-slot workflow.
+
+Integration: rich-integration-fixture-r1 retained a stub context-key error. r2 uses real Docker/RunSession with synthetic model transport: three exact pre-request contexts, five malformed parser cases rejected, two exact fact bindings and four negative binding cases rejected before ledger mutations. Fixture port-call counts in native traces are not actual provider/model calls; actual model calls in both fixtures are zero.
+
+Post-run R/B/S comparison uses the exact saved native operation sequence with randomized same-machine fresh processes, not model reruns. Query, update, cold binding, expansion, memory, hit and invalidation costs remain separate from the recorded client/tool times. Extra identical-query warm probes are reported separately from actual reuse. Tracemalloc-instrumented timing is labelled and not substituted for production latency.

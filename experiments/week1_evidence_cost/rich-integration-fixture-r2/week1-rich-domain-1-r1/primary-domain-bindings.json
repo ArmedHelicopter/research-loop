@@ -1,0 +1,16 @@
+{
+  "dependency_status": "model-declared, not independently validated",
+  "execution_digest": "1d52cc635b41920ab549a926156323bdf3a4ba3197dc3100ac43d9a81a0d6127",
+  "facts": [
+    {
+      "claim_id": "4e021e1096729ca605bfb1e6ea7b3c30c4544308c1f258ede84652dcc559954a",
+      "depends_on": [],
+      "fact_digest": "8b12451d71e3e1e052ef90852c71fe6625434d641dbcd89432042382496e2ccc",
+      "json_pointer": "/facts/0",
+      "key": "count",
+      "root_id": "74442e33d80599551e2d38d043abd12666e3f744ebcbb7af035aad1b504465b6"
+    }
+  ],
+  "scientific_validated": false,
+  "stdout_sha256": "1df1e0fb48eb3a78020c41d91da3c1bfd37e1bd3796416198a24d7410ec5a22e"
+}
