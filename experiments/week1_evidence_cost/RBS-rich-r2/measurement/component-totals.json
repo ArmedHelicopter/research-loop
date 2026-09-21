@@ -1,0 +1,26 @@
+[
+  {
+    "scheme": "R",
+    "opportunity": "week1-rich-domain-1-r2",
+    "component_sum_median_ms": 1849.4347,
+    "component_sum_q25_ms": 1490.5587,
+    "component_sum_q75_ms": 1953.07185,
+    "definition": "per-child sum: cold native ledgers/cache binding + persistent public updates + actual query/refresh + actual full expansion; excludes schedule read, correctness checks, imports and warm probes"
+  },
+  {
+    "scheme": "B",
+    "opportunity": "week1-rich-domain-1-r2",
+    "component_sum_median_ms": 1751.3004,
+    "component_sum_q25_ms": 1497.857475,
+    "component_sum_q75_ms": 1962.1555250000001,
+    "definition": "per-child sum: cold native ledgers/cache binding + persistent public updates + actual query/refresh + actual full expansion; excludes schedule read, correctness checks, imports and warm probes"
+  },
+  {
+    "scheme": "S",
+    "opportunity": "week1-rich-domain-1-r2",
+    "component_sum_median_ms": 1771.1506,
+    "component_sum_q25_ms": 1528.4416250000002,
+    "component_sum_q75_ms": 1944.039425,
+    "definition": "per-child sum: cold native ledgers/cache binding + persistent public updates + actual query/refresh + actual full expansion; excludes schedule read, correctness checks, imports and warm probes"
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "actual_cache_stats_first_repeat": {},
+    "fresh_process_repeats": 20,
+    "max_actual_python_tracemalloc_bytes": 909023,
+    "max_whole_child_peak_working_set_bytes": 27688960,
+    "median_actual_sequence_including_checks_ms": 1866.05845,
+    "median_cold_bind_us": 518.8,
+    "median_full_expand_us": 1958.5,
+    "median_separate_warm_query_us": 11662.5,
+    "median_three_actual_queries_us": 21620.35,
+    "median_updates_with_journal_us": 1825284.45,
+    "median_whole_child_ms": 2144.018,
+    "opportunity": "week1-rich-domain-1-r2",
+    "scheme": "R"
+  },
+  {
+    "actual_cache_stats_first_repeat": {
+      "retained_entries": 3
+    },
+    "fresh_process_repeats": 20,
+    "max_actual_python_tracemalloc_bytes": 941890,
+    "max_whole_child_peak_working_set_bytes": 27353088,
+    "median_actual_sequence_including_checks_ms": 1767.91865,
+    "median_cold_bind_us": 524.3,
+    "median_full_expand_us": 1951.35,
+    "median_separate_warm_query_us": 13138.85,
+    "median_three_actual_queries_us": 24077.2,
+    "median_updates_with_journal_us": 1724372.4,
+    "median_whole_child_ms": 2058.6634,
+    "opportunity": "week1-rich-domain-1-r2",
+    "scheme": "B"
+  },
+  {
+    "actual_cache_stats_first_repeat": {
+      "builds": 3,
+      "clears": 0,
+      "events": 52,
+      "hits": 0,
+      "invalidated_entries": 2,
+      "misses": 3,
+      "retained_entries": 1
+    },
+    "fresh_process_repeats": 20,
+    "max_actual_python_tracemalloc_bytes": 910544,
+    "max_whole_child_peak_working_set_bytes": 26996736,
+    "median_actual_sequence_including_checks_ms": 1787.4975,
+    "median_cold_bind_us": 530.2,
+    "median_full_expand_us": 1956.5,
+    "median_separate_warm_query_us": 6.95,
+    "median_three_actual_queries_us": 21932.05,
+    "median_updates_with_journal_us": 1746849.05,
+    "median_whole_child_ms": 1941.38315,
+    "opportunity": "week1-rich-domain-1-r2",
+    "scheme": "S"
+  }
+]

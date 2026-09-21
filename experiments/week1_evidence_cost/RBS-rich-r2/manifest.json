@@ -1,0 +1,37 @@
+{
+  "S_sha256": "14bdcf3dcbd992ef3d3036c5fd4e97ef5398a5cd11c3830bcd17a1ed5765a2b8",
+  "cases": [
+    {
+      "opportunity": "week1-rich-domain-1-r2",
+      "schedule_sha256": "7ceac5a746516be4028bfb73acb0ef8d90b46dafd6f3f9c5e042e5a0350ca412",
+      "series": "domain-rich-r2",
+      "source_artifacts_sha256": "477e73db9c8e204791e2836f03b29b60cde6410c7a3befc42a551d1979e26e0f"
+    }
+  ],
+  "child_peak_working_set_stop_bytes": 134217728,
+  "core_sha256": {
+    "research_loop/modular/contracts.py": "c774d9f77bf0efdfcdcf2dc64da1a9c73e1d38372d1faa38cfdf9a6d2099311b",
+    "research_loop/modular/modules/context.py": "a50f5cc6e11f1526a776309b94d991fffa90be48c51706777169c57480dfbf15",
+    "research_loop/modular/modules/evidence.py": "c2aefe1d1faa32499e4aac67cd953ed0cb013026f3b6a4cffa359065d8c2db1c",
+    "research_loop/ontology.py": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb"
+  },
+  "external_model_calls": 0,
+  "frozen_at": "2026-09-21T11:32:08.636259+00:00",
+  "normalization": "none; exact public context and both native ledger snapshots after each recorded query",
+  "parent_timeout_seconds": 600,
+  "per_child_timeout_seconds": 15,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.6 (tags/v3.12.6:a4a2d2b, Sep  6 2024, 20:11:23) [MSC v.1940 64 bit (AMD64)]",
+  "repeats": 20,
+  "resource_note": "serial fresh child process per task/scheme/repetition; persistent native journals; no container/model execution or runtime artifact-catalogue reconstruction",
+  "schema": "week1-RBS-native-replay-v1",
+  "schemes": [
+    "R",
+    "B",
+    "S"
+  ],
+  "scope": "Actual saved operation sequence, recorded native domain-statistic events and three queries. Warm repetitions are a separate probe, not actual domain reuse.",
+  "seed": 20260921,
+  "source_sha256": "3dc88c940b7d8fd0480a1c1823188ca171b0307570b679f88e61720201aab899",
+  "warm_probe_queries": 10
+}
