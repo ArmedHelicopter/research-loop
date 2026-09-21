@@ -1,20 +1,27 @@
 {
   "schema": "week1-current-state-v1",
-  "recorded_at_utc": "2026-09-21T11:21:54.000539+00:00",
-  "status": "research_incomplete",
-  "completed": "native S, original RBS replay, and first richer natural workflow with retained qualification failure",
+  "recorded_at_utc": "2026-09-21T11:47:08.935569+00:00",
+  "status": "bounded_research_decision_delivered",
+  "completed": "D1-D7 bounded investigation, actual richer workload, native RBS comparisons, direct evidence verification and one-page mentor decision",
   "supersedes_closure_commit": "42dc2729d91dce93f84d9cf1653c6c65a25b79b5",
   "raw_results_unchanged": true,
   "frozen_criteria_unchanged": true,
-  "missing": "richer native RBS comparison and final requirement-by-requirement audit/mentor decision",
-  "candidate_development": "conditional; not justified by the current short-pilot evidence",
+  "missing": null,
+  "candidate_development": "not entered: no demonstrated meaningful query-cache benefit",
   "correction": "CORRECTION-20260921.md",
-  "app_goal_completion": "active; whole-week completion remains unproven",
-  "implementation_packages_completed": 6,
+  "app_goal_completion": "Final delivery verification and remote publication precede goal completion",
+  "implementation_packages_completed": 8,
   "review_packages_completed": 6,
   "live_trajectories_started": 6,
-  "quota_used_percent": 16,
-  "latest_replay": "RBS-replay-r1",
-  "next": "CPU-only replay; no more live trajectories",
-  "active_implementation_package": 7
+  "quota_used_percent": 23,
+  "latest_replay": "RBS-rich-r2",
+  "next": "No further live dispatch or candidate development under this study",
+  "active_implementation_package": null,
+  "unresolved_capabilities": [
+    "native AND support groups unsupported",
+    "scientific validation and optimized end-to-end/capability gains unmeasured"
+  ],
+  "protocol_deviations_disclosed": true,
+  "strict_protocol_compliance": false,
+  "programme_complete": false
 }

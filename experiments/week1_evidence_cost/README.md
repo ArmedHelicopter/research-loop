@@ -1,3 +1,5 @@
+> 最新整轮决定见 [MENTOR-DECISION.md](MENTOR-DECISION.md)、[逐项验收](REQUIREMENTS.md) 和 [最终数据](FINAL-SYNTHESIS.json)。下文为保留的历史阶段报告。
+
 # 首轮成本定位：当前证据上下文接口
 
 日期：2026-09-21。执行单：C:/Users/Administrator/Downloads/week1_research_brief.md。

@@ -1,0 +1,121 @@
+{
+  "schema": "week1-final-synthesis-v1",
+  "recorded_at": "2026-09-21T11:40:55.890953+00:00",
+  "decision": "stop_new_cache_candidate_for_observed_workload; retain S as experimental ordinary baseline",
+  "live_rows": [
+    {
+      "workflow": "世界银行短流程",
+      "query_refresh_ms": 1.1258000000000001,
+      "client_tool_s": 142.9009981,
+      "query_share_percent": 0.0007878181503058377,
+      "registration_ms": 640.8969
+    },
+    {
+      "workflow": "NLS 监禁短流程",
+      "query_refresh_ms": 0.7578999999999999,
+      "client_tool_s": 84.99388839999999,
+      "query_share_percent": 0.0008917111739060053,
+      "registration_ms": 599.8283
+    },
+    {
+      "workflow": "NLS SES 短流程",
+      "query_refresh_ms": 0.8838,
+      "client_tool_s": 115.8726321,
+      "query_share_percent": 0.0007627340330348809,
+      "registration_ms": 549.7647
+    },
+    {
+      "workflow": "SES 扩展 1（检查失败）",
+      "query_refresh_ms": 4.6163,
+      "client_tool_s": 177.4198237,
+      "query_share_percent": 0.0026019076694641084,
+      "registration_ms": 3077.7005
+    },
+    {
+      "workflow": "SES 扩展 2（含依赖）",
+      "query_refresh_ms": 5.4598,
+      "client_tool_s": 231.5537137,
+      "query_share_percent": 0.002357897834052316,
+      "registration_ms": 17216.8927
+    }
+  ],
+  "complete_RBS_batches": [
+    {
+      "run": "RBS-replay-r1",
+      "AND": "unsupported native capability remains; this comparison is scoped to existing native domain operations",
+      "broad_source_families": 2,
+      "child_runs": 180,
+      "exact_context_and_state_comparisons": 360,
+      "independent_tasks": 3,
+      "new_model_calls": 0,
+      "observed_semantic_mismatches": 0
+    },
+    {
+      "run": "RBS-rich-r1b",
+      "AND": "unsupported native capability remains; this comparison is scoped to existing native domain operations",
+      "broad_source_families": 1,
+      "child_runs": 60,
+      "exact_context_and_state_comparisons": 180,
+      "independent_tasks": 1,
+      "new_independent_tasks": 0,
+      "new_model_calls": 0,
+      "observed_semantic_mismatches": 0
+    },
+    {
+      "run": "RBS-rich-r2",
+      "AND": "unsupported native capability remains; this comparison is scoped to existing native domain operations",
+      "broad_source_families": 1,
+      "child_runs": 60,
+      "exact_context_and_state_comparisons": 180,
+      "independent_tasks": 1,
+      "new_independent_tasks": 0,
+      "new_model_calls": 0,
+      "observed_semantic_mismatches": 0
+    }
+  ],
+  "complete_RBS_child_runs": 300,
+  "exact_context_state_comparisons": 720,
+  "retained_incomplete_replay": {
+    "status": "incomplete_timeout",
+    "cause": "Frozen parent runtime limit 180 seconds reached; final process exit 1.",
+    "completed_children": 46,
+    "planned_children": 60,
+    "completed_by_scheme": {
+      "R": 15,
+      "B": 17,
+      "S": 14
+    },
+    "complete_comparison": false,
+    "semantic_mismatch_observed_in_completed_prefix": false,
+    "old_rows_retained": true,
+    "next": "New frozen replay with unchanged operations/schemes/repeats and 600-second parent limit; never append to this raw file."
+  },
+  "final_rich_component_medians_ms": {
+    "R": 1849.4347,
+    "B": 1751.3004,
+    "S": 1771.1506
+  },
+  "original_live_opportunities": 6,
+  "actual_client_completed_turns": 13,
+  "distinct_real_tasks": 3,
+  "broad_source_families": 2,
+  "native_AND_supported": false,
+  "synthetic_native_checks": 98,
+  "candidate_C_implemented": false,
+  "core_modified": false,
+  "scientific_validated": false,
+  "new_paid_spend": 0,
+  "actual_optimized_end_to_end_runs": 0,
+  "token_savings_measured": false,
+  "capability_improvement_measured": false,
+  "protocol_deviations": [
+    "S added after original self-imposed S/C stop rule to satisfy brief baseline investigation; exploratory supplement",
+    "initial independent per-package quota calibration incomplete",
+    "native AND grouping unsupported and treated as negative capability result",
+    "failed qualification, failed controller and incomplete CPU attempt retained"
+  ],
+  "monthly_expiry": "unknown from available official response",
+  "implementation_packages": 8,
+  "review_packages": 6,
+  "live_trajectory_cap_reached": true
+}

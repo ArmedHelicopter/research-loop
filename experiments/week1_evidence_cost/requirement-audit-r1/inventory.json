@@ -1,0 +1,152 @@
+{
+  "scope": "bounded DiscoveryBench social-science TRAIN workload, no claims of benchmark accuracy",
+  "brief_sha256": "cf7e2ba90d88f42f4c10b110e0e8f944969d5a30cac5a841d0e3b5f0eb615478",
+  "initial_brief_hash_matches": true,
+  "controller_registry": [
+    {
+      "series": "domain-pilot-r1",
+      "opportunity": "week1-domain-1-r1",
+      "started": true,
+      "control_status": "controller_failed",
+      "dispatches": [
+        {
+          "slot": "plan",
+          "completed_client_turns": 1
+        }
+      ]
+    },
+    {
+      "series": "domain-pilot-r2",
+      "opportunity": "week1-domain-2-r2",
+      "started": true,
+      "control_status": "controller_completed",
+      "dispatches": [
+        {
+          "slot": "plan",
+          "completed_client_turns": 1
+        },
+        {
+          "slot": "final",
+          "completed_client_turns": 1
+        }
+      ]
+    },
+    {
+      "series": "domain-pilot-r2",
+      "opportunity": "week1-domain-3-r2",
+      "started": true,
+      "control_status": "controller_completed",
+      "dispatches": [
+        {
+          "slot": "plan",
+          "completed_client_turns": 1
+        },
+        {
+          "slot": "final",
+          "completed_client_turns": 1
+        }
+      ]
+    },
+    {
+      "series": "domain-pilot-r3",
+      "opportunity": "week1-domain-1-r3",
+      "started": true,
+      "control_status": "controller_completed",
+      "dispatches": [
+        {
+          "slot": "plan",
+          "completed_client_turns": 1
+        },
+        {
+          "slot": "final",
+          "completed_client_turns": 1
+        }
+      ]
+    },
+    {
+      "series": "domain-rich-r1",
+      "opportunity": "week1-rich-domain-1-r1",
+      "started": true,
+      "control_status": "controller_completed",
+      "dispatches": [
+        {
+          "slot": "plan",
+          "completed_client_turns": 1
+        },
+        {
+          "slot": "check",
+          "completed_client_turns": 1
+        },
+        {
+          "slot": "final",
+          "completed_client_turns": 1
+        }
+      ],
+      "primary_complete_binding_manifest": true,
+      "primary_fact_count": 8,
+      "qualification_complete_binding_manifest": true,
+      "qualification_fact_count": 0,
+      "domain_qualification_measured": false
+    },
+    {
+      "series": "domain-rich-r2",
+      "opportunity": "week1-rich-domain-1-r2",
+      "started": true,
+      "control_status": "controller_completed",
+      "dispatches": [
+        {
+          "slot": "plan",
+          "completed_client_turns": 1
+        },
+        {
+          "slot": "check",
+          "completed_client_turns": 1
+        },
+        {
+          "slot": "final",
+          "completed_client_turns": 1
+        }
+      ],
+      "primary_complete_binding_manifest": true,
+      "primary_fact_count": 8,
+      "qualification_complete_binding_manifest": true,
+      "qualification_fact_count": 6,
+      "domain_qualification_measured": true
+    }
+  ],
+  "original_started_opportunities": 6,
+  "superseded_before_io_retained": 2,
+  "actual_official_client_completed_turns": 13,
+  "prompt_hash_checks": 13,
+  "reported_client_input_tokens": 311499,
+  "reported_client_output_tokens": 22475,
+  "tokens_scope": "observed official client turns only; not root/review usage, pure model billing or quota conversion",
+  "distinct_real_tasks": 3,
+  "broad_source_families": 2,
+  "all_current_input_hashes_match": true,
+  "all_frozen_core_hashes_match": true,
+  "solver_labels_present": false,
+  "native_differential_checks": 98,
+  "native_mismatches": 0,
+  "AND_implementation_satisfied": false,
+  "AND_case_examined_with_counterexample": true,
+  "original_RBS_replay": {
+    "AND": "unsupported native capability remains; this comparison is scoped to existing native domain operations",
+    "broad_source_families": 2,
+    "child_runs": 180,
+    "exact_context_and_state_comparisons": 360,
+    "independent_tasks": 3,
+    "new_model_calls": 0,
+    "observed_semantic_mismatches": 0
+  },
+  "new_candidate_implemented": false,
+  "candidate_gate": "No observed meaningful query/context bottleneck or C distinction from ordinary S. Conditional D4 not entered.",
+  "scientific_validation_performed": false,
+  "formal_VAL_answers_read": false,
+  "open_before_final_decision": [
+    "verify new rich replay result and instrumentation boundary",
+    "decide whether negative AND capability finding satisfies D3 investigation without implementing new semantics",
+    "review all named deliverables before closing goal"
+  ],
+  "recorded_at": "2026-09-21T11:33:46.962436+00:00"
+}

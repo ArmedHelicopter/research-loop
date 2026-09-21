@@ -1,0 +1,93 @@
+{
+  "schema": "week1-sanitized-budget-v1",
+  "authorized_initial_used_percent": 3,
+  "authorized_additional_percentage_points": 58.2,
+  "conservative_stop_used_percent": 61,
+  "authorization_binding": "User confirmation recorded privately; same account user-confirmed, not independently identity-matched",
+  "new_paid_spend_limit": 0,
+  "monthly_expiry": "unknown: unavailable in official response",
+  "tier_multiplier": "unknown",
+  "quota_series": [
+    {
+      "receipt": "week1-account-check-20260921-r1",
+      "observed_at_utc": "2026-09-21T07:47:36.870435+00:00",
+      "used_percent": 3,
+      "reset_epoch": 1790579847,
+      "window_minutes": 10080
+    },
+    {
+      "receipt": "week1-account-check-20260921-r2",
+      "observed_at_utc": "2026-09-21T09:19:02.040424+00:00",
+      "used_percent": 4,
+      "reset_epoch": 1790579847,
+      "window_minutes": 10080
+    },
+    {
+      "receipt": "week1-account-check-20260921-r3",
+      "observed_at_utc": "2026-09-21T09:39:18.829790+00:00",
+      "used_percent": 7,
+      "reset_epoch": 1790579847,
+      "window_minutes": 10080
+    },
+    {
+      "receipt": "week1-account-check-20260921-r4",
+      "observed_at_utc": "2026-09-21T09:47:23.365050+00:00",
+      "used_percent": 7,
+      "reset_epoch": 1790579847,
+      "window_minutes": 10080
+    },
+    {
+      "receipt": "week1-account-check-20260921-r5",
+      "observed_at_utc": "2026-09-21T10:10:49.394641+00:00",
+      "used_percent": 10,
+      "reset_epoch": 1790579847,
+      "window_minutes": 10080
+    },
+    {
+      "receipt": "week1-account-check-20260921-r6",
+      "observed_at_utc": "2026-09-21T10:38:49.913464+00:00",
+      "used_percent": 11,
+      "reset_epoch": 1790579847,
+      "window_minutes": 10080
+    },
+    {
+      "receipt": "week1-account-check-20260921-r7",
+      "observed_at_utc": "2026-09-21T10:55:03.560152+00:00",
+      "used_percent": 12,
+      "reset_epoch": 1790579847,
+      "window_minutes": 10080
+    },
+    {
+      "receipt": "week1-account-check-20260921-r8",
+      "observed_at_utc": "2026-09-21T11:15:05.122824+00:00",
+      "used_percent": 16,
+      "reset_epoch": 1790579847,
+      "window_minutes": 10080
+    },
+    {
+      "receipt": "week1-account-check-20260921-r9",
+      "observed_at_utc": "2026-09-21T11:30:20.468531+00:00",
+      "used_percent": 20,
+      "reset_epoch": 1790579847,
+      "window_minutes": 10080
+    },
+    {
+      "receipt": "week1-account-check-20260921-r10",
+      "observed_at_utc": "2026-09-21T11:45:35.970150+00:00",
+      "used_percent": 23,
+      "reset_epoch": 1790579847,
+      "window_minutes": 10080
+    }
+  ],
+  "implementation_packages": 8,
+  "readonly_review_packages": 6,
+  "grok_review_packages": 0,
+  "actual_live_opportunities": 6,
+  "actual_official_client_completed_turns": 13,
+  "observed_client_input_tokens": 311499,
+  "observed_client_output_tokens": 22475,
+  "usage_limits": "Token totals are observed client-event metadata, not bare API calls, root/review usage or a quota conversion. No automatic expansion at reset.",
+  "calibration": "Initial independent per-package calibration incomplete; disclosed, not backfilled.",
+  "final_observed_used_percent": 23,
+  "active_experiment_processes_at_final_check": 0
+}

@@ -1,0 +1,13 @@
+# Protocol deviations and unresolved capabilities
+
+The original domain-decision-rule.json remains unchanged. It says not to implement S/C if eliminating measured query/refresh cost is below 1% on every completed trace. The initial closure on this basis was challenged and withdrawn. S was subsequently implemented to satisfy the brief's explicit strong-simple-baseline investigation. This is an exploratory protocol deviation, not a preregistered confirmatory comparison. C was never developed and the numerical gate was not moved.
+
+The richer workflows changed the number of calls, prompt content and evidence produced. They are additional workload observations, not treatment arms demonstrating capability or end-to-end speedup. The same NLS SES task was reused; independent task count remains three across the study.
+
+The native AND case is a negative capability result. Flat roots are alternatives; removing a from roots {a,b} leaves support from b. No AND grouping field exists. The study examined this requirement and retained its counterexample, but did not implement AND or claim full requested semantic capability. Performance comparisons apply only to supported native operations. Adding a new logical representation to the core would change semantics and is outside this cache-preserving study.
+
+The original quota calibration is incomplete: package 1 has no preceding official receipt; some implementation and review activity shared measurement windows, and displayed percentages are rounded. Retrospective independent attribution is unavailable. Do not infer per-package costs or spend by multiplying messages by token averages. Later client requests have before/after official account checks, and dispatch/trajectory caps were enforced. Monthly expiry and tier multiplier were not exposed; account binding was user-confirmed rather than independently matched. These are disclosed process/metadata gaps, not zero costs.
+
+Failure denominators remain separate: 1 controller failure; one controller-complete richer opportunity with no qualification facts; 2 original frozen opportunities superseded before I/O; one incomplete 46/60 CPU batch. The complete replacement CPU batch is fresh, with a longer pre-frozen parent bound (600s), unchanged operations/schemes/repeats, and no appended/reused old rows.
+
+Tracemalloc runs during native scheme comparisons. Native persistence replay excludes full RunSession artifact-catalogue costs. The original RBS-replay-r1 field named whole_child_peak_working_set_bytes was sampled before warm probes; its report now states that boundary. Later rich replay records both phase and whole-child peaks. No raw measurement is retroactively normalized or replaced.
