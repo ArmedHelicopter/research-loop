@@ -1,15 +1,13 @@
 # Week-one research status: incomplete
 
-Correction dated 2026-09-21 supersedes the prior scope-closure claim. Completed measurement is retained; whole-week completion is withdrawn. See CORRECTION-20260921.md.
+D1: original quota authorization, isolated branch, real TRAIN identities and source inventory are recorded. Three distinct task inputs span two broad source families.
+D2: four original live opportunities yielded three complete short workflows and one retained controller failure. Six requests were exactly reconstructed. Initial cost measurements concern execution receipts and execution-status claims; richer natural evidence relations remain unmeasured.
+D3: ordinary S is implemented only under experiments/. S-native-r1 has 98 native differential checks, six exact saved-request checks, edge checks and callback-failure checks. Alternatives, withdrawals, revisions, unrelated updates, cache clear and cycles are covered. Native AND grouping is unsupported and explicitly not marked passed.
+D4: C remains conditional, undeveloped and unjustified by current evidence. No positive result or novelty is required.
+D5: RBS-replay-r1 completes 180 fresh-process shuffled native R/B/S runs and 360 exact context/state comparisons with zero mismatches. Cold binding, persistent updates, evidence expansion, memory and cache statistics are recorded. Actual S hits are zero; ten extra warm probes are separate. Instrumented replay is not actual end-to-end execution.
+D6: workload-review-r4.md and closest-work.md document real analysis mapping and primary literature. Domain assertions and natural dependencies were absent from the original ledger workflows; this empirical gap remains.
+D7: DECISION.md remains provisional. A final requirement-by-requirement decision is pending.
 
-D1: quota, isolated branch, real input identities and source inventory recorded. Three real TRAIN inputs qualified; adequacy of the selected workload for the intended evidence-processing question still needs review.
-D2: initial short-workflow pilot complete: four original live opportunities, three complete and one retained controller failure; six completed-trajectory requests exactly replayed. Each workflow grows from one to two execution roots and execution-status claims. This does not establish cost for richer natural evidence relations, changes or invalidation.
-D3: strong simple baseline S and the listed semantic cases are not implemented/confirmed by this pilot. B is retained; R is a semantic reference, not the strong comparator.
-D4: C is conditional and not implemented. Do not implement it merely to satisfy a calendar if there is no justified bottleneck or distinction from S.
-D5: diagnostic B/R timings exist; full fair scheme comparison and update/index/whole-process memory evidence do not.
-D6: real identity/source mapping and GDP/GNI issue recorded. Workload representativeness and closest-work assessment remain incomplete.
-D7: DECISION.md is a provisional short-pilot report, not the week-final decision.
+Next: a bounded natural domain analysis plus actual qualification/sensitivity workflow, without manufactured withdrawals, AND support or post-hoc historical context. Preserve raw output and declared scientific uncertainty. Only TRAIN is available to optimization; no formal VAL answers.
 
-Next substantive work: inspect whether the existing real domain analysis naturally produces the evidence queries, scientific claims, dependencies and updates relevant to the research question. Record actual gaps. If synthetic graphs are used for semantic correctness, keep them separate from domain evidence. Apply the brief's conditional stop only at the supported scope; do not force a positive result or manufacture a complex domain workload.
-
-No measurement, original failure, frozen criterion, partition or core source was rewritten. Codex CLI, Grok, local and icompify series remain separate. Existing counts are unchanged: implementation packages 4/8, read-only reviews 3/6, started domain trajectories 4/6, Grok reviews 0/4. Further dispatch must recheck the original authorized budget and existing processes; this correction does not enlarge limits or revive the old 48-question scope.
+Counts: implementation packages 5/8 completed; read-only reviews 5/6 completed; actual new trajectories 4/6 started (3 complete, 1 failed); Grok reviews 0/4. Latest official receipt at 2026-09-21T10:55:03Z reports 12% used in the original weekly window, conservative dispatch ceiling 61%; new paid spend remains zero. Counts are dispatch limits, not independent samples. The initial calibration cannot isolate all per-package usage. Resets do not enlarge authorization. Old 48-question scope and Grok heartbeat remain inactive.

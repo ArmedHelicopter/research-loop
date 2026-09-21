@@ -1,13 +1,19 @@
 {
   "schema": "week1-current-state-v1",
-  "recorded_at_utc": "2026-09-21T10:36:45.996512+00:00",
+  "recorded_at_utc": "2026-09-21T10:56:46.928059+00:00",
   "status": "research_incomplete",
-  "completed": "initial short-workflow cost pilot",
+  "completed": "short-workflow pilot, native ordinary S correctness, shuffled native RBS replay and primary literature mapping",
   "supersedes_closure_commit": "42dc2729d91dce93f84d9cf1653c6c65a25b79b5",
   "raw_results_unchanged": true,
   "frozen_criteria_unchanged": true,
-  "missing": "workload representativeness, strong baseline and applicable semantic/comparison checks",
+  "missing": "natural domain-claim/dependency workload evidence; final requirement audit and mentor decision",
   "candidate_development": "conditional; not justified by the current short-pilot evidence",
   "correction": "CORRECTION-20260921.md",
-  "app_goal_completion": "prior completion was premature; no claim that this status file reactivates the app goal"
+  "app_goal_completion": "active; whole-week completion remains unproven",
+  "implementation_packages_completed": 5,
+  "review_packages_completed": 5,
+  "live_trajectories_started": 4,
+  "quota_used_percent": 12,
+  "latest_replay": "RBS-replay-r1",
+  "next": "bounded natural analysis and qualification trajectory; no candidate development"
 }

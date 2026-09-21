@@ -1,0 +1,49 @@
+{
+  "S_sha256": "14bdcf3dcbd992ef3d3036c5fd4e97ef5398a5cd11c3830bcd17a1ed5765a2b8",
+  "cases": [
+    {
+      "opportunity": "week1-domain-2-r2",
+      "schedule_sha256": "812ddfb6ca7b0031e4dea491fa26ce9c0206e711e2a6307c196dd1367b1390a4",
+      "series": "domain-pilot-r2",
+      "source_artifacts_sha256": "20472ca11236de8ff178dd31c3147c31b2b5ae6ae73bbdb46efe9b5fe8c9560e"
+    },
+    {
+      "opportunity": "week1-domain-3-r2",
+      "schedule_sha256": "ca788b10e377309dbb59e395d2a62af4ba839765817d83aedf7f64c6611d3721",
+      "series": "domain-pilot-r2",
+      "source_artifacts_sha256": "8519b38eaa3d733821011dcb2f1f2223af8e4d65e684de53fced2edd9f604e06"
+    },
+    {
+      "opportunity": "week1-domain-1-r3",
+      "schedule_sha256": "dd9e406b7027b1b7de4f286ef4a72604c4b6693b190b620fc89b05cd9c8e2fd3",
+      "series": "domain-pilot-r3",
+      "source_artifacts_sha256": "d8606bbcbe812205637a830527db2e6ae62bbaaada892fbe16a054e45c156fe9"
+    }
+  ],
+  "child_peak_working_set_stop_bytes": 134217728,
+  "core_sha256": {
+    "research_loop/modular/contracts.py": "c774d9f77bf0efdfcdcf2dc64da1a9c73e1d38372d1faa38cfdf9a6d2099311b",
+    "research_loop/modular/modules/context.py": "a50f5cc6e11f1526a776309b94d991fffa90be48c51706777169c57480dfbf15",
+    "research_loop/modular/modules/evidence.py": "c2aefe1d1faa32499e4aac67cd953ed0cb013026f3b6a4cffa359065d8c2db1c",
+    "research_loop/ontology.py": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb"
+  },
+  "external_model_calls": 0,
+  "frozen_at": "2026-09-21T10:47:40.933544+00:00",
+  "normalization": "none; exact public context and both native ledger snapshots after each recorded query",
+  "parent_timeout_seconds": 180,
+  "per_child_timeout_seconds": 15,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.6 (tags/v3.12.6:a4a2d2b, Sep  6 2024, 20:11:23) [MSC v.1940 64 bit (AMD64)]",
+  "repeats": 20,
+  "resource_note": "serial fresh child process per task/scheme/repetition; persistent native journals; no container/model execution or runtime artifact-catalogue reconstruction",
+  "schema": "week1-RBS-native-replay-v1",
+  "schemes": [
+    "R",
+    "B",
+    "S"
+  ],
+  "scope": "Actual saved operation sequence, six native ledger events and two distinct queries. Warm repetitions are a separate probe, not actual domain reuse.",
+  "seed": 20260921,
+  "source_sha256": "fb6ded6e6e198600f0c7eba8efe46f7005b7b0cc807fcd72737ed9905059fe53",
+  "warm_probe_queries": 10
+}

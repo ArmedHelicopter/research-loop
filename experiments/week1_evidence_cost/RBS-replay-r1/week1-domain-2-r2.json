@@ -1,0 +1,777 @@
+[
+  {
+    "event": {
+      "admitted": true,
+      "event": "append",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "f99e4d461ccef0ab2fe2728e980c0cadd6311d760626c73da25101b020371256",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "real:test:worldbank_education_gdp"
+      },
+      "independent_group": "f99e4d461ccef0ab2fe2728e980c0cadd6311d760626c73da25101b020371256",
+      "payload": {
+        "content": {
+          "scientific_validated": false,
+          "stage": "profile",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"rows\": 12, \"columns\": {\"Country Group\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"Sub-Saharan Africa\", \"Lower middle income\"]}, \"Country Code\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"SSF\", \"LMC\"]}, \"Series Name\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 6, \"examples\": [\"GNI per capita (constant 2015 USdollar)\", \"Adjusted savings: education expenditure (percentage of GNI)\", \"Exports of goods and services (annual percentage growth)\"]}, \"Series Code\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 6, \"examples\": [\"NY.GNP.PCAP.KD\", \"NY.ADJ.AEDU.GN.ZS\", \"NE.EXP.GNFS.KD.ZG\"]}, \"1975 [YR1975]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -5.569420334, \"max\": 880.766431}, \"1976 [YR1976]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.771469358, \"max\": 934.500597}, \"1977 [YR1977]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -3.623539788, \"max\": 939.0693809}, \"1978 [YR1978]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -13.08727097, \"max\": 919.155717}, \"1979 [YR1979]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -6.300238971, \"max\": 878.0473809}, \"1980 [YR1980]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -23.54957475, \"max\": 840.4903638}, \"1981 [YR1981]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.265488371, \"max\": 844.2360062}, \"1982 [YR1982]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.686585495, \"max\": 884.5842433}, \"1983 [YR1983]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.508542505, \"max\": 918.6554826}, \"1984 [YR1984]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -2.501570702, \"max\": 901.8426083}, \"1985 [YR1985]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -3.898022239, \"max\": 906.0616701}, \"1986 [YR1986]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 0.746649826, \"max\": 897.0908752}, \"1987 [YR1987]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.514179399, \"max\": 909.9363169}, \"1988 [YR1988]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.268386282, \"max\": 929.5696074}, \"1989 [YR1989]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.558447946, \"max\": 954.1128768}, \"1990 [YR1990]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.564863634, \"max\": 986.8567154}, \"1991 [YR1991]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -2.454921874, \"max\": 1001.900102}, \"1992 [YR1992]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -11.43366862, \"max\": 1007.737394}, \"1993 [YR1993]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.140851622, \"max\": 994.1098994}, \"1994 [YR1994]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.721667048, \"max\": 991.8233531}, \"1995 [YR1995]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.763498753, \"max\": 1012.349859}, \"1996 [YR1996]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.683770988, \"max\": 1052.539314}, \"1997 [YR1997]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 1.38340055, \"max\": 1066.127258}, \"1998 [YR1998]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 1.910801281, \"max\": 1092.515828}, \"1999 [YR1999]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.873222604, \"max\": 1129.053979}, \"2000 [YR2000]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -2.12893807, \"max\": 1157.995847}, \"2001 [YR2001]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 2.932501247, \"max\": 1187.052521}, \"2002 [YR2002]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.641694172, \"max\": 1213.979916}, \"2003 [YR2003]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.577680711, \"max\": 1269.706182}, \"2004 [YR2004]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.475960423, \"max\": 1331.80148}, \"2005 [YR2005]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.524511687, \"max\": 1390.881557}, \"2006 [YR2006]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.519232431, \"max\": 1460.679779}, \"2007 [YR2007]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.510348478, \"max\": 1542.179634}, \"2008 [YR2008]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.098683936, \"max\": 1571.87283}, \"2009 [YR2009]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -6.439527256, \"max\": 1611.409495}, \"2010 [YR2010]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.289517623, \"max\": 1682.27428}, \"2011 [YR2011]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": -43.29252094, \"max\": 1726.782904}, \"2012 [YR2012]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": -10.33887014, \"max\": 1768.70889}, \"2013 [YR2013]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 2.868318905, \"max\": 1821.097219}, \"2014 [YR2014]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 2.921528391, \"max\": 1894.302198}, \"2015 [YR2015]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": -1.549814673, \"max\": 1965.288164}}}\n",
+          "validation_scope": "identity, input hash, original execution receipt only"
+        },
+        "kind": "observation",
+        "root_material": {
+          "csv_sha256": "6d0b74fa37e75b2686c62075a11ab754fdf878ac400dfcbd4bf9a6a64bfaf4f1",
+          "execution_digest": "53b5b3291e8d387e50fde7b0d61dc36586ea6d3e4e071b15fce14c46f30139dd"
+        },
+        "trusted_validator": "week1-execution-receipt-only",
+        "validator_verified": true
+      },
+      "record_id": "68339c2bbf8bbfbdb86a91be3dc1934c2e1a75dc964f5b595d90ffa8bec48eca",
+      "representation": "raw",
+      "root_id": "0ba3f0ddd27dc64f07c7d1ed509c4e262276c83b385611bca633c9a8ecd57029",
+      "subject_bindings": {
+        "dataset_sha256": "6d0b74fa37e75b2686c62075a11ab754fdf878ac400dfcbd4bf9a6a64bfaf4f1"
+      }
+    },
+    "journal": "evidence",
+    "kind": "update"
+  },
+  {
+    "event": {
+      "claim_id": "6c16a71b53ae96779322cba0cbde7acb915d6fd4d3327553280ef20902f781c4",
+      "event": "create",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "f99e4d461ccef0ab2fe2728e980c0cadd6311d760626c73da25101b020371256",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "real:test:worldbank_education_gdp"
+      },
+      "statement": "The recorded profile execution has status succeeded. This asserts execution only.",
+      "subject_bindings": {
+        "dataset_sha256": "6d0b74fa37e75b2686c62075a11ab754fdf878ac400dfcbd4bf9a6a64bfaf4f1"
+      }
+    },
+    "journal": "claims",
+    "kind": "update"
+  },
+  {
+    "event": {
+      "claim_id": "6c16a71b53ae96779322cba0cbde7acb915d6fd4d3327553280ef20902f781c4",
+      "event": "apply",
+      "expected_revision": 0,
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "f99e4d461ccef0ab2fe2728e980c0cadd6311d760626c73da25101b020371256",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "real:test:worldbank_education_gdp"
+      },
+      "refutes": [],
+      "subject_bindings": {
+        "dataset_sha256": "6d0b74fa37e75b2686c62075a11ab754fdf878ac400dfcbd4bf9a6a64bfaf4f1"
+      },
+      "supports": [
+        "0ba3f0ddd27dc64f07c7d1ed509c4e262276c83b385611bca633c9a8ecd57029"
+      ]
+    },
+    "journal": "claims",
+    "kind": "update"
+  },
+  {
+    "kind": "query",
+    "request": {
+      "context": {
+        "budget_bytes": 60000,
+        "claim_version": "f285c1c03320d063d2f8d5b23713806f263ae1090e817fabdda99a46bea9a01b",
+        "entries": {
+          "entries": [
+            {
+              "claim_id": "6c16a71b53ae96779322cba0cbde7acb915d6fd4d3327553280ef20902f781c4",
+              "depends_on": [],
+              "kind": "claim",
+              "needs_review": false,
+              "refute_roots": [],
+              "revision": 1,
+              "statement": "The recorded profile execution has status succeeded. This asserts execution only.",
+              "status": "supported",
+              "support_roots": [
+                "0ba3f0ddd27dc64f07c7d1ed509c4e262276c83b385611bca633c9a8ecd57029"
+              ]
+            },
+            {
+              "kind": "evidence",
+              "payload": {
+                "content": {
+                  "scientific_validated": false,
+                  "stage": "profile",
+                  "status": "succeeded",
+                  "stderr": "",
+                  "stdout": "{\"rows\": 12, \"columns\": {\"Country Group\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"Sub-Saharan Africa\", \"Lower middle income\"]}, \"Country Code\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"SSF\", \"LMC\"]}, \"Series Name\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 6, \"examples\": [\"GNI per capita (constant 2015 USdollar)\", \"Adjusted savings: education expenditure (percentage of GNI)\", \"Exports of goods and services (annual percentage growth)\"]}, \"Series Code\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 6, \"examples\": [\"NY.GNP.PCAP.KD\", \"NY.ADJ.AEDU.GN.ZS\", \"NE.EXP.GNFS.KD.ZG\"]}, \"1975 [YR1975]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -5.569420334, \"max\": 880.766431}, \"1976 [YR1976]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.771469358, \"max\": 934.500597}, \"1977 [YR1977]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -3.623539788, \"max\": 939.0693809}, \"1978 [YR1978]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -13.08727097, \"max\": 919.155717}, \"1979 [YR1979]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -6.300238971, \"max\": 878.0473809}, \"1980 [YR1980]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -23.54957475, \"max\": 840.4903638}, \"1981 [YR1981]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.265488371, \"max\": 844.2360062}, \"1982 [YR1982]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.686585495, \"max\": 884.5842433}, \"1983 [YR1983]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.508542505, \"max\": 918.6554826}, \"1984 [YR1984]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -2.501570702, \"max\": 901.8426083}, \"1985 [YR1985]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -3.898022239, \"max\": 906.0616701}, \"1986 [YR1986]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 0.746649826, \"max\": 897.0908752}, \"1987 [YR1987]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.514179399, \"max\": 909.9363169}, \"1988 [YR1988]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.268386282, \"max\": 929.5696074}, \"1989 [YR1989]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.558447946, \"max\": 954.1128768}, \"1990 [YR1990]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.564863634, \"max\": 986.8567154}, \"1991 [YR1991]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -2.454921874, \"max\": 1001.900102}, \"1992 [YR1992]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -11.43366862, \"max\": 1007.737394}, \"1993 [YR1993]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.140851622, \"max\": 994.1098994}, \"1994 [YR1994]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.721667048, \"max\": 991.8233531}, \"1995 [YR1995]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.763498753, \"max\": 1012.349859}, \"1996 [YR1996]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.683770988, \"max\": 1052.539314}, \"1997 [YR1997]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 1.38340055, \"max\": 1066.127258}, \"1998 [YR1998]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 1.910801281, \"max\": 1092.515828}, \"1999 [YR1999]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.873222604, \"max\": 1129.053979}, \"2000 [YR2000]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -2.12893807, \"max\": 1157.995847}, \"2001 [YR2001]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 2.932501247, \"max\": 1187.052521}, \"2002 [YR2002]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.641694172, \"max\": 1213.979916}, \"2003 [YR2003]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.577680711, \"max\": 1269.706182}, \"2004 [YR2004]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.475960423, \"max\": 1331.80148}, \"2005 [YR2005]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.524511687, \"max\": 1390.881557}, \"2006 [YR2006]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.519232431, \"max\": 1460.679779}, \"2007 [YR2007]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.510348478, \"max\": 1542.179634}, \"2008 [YR2008]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.098683936, \"max\": 1571.87283}, \"2009 [YR2009]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -6.439527256, \"max\": 1611.409495}, \"2010 [YR2010]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.289517623, \"max\": 1682.27428}, \"2011 [YR2011]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": -43.29252094, \"max\": 1726.782904}, \"2012 [YR2012]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": -10.33887014, \"max\": 1768.70889}, \"2013 [YR2013]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 2.868318905, \"max\": 1821.097219}, \"2014 [YR2014]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 2.921528391, \"max\": 1894.302198}, \"2015 [YR2015]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": -1.549814673, \"max\": 1965.288164}}}\n",
+                  "validation_scope": "identity, input hash, original execution receipt only"
+                },
+                "kind": "observation",
+                "root_material": {
+                  "csv_sha256": "6d0b74fa37e75b2686c62075a11ab754fdf878ac400dfcbd4bf9a6a64bfaf4f1",
+                  "execution_digest": "53b5b3291e8d387e50fde7b0d61dc36586ea6d3e4e071b15fce14c46f30139dd"
+                },
+                "trusted_validator": "week1-execution-receipt-only",
+                "validator_verified": true
+              },
+              "root_id": "0ba3f0ddd27dc64f07c7d1ed509c4e262276c83b385611bca633c9a8ecd57029",
+              "subject_bindings": {
+                "dataset_sha256": "6d0b74fa37e75b2686c62075a11ab754fdf878ac400dfcbd4bf9a6a64bfaf4f1"
+              }
+            }
+          ]
+        },
+        "evidence_version": "df5b85b88386c909a37641a7a5f84ba1f80963007e9a952c99918fffbbd79390",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+          "domain": "train",
+          "group_id": "f99e4d461ccef0ab2fe2728e980c0cadd6311d760626c73da25101b020371256",
+          "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+          "task_id": "real:test:worldbank_education_gdp"
+        },
+        "question": "{\"dataset\":[{\"columns\":[{\"description\":\"The name given to the group of countries- Sub-Saharan Africa and Lower middle income\",\"name\":\"Country Group\"},{\"description\":\"The code name assigned to each group of countries: Sub-Saharan Africa-SSA and Lower Middle Income Countries-LMC\",\"name\":\"Country Code\"},{\"description\":\"The name of the indicator or variable being measured. Description of the different indicators in the series is as follows:-GNI per capita (constant 2015 US dollar) - Gross National Income (GNI) per capita adjusted for inflation to 2015 US dollars. Adjusted savings: education expenditure (percentage of GNI) - The percentage of GNI that is saved for future education expenditures. Exports of goods and services (annual percentage growth) - The annual percentage growth rate of exports of goods and services. School enrollment, primary (percentage gross) - The gross enrollment ratio for primary school, representing the percentage of children of official primary school age who are enrolled in primary school. School enrollment, secondary (percentage gross) - The gross enrollment ratio for secondary school, representing the percentage of children of official secondary school age who are enrolled in secondary school. Labor force participation rate, total (percentage of total population ages 15+) (modeled ILO estimate) - The percentage of the total population ages 15 and older that is economically active.\",\"name\":\"Series Name\"},{\"description\":\"The code representing the indicator or variable\",\"name\":\"Series Code\"},{\"description\":\"The value of each indicator or variable for the year 1975\",\"name\":\"1975 [YR1975]\"},{\"description\":\"The value of each indicator or variable for the year 1976\",\"name\":\"1976 [YR1976]\"},{\"description\":\"The value of each indicator or variable for the year 1977\",\"name\":\"1977 [YR1977]\"},{\"description\":\"The value of each indicator or variable for the year 1978\",\"name\":\"1978 [YR1978]\"},{\"description\":\"The value of each indicator or variable for the year 1979\",\"name\":\"1979 [YR1979]\"},{\"description\":\"The value of each indicator or variable for the year 1980\",\"name\":\"1980 [YR1980]\"},{\"description\":\"The value of each indicator or variable for the year 1981\",\"name\":\"1981 [YR1981]\"},{\"description\":\"The value of each indicator or variable for the year 1982\",\"name\":\"1982 [YR1982]\"},{\"description\":\"The value of each indicator or variable for the year 1983\",\"name\":\"1983 [YR1983]\"},{\"description\":\"The value of each indicator or variable for the year 1984\",\"name\":\"1984 [YR1984]\"},{\"description\":\"The value of each indicator or variable for the year 1985\",\"name\":\"1985 [YR1985]\"},{\"description\":\"The value of each indicator or variable for the year 1986\",\"name\":\"1986 [YR1986]\"},{\"description\":\"The value of each indicator or variable for the year 1987\",\"name\":\"1987 [YR1987]\"},{\"description\":\"The value of each indicator or variable for the year 1988\",\"name\":\"1988 [YR1988]\"},{\"description\":\"The value of each indicator or variable for the year 1989\",\"name\":\"1989 [YR1989]\"},{\"description\":\"The value of each indicator or variable for the year 1990\",\"name\":\"1990 [YR1990]\"},{\"description\":\"The value of each indicator or variable for the year 1991\",\"name\":\"1991 [YR1991]\"},{\"description\":\"The value of each indicator or variable for the year 1992\",\"name\":\"1992 [YR1992]\"},{\"description\":\"The value of each indicator or variable for the year 1993\",\"name\":\"1993 [YR1993]\"},{\"description\":\"The value of each indicator or variable for the year 1994\",\"name\":\"1994 [YR1994]\"},{\"description\":\"The value of each indicator or variable for the year 1995\",\"name\":\"1995 [YR1995]\"},{\"description\":\"The value of each indicator or variable for the year 1996\",\"name\":\"1996 [YR1996]\"},{\"description\":\"The value of each indicator or variable for the year 1997\",\"name\":\"1997 [YR1997]\"},{\"description\":\"The value of each indicator or variable for the year 1998\",\"name\":\"1998 [YR1998]\"},{\"description\":\"The value of each indicator or variable for the year 1999\",\"name\":\"1999 [YR1999]\"},{\"description\":\"The value of each indicator or variable for the year 2000\",\"name\":\"2000 [YR2000]\"},{\"description\":\"The value of each indicator or variable for the year 2001\",\"name\":\"2001 [YR2001]\"},{\"description\":\"The value of each indicator or variable for the year 2002\",\"name\":\"2002 [YR2002]\"},{\"description\":\"The value of each indicator or variable for the year 2003\",\"name\":\"2003 [YR2003]\"},{\"description\":\"The value of each indicator or variable for the year 2004\",\"name\":\"2004 [YR2004]\"},{\"description\":\"The value of each indicator or variable for the year 2005\",\"name\":\"2005 [YR2005]\"},{\"description\":\"The value of each indicator or variable for the year 2006\",\"name\":\"2006 [YR2006]\"},{\"description\":\"The value of each indicator or variable for the year 2007\",\"name\":\"2007 [YR2007]\"},{\"description\":\"The value of each indicator or variable for the year 2008\",\"name\":\"2008 [YR2008]\"},{\"description\":\"The value of each indicator or variable for the year 2009\",\"name\":\"2009 [YR2009]\"},{\"description\":\"The value of each indicator or variable for the year 2010\",\"name\":\"2010 [YR2010]\"},{\"description\":\"The value of each indicator or variable for the year 2011\",\"name\":\"2011 [YR2011]\"},{\"description\":\"The value of each indicator or variable for the year 2012\",\"name\":\"2012 [YR2012]\"},{\"description\":\"The value of each indicator or variable for the year 2013\",\"name\":\"2013 [YR2013]\"},{\"description\":\"The value of each indicator or variable for the year 2014\",\"name\":\"2014 [YR2014]\"},{\"description\":\"The value of each indicator or variable for the year 2015\",\"name\":\"2015 [YR2015]\"}],\"description\":\"This is the panel data created based on the information provided in the paper. The dataset contains information of two groups of countries- Sub-Saharan Africa and Lower Middle Income Countries (LMC) from 1975 to 2015, sourced from the World Development Indicators (WDI) database. It focuses on the relationship between government expenditure on education (% of total expenditure) and per capita GDP (in 2010 US$), using variables like total labor force, gross primary and secondary enrollment, and exports (annual % growth) as key indicators.\",\"name\":\"worldbank_education_gdp.csv\"}],\"difficulty\":null,\"question\":\"In what regions does increased education spending positively impact per capita GDP?\",\"source_kind\":\"real\",\"task_id\":\"real:test:worldbank_education_gdp\"}",
+        "used_bytes": 6683
+      },
+      "execution_feedback": [
+        {
+          "id": "53b5b3291e8d387e50fde7b0d61dc36586ea6d3e4e071b15fce14c46f30139dd",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"rows\": 12, \"columns\": {\"Country Group\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"Sub-Saharan Africa\", \"Lower middle income\"]}, \"Country Code\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"SSF\", \"LMC\"]}, \"Series Name\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 6, \"examples\": [\"GNI per capita (constant 2015 USdollar)\", \"Adjusted savings: education expenditure (percentage of GNI)\", \"Exports of goods and services (annual percentage growth)\"]}, \"Series Code\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 6, \"examples\": [\"NY.GNP.PCAP.KD\", \"NY.ADJ.AEDU.GN.ZS\", \"NE.EXP.GNFS.KD.ZG\"]}, \"1975 [YR1975]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -5.569420334, \"max\": 880.766431}, \"1976 [YR1976]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.771469358, \"max\": 934.500597}, \"1977 [YR1977]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -3.623539788, \"max\": 939.0693809}, \"1978 [YR1978]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -13.08727097, \"max\": 919.155717}, \"1979 [YR1979]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -6.300238971, \"max\": 878.0473809}, \"1980 [YR1980]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -23.54957475, \"max\": 840.4903638}, \"1981 [YR1981]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.265488371, \"max\": 844.2360062}, \"1982 [YR1982]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.686585495, \"max\": 884.5842433}, \"1983 [YR1983]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.508542505, \"max\": 918.6554826}, \"1984 [YR1984]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -2.501570702, \"max\": 901.8426083}, \"1985 [YR1985]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -3.898022239, \"max\": 906.0616701}, \"1986 [YR1986]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 0.746649826, \"max\": 897.0908752}, \"1987 [YR1987]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.514179399, \"max\": 909.9363169}, \"1988 [YR1988]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.268386282, \"max\": 929.5696074}, \"1989 [YR1989]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.558447946, \"max\": 954.1128768}, \"1990 [YR1990]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.564863634, \"max\": 986.8567154}, \"1991 [YR1991]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -2.454921874, \"max\": 1001.900102}, \"1992 [YR1992]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -11.43366862, \"max\": 1007.737394}, \"1993 [YR1993]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.140851622, \"max\": 994.1098994}, \"1994 [YR1994]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.721667048, \"max\": 991.8233531}, \"1995 [YR1995]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.763498753, \"max\": 1012.349859}, \"1996 [YR1996]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.683770988, \"max\": 1052.539314}, \"1997 [YR1997]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 1.38340055, \"max\": 1066.127258}, \"1998 [YR1998]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 1.910801281, \"max\": 1092.515828}, \"1999 [YR1999]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.873222604, \"max\": 1129.053979}, \"2000 [YR2000]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -2.12893807, \"max\": 1157.995847}, \"2001 [YR2001]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 2.932501247, \"max\": 1187.052521}, \"2002 [YR2002]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.641694172, \"max\": 1213.979916}, \"2003 [YR2003]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.577680711, \"max\": 1269.706182}, \"2004 [YR2004]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.475960423, \"max\": 1331.80148}, \"2005 [YR2005]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.524511687, \"max\": 1390.881557}, \"2006 [YR2006]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.519232431, \"max\": 1460.679779}, \"2007 [YR2007]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.510348478, \"max\": 1542.179634}, \"2008 [YR2008]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.098683936, \"max\": 1571.87283}, \"2009 [YR2009]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -6.439527256, \"max\": 1611.409495}, \"2010 [YR2010]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.289517623, \"max\": 1682.27428}, \"2011 [YR2011]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": -43.29252094, \"max\": 1726.782904}, \"2012 [YR2012]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": -10.33887014, \"max\": 1768.70889}, \"2013 [YR2013]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 2.868318905, \"max\": 1821.097219}, \"2014 [YR2014]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 2.921528391, \"max\": 1894.302198}, \"2015 [YR2015]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": -1.549814673, \"max\": 1965.288164}}}\n"
+        }
+      ],
+      "instruction": "Write a complete Python analysis program for the public research question. Read only /input/data CSV. Available: pandas, numpy, scipy, statsmodels. No network, no installs, no other input. CPU 1, memory 1GB, 60 seconds. Print one compact JSON object under 9000 characters. Use the observed profile to choose sensible missing/sentinel handling; report sample counts, descriptive effect sizes and limitations. Distinguish association from causality. Check actual indicator labels, never substitute a different outcome silently. No benchmark answers available. Return code without markdown in the code field; conclusion and limitations describe the planned analysis, not invented results. Do not call tools yourself.",
+      "lock_digest": "f11fd9297da9a39bcd6c2793444ae604ea67a36ebf7abfaeb462a312940a3fc4",
+      "module_context": {},
+      "objective": {
+        "question": "In what regions does increased education spending positively impact per capita GDP?",
+        "scope": "bounded TRAIN observational analysis, no scoring"
+      },
+      "schema": "public-model-request-v1",
+      "slot": "plan",
+      "task": {
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+          "domain": "train",
+          "group_id": "f99e4d461ccef0ab2fe2728e980c0cadd6311d760626c73da25101b020371256",
+          "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+          "task_id": "real:test:worldbank_education_gdp"
+        },
+        "payload": {
+          "dataset": [
+            {
+              "columns": [
+                {
+                  "description": "The name given to the group of countries- Sub-Saharan Africa and Lower middle income",
+                  "name": "Country Group"
+                },
+                {
+                  "description": "The code name assigned to each group of countries: Sub-Saharan Africa-SSA and Lower Middle Income Countries-LMC",
+                  "name": "Country Code"
+                },
+                {
+                  "description": "The name of the indicator or variable being measured. Description of the different indicators in the series is as follows:-GNI per capita (constant 2015 US dollar) - Gross National Income (GNI) per capita adjusted for inflation to 2015 US dollars. Adjusted savings: education expenditure (percentage of GNI) - The percentage of GNI that is saved for future education expenditures. Exports of goods and services (annual percentage growth) - The annual percentage growth rate of exports of goods and services. School enrollment, primary (percentage gross) - The gross enrollment ratio for primary school, representing the percentage of children of official primary school age who are enrolled in primary school. School enrollment, secondary (percentage gross) - The gross enrollment ratio for secondary school, representing the percentage of children of official secondary school age who are enrolled in secondary school. Labor force participation rate, total (percentage of total population ages 15+) (modeled ILO estimate) - The percentage of the total population ages 15 and older that is economically active.",
+                  "name": "Series Name"
+                },
+                {
+                  "description": "The code representing the indicator or variable",
+                  "name": "Series Code"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1975",
+                  "name": "1975 [YR1975]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1976",
+                  "name": "1976 [YR1976]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1977",
+                  "name": "1977 [YR1977]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1978",
+                  "name": "1978 [YR1978]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1979",
+                  "name": "1979 [YR1979]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1980",
+                  "name": "1980 [YR1980]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1981",
+                  "name": "1981 [YR1981]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1982",
+                  "name": "1982 [YR1982]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1983",
+                  "name": "1983 [YR1983]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1984",
+                  "name": "1984 [YR1984]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1985",
+                  "name": "1985 [YR1985]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1986",
+                  "name": "1986 [YR1986]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1987",
+                  "name": "1987 [YR1987]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1988",
+                  "name": "1988 [YR1988]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1989",
+                  "name": "1989 [YR1989]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1990",
+                  "name": "1990 [YR1990]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1991",
+                  "name": "1991 [YR1991]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1992",
+                  "name": "1992 [YR1992]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1993",
+                  "name": "1993 [YR1993]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1994",
+                  "name": "1994 [YR1994]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1995",
+                  "name": "1995 [YR1995]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1996",
+                  "name": "1996 [YR1996]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1997",
+                  "name": "1997 [YR1997]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1998",
+                  "name": "1998 [YR1998]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1999",
+                  "name": "1999 [YR1999]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2000",
+                  "name": "2000 [YR2000]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2001",
+                  "name": "2001 [YR2001]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2002",
+                  "name": "2002 [YR2002]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2003",
+                  "name": "2003 [YR2003]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2004",
+                  "name": "2004 [YR2004]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2005",
+                  "name": "2005 [YR2005]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2006",
+                  "name": "2006 [YR2006]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2007",
+                  "name": "2007 [YR2007]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2008",
+                  "name": "2008 [YR2008]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2009",
+                  "name": "2009 [YR2009]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2010",
+                  "name": "2010 [YR2010]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2011",
+                  "name": "2011 [YR2011]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2012",
+                  "name": "2012 [YR2012]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2013",
+                  "name": "2013 [YR2013]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2014",
+                  "name": "2014 [YR2014]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2015",
+                  "name": "2015 [YR2015]"
+                }
+              ],
+              "description": "This is the panel data created based on the information provided in the paper. The dataset contains information of two groups of countries- Sub-Saharan Africa and Lower Middle Income Countries (LMC) from 1975 to 2015, sourced from the World Development Indicators (WDI) database. It focuses on the relationship between government expenditure on education (% of total expenditure) and per capita GDP (in 2010 US$), using variables like total labor force, gross primary and secondary enrollment, and exports (annual % growth) as key indicators.",
+              "name": "worldbank_education_gdp.csv"
+            }
+          ],
+          "difficulty": null,
+          "question": "In what regions does increased education spending positively impact per capita GDP?",
+          "source_kind": "real",
+          "task_id": "real:test:worldbank_education_gdp"
+        }
+      }
+    }
+  },
+  {
+    "event": {
+      "admitted": true,
+      "event": "append",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "f99e4d461ccef0ab2fe2728e980c0cadd6311d760626c73da25101b020371256",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "real:test:worldbank_education_gdp"
+      },
+      "independent_group": "f99e4d461ccef0ab2fe2728e980c0cadd6311d760626c73da25101b020371256",
+      "payload": {
+        "content": {
+          "scientific_validated": false,
+          "stage": "analysis",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"status\":\"planned analysis executed\",\"rows\":12,\"blank_rows_dropped\":0,\"years\":[1975,2015],\"indicator_labels\":{\"NE.EXP.GNFS.KD.ZG\":\"Exports of goods and services (annual percentage growth)\",\"NY.ADJ.AEDU.GN.ZS\":\"Adjusted savings: education expenditure (percentage of GNI)\",\"NY.GNP.PCAP.KD\":\"GNI per capita (constant 2015 USdollar)\",\"SE.PRM.ENRR\":\"School enrollment, primary (percentage gross)\",\"SE.SEC.ENRR\":\"School enrollment, secondary (percentage gross)\",\"SL.TLF.CACT.ZS\":\"Labor force participation rate, total (percentage of total population ages 15+) (modeled ILO estimate)\"},\"gdp_outcome_verified\":false,\"outcome_code\":\"NY.GNP.PCAP.KD\",\"exposure_code\":\"NY.ADJ.AEDU.GN.ZS\",\"analysis_scope\":\"Secondary GNI association only; GDP question unresolved\",\"limitations\":[\"The expected GDP outcome is absent or not verified. Any GNI analysis is explicitly secondary and does not answer the GDP question.\",\"Observational aggregate time series cannot establish causal impacts; reverse causality and omitted factors remain.\",\"Sub-Saharan Africa is a geographic aggregate; lower middle income is an income classification. Groups may overlap and are not independent country samples.\",\"Education expenditure as a share of GNI is not education expenditure as a share of total government expenditure or an absolute spending amount. Its denominator can induce association.\",\"Trends, structural changes, measurement error and changing group composition can affect associations. Differencing and HAC uncertainty do not establish causality.\",\"Models are exploratory and unadjusted for enrollment, labor participation and exports; reported intervals are pointwise, without multiplicity adjustment.\",\"Missing values are not interpolated. Each model uses its longest contiguous complete annual run; short runs have limited power.\"],\"groups\":[{\"group\":\"Lower middle income\",\"country_codes\":[\"LMC\"],\"education_share\":{\"n\":41,\"first_year\":1975,\"last_year\":2015,\"mean\":3.503892,\"sd\":0.252901,\"min\":2.694685,\"max\":3.873223,\"first\":2.694685,\"last\":3.060663},\"income_per_capita\":{\"n\":41,\"first_year\":1975,\"last_year\":2015,\"mean\":1182.174296,\"sd\":334.231883,\"min\":840.490364,\"max\":1965.288164,\"first\":880.766431,\"last\":1965.288164},\"missing_education_years\":0,\"missing_income_years\":0,\"excluded_negative_education\":0,\"excluded_nonpositive_income\":0,\"paired_level_n\":41,\"level_correlations_descriptive\":{\"pearson\":-0.480538,\"spearman\":-0.314808},\"primary_contemporaneous_changes\":{\"n_complete\":40,\"n\":40,\"first_year\":1976,\"last_year\":2015,\"status\":\"estimated\",\"slope\":2.185514,\"ci95\":[0.165322,4.205707],\"p_value\":0.034728,\"r_squared\":0.036414,\"hac_lags\":3},\"prior_year_education_change_sensitivity\":{\"n_complete\":39,\"n\":39,\"first_year\":1977,\"last_year\":2015,\"status\":\"estimated\",\"slope\":-1.090508,\"ci95\":[-3.135675,0.95466],\"p_value\":0.286961,\"r_squared\":0.009691,\"hac_lags\":3},\"linear_time_trend_level_sensitivity\":{\"n_complete\":41,\"n\":41,\"first_year\":1975,\"last_year\":2015,\"status\":\"estimated\",\"slope\":-20.018225,\"ci95\":[-32.350827,-7.685624],\"p_value\":0.002191,\"r_squared\":0.919341,\"hac_lags\":3},\"years_with_education_share_increase\":18,\"mean_income_log_growth_when_share_increased\":1.574991,\"years_without_share_increase\":22,\"mean_income_log_growth_without_share_increase\":2.35956,\"growth_mean_difference\":-0.784569,\"primary_association_assessment\":\"positive association with pointwise interval above zero\"},{\"group\":\"Sub-Saharan Africa\",\"country_codes\":[\"SSF\"],\"education_share\":{\"n\":41,\"first_year\":1975,\"last_year\":2015,\"mean\":4.30286,\"sd\":0.682712,\"min\":3.098684,\"max\":6.09669,\"first\":4.300055,\"last\":3.153823},\"income_per_capita\":{\"n\":5,\"first_year\":2011,\"last_year\":2015,\"mean\":1589.014384,\"sd\":36.686144,\"min\":1555.253067,\"max\":1634.258291,\"first\":1555.253067,\"last\":1634.258291},\"missing_education_years\":0,\"missing_income_years\":36,\"excluded_negative_education\":0,\"excluded_nonpositive_income\":0,\"paired_level_n\":5,\"level_correlations_descriptive\":{\"pearson\":-0.966421,\"spearman\":-1.0},\"primary_contemporaneous_changes\":{\"n_complete\":4,\"n\":4,\"first_year\":2012,\"last_year\":2015,\"status\":\"insufficient observations or exposure variation\"},\"prior_year_education_change_sensitivity\":{\"n_complete\":4,\"n\":4,\"first_year\":2012,\"last_year\":2015,\"status\":\"insufficient observations or exposure variation\"},\"linear_time_trend_level_sensitivity\":{\"n_complete\":5,\"n\":5,\"first_year\":2011,\"last_year\":2015,\"status\":\"insufficient observations or exposure variation\"},\"years_with_education_share_increase\":0,\"mean_income_log_growth_when_share_increased\":null,\"years_without_share_increase\":4,\"mean_income_log_growth_without_share_increase\":1.23877,\"growth_mean_difference\":null,\"primary_association_assessment\":\"not estimable\"}],\"unrecognized_nonnumeric_cells\":0,\"nonfinite_numeric_cells\":0,\"handling\":\"Known blank/sentinel tokens, unparseable values and infinities become missing. Negative export growth is retained; nonpositive income and negative education shares are excluded only from selected analysis series.\",\"effect_units\":\"Change-model slope: income growth in 100*log points per 1 percentage-point increase in education/GNI share. Trend-level slope: 100*log income points per 1 percentage-point higher share, conditional on linear year trend.\",\"answer\":\"Cannot identify regions with a positive GDP impact: verified data provide GNI rather than GDP. Group-specific secondary GNI associations are reported separately.\"}\n",
+          "validation_scope": "identity, input hash, original execution receipt only"
+        },
+        "kind": "observation",
+        "root_material": {
+          "csv_sha256": "6d0b74fa37e75b2686c62075a11ab754fdf878ac400dfcbd4bf9a6a64bfaf4f1",
+          "execution_digest": "b3835c1874382ff88361c3959c83f2f3b039f36706bcc9b815f9d5c5db6672b1"
+        },
+        "trusted_validator": "week1-execution-receipt-only",
+        "validator_verified": true
+      },
+      "record_id": "8f8fd5269509530a80fe450b6733e6982d414919abf21ec08c4505cde0ce7040",
+      "representation": "raw",
+      "root_id": "4764eebb61209a68984b3430372a852513e34f220f24771c6b7bf544fdf5a0ff",
+      "subject_bindings": {
+        "dataset_sha256": "6d0b74fa37e75b2686c62075a11ab754fdf878ac400dfcbd4bf9a6a64bfaf4f1"
+      }
+    },
+    "journal": "evidence",
+    "kind": "update"
+  },
+  {
+    "event": {
+      "claim_id": "f616ad308bd51e040fa7109b8ca835f40d8d7dfa67e4820dfadfe170e6acf59e",
+      "event": "create",
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "f99e4d461ccef0ab2fe2728e980c0cadd6311d760626c73da25101b020371256",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "real:test:worldbank_education_gdp"
+      },
+      "statement": "The recorded analysis execution has status succeeded. This asserts execution only.",
+      "subject_bindings": {
+        "dataset_sha256": "6d0b74fa37e75b2686c62075a11ab754fdf878ac400dfcbd4bf9a6a64bfaf4f1"
+      }
+    },
+    "journal": "claims",
+    "kind": "update"
+  },
+  {
+    "event": {
+      "claim_id": "f616ad308bd51e040fa7109b8ca835f40d8d7dfa67e4820dfadfe170e6acf59e",
+      "event": "apply",
+      "expected_revision": 0,
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "f99e4d461ccef0ab2fe2728e980c0cadd6311d760626c73da25101b020371256",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "real:test:worldbank_education_gdp"
+      },
+      "refutes": [],
+      "subject_bindings": {
+        "dataset_sha256": "6d0b74fa37e75b2686c62075a11ab754fdf878ac400dfcbd4bf9a6a64bfaf4f1"
+      },
+      "supports": [
+        "4764eebb61209a68984b3430372a852513e34f220f24771c6b7bf544fdf5a0ff"
+      ]
+    },
+    "journal": "claims",
+    "kind": "update"
+  },
+  {
+    "kind": "query",
+    "request": {
+      "context": {
+        "budget_bytes": 60000,
+        "claim_version": "fb76f69de35d98d24a067b1f38df092c14f3e20aa543729000626487148bf2d5",
+        "entries": {
+          "entries": [
+            {
+              "claim_id": "6c16a71b53ae96779322cba0cbde7acb915d6fd4d3327553280ef20902f781c4",
+              "depends_on": [],
+              "kind": "claim",
+              "needs_review": false,
+              "refute_roots": [],
+              "revision": 1,
+              "statement": "The recorded profile execution has status succeeded. This asserts execution only.",
+              "status": "supported",
+              "support_roots": [
+                "0ba3f0ddd27dc64f07c7d1ed509c4e262276c83b385611bca633c9a8ecd57029"
+              ]
+            },
+            {
+              "claim_id": "f616ad308bd51e040fa7109b8ca835f40d8d7dfa67e4820dfadfe170e6acf59e",
+              "depends_on": [],
+              "kind": "claim",
+              "needs_review": false,
+              "refute_roots": [],
+              "revision": 1,
+              "statement": "The recorded analysis execution has status succeeded. This asserts execution only.",
+              "status": "supported",
+              "support_roots": [
+                "4764eebb61209a68984b3430372a852513e34f220f24771c6b7bf544fdf5a0ff"
+              ]
+            },
+            {
+              "kind": "evidence",
+              "payload": {
+                "content": {
+                  "scientific_validated": false,
+                  "stage": "profile",
+                  "status": "succeeded",
+                  "stderr": "",
+                  "stdout": "{\"rows\": 12, \"columns\": {\"Country Group\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"Sub-Saharan Africa\", \"Lower middle income\"]}, \"Country Code\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"SSF\", \"LMC\"]}, \"Series Name\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 6, \"examples\": [\"GNI per capita (constant 2015 USdollar)\", \"Adjusted savings: education expenditure (percentage of GNI)\", \"Exports of goods and services (annual percentage growth)\"]}, \"Series Code\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 6, \"examples\": [\"NY.GNP.PCAP.KD\", \"NY.ADJ.AEDU.GN.ZS\", \"NE.EXP.GNFS.KD.ZG\"]}, \"1975 [YR1975]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -5.569420334, \"max\": 880.766431}, \"1976 [YR1976]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.771469358, \"max\": 934.500597}, \"1977 [YR1977]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -3.623539788, \"max\": 939.0693809}, \"1978 [YR1978]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -13.08727097, \"max\": 919.155717}, \"1979 [YR1979]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -6.300238971, \"max\": 878.0473809}, \"1980 [YR1980]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -23.54957475, \"max\": 840.4903638}, \"1981 [YR1981]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.265488371, \"max\": 844.2360062}, \"1982 [YR1982]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.686585495, \"max\": 884.5842433}, \"1983 [YR1983]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.508542505, \"max\": 918.6554826}, \"1984 [YR1984]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -2.501570702, \"max\": 901.8426083}, \"1985 [YR1985]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -3.898022239, \"max\": 906.0616701}, \"1986 [YR1986]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 0.746649826, \"max\": 897.0908752}, \"1987 [YR1987]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.514179399, \"max\": 909.9363169}, \"1988 [YR1988]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.268386282, \"max\": 929.5696074}, \"1989 [YR1989]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.558447946, \"max\": 954.1128768}, \"1990 [YR1990]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.564863634, \"max\": 986.8567154}, \"1991 [YR1991]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -2.454921874, \"max\": 1001.900102}, \"1992 [YR1992]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -11.43366862, \"max\": 1007.737394}, \"1993 [YR1993]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.140851622, \"max\": 994.1098994}, \"1994 [YR1994]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.721667048, \"max\": 991.8233531}, \"1995 [YR1995]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.763498753, \"max\": 1012.349859}, \"1996 [YR1996]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.683770988, \"max\": 1052.539314}, \"1997 [YR1997]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 1.38340055, \"max\": 1066.127258}, \"1998 [YR1998]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 1.910801281, \"max\": 1092.515828}, \"1999 [YR1999]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.873222604, \"max\": 1129.053979}, \"2000 [YR2000]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -2.12893807, \"max\": 1157.995847}, \"2001 [YR2001]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 2.932501247, \"max\": 1187.052521}, \"2002 [YR2002]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.641694172, \"max\": 1213.979916}, \"2003 [YR2003]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.577680711, \"max\": 1269.706182}, \"2004 [YR2004]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.475960423, \"max\": 1331.80148}, \"2005 [YR2005]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.524511687, \"max\": 1390.881557}, \"2006 [YR2006]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.519232431, \"max\": 1460.679779}, \"2007 [YR2007]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.510348478, \"max\": 1542.179634}, \"2008 [YR2008]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.098683936, \"max\": 1571.87283}, \"2009 [YR2009]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -6.439527256, \"max\": 1611.409495}, \"2010 [YR2010]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.289517623, \"max\": 1682.27428}, \"2011 [YR2011]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": -43.29252094, \"max\": 1726.782904}, \"2012 [YR2012]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": -10.33887014, \"max\": 1768.70889}, \"2013 [YR2013]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 2.868318905, \"max\": 1821.097219}, \"2014 [YR2014]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 2.921528391, \"max\": 1894.302198}, \"2015 [YR2015]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": -1.549814673, \"max\": 1965.288164}}}\n",
+                  "validation_scope": "identity, input hash, original execution receipt only"
+                },
+                "kind": "observation",
+                "root_material": {
+                  "csv_sha256": "6d0b74fa37e75b2686c62075a11ab754fdf878ac400dfcbd4bf9a6a64bfaf4f1",
+                  "execution_digest": "53b5b3291e8d387e50fde7b0d61dc36586ea6d3e4e071b15fce14c46f30139dd"
+                },
+                "trusted_validator": "week1-execution-receipt-only",
+                "validator_verified": true
+              },
+              "root_id": "0ba3f0ddd27dc64f07c7d1ed509c4e262276c83b385611bca633c9a8ecd57029",
+              "subject_bindings": {
+                "dataset_sha256": "6d0b74fa37e75b2686c62075a11ab754fdf878ac400dfcbd4bf9a6a64bfaf4f1"
+              }
+            },
+            {
+              "kind": "evidence",
+              "payload": {
+                "content": {
+                  "scientific_validated": false,
+                  "stage": "analysis",
+                  "status": "succeeded",
+                  "stderr": "",
+                  "stdout": "{\"status\":\"planned analysis executed\",\"rows\":12,\"blank_rows_dropped\":0,\"years\":[1975,2015],\"indicator_labels\":{\"NE.EXP.GNFS.KD.ZG\":\"Exports of goods and services (annual percentage growth)\",\"NY.ADJ.AEDU.GN.ZS\":\"Adjusted savings: education expenditure (percentage of GNI)\",\"NY.GNP.PCAP.KD\":\"GNI per capita (constant 2015 USdollar)\",\"SE.PRM.ENRR\":\"School enrollment, primary (percentage gross)\",\"SE.SEC.ENRR\":\"School enrollment, secondary (percentage gross)\",\"SL.TLF.CACT.ZS\":\"Labor force participation rate, total (percentage of total population ages 15+) (modeled ILO estimate)\"},\"gdp_outcome_verified\":false,\"outcome_code\":\"NY.GNP.PCAP.KD\",\"exposure_code\":\"NY.ADJ.AEDU.GN.ZS\",\"analysis_scope\":\"Secondary GNI association only; GDP question unresolved\",\"limitations\":[\"The expected GDP outcome is absent or not verified. Any GNI analysis is explicitly secondary and does not answer the GDP question.\",\"Observational aggregate time series cannot establish causal impacts; reverse causality and omitted factors remain.\",\"Sub-Saharan Africa is a geographic aggregate; lower middle income is an income classification. Groups may overlap and are not independent country samples.\",\"Education expenditure as a share of GNI is not education expenditure as a share of total government expenditure or an absolute spending amount. Its denominator can induce association.\",\"Trends, structural changes, measurement error and changing group composition can affect associations. Differencing and HAC uncertainty do not establish causality.\",\"Models are exploratory and unadjusted for enrollment, labor participation and exports; reported intervals are pointwise, without multiplicity adjustment.\",\"Missing values are not interpolated. Each model uses its longest contiguous complete annual run; short runs have limited power.\"],\"groups\":[{\"group\":\"Lower middle income\",\"country_codes\":[\"LMC\"],\"education_share\":{\"n\":41,\"first_year\":1975,\"last_year\":2015,\"mean\":3.503892,\"sd\":0.252901,\"min\":2.694685,\"max\":3.873223,\"first\":2.694685,\"last\":3.060663},\"income_per_capita\":{\"n\":41,\"first_year\":1975,\"last_year\":2015,\"mean\":1182.174296,\"sd\":334.231883,\"min\":840.490364,\"max\":1965.288164,\"first\":880.766431,\"last\":1965.288164},\"missing_education_years\":0,\"missing_income_years\":0,\"excluded_negative_education\":0,\"excluded_nonpositive_income\":0,\"paired_level_n\":41,\"level_correlations_descriptive\":{\"pearson\":-0.480538,\"spearman\":-0.314808},\"primary_contemporaneous_changes\":{\"n_complete\":40,\"n\":40,\"first_year\":1976,\"last_year\":2015,\"status\":\"estimated\",\"slope\":2.185514,\"ci95\":[0.165322,4.205707],\"p_value\":0.034728,\"r_squared\":0.036414,\"hac_lags\":3},\"prior_year_education_change_sensitivity\":{\"n_complete\":39,\"n\":39,\"first_year\":1977,\"last_year\":2015,\"status\":\"estimated\",\"slope\":-1.090508,\"ci95\":[-3.135675,0.95466],\"p_value\":0.286961,\"r_squared\":0.009691,\"hac_lags\":3},\"linear_time_trend_level_sensitivity\":{\"n_complete\":41,\"n\":41,\"first_year\":1975,\"last_year\":2015,\"status\":\"estimated\",\"slope\":-20.018225,\"ci95\":[-32.350827,-7.685624],\"p_value\":0.002191,\"r_squared\":0.919341,\"hac_lags\":3},\"years_with_education_share_increase\":18,\"mean_income_log_growth_when_share_increased\":1.574991,\"years_without_share_increase\":22,\"mean_income_log_growth_without_share_increase\":2.35956,\"growth_mean_difference\":-0.784569,\"primary_association_assessment\":\"positive association with pointwise interval above zero\"},{\"group\":\"Sub-Saharan Africa\",\"country_codes\":[\"SSF\"],\"education_share\":{\"n\":41,\"first_year\":1975,\"last_year\":2015,\"mean\":4.30286,\"sd\":0.682712,\"min\":3.098684,\"max\":6.09669,\"first\":4.300055,\"last\":3.153823},\"income_per_capita\":{\"n\":5,\"first_year\":2011,\"last_year\":2015,\"mean\":1589.014384,\"sd\":36.686144,\"min\":1555.253067,\"max\":1634.258291,\"first\":1555.253067,\"last\":1634.258291},\"missing_education_years\":0,\"missing_income_years\":36,\"excluded_negative_education\":0,\"excluded_nonpositive_income\":0,\"paired_level_n\":5,\"level_correlations_descriptive\":{\"pearson\":-0.966421,\"spearman\":-1.0},\"primary_contemporaneous_changes\":{\"n_complete\":4,\"n\":4,\"first_year\":2012,\"last_year\":2015,\"status\":\"insufficient observations or exposure variation\"},\"prior_year_education_change_sensitivity\":{\"n_complete\":4,\"n\":4,\"first_year\":2012,\"last_year\":2015,\"status\":\"insufficient observations or exposure variation\"},\"linear_time_trend_level_sensitivity\":{\"n_complete\":5,\"n\":5,\"first_year\":2011,\"last_year\":2015,\"status\":\"insufficient observations or exposure variation\"},\"years_with_education_share_increase\":0,\"mean_income_log_growth_when_share_increased\":null,\"years_without_share_increase\":4,\"mean_income_log_growth_without_share_increase\":1.23877,\"growth_mean_difference\":null,\"primary_association_assessment\":\"not estimable\"}],\"unrecognized_nonnumeric_cells\":0,\"nonfinite_numeric_cells\":0,\"handling\":\"Known blank/sentinel tokens, unparseable values and infinities become missing. Negative export growth is retained; nonpositive income and negative education shares are excluded only from selected analysis series.\",\"effect_units\":\"Change-model slope: income growth in 100*log points per 1 percentage-point increase in education/GNI share. Trend-level slope: 100*log income points per 1 percentage-point higher share, conditional on linear year trend.\",\"answer\":\"Cannot identify regions with a positive GDP impact: verified data provide GNI rather than GDP. Group-specific secondary GNI associations are reported separately.\"}\n",
+                  "validation_scope": "identity, input hash, original execution receipt only"
+                },
+                "kind": "observation",
+                "root_material": {
+                  "csv_sha256": "6d0b74fa37e75b2686c62075a11ab754fdf878ac400dfcbd4bf9a6a64bfaf4f1",
+                  "execution_digest": "b3835c1874382ff88361c3959c83f2f3b039f36706bcc9b815f9d5c5db6672b1"
+                },
+                "trusted_validator": "week1-execution-receipt-only",
+                "validator_verified": true
+              },
+              "root_id": "4764eebb61209a68984b3430372a852513e34f220f24771c6b7bf544fdf5a0ff",
+              "subject_bindings": {
+                "dataset_sha256": "6d0b74fa37e75b2686c62075a11ab754fdf878ac400dfcbd4bf9a6a64bfaf4f1"
+              }
+            }
+          ]
+        },
+        "evidence_version": "20e52847924e35810853325e4a535df7835a84821e6bfafb7ff5010f4cb3fd60",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+          "domain": "train",
+          "group_id": "f99e4d461ccef0ab2fe2728e980c0cadd6311d760626c73da25101b020371256",
+          "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+          "task_id": "real:test:worldbank_education_gdp"
+        },
+        "question": "{\"dataset\":[{\"columns\":[{\"description\":\"The name given to the group of countries- Sub-Saharan Africa and Lower middle income\",\"name\":\"Country Group\"},{\"description\":\"The code name assigned to each group of countries: Sub-Saharan Africa-SSA and Lower Middle Income Countries-LMC\",\"name\":\"Country Code\"},{\"description\":\"The name of the indicator or variable being measured. Description of the different indicators in the series is as follows:-GNI per capita (constant 2015 US dollar) - Gross National Income (GNI) per capita adjusted for inflation to 2015 US dollars. Adjusted savings: education expenditure (percentage of GNI) - The percentage of GNI that is saved for future education expenditures. Exports of goods and services (annual percentage growth) - The annual percentage growth rate of exports of goods and services. School enrollment, primary (percentage gross) - The gross enrollment ratio for primary school, representing the percentage of children of official primary school age who are enrolled in primary school. School enrollment, secondary (percentage gross) - The gross enrollment ratio for secondary school, representing the percentage of children of official secondary school age who are enrolled in secondary school. Labor force participation rate, total (percentage of total population ages 15+) (modeled ILO estimate) - The percentage of the total population ages 15 and older that is economically active.\",\"name\":\"Series Name\"},{\"description\":\"The code representing the indicator or variable\",\"name\":\"Series Code\"},{\"description\":\"The value of each indicator or variable for the year 1975\",\"name\":\"1975 [YR1975]\"},{\"description\":\"The value of each indicator or variable for the year 1976\",\"name\":\"1976 [YR1976]\"},{\"description\":\"The value of each indicator or variable for the year 1977\",\"name\":\"1977 [YR1977]\"},{\"description\":\"The value of each indicator or variable for the year 1978\",\"name\":\"1978 [YR1978]\"},{\"description\":\"The value of each indicator or variable for the year 1979\",\"name\":\"1979 [YR1979]\"},{\"description\":\"The value of each indicator or variable for the year 1980\",\"name\":\"1980 [YR1980]\"},{\"description\":\"The value of each indicator or variable for the year 1981\",\"name\":\"1981 [YR1981]\"},{\"description\":\"The value of each indicator or variable for the year 1982\",\"name\":\"1982 [YR1982]\"},{\"description\":\"The value of each indicator or variable for the year 1983\",\"name\":\"1983 [YR1983]\"},{\"description\":\"The value of each indicator or variable for the year 1984\",\"name\":\"1984 [YR1984]\"},{\"description\":\"The value of each indicator or variable for the year 1985\",\"name\":\"1985 [YR1985]\"},{\"description\":\"The value of each indicator or variable for the year 1986\",\"name\":\"1986 [YR1986]\"},{\"description\":\"The value of each indicator or variable for the year 1987\",\"name\":\"1987 [YR1987]\"},{\"description\":\"The value of each indicator or variable for the year 1988\",\"name\":\"1988 [YR1988]\"},{\"description\":\"The value of each indicator or variable for the year 1989\",\"name\":\"1989 [YR1989]\"},{\"description\":\"The value of each indicator or variable for the year 1990\",\"name\":\"1990 [YR1990]\"},{\"description\":\"The value of each indicator or variable for the year 1991\",\"name\":\"1991 [YR1991]\"},{\"description\":\"The value of each indicator or variable for the year 1992\",\"name\":\"1992 [YR1992]\"},{\"description\":\"The value of each indicator or variable for the year 1993\",\"name\":\"1993 [YR1993]\"},{\"description\":\"The value of each indicator or variable for the year 1994\",\"name\":\"1994 [YR1994]\"},{\"description\":\"The value of each indicator or variable for the year 1995\",\"name\":\"1995 [YR1995]\"},{\"description\":\"The value of each indicator or variable for the year 1996\",\"name\":\"1996 [YR1996]\"},{\"description\":\"The value of each indicator or variable for the year 1997\",\"name\":\"1997 [YR1997]\"},{\"description\":\"The value of each indicator or variable for the year 1998\",\"name\":\"1998 [YR1998]\"},{\"description\":\"The value of each indicator or variable for the year 1999\",\"name\":\"1999 [YR1999]\"},{\"description\":\"The value of each indicator or variable for the year 2000\",\"name\":\"2000 [YR2000]\"},{\"description\":\"The value of each indicator or variable for the year 2001\",\"name\":\"2001 [YR2001]\"},{\"description\":\"The value of each indicator or variable for the year 2002\",\"name\":\"2002 [YR2002]\"},{\"description\":\"The value of each indicator or variable for the year 2003\",\"name\":\"2003 [YR2003]\"},{\"description\":\"The value of each indicator or variable for the year 2004\",\"name\":\"2004 [YR2004]\"},{\"description\":\"The value of each indicator or variable for the year 2005\",\"name\":\"2005 [YR2005]\"},{\"description\":\"The value of each indicator or variable for the year 2006\",\"name\":\"2006 [YR2006]\"},{\"description\":\"The value of each indicator or variable for the year 2007\",\"name\":\"2007 [YR2007]\"},{\"description\":\"The value of each indicator or variable for the year 2008\",\"name\":\"2008 [YR2008]\"},{\"description\":\"The value of each indicator or variable for the year 2009\",\"name\":\"2009 [YR2009]\"},{\"description\":\"The value of each indicator or variable for the year 2010\",\"name\":\"2010 [YR2010]\"},{\"description\":\"The value of each indicator or variable for the year 2011\",\"name\":\"2011 [YR2011]\"},{\"description\":\"The value of each indicator or variable for the year 2012\",\"name\":\"2012 [YR2012]\"},{\"description\":\"The value of each indicator or variable for the year 2013\",\"name\":\"2013 [YR2013]\"},{\"description\":\"The value of each indicator or variable for the year 2014\",\"name\":\"2014 [YR2014]\"},{\"description\":\"The value of each indicator or variable for the year 2015\",\"name\":\"2015 [YR2015]\"}],\"description\":\"This is the panel data created based on the information provided in the paper. The dataset contains information of two groups of countries- Sub-Saharan Africa and Lower Middle Income Countries (LMC) from 1975 to 2015, sourced from the World Development Indicators (WDI) database. It focuses on the relationship between government expenditure on education (% of total expenditure) and per capita GDP (in 2010 US$), using variables like total labor force, gross primary and secondary enrollment, and exports (annual % growth) as key indicators.\",\"name\":\"worldbank_education_gdp.csv\"}],\"difficulty\":null,\"question\":\"In what regions does increased education spending positively impact per capita GDP?\",\"source_kind\":\"real\",\"task_id\":\"real:test:worldbank_education_gdp\"}",
+        "used_bytes": 13474
+      },
+      "execution_feedback": [
+        {
+          "id": "53b5b3291e8d387e50fde7b0d61dc36586ea6d3e4e071b15fce14c46f30139dd",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"rows\": 12, \"columns\": {\"Country Group\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"Sub-Saharan Africa\", \"Lower middle income\"]}, \"Country Code\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"SSF\", \"LMC\"]}, \"Series Name\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 6, \"examples\": [\"GNI per capita (constant 2015 USdollar)\", \"Adjusted savings: education expenditure (percentage of GNI)\", \"Exports of goods and services (annual percentage growth)\"]}, \"Series Code\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 6, \"examples\": [\"NY.GNP.PCAP.KD\", \"NY.ADJ.AEDU.GN.ZS\", \"NE.EXP.GNFS.KD.ZG\"]}, \"1975 [YR1975]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -5.569420334, \"max\": 880.766431}, \"1976 [YR1976]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.771469358, \"max\": 934.500597}, \"1977 [YR1977]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -3.623539788, \"max\": 939.0693809}, \"1978 [YR1978]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -13.08727097, \"max\": 919.155717}, \"1979 [YR1979]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -6.300238971, \"max\": 878.0473809}, \"1980 [YR1980]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -23.54957475, \"max\": 840.4903638}, \"1981 [YR1981]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.265488371, \"max\": 844.2360062}, \"1982 [YR1982]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.686585495, \"max\": 884.5842433}, \"1983 [YR1983]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.508542505, \"max\": 918.6554826}, \"1984 [YR1984]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -2.501570702, \"max\": 901.8426083}, \"1985 [YR1985]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": -3.898022239, \"max\": 906.0616701}, \"1986 [YR1986]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 0.746649826, \"max\": 897.0908752}, \"1987 [YR1987]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.514179399, \"max\": 909.9363169}, \"1988 [YR1988]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.268386282, \"max\": 929.5696074}, \"1989 [YR1989]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.558447946, \"max\": 954.1128768}, \"1990 [YR1990]\": {\"dtype\": \"float64\", \"missing\": 4, \"unique\": 8, \"min\": 3.564863634, \"max\": 986.8567154}, \"1991 [YR1991]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -2.454921874, \"max\": 1001.900102}, \"1992 [YR1992]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -11.43366862, \"max\": 1007.737394}, \"1993 [YR1993]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.140851622, \"max\": 994.1098994}, \"1994 [YR1994]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.721667048, \"max\": 991.8233531}, \"1995 [YR1995]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.763498753, \"max\": 1012.349859}, \"1996 [YR1996]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.683770988, \"max\": 1052.539314}, \"1997 [YR1997]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 1.38340055, \"max\": 1066.127258}, \"1998 [YR1998]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 1.910801281, \"max\": 1092.515828}, \"1999 [YR1999]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.873222604, \"max\": 1129.053979}, \"2000 [YR2000]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -2.12893807, \"max\": 1157.995847}, \"2001 [YR2001]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 2.932501247, \"max\": 1187.052521}, \"2002 [YR2002]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.641694172, \"max\": 1213.979916}, \"2003 [YR2003]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.577680711, \"max\": 1269.706182}, \"2004 [YR2004]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.475960423, \"max\": 1331.80148}, \"2005 [YR2005]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.524511687, \"max\": 1390.881557}, \"2006 [YR2006]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.519232431, \"max\": 1460.679779}, \"2007 [YR2007]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.510348478, \"max\": 1542.179634}, \"2008 [YR2008]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.098683936, \"max\": 1571.87283}, \"2009 [YR2009]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": -6.439527256, \"max\": 1611.409495}, \"2010 [YR2010]\": {\"dtype\": \"float64\", \"missing\": 1, \"unique\": 11, \"min\": 3.289517623, \"max\": 1682.27428}, \"2011 [YR2011]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": -43.29252094, \"max\": 1726.782904}, \"2012 [YR2012]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": -10.33887014, \"max\": 1768.70889}, \"2013 [YR2013]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 2.868318905, \"max\": 1821.097219}, \"2014 [YR2014]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 2.921528391, \"max\": 1894.302198}, \"2015 [YR2015]\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": -1.549814673, \"max\": 1965.288164}}}\n"
+        },
+        {
+          "id": "b3835c1874382ff88361c3959c83f2f3b039f36706bcc9b815f9d5c5db6672b1",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"status\":\"planned analysis executed\",\"rows\":12,\"blank_rows_dropped\":0,\"years\":[1975,2015],\"indicator_labels\":{\"NE.EXP.GNFS.KD.ZG\":\"Exports of goods and services (annual percentage growth)\",\"NY.ADJ.AEDU.GN.ZS\":\"Adjusted savings: education expenditure (percentage of GNI)\",\"NY.GNP.PCAP.KD\":\"GNI per capita (constant 2015 USdollar)\",\"SE.PRM.ENRR\":\"School enrollment, primary (percentage gross)\",\"SE.SEC.ENRR\":\"School enrollment, secondary (percentage gross)\",\"SL.TLF.CACT.ZS\":\"Labor force participation rate, total (percentage of total population ages 15+) (modeled ILO estimate)\"},\"gdp_outcome_verified\":false,\"outcome_code\":\"NY.GNP.PCAP.KD\",\"exposure_code\":\"NY.ADJ.AEDU.GN.ZS\",\"analysis_scope\":\"Secondary GNI association only; GDP question unresolved\",\"limitations\":[\"The expected GDP outcome is absent or not verified. Any GNI analysis is explicitly secondary and does not answer the GDP question.\",\"Observational aggregate time series cannot establish causal impacts; reverse causality and omitted factors remain.\",\"Sub-Saharan Africa is a geographic aggregate; lower middle income is an income classification. Groups may overlap and are not independent country samples.\",\"Education expenditure as a share of GNI is not education expenditure as a share of total government expenditure or an absolute spending amount. Its denominator can induce association.\",\"Trends, structural changes, measurement error and changing group composition can affect associations. Differencing and HAC uncertainty do not establish causality.\",\"Models are exploratory and unadjusted for enrollment, labor participation and exports; reported intervals are pointwise, without multiplicity adjustment.\",\"Missing values are not interpolated. Each model uses its longest contiguous complete annual run; short runs have limited power.\"],\"groups\":[{\"group\":\"Lower middle income\",\"country_codes\":[\"LMC\"],\"education_share\":{\"n\":41,\"first_year\":1975,\"last_year\":2015,\"mean\":3.503892,\"sd\":0.252901,\"min\":2.694685,\"max\":3.873223,\"first\":2.694685,\"last\":3.060663},\"income_per_capita\":{\"n\":41,\"first_year\":1975,\"last_year\":2015,\"mean\":1182.174296,\"sd\":334.231883,\"min\":840.490364,\"max\":1965.288164,\"first\":880.766431,\"last\":1965.288164},\"missing_education_years\":0,\"missing_income_years\":0,\"excluded_negative_education\":0,\"excluded_nonpositive_income\":0,\"paired_level_n\":41,\"level_correlations_descriptive\":{\"pearson\":-0.480538,\"spearman\":-0.314808},\"primary_contemporaneous_changes\":{\"n_complete\":40,\"n\":40,\"first_year\":1976,\"last_year\":2015,\"status\":\"estimated\",\"slope\":2.185514,\"ci95\":[0.165322,4.205707],\"p_value\":0.034728,\"r_squared\":0.036414,\"hac_lags\":3},\"prior_year_education_change_sensitivity\":{\"n_complete\":39,\"n\":39,\"first_year\":1977,\"last_year\":2015,\"status\":\"estimated\",\"slope\":-1.090508,\"ci95\":[-3.135675,0.95466],\"p_value\":0.286961,\"r_squared\":0.009691,\"hac_lags\":3},\"linear_time_trend_level_sensitivity\":{\"n_complete\":41,\"n\":41,\"first_year\":1975,\"last_year\":2015,\"status\":\"estimated\",\"slope\":-20.018225,\"ci95\":[-32.350827,-7.685624],\"p_value\":0.002191,\"r_squared\":0.919341,\"hac_lags\":3},\"years_with_education_share_increase\":18,\"mean_income_log_growth_when_share_increased\":1.574991,\"years_without_share_increase\":22,\"mean_income_log_growth_without_share_increase\":2.35956,\"growth_mean_difference\":-0.784569,\"primary_association_assessment\":\"positive association with pointwise interval above zero\"},{\"group\":\"Sub-Saharan Africa\",\"country_codes\":[\"SSF\"],\"education_share\":{\"n\":41,\"first_year\":1975,\"last_year\":2015,\"mean\":4.30286,\"sd\":0.682712,\"min\":3.098684,\"max\":6.09669,\"first\":4.300055,\"last\":3.153823},\"income_per_capita\":{\"n\":5,\"first_year\":2011,\"last_year\":2015,\"mean\":1589.014384,\"sd\":36.686144,\"min\":1555.253067,\"max\":1634.258291,\"first\":1555.253067,\"last\":1634.258291},\"missing_education_years\":0,\"missing_income_years\":36,\"excluded_negative_education\":0,\"excluded_nonpositive_income\":0,\"paired_level_n\":5,\"level_correlations_descriptive\":{\"pearson\":-0.966421,\"spearman\":-1.0},\"primary_contemporaneous_changes\":{\"n_complete\":4,\"n\":4,\"first_year\":2012,\"last_year\":2015,\"status\":\"insufficient observations or exposure variation\"},\"prior_year_education_change_sensitivity\":{\"n_complete\":4,\"n\":4,\"first_year\":2012,\"last_year\":2015,\"status\":\"insufficient observations or exposure variation\"},\"linear_time_trend_level_sensitivity\":{\"n_complete\":5,\"n\":5,\"first_year\":2011,\"last_year\":2015,\"status\":\"insufficient observations or exposure variation\"},\"years_with_education_share_increase\":0,\"mean_income_log_growth_when_share_increased\":null,\"years_without_share_increase\":4,\"mean_income_log_growth_without_share_increase\":1.23877,\"growth_mean_difference\":null,\"primary_association_assessment\":\"not estimable\"}],\"unrecognized_nonnumeric_cells\":0,\"nonfinite_numeric_cells\":0,\"handling\":\"Known blank/sentinel tokens, unparseable values and infinities become missing. Negative export growth is retained; nonpositive income and negative education shares are excluded only from selected analysis series.\",\"effect_units\":\"Change-model slope: income growth in 100*log points per 1 percentage-point increase in education/GNI share. Trend-level slope: 100*log income points per 1 percentage-point higher share, conditional on linear year trend.\",\"answer\":\"Cannot identify regions with a positive GDP impact: verified data provide GNI rather than GDP. Group-specific secondary GNI associations are reported separately.\"}\n"
+        }
+      ],
+      "instruction": "Interpret the actual profile and analysis execution output in this request. Answer the research question with concrete numbers where available, note missing data, outcome/indicator mismatches and uncertainty. Failed code is a failed opportunity: report the limitation, do not pretend it succeeded. The ledger validator validates recorded execution only; scientific truth is not established. Cite evidence root IDs in your conclusion. Set code to an empty string; do not call tools or write another program.",
+      "lock_digest": "f11fd9297da9a39bcd6c2793444ae604ea67a36ebf7abfaeb462a312940a3fc4",
+      "module_context": {},
+      "objective": {
+        "question": "In what regions does increased education spending positively impact per capita GDP?",
+        "scope": "bounded TRAIN observational analysis, no scoring"
+      },
+      "schema": "public-model-request-v1",
+      "slot": "final",
+      "task": {
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+          "domain": "train",
+          "group_id": "f99e4d461ccef0ab2fe2728e980c0cadd6311d760626c73da25101b020371256",
+          "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+          "task_id": "real:test:worldbank_education_gdp"
+        },
+        "payload": {
+          "dataset": [
+            {
+              "columns": [
+                {
+                  "description": "The name given to the group of countries- Sub-Saharan Africa and Lower middle income",
+                  "name": "Country Group"
+                },
+                {
+                  "description": "The code name assigned to each group of countries: Sub-Saharan Africa-SSA and Lower Middle Income Countries-LMC",
+                  "name": "Country Code"
+                },
+                {
+                  "description": "The name of the indicator or variable being measured. Description of the different indicators in the series is as follows:-GNI per capita (constant 2015 US dollar) - Gross National Income (GNI) per capita adjusted for inflation to 2015 US dollars. Adjusted savings: education expenditure (percentage of GNI) - The percentage of GNI that is saved for future education expenditures. Exports of goods and services (annual percentage growth) - The annual percentage growth rate of exports of goods and services. School enrollment, primary (percentage gross) - The gross enrollment ratio for primary school, representing the percentage of children of official primary school age who are enrolled in primary school. School enrollment, secondary (percentage gross) - The gross enrollment ratio for secondary school, representing the percentage of children of official secondary school age who are enrolled in secondary school. Labor force participation rate, total (percentage of total population ages 15+) (modeled ILO estimate) - The percentage of the total population ages 15 and older that is economically active.",
+                  "name": "Series Name"
+                },
+                {
+                  "description": "The code representing the indicator or variable",
+                  "name": "Series Code"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1975",
+                  "name": "1975 [YR1975]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1976",
+                  "name": "1976 [YR1976]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1977",
+                  "name": "1977 [YR1977]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1978",
+                  "name": "1978 [YR1978]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1979",
+                  "name": "1979 [YR1979]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1980",
+                  "name": "1980 [YR1980]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1981",
+                  "name": "1981 [YR1981]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1982",
+                  "name": "1982 [YR1982]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1983",
+                  "name": "1983 [YR1983]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1984",
+                  "name": "1984 [YR1984]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1985",
+                  "name": "1985 [YR1985]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1986",
+                  "name": "1986 [YR1986]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1987",
+                  "name": "1987 [YR1987]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1988",
+                  "name": "1988 [YR1988]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1989",
+                  "name": "1989 [YR1989]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1990",
+                  "name": "1990 [YR1990]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1991",
+                  "name": "1991 [YR1991]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1992",
+                  "name": "1992 [YR1992]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1993",
+                  "name": "1993 [YR1993]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1994",
+                  "name": "1994 [YR1994]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1995",
+                  "name": "1995 [YR1995]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1996",
+                  "name": "1996 [YR1996]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1997",
+                  "name": "1997 [YR1997]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1998",
+                  "name": "1998 [YR1998]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 1999",
+                  "name": "1999 [YR1999]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2000",
+                  "name": "2000 [YR2000]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2001",
+                  "name": "2001 [YR2001]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2002",
+                  "name": "2002 [YR2002]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2003",
+                  "name": "2003 [YR2003]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2004",
+                  "name": "2004 [YR2004]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2005",
+                  "name": "2005 [YR2005]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2006",
+                  "name": "2006 [YR2006]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2007",
+                  "name": "2007 [YR2007]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2008",
+                  "name": "2008 [YR2008]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2009",
+                  "name": "2009 [YR2009]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2010",
+                  "name": "2010 [YR2010]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2011",
+                  "name": "2011 [YR2011]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2012",
+                  "name": "2012 [YR2012]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2013",
+                  "name": "2013 [YR2013]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2014",
+                  "name": "2014 [YR2014]"
+                },
+                {
+                  "description": "The value of each indicator or variable for the year 2015",
+                  "name": "2015 [YR2015]"
+                }
+              ],
+              "description": "This is the panel data created based on the information provided in the paper. The dataset contains information of two groups of countries- Sub-Saharan Africa and Lower Middle Income Countries (LMC) from 1975 to 2015, sourced from the World Development Indicators (WDI) database. It focuses on the relationship between government expenditure on education (% of total expenditure) and per capita GDP (in 2010 US$), using variables like total labor force, gross primary and secondary enrollment, and exports (annual % growth) as key indicators.",
+              "name": "worldbank_education_gdp.csv"
+            }
+          ],
+          "difficulty": null,
+          "question": "In what regions does increased education spending positively impact per capita GDP?",
+          "source_kind": "real",
+          "task_id": "real:test:worldbank_education_gdp"
+        }
+      }
+    }
+  }
+]
