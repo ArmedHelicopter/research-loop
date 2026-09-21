@@ -1,0 +1,74 @@
+{
+  "after_withdrawing_a": {
+    "claim_id": "c809dd83d509aa3faeac588074d5a7dc08c38b05b74ddfa66049bd166121a452",
+    "depends_on": [],
+    "identity": {
+      "benchmark": "synthetic-correctness",
+      "dataset_version": "v1",
+      "domain": "train",
+      "group_id": "fixture",
+      "split_id": "fixture-only",
+      "task_id": "native-semantics"
+    },
+    "needs_review": true,
+    "refute_roots": [],
+    "revision": 2,
+    "statement": "A",
+    "status": "supported",
+    "subject_bindings": {
+      "subject": "fixture"
+    },
+    "support_roots": [
+      "d0f99eaec316121be449fca9fc131b6cc9dd2239c698e4cb1b1d452efb6d85f3"
+    ]
+  },
+  "if_encoded_as_AND": "incorrectly remains supported; there is no grouping field to distinguish AND from OR",
+  "native_meaning": "b independently remains support; this is valid OR semantics",
+  "operation_log": [
+    {
+      "name": "a",
+      "op": "root"
+    },
+    {
+      "name": "b",
+      "op": "root"
+    },
+    {
+      "name": "r",
+      "op": "root"
+    },
+    {
+      "name": "u",
+      "op": "root"
+    },
+    {
+      "name": "A",
+      "op": "claim"
+    },
+    {
+      "name": "B",
+      "op": "claim"
+    },
+    {
+      "name": "C",
+      "op": "claim"
+    },
+    {
+      "name": "A",
+      "op": "apply",
+      "refutes": [],
+      "revision": 0,
+      "supports": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "name": "a",
+      "op": "withdraw_refresh"
+    }
+  ],
+  "representation_available": false,
+  "requirement": "AND support group",
+  "verdict": "AND requirement not implemented by native reference; not a cache-induced mismatch"
+}

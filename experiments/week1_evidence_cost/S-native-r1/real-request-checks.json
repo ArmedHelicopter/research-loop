@@ -1,0 +1,98 @@
+[
+  {
+    "S": {
+      "builds": 1,
+      "clears": 0,
+      "events": 0,
+      "hits": 1,
+      "invalidated_entries": 0,
+      "misses": 1,
+      "retained_entries": 1
+    },
+    "exact_recorded_context": true,
+    "opportunity": "week1-domain-2-r2",
+    "request_digest_other_fields_frozen": "ab3cbf5f074c2f611aa9c11969e2563b30d069bb3cfe7f0358208d305ec92d57",
+    "series": "domain-pilot-r2",
+    "slot": "plan"
+  },
+  {
+    "S": {
+      "builds": 1,
+      "clears": 0,
+      "events": 0,
+      "hits": 1,
+      "invalidated_entries": 0,
+      "misses": 1,
+      "retained_entries": 1
+    },
+    "exact_recorded_context": true,
+    "opportunity": "week1-domain-2-r2",
+    "request_digest_other_fields_frozen": "23023f6b4ff891e99651d53b131a4ebf25689bf4d8ebdde0ca5b92942ffa4314",
+    "series": "domain-pilot-r2",
+    "slot": "final"
+  },
+  {
+    "S": {
+      "builds": 1,
+      "clears": 0,
+      "events": 0,
+      "hits": 1,
+      "invalidated_entries": 0,
+      "misses": 1,
+      "retained_entries": 1
+    },
+    "exact_recorded_context": true,
+    "opportunity": "week1-domain-3-r2",
+    "request_digest_other_fields_frozen": "b473c0b4d8973b55a425ac9983fae3638d135d22b84793debf13511340902232",
+    "series": "domain-pilot-r2",
+    "slot": "plan"
+  },
+  {
+    "S": {
+      "builds": 1,
+      "clears": 0,
+      "events": 0,
+      "hits": 1,
+      "invalidated_entries": 0,
+      "misses": 1,
+      "retained_entries": 1
+    },
+    "exact_recorded_context": true,
+    "opportunity": "week1-domain-3-r2",
+    "request_digest_other_fields_frozen": "d20d103337d30edb69e3f845a4588a4960490c2e33c387d8b27020b9f7dd2ec2",
+    "series": "domain-pilot-r2",
+    "slot": "final"
+  },
+  {
+    "S": {
+      "builds": 1,
+      "clears": 0,
+      "events": 0,
+      "hits": 1,
+      "invalidated_entries": 0,
+      "misses": 1,
+      "retained_entries": 1
+    },
+    "exact_recorded_context": true,
+    "opportunity": "week1-domain-1-r3",
+    "request_digest_other_fields_frozen": "e898b82719bd20656ad6d8bdca337d6a9c606e311eeac2fde849aa1a1d1a48e3",
+    "series": "domain-pilot-r3",
+    "slot": "plan"
+  },
+  {
+    "S": {
+      "builds": 1,
+      "clears": 0,
+      "events": 0,
+      "hits": 1,
+      "invalidated_entries": 0,
+      "misses": 1,
+      "retained_entries": 1
+    },
+    "exact_recorded_context": true,
+    "opportunity": "week1-domain-1-r3",
+    "request_digest_other_fields_frozen": "9561d85362ce3b99a4ab2cd149facece49e1617377839a8e7030c77fb7d44898",
+    "series": "domain-pilot-r3",
+    "slot": "final"
+  }
+]

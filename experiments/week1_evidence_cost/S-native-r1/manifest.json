@@ -1,0 +1,51 @@
+{
+  "AND": "Native multi-root support is disjunctive; mandatory coverage includes an explicit inability-to-represent counterexample, never an AND pass.",
+  "S_sha256": "14bdcf3dcbd992ef3d3036c5fd4e97ef5398a5cd11c3830bcd17a1ed5765a2b8",
+  "cases": [
+    "alternative_support",
+    "withdrawal",
+    "revision_change",
+    "unrelated_update",
+    "clear",
+    "illegal_cycle",
+    "dependency_review_propagation",
+    "refute",
+    "identity_budget_question_summary",
+    "ephemeral_synthetic_validation",
+    "ledger_rebinding",
+    "sink_preservation",
+    "observer_displacement",
+    "write_failure",
+    "real_saved_requests"
+  ],
+  "contract": "Exact native R/B semantics; public serial ledger writes observed by S; full canonical bundle equality. No direct private-state or external-file mutation.",
+  "core_sha256": {
+    "research_loop/modular/contracts.py": "c774d9f77bf0efdfcdcf2dc64da1a9c73e1d38372d1faa38cfdf9a6d2099311b",
+    "research_loop/modular/modules/context.py": "a50f5cc6e11f1526a776309b94d991fffa90be48c51706777169c57480dfbf15",
+    "research_loop/modular/modules/evidence.py": "c2aefe1d1faa32499e4aac67cd953ed0cb013026f3b6a4cffa359065d8c2db1c",
+    "research_loop/ontology.py": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb"
+  },
+  "domain_requests": [
+    [
+      "domain-pilot-r2",
+      "week1-domain-2-r2"
+    ],
+    [
+      "domain-pilot-r2",
+      "week1-domain-3-r2"
+    ],
+    [
+      "domain-pilot-r3",
+      "week1-domain-1-r3"
+    ]
+  ],
+  "formal_VAL_inputs": 0,
+  "frozen_at": "2026-09-21T10:43:20.864413+00:00",
+  "model_calls": 0,
+  "random_steps": 80,
+  "schema": "week1-S-native-checks-v1",
+  "scorer_calls": 0,
+  "seed": 20260921,
+  "source_sha256": "fd8d575c686708ce356c3ac9a05bc912e055fc8b1a4818a3c772d8be01b83e4d",
+  "wall_limit_seconds": 60
+}
