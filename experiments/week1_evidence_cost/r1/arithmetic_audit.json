@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "raw_rows": 1620,
+  "summary_cells": 54,
+  "exact_requests": 15,
+  "independent_tasks": 1,
+  "checks": [
+    "recomputed all medians",
+    "checked original trace hashes",
+    "checked per-profile build/version counts"
+  ],
+  "independence": "separate deterministic recomputation by same implementation agent; not independent review"
+}

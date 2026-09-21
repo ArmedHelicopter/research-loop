@@ -1,0 +1,793 @@
+{
+  "base_commit": "be693ae30cfd6ef5f7619234c73082fa241cdb7f",
+  "brief": {
+    "path": "C:\\Users\\Administrator\\Downloads\\week1_research_brief.md",
+    "sha256": "cf7e2ba90d88f42f4c10b110e0e8f944969d5a30cac5a841d0e3b5f0eb615478"
+  },
+  "budget": {
+    "external_model_calls": 0,
+    "further_model_packages_dispatched": false,
+    "new_paid_spend": 0,
+    "reset_and_expiry": "unknown",
+    "subagents": 0,
+    "subscription_after": "unknown",
+    "subscription_before": "unknown: live official usage unavailable"
+  },
+  "frozen_at": "2026-09-21T07:35:29.955280+00:00",
+  "harness_sha256": "ea82f8db98fddec5f30a53a8a91569b2ed8f2f0d2e30c21863e3dd00db438886",
+  "inner": 20,
+  "inventory": [
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "reason": "selected",
+      "sha256": "8bb317f31f2c87f6e232e90ce57fe66eaf139bbeb444a2e32f92a8a3e8e6f1bf",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\30897d41e5e2499f789b1d23565e2fa57a49196ab03c785dc4a2a3b4a0522ecd\\runtime\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "audited_phase_closed",
+        "exploration_scheduler_phase",
+        "exploration_scheduler_joint",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "reason": "outside_domain",
+      "sha256": "6a5f382548b4f004ee25402d4f9b258717d03ff1bb5ab3de33ce1466964df071",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\55d0bc7cd10510c16309f0a125520ab3725a5e17ee4537dee851880042d4c74d\\runtime\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "audited_phase_closed",
+        "exploration_scheduler_phase",
+        "exploration_scheduler_joint",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "reason": "selected",
+      "sha256": "07805119f2ba486030dc73ab85f58b269d1b96abaa6720caaf654e46dae6821e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\72e0a8d513f7954f98db465adb04858510872f2ab68a0930d6616cf6b9327e59\\runtime\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "audited_phase_closed",
+        "exploration_scheduler_phase",
+        "exploration_scheduler_joint",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "reason": "outside_domain",
+      "sha256": "1ef805ce751e65273ea264367ca087910edbc00b50f8aab7498f39db964493e2",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\85a6cb9de745423e0af49e14d164fa502a466d7441027a4c7d74464aa8464917\\runtime\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "audited_phase_closed",
+        "exploration_scheduler_phase",
+        "exploration_scheduler_joint",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "reason": "selected",
+      "sha256": "e72a815f396c37fd1257f188adc10aac3890a1622eb722881a2279f13da3c77e",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\ae2a7a9f06bb9f0e70792167e2c484b36c124c2a1cf3e484d3f8cb5300475227\\runtime\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "audited_phase_closed",
+        "exploration_scheduler_phase",
+        "exploration_scheduler_joint",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "reason": "beyond_first_three_per_series",
+      "sha256": "3390433cfe1792880daa902b652a19e8880dfbfb1996b4e2837eb7b38769bcca",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\baf755ce831743311aabfa3c9e55ff472fddd491b1fb41a3a39e8a7476cdb7f7\\runtime\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "audited_phase_closed",
+        "exploration_scheduler_phase",
+        "exploration_scheduler_joint",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "reason": "outside_domain",
+      "sha256": "e02a1c1938786cf01df4fb2636d6e450d0723e542a48f155572c935ca4fdfac0",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\bf68f1d16a47ccef11618aa4979a5c9f92dcbe8835221420ac1b4b15f195c7ea\\runtime\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "audited_phase_closed",
+        "exploration_scheduler_phase",
+        "exploration_scheduler_joint",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "reason": "outside_domain",
+      "sha256": "97b4007b1d870aaef394a3d9d118ce482ed30e7dcb2e05efb1ea2b5544959fad",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-exploration-scheduler-grok130-run-r4\\controller\\cells\\dbb241f802eeaa831e134511ad7f4ec03d6983218df5f53133205274e24e09a0\\runtime\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "audited_phase_closed",
+        "exploration_scheduler_phase",
+        "exploration_scheduler_joint",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "reason": "selected",
+      "sha256": "b794a84e5268f483a70f8e115799f8c4c1b80061d2e45d8437737502ebaa2d93",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-run-r9\\controller\\cells\\1aaf15cb6a4de1ec1fe91d9a4245ce9317fdd85d97daa2fce6f35b11cdab09b7\\runtime\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "admission_prediction_exploration_source",
+        "admission_prediction_transition",
+        "model_request",
+        "model_response",
+        "admission_prediction_plan",
+        "admission_prediction_exploration_mechanism",
+        "admission_prediction_exploration_phase_start",
+        "audited_phase_closed",
+        "admission_prediction_exploration_phase",
+        "admission_prediction_exploration_joint",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "reason": "incomplete",
+      "sha256": "5566097df56ba4485b656843113921b12721ab6949731e96af547ffc771f755b",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-run-r9\\controller\\cells\\3ea92210b5422b555ec3a8a6ddfabaeb0911476359e11719217b49a331807ad7\\runtime\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "admission_prediction_exploration_source",
+        "admission_prediction_transition",
+        "model_request",
+        "model_response",
+        "admission_prediction_plan",
+        "admission_prediction_exploration_mechanism",
+        "admission_prediction_exploration_phase_start",
+        "audited_phase_closed",
+        "admission_prediction_exploration_phase",
+        "admission_prediction_exploration_joint",
+        "model_request",
+        "model_failure"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "reason": "selected",
+      "sha256": "fe457e2a7d762217f22a85650d93a04cc37c6ca87a6675c547dc6f93ec871a0c",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-run-r9\\controller\\cells\\3eafc7d95be5975976c3a80487a65517ef54f93e6569f2f3e4a97d219a5f7600\\runtime\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "admission_prediction_exploration_source",
+        "admission_prediction_transition",
+        "model_request",
+        "model_response",
+        "admission_prediction_plan",
+        "admission_prediction_exploration_mechanism",
+        "admission_prediction_exploration_phase_start",
+        "audited_phase_closed",
+        "admission_prediction_exploration_phase",
+        "admission_prediction_exploration_joint",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "reason": "selected",
+      "sha256": "10c53baff1efc4a5c9f7ee0754b27085732095eaed07481ab3c79284b2e75a23",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-run-r9\\controller\\cells\\79dc331c2e569e8c267bdf35feef63b2df2359c3188de0c47e11edd8256a8c35\\runtime\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "admission_prediction_exploration_source",
+        "admission_prediction_transition",
+        "model_request",
+        "model_response",
+        "admission_prediction_plan",
+        "admission_prediction_exploration_mechanism",
+        "admission_prediction_exploration_phase_start",
+        "audited_phase_closed",
+        "admission_prediction_exploration_phase",
+        "admission_prediction_exploration_joint",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "reason": "beyond_first_three_per_series",
+      "sha256": "1e0ed671eb7327063efb94e70597e6490d3080805b518cb77d7c337ee580ab64",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-run-r9\\controller\\cells\\e0fc727f5120433f488970d64f1828e17697485b67244e97c96c1ca39b564cec\\runtime\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "admission_prediction_exploration_source",
+        "admission_prediction_transition",
+        "model_request",
+        "model_response",
+        "admission_prediction_plan",
+        "admission_prediction_exploration_mechanism",
+        "admission_prediction_exploration_phase_start",
+        "audited_phase_closed",
+        "admission_prediction_exploration_phase",
+        "admission_prediction_exploration_joint",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "reason": "beyond_first_three_per_series",
+      "sha256": "4ef1449aeb7a963fd5045a18b7a3548ebd4940cd915558df7649912ea54abd16",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-admission-prediction-exploration-grok130-run-r9\\controller\\cells\\e5e7d0aafe6e33e4c1cc39a88cbd13c28c35b73650a83667d16ec02a120c073e\\runtime\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "admission_prediction_exploration_source",
+        "admission_prediction_transition",
+        "model_request",
+        "model_response",
+        "admission_prediction_plan",
+        "admission_prediction_exploration_mechanism",
+        "admission_prediction_exploration_phase_start",
+        "audited_phase_closed",
+        "admission_prediction_exploration_phase",
+        "admission_prediction_exploration_joint",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "reason": "outside_domain",
+      "sha256": "92b136375c7f3f7c0b5d91e39c1306e3d27e887d63775354feeefdf3e6918896",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-ordinary-q31-grok130-run-r2\\controller\\cells\\77263162c7edd457a7cbc83d63a895ea34bf3ca06fc9012edb4899700d81c303\\mechanism\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "model_request",
+        "model_response",
+        "modular_workflow",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "reason": "outside_domain",
+      "sha256": "df48f7affb10d9e8d6f2bbc51a78f2d9c6db4a06a06a2dbeaab811c9f79eaf1f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-ordinary-q31-grok130-run-r2\\controller\\cells\\77263162c7edd457a7cbc83d63a895ea34bf3ca06fc9012edb4899700d81c303\\solver\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "reason": "outside_domain",
+      "sha256": "9f43e39e1eb07a5066d68cb1a10605be203f62150af38c04dd5dda9e8932de59",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-ordinary-q31-grok130-run-r2\\controller\\cells\\a00572c8303310704458bc3400c566fedf1deac18dc93e00c1c2d6871032f69e\\mechanism\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "model_request",
+        "model_failure"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "reason": "outside_domain",
+      "sha256": "32503aa126af740845866360644eddcb521690eae2a48f1f4037b167ba0e110f",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-ordinary-q31-grok130-run-r2\\controller\\cells\\c1e5fe85168e987837a2bce795361d5eb70feb6b8931858620281c4220f344ac\\mechanism\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "model_request",
+        "model_response",
+        "modular_workflow",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "reason": "outside_domain",
+      "sha256": "135c40cd58105e65c68c4e568f2ae6f474b830ac40cea1effc9a693c847c9b98",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-ordinary-q31-grok130-run-r2\\controller\\cells\\c1e5fe85168e987837a2bce795361d5eb70feb6b8931858620281c4220f344ac\\solver\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "reason": "outside_domain",
+      "sha256": "38d76dc3894c0e6e94ff74dcc4be3f2de2aa21717d737f7690945010d496cd23",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-ordinary-q31-grok130-run-r2\\controller\\cells\\fb87feaa840b0267ac9372d7af648f72cf0f2165391f23a0ace1bd8239f46c5a\\mechanism\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "model_request",
+        "model_response",
+        "modular_workflow",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "5e11f4d9b03f0e180ea236c3d36142293ed686c50da3dee801f5ad0319e11b58",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "amtl"
+      },
+      "reason": "outside_domain",
+      "sha256": "331106f0c238ebcc3274b4ed4f22b44b19a7bb1f590754ea2975038f6993b324",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\actual-ordinary-q31-grok130-run-r2\\controller\\cells\\fb87feaa840b0267ac9372d7af648f72cf0f2165391f23a0ace1bd8239f46c5a\\solver\\trace.jsonl",
+      "stages": [
+        "objective_lock",
+        "model_request",
+        "model_response",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_response",
+        "final_decision"
+      ]
+    }
+  ],
+  "normalization": "None: canonical bytes must match exactly.",
+  "public_data": {
+    "data.csv": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\public-train\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\data.csv",
+      "sha256": "455f1e3df7e93dce381b6adff312e89e6a3b4d3900cf0d6083660cd0a4d53881"
+    },
+    "public.json": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\public-train\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\public.json",
+      "sha256": "eb639eb5e482f08d499cce95c5da180339253acb64cbe2f606fcbfdf8dca251f"
+    }
+  },
+  "repeats": 30,
+  "schema": "week1-cost-v1",
+  "scope": "First package: runtime context seam only; no new optimization.",
+  "seed": 20260921,
+  "selected": [
+    {
+      "arm": [
+        "M8"
+      ],
+      "cell": "30897d41e5e2499f789b1d23565e2fa57a49196ab03c785dc4a2a3b4a0522ecd",
+      "files": {
+        "claims.jsonl": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence.jsonl": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "trace.jsonl": {
+          "bytes": 46728,
+          "sha256": "8bb317f31f2c87f6e232e90ce57fe66eaf139bbeb444a2e32f92a8a3e8e6f1bf"
+        }
+      },
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "input_dir": "inputs\\actual-exploration-scheduler-grok130-run-r4\\30897d41e5e2499f789b1d23565e2fa57a49196ab03c785dc4a2a3b4a0522ecd",
+      "series": "actual-exploration-scheduler-grok130-run-r4"
+    },
+    {
+      "arm": [
+        "M7"
+      ],
+      "cell": "72e0a8d513f7954f98db465adb04858510872f2ab68a0930d6616cf6b9327e59",
+      "files": {
+        "claims.jsonl": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence.jsonl": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "trace.jsonl": {
+          "bytes": 39731,
+          "sha256": "07805119f2ba486030dc73ab85f58b269d1b96abaa6720caaf654e46dae6821e"
+        }
+      },
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "input_dir": "inputs\\actual-exploration-scheduler-grok130-run-r4\\72e0a8d513f7954f98db465adb04858510872f2ab68a0930d6616cf6b9327e59",
+      "series": "actual-exploration-scheduler-grok130-run-r4"
+    },
+    {
+      "arm": [
+        "M7",
+        "M8"
+      ],
+      "cell": "ae2a7a9f06bb9f0e70792167e2c484b36c124c2a1cf3e484d3f8cb5300475227",
+      "files": {
+        "claims.jsonl": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence.jsonl": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "trace.jsonl": {
+          "bytes": 39997,
+          "sha256": "e72a815f396c37fd1257f188adc10aac3890a1622eb722881a2279f13da3c77e"
+        }
+      },
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "input_dir": "inputs\\actual-exploration-scheduler-grok130-run-r4\\ae2a7a9f06bb9f0e70792167e2c484b36c124c2a1cf3e484d3f8cb5300475227",
+      "series": "actual-exploration-scheduler-grok130-run-r4"
+    },
+    {
+      "arm": [
+        "M4",
+        "M7"
+      ],
+      "cell": "1aaf15cb6a4de1ec1fe91d9a4245ce9317fdd85d97daa2fce6f35b11cdab09b7",
+      "files": {
+        "claims.jsonl": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence.jsonl": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "trace.jsonl": {
+          "bytes": 105435,
+          "sha256": "b794a84e5268f483a70f8e115799f8c4c1b80061d2e45d8437737502ebaa2d93"
+        }
+      },
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "input_dir": "inputs\\actual-admission-prediction-exploration-grok130-run-r9\\1aaf15cb6a4de1ec1fe91d9a4245ce9317fdd85d97daa2fce6f35b11cdab09b7",
+      "series": "actual-admission-prediction-exploration-grok130-run-r9"
+    },
+    {
+      "arm": [
+        "M1"
+      ],
+      "cell": "3eafc7d95be5975976c3a80487a65517ef54f93e6569f2f3e4a97d219a5f7600",
+      "files": {
+        "claims.jsonl": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence.jsonl": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "trace.jsonl": {
+          "bytes": 79674,
+          "sha256": "fe457e2a7d762217f22a85650d93a04cc37c6ca87a6675c547dc6f93ec871a0c"
+        }
+      },
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "input_dir": "inputs\\actual-admission-prediction-exploration-grok130-run-r9\\3eafc7d95be5975976c3a80487a65517ef54f93e6569f2f3e4a97d219a5f7600",
+      "series": "actual-admission-prediction-exploration-grok130-run-r9"
+    },
+    {
+      "arm": [
+        "M7"
+      ],
+      "cell": "79dc331c2e569e8c267bdf35feef63b2df2359c3188de0c47e11edd8256a8c35",
+      "files": {
+        "claims.jsonl": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "evidence.jsonl": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "trace.jsonl": {
+          "bytes": 86202,
+          "sha256": "10c53baff1efc4a5c9f7ee0754b27085732095eaed07481ab3c79284b2e75a23"
+        }
+      },
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "559992c9a1d1795fb4c563efd3ef76b48642919049d829706240a06118041d5e",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "synth:test:futuristic-technology_0_0"
+      },
+      "input_dir": "inputs\\actual-admission-prediction-exploration-grok130-run-r9\\79dc331c2e569e8c267bdf35feef63b2df2359c3188de0c47e11edd8256a8c35",
+      "series": "actual-admission-prediction-exploration-grok130-run-r9"
+    }
+  ],
+  "selection": "First three complete TRAIN DiscoveryBench traces by path per named series; no score selection.",
+  "source_hashes": {
+    "research_loop/modular/admission_prediction_exploration_driver.py": "f1b9b570647ac7499dd11ef304f4a5cc97d5c4347e1a4545b35c5174b102d40f",
+    "research_loop/modular/contracts.py": "c774d9f77bf0efdfcdcf2dc64da1a9c73e1d38372d1faa38cfdf9a6d2099311b",
+    "research_loop/modular/modules/context.py": "a50f5cc6e11f1526a776309b94d991fffa90be48c51706777169c57480dfbf15",
+    "research_loop/modular/modules/evidence.py": "c2aefe1d1faa32499e4aac67cd953ed0cb013026f3b6a4cffa359065d8c2db1c",
+    "research_loop/modular/runtime.py": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4",
+    "research_loop/ontology.py": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb"
+  },
+  "timeout_seconds": 60,
+  "unmeasured": [
+    "transient module-state reconstruction",
+    "nonempty dependency updates",
+    "model wait",
+    "new tool execution",
+    "S/C",
+    "end-to-end speedup",
+    "subscription usage delta"
+  ]
+}

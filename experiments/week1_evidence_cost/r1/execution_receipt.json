@@ -1,0 +1,13 @@
+{
+  "command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-B",
+    "E:\\_ryanDev\\AI\\research-loop-week1\\experiments\\week1_evidence_cost\\measure.py",
+    "_worker",
+    "--run",
+    "r1"
+  ],
+  "exit_code": 0,
+  "stderr": "",
+  "stdout": "{\"status\": \"completed\", \"timed_rows\": 1620, \"exact_requests\": 15}\n"
+}
