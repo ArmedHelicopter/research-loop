@@ -1,11 +1,15 @@
-# Week-one scope closure
+# Week-one research status: incomplete
 
-D1: real quota recorded privately; isolated branch; source/call-chain inventory; old traces proved empty, then three real TRAIN inputs qualified.
-D2: four original live opportunities, three complete; M2/M3 contexts delivered before calls; CPU replay and source-artifact checks completed. Target computation is below the predeclared 1% resource threshold in each completed workflow.
-D3–D5: not run, because the brief explicitly stops candidate development after D2 finds no material target bottleneck. S/C and synthetic AND/alternatives/withdrawal/version/cycle coverage remain unmeasured, not marked passed.
-D6: actual task identities and source families checked; raw original inputs hash-bound; GDP/GNI mismatch retained. No algorithmic novelty claim or optimized end-to-end comparison, and no further literature/model budget consumed for a stopped candidate.
-D7: DECISION.md gives the bounded no-candidate decision, evidence and limits. This closes this brief's resource decision, not the repository programme or the former 48-question objective.
+Correction dated 2026-09-21 supersedes the prior scope-closure claim. Completed measurement is retained; whole-week completion is withdrawn. See CORRECTION-20260921.md.
 
-All source changes stay under experiments/week1_evidence_cost. Core runtime, scorer, frozen data partition and original failures were not rewritten. Old Grok heartbeat remains paused for obsolete scope.
+D1: quota, isolated branch, real input identities and source inventory recorded. Three real TRAIN inputs qualified; adequacy of the selected workload for the intended evidence-processing question still needs review.
+D2: initial short-workflow pilot complete: four original live opportunities, three complete and one retained controller failure; six completed-trajectory requests exactly replayed. Each workflow grows from one to two execution roots and execution-status claims. This does not establish cost for richer natural evidence relations, changes or invalidation.
+D3: strong simple baseline S and the listed semantic cases are not implemented/confirmed by this pilot. B is retained; R is a semantic reference, not the strong comparator.
+D4: C is conditional and not implemented. Do not implement it merely to satisfy a calendar if there is no justified bottleneck or distinction from S.
+D5: diagnostic B/R timings exist; full fair scheme comparison and update/index/whole-process memory evidence do not.
+D6: real identity/source mapping and GDP/GNI issue recorded. Workload representativeness and closest-work assessment remain incomplete.
+D7: DECISION.md is a provisional short-pilot report, not the week-final decision.
 
-New live trajectories are Codex CLI only. Old Grok, local and icompify experiment outcomes were not pooled. Implementation packages 4/8; read-only review packages 3/6; started domain trajectories 4/6; Grok reviews 0/4. First-three-package quota calibration remains imperfect: package 1 lacks a reliable before value, package 2 shared a reviewer, and later display changes combine controller/review/client work. Do not infer independent per-model cost or turn the observed aggregate into a universal dispatch forecast.
+Next substantive work: inspect whether the existing real domain analysis naturally produces the evidence queries, scientific claims, dependencies and updates relevant to the research question. Record actual gaps. If synthetic graphs are used for semantic correctness, keep them separate from domain evidence. Apply the brief's conditional stop only at the supported scope; do not force a positive result or manufacture a complex domain workload.
+
+No measurement, original failure, frozen criterion, partition or core source was rewritten. Codex CLI, Grok, local and icompify series remain separate. Existing counts are unchanged: implementation packages 4/8, read-only reviews 3/6, started domain trajectories 4/6, Grok reviews 0/4. Further dispatch must recheck the original authorized budget and existing processes; this correction does not enlarge limits or revive the old 48-question scope.
