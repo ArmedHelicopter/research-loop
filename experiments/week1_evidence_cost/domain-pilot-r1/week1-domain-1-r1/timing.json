@@ -1,0 +1,35 @@
+[
+  {
+    "ns": 100067700,
+    "operation": "session_startup"
+  },
+  {
+    "ns": 948680000,
+    "operation": "tool_profile",
+    "status": "succeeded"
+  },
+  {
+    "ns": 274834700,
+    "operation": "evidence_and_claim_append_profile"
+  },
+  {
+    "ns": 11800,
+    "operation": "dependency_refresh"
+  },
+  {
+    "ns": 281500,
+    "operation": "B_context_get_or_build"
+  },
+  {
+    "ns": 93503117400,
+    "operation": "official_client_plan"
+  },
+  {
+    "ns": 96768246500,
+    "operation": "model_port_total_plan"
+  },
+  {
+    "ns": 99804266100,
+    "operation": "trajectory_wall_including_quota_checks"
+  }
+]

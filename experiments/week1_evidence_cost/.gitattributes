@@ -4,3 +4,7 @@
 measure.py whitespace=cr-at-eol,-blank-at-eof
 qualify_domain.py whitespace=cr-at-eol,-blank-at-eof
 qualification/*/producer.py whitespace=cr-at-eol,-blank-at-eof
+domain_pilot.py whitespace=cr-at-eol,-blank-at-eof
+quota_check.py whitespace=cr-at-eol,-blank-at-eof
+measure_domain.py whitespace=cr-at-eol,-blank-at-eof
+*/producer.py whitespace=cr-at-eol,-blank-at-eof
