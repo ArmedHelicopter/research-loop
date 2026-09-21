@@ -1,0 +1,42 @@
+{
+  "analysis_execution_status": "succeeded",
+  "decision": {
+    "candidate_digest": "9ca04405d1876d2271c7daaa3fc2f8496f2e540c6b74f3c3212c31bc9b332c16",
+    "decision": "unknown",
+    "execution_attempts": 2,
+    "identity": {
+      "benchmark": "discoverybench",
+      "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+      "domain": "train",
+      "group_id": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+      "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+      "task_id": "real:test:nls_ses"
+    },
+    "lock_digest": "0523c16b060d78a5094feb24ab1d5e50783d62c09ae42a5c4fca104a6925940c",
+    "model_calls": 2,
+    "programme_complete": false,
+    "reasons": [],
+    "schema": "run-decision-v1",
+    "scientific_validated": false
+  },
+  "scientific_validated": false,
+  "status": "completed",
+  "trace": {
+    "events": 10,
+    "lock_digest": "0523c16b060d78a5094feb24ab1d5e50783d62c09ae42a5c4fca104a6925940c",
+    "stages": [
+      "objective_lock",
+      "execution_request",
+      "execution_result",
+      "model_request",
+      "model_response",
+      "execution_request",
+      "execution_result",
+      "model_request",
+      "model_response",
+      "final_decision"
+    ],
+    "terminal": true,
+    "trace_digest": "52827d7d919fc46eeaa1f5fde44ab7335e6dd4f4d872683914d6c44742b3c81a"
+  }
+}

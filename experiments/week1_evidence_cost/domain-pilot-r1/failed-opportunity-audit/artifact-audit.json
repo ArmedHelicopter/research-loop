@@ -1,0 +1,124 @@
+[
+  {
+    "ledger_artifacts": {
+      "admission_events": 0,
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+        "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+        "task_id": "real:test:nls_ses"
+      },
+      "ledger_events": {
+        "claims": 2,
+        "evidence": 1
+      },
+      "model_inputs": {
+        "f52fc8648d46722fad5f095a2d1b5021b33636b70f15d4840973b404259706f2": {
+          "claims_snapshot": {
+            "claims": [
+              {
+                "claim_id": "13a0bb0157d04df13fd9714c73acbfc761c6be6b9b820cf35655a2ed13ae717e",
+                "depends_on": [],
+                "identity": {
+                  "benchmark": "discoverybench",
+                  "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+                  "domain": "train",
+                  "group_id": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+                  "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+                  "task_id": "real:test:nls_ses"
+                },
+                "needs_review": false,
+                "refute_roots": [],
+                "revision": 1,
+                "statement": "The recorded profile execution has status succeeded. This asserts execution only.",
+                "status": "supported",
+                "subject_bindings": {
+                  "dataset_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3"
+                },
+                "support_roots": [
+                  "3d14bb10f93bbf143d032fce11439dafbfcbde2a264edcecc9e0bbbd256a99e8"
+                ]
+              }
+            ],
+            "evidence_version": "b24d45c9d0710fd6fb4e4b57fe74368af88aab28b69c1422847d4f2009276a47",
+            "identity": {
+              "benchmark": "discoverybench",
+              "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+              "domain": "train",
+              "group_id": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+              "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+              "task_id": "real:test:nls_ses"
+            }
+          },
+          "evidence_snapshot": {
+            "identity": {
+              "benchmark": "discoverybench",
+              "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+              "domain": "train",
+              "group_id": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+              "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+              "task_id": "real:test:nls_ses"
+            },
+            "records": [
+              {
+                "admitted": true,
+                "identity": {
+                  "benchmark": "discoverybench",
+                  "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+                  "domain": "train",
+                  "group_id": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+                  "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+                  "task_id": "real:test:nls_ses"
+                },
+                "independent_group": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+                "payload": {
+                  "content": {
+                    "scientific_validated": false,
+                    "stage": "profile",
+                    "status": "succeeded",
+                    "stderr": "",
+                    "stdout": "{\"rows\": 8773, \"columns\": {\"Unnamed: 0\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 8773, \"min\": 0.0, \"max\": 8772.0}, \"CASE ID\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 8773, \"min\": 2.0, \"max\": 12583.0}, \"SAMPLE_RACE\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 3, \"examples\": [\"White\", \"Black\", \"Hispanic\"]}, \"SAMPLE_SEX\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"Female\", \"Male\"]}, \"FAMILY SIZE OF SAMPLE\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 1.0, \"max\": 12.0}, \"ABILITY: COMPOSITE OF ASVAB SCORE\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 1504, \"min\": 1016.0, \"max\": 3068.0}, \"BA DEGREE COMPLETED\": {\"dtype\": \"bool\", \"missing\": 0, \"unique\": 2, \"min\": 0.0, \"max\": 1.0}, \"PERCENTILE IN CLASS\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 8453, \"min\": 0.0372930286867756, \"max\": 99.93614303959131}, \"SES\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 5753, \"min\": -2.4454531999442155, \"max\": 2.7182217284791017}}}\n",
+                    "validation_scope": "identity, input hash, original execution receipt only"
+                  },
+                  "kind": "observation",
+                  "root_material": {
+                    "csv_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3",
+                    "execution_digest": "ce27ff4666733b1446829bfb8330ffe479d815fd9bd8d7e091b7e61eb424e73a"
+                  },
+                  "trusted_validator": "week1-execution-receipt-only",
+                  "validator_verified": true
+                },
+                "record_id": "338816442f51ddf134c148bcd3b5b14929c59bc43f13e9944f93da11486152bd",
+                "representation": "raw",
+                "root_id": "3d14bb10f93bbf143d032fce11439dafbfcbde2a264edcecc9e0bbbd256a99e8",
+                "subject_bindings": {
+                  "dataset_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3"
+                }
+              }
+            ],
+            "withdrawn": []
+          }
+        }
+      },
+      "schema": "evidence-artifacts-check-v1",
+      "scientific_validated": false,
+      "summary_text_recovered": false
+    },
+    "opportunity": "week1-domain-1-r1",
+    "trace": {
+      "events": 5,
+      "lock_digest": "218eb27fa5a466adee162671d1b2b16d5440900c1019d41b7dbe3dab4d2e1833",
+      "stages": [
+        "objective_lock",
+        "execution_request",
+        "execution_result",
+        "model_request",
+        "model_failure"
+      ],
+      "terminal": true,
+      "trace_digest": "0da0fcf1bfe6d52244834d216eb72c149749ef594833509cead99165adbec0a5"
+    }
+  }
+]

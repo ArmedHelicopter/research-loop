@@ -1,0 +1,141 @@
+{
+  "recorded_at": "2026-09-21T10:10:40.452593+00:00",
+  "frozen_opportunity_registry": [
+    {
+      "series": "domain-pilot-r1",
+      "opportunity_id": "week1-domain-1-r1",
+      "task_id": "real:test:nls_ses",
+      "status": "failed",
+      "client_dispatches": 1
+    },
+    {
+      "series": "domain-pilot-r1",
+      "opportunity_id": "week1-domain-2-r1",
+      "task_id": "real:test:worldbank_education_gdp",
+      "status": "superseded_before_io",
+      "client_dispatches": 0
+    },
+    {
+      "series": "domain-pilot-r1",
+      "opportunity_id": "week1-domain-3-r1",
+      "task_id": "real:test:nls_incarceration",
+      "status": "superseded_before_io",
+      "client_dispatches": 0
+    },
+    {
+      "series": "domain-pilot-r2",
+      "opportunity_id": "week1-domain-2-r2",
+      "task_id": "real:test:worldbank_education_gdp",
+      "status": "completed",
+      "client_dispatches": 2
+    },
+    {
+      "series": "domain-pilot-r2",
+      "opportunity_id": "week1-domain-3-r2",
+      "task_id": "real:test:nls_incarceration",
+      "status": "completed",
+      "client_dispatches": 2
+    },
+    {
+      "series": "domain-pilot-r3",
+      "opportunity_id": "week1-domain-1-r3",
+      "task_id": "real:test:nls_ses",
+      "status": "completed",
+      "client_dispatches": 2
+    }
+  ],
+  "started_opportunities": 4,
+  "completed_trajectories": 3,
+  "failed_opportunities": 1,
+  "superseded_before_io": 2,
+  "real_cli_turn_completed_events": 7,
+  "prompt_hashes_verified": 7,
+  "usage_records": [
+    {
+      "opportunity": "week1-domain-1-r1",
+      "slot": "plan",
+      "usage": {
+        "input_tokens": 19051,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2831,
+        "reasoning_output_tokens": 122
+      }
+    },
+    {
+      "opportunity": "week1-domain-2-r2",
+      "slot": "plan",
+      "usage": {
+        "input_tokens": 25141,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3346,
+        "reasoning_output_tokens": 176
+      }
+    },
+    {
+      "opportunity": "week1-domain-2-r2",
+      "slot": "final",
+      "usage": {
+        "input_tokens": 28410,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 686,
+        "reasoning_output_tokens": 0
+      }
+    },
+    {
+      "opportunity": "week1-domain-3-r2",
+      "slot": "plan",
+      "usage": {
+        "input_tokens": 18641,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1844,
+        "reasoning_output_tokens": 72
+      }
+    },
+    {
+      "opportunity": "week1-domain-3-r2",
+      "slot": "final",
+      "usage": {
+        "input_tokens": 21335,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 329,
+        "reasoning_output_tokens": 0
+      }
+    },
+    {
+      "opportunity": "week1-domain-1-r3",
+      "slot": "plan",
+      "usage": {
+        "input_tokens": 19047,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2671,
+        "reasoning_output_tokens": 70
+      }
+    },
+    {
+      "opportunity": "week1-domain-1-r3",
+      "slot": "final",
+      "usage": {
+        "input_tokens": 22301,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 491,
+        "reasoning_output_tokens": 0
+      }
+    }
+  ],
+  "usage_sums": {
+    "input_tokens": 153926,
+    "cached_input_tokens": 0,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 12198,
+    "reasoning_output_tokens": 440
+  },
+  "meaning": "reported official-client usage, not billed cost or model-internal call count",
+  "ratios_independently_recomputed": true
+}

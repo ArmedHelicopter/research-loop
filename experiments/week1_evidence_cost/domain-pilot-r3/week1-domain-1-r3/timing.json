@@ -1,0 +1,68 @@
+[
+  {
+    "ns": 120111500,
+    "operation": "session_startup"
+  },
+  {
+    "ns": 881412400,
+    "operation": "tool_profile",
+    "status": "succeeded"
+  },
+  {
+    "ns": 291549600,
+    "operation": "evidence_and_claim_append_profile"
+  },
+  {
+    "ns": 13100,
+    "operation": "dependency_refresh"
+  },
+  {
+    "ns": 303300,
+    "operation": "B_context_get_or_build"
+  },
+  {
+    "ns": 87956823400,
+    "operation": "official_client_plan"
+  },
+  {
+    "ns": 92512444200,
+    "operation": "model_port_total_plan"
+  },
+  {
+    "ns": 92889424000,
+    "operation": "invoke_total_plan"
+  },
+  {
+    "ns": 1466176800,
+    "operation": "tool_analysis",
+    "status": "succeeded"
+  },
+  {
+    "ns": 258215100,
+    "operation": "evidence_and_claim_append_analysis"
+  },
+  {
+    "ns": 15600,
+    "operation": "dependency_refresh"
+  },
+  {
+    "ns": 551800,
+    "operation": "B_context_get_or_build"
+  },
+  {
+    "ns": 25568219500,
+    "operation": "official_client_final"
+  },
+  {
+    "ns": 29249842800,
+    "operation": "model_port_total_final"
+  },
+  {
+    "ns": 29471988300,
+    "operation": "invoke_total_final"
+  },
+  {
+    "ns": 127012035300,
+    "operation": "trajectory_wall_including_quota_checks"
+  }
+]

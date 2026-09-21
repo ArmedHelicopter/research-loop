@@ -1,0 +1,174 @@
+{
+  "context": {
+    "budget_bytes": 60000,
+    "claim_version": "109a6d43bb38580f6b154a383e4a62cf8203c985140ce8f52eed94aacf701d64",
+    "entries": {
+      "entries": [
+        {
+          "claim_id": "13a0bb0157d04df13fd9714c73acbfc761c6be6b9b820cf35655a2ed13ae717e",
+          "depends_on": [],
+          "kind": "claim",
+          "needs_review": false,
+          "refute_roots": [],
+          "revision": 1,
+          "statement": "The recorded profile execution has status succeeded. This asserts execution only.",
+          "status": "supported",
+          "support_roots": [
+            "e320f5a2bbf69d84def7fc25d7fdc0e6f90161c13681132c5d75b639d36fce06"
+          ]
+        },
+        {
+          "claim_id": "f930456487f9c59b2719f9d0d438f29e9b333c25e8e6eb90a72553ff47fed1a4",
+          "depends_on": [],
+          "kind": "claim",
+          "needs_review": false,
+          "refute_roots": [],
+          "revision": 1,
+          "statement": "The recorded analysis execution has status succeeded. This asserts execution only.",
+          "status": "supported",
+          "support_roots": [
+            "a3fbca7401f37e9199fad0ff54ca0b37a9d689430a72b64f5150232e072a9a53"
+          ]
+        },
+        {
+          "kind": "evidence",
+          "payload": {
+            "content": {
+              "scientific_validated": false,
+              "stage": "analysis",
+              "status": "succeeded",
+              "stderr": "",
+              "stdout": "{\"question\":\"How strongly does BA degree completion vary with socioeconomic status?\",\"outcome\":\"BA DEGREE COMPLETED\",\"observed_indicator_labels\":[\"false\",\"true\"],\"indicator_mapping\":{\"false\":0,\"true\":1},\"counts\":{\"input_rows\":8773,\"analyzed_rows\":8773,\"excluded_rows\":0,\"missing_outcome\":0,\"missing_or_invalid_ses\":0,\"duplicate_nonmissing_case_ids\":0},\"handling\":\"Complete cases for BA and SES. Negative SES values are retained because the observed profile supports a signed continuous SES scale. No undocumented sentinel codes are inferred. Index and ID columns are not predictors.\",\"limitations\":[\"Observational, unadjusted associations do not identify a causal effect of socioeconomic status.\",\"No survey weights, strata, or cluster identifiers are supplied; estimates are sample descriptions and intervals assume independent respondents.\",\"Processed-data selection and measurement limitations cannot be assessed from this CSV.\",\"SES quintiles are sample-relative; tied SES values stay together and group sizes may differ.\",\"Logistic estimates assume linear SES effects on log odds; quintile rates provide a less restrictive descriptive comparison.\"],\"overall\":{\"completed\":236,\"not_completed\":8537,\"completion_rate\":0.02690071811239029,\"completion_rate_ci95_wilson\":[0.023716606715226053,0.030498962866753257],\"ses_mean\":-0.009049485365392134,\"ses_sd\":0.7423821256555051,\"ses_quantiles\":{\"0\":-2.4454531999442155,\"0.1\":-0.8703894054248635,\"0.25\":-0.4782319514668822,\"0.5\":-0.0795025271797803,\"0.75\":0.4129103214579842,\"0.9\":0.946857227262166,\"1\":2.7182217284791017}},\"ses_quintiles\":{\"cut_edges\":[-2.4454531999442155,-0.587464839801213,-0.23739536740367742,0.105840679442417,0.5430805381877203,2.7182217284791017],\"groups\":[{\"group_low_to_high\":1,\"n\":1755,\"completed\":12,\"ses_min\":-2.4454531999442155,\"ses_max\":-0.5879078819569864,\"ses_mean\":-0.9700950597673419,\"completion_rate\":0.006837606837606838,\"completion_rate_ci95_wilson\":[0.003915720017983562,0.01191371058877611]},{\"group_low_to_high\":2,\"n\":1754,\"completed\":48,\"ses_min\":-0.5868002765675532,\"ses_max\":-0.2374758159655268,\"ses_mean\":-0.3975837241171798,\"completion_rate\":0.027366020524515394,\"completion_rate_ci95_wilson\":[0.02070252284755169,0.03609523801973156]},{\"group_low_to_high\":3,\"n\":1758,\"completed\":55,\"ses_min\":-0.2373752552632151,\"ses_max\":0.105840679442417,\"ses_mean\":-0.07245111961003005,\"completion_rate\":0.03128555176336746,\"completion_rate_ci95_wilson\":[0.024114581309925887,0.04050046010072127]},{\"group_low_to_high\":4,\"n\":1751,\"completed\":59,\"ses_min\":0.1058710893523128,\"ses_max\":0.543074575809111,\"ses_mean\":0.3057222150444363,\"completion_rate\":0.0336950314106225,\"completion_rate_ci95_wilson\":[0.02621185266382766,0.04321975223031203]},{\"group_low_to_high\":5,\"n\":1755,\"completed\":62,\"ses_min\":0.5430845131067932,\"ses_max\":2.7182217284791017,\"ses_mean\":1.0897646818314866,\"completion_rate\":0.035327635327635325,\"completion_rate_ci95_wilson\":[0.02765559162680664,0.04502944668609053]}]},\"highest_lowest_contrast\":{\"comparison\":\"Highest versus lowest observed SES quantile group\",\"completion_difference_percentage_points\":2.8490028490028485,\"difference_ci95_newcombe_percentage_points\":[1.9290730482024843,3.862228224828675],\"completion_risk_ratio\":5.166666666666666,\"risk_ratio_ci95_log\":[2.7944661882400847,9.552609567001495]},\"point_biserial_correlation\":0.06123335346308652,\"unadjusted_logistic_model\":{\"n\":8773,\"standardization\":\"One sample SD of SES\",\"covariance\":\"HC0\",\"odds_ratio_per_ses_sd\":1.4206229731613085,\"odds_ratio_ci95\":[1.2691412006264524,1.5901852614015688],\"ses_slope_log_odds\":0.35109548890042086,\"note\":\"Odds ratios describe odds, not probability ratios.\",\"warnings\":[],\"predictions\":[{\"ses_percentile\":10,\"ses\":-0.8703894054248635,\"predicted_completion_probability\":0.017012459996948965,\"ci95\":[0.013778288513097774,0.020989630091194363]},{\"ses_percentile\":50,\"ses\":-0.0795025271797803,\"predicted_completion_probability\":0.024539740881206265,\"ci95\":[0.02142231557146134,0.028097795443499326]},{\"ses_percentile\":90,\"ses\":0.946857227262166,\"predicted_completion_probability\":0.03927053966543691,\"ci95\":[0.03342709248978365,0.04608678394653697]}],\"p90_minus_p10_percentage_points\":2.225807966848794,\"p90_minus_p10_ci95_delta_percentage_points\":[1.4902480131515432,2.9613679205460453]},\"interpretation\":\"Assess association strength using the highest-lowest completion-rate difference, risk ratio, correlation, and logistic probability contrast, together with uncertainty. Positive contrasts indicate higher completion at higher SES; these are not causal effects.\"}\n",
+              "validation_scope": "identity, input hash, original execution receipt only"
+            },
+            "kind": "observation",
+            "root_material": {
+              "csv_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3",
+              "execution_digest": "f6727a68bf130150b340b0b96db960f2e64b5a921235aa47fe2d2a83bcbb307f"
+            },
+            "trusted_validator": "week1-execution-receipt-only",
+            "validator_verified": true
+          },
+          "root_id": "a3fbca7401f37e9199fad0ff54ca0b37a9d689430a72b64f5150232e072a9a53",
+          "subject_bindings": {
+            "dataset_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3"
+          }
+        },
+        {
+          "kind": "evidence",
+          "payload": {
+            "content": {
+              "scientific_validated": false,
+              "stage": "profile",
+              "status": "succeeded",
+              "stderr": "",
+              "stdout": "{\"rows\": 8773, \"columns\": {\"Unnamed: 0\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 8773, \"min\": 0.0, \"max\": 8772.0}, \"CASE ID\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 8773, \"min\": 2.0, \"max\": 12583.0}, \"SAMPLE_RACE\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 3, \"examples\": [\"White\", \"Black\", \"Hispanic\"]}, \"SAMPLE_SEX\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"Female\", \"Male\"]}, \"FAMILY SIZE OF SAMPLE\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 1.0, \"max\": 12.0}, \"ABILITY: COMPOSITE OF ASVAB SCORE\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 1504, \"min\": 1016.0, \"max\": 3068.0}, \"BA DEGREE COMPLETED\": {\"dtype\": \"bool\", \"missing\": 0, \"unique\": 2, \"min\": 0.0, \"max\": 1.0}, \"PERCENTILE IN CLASS\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 8453, \"min\": 0.0372930286867756, \"max\": 99.93614303959131}, \"SES\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 5753, \"min\": -2.4454531999442155, \"max\": 2.7182217284791017}}}\n",
+              "validation_scope": "identity, input hash, original execution receipt only"
+            },
+            "kind": "observation",
+            "root_material": {
+              "csv_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3",
+              "execution_digest": "f494e41b69ac1217105f0fa8bd5d208a9e0beaf849c780f09447db546c2b7e48"
+            },
+            "trusted_validator": "week1-execution-receipt-only",
+            "validator_verified": true
+          },
+          "root_id": "e320f5a2bbf69d84def7fc25d7fdc0e6f90161c13681132c5d75b639d36fce06",
+          "subject_bindings": {
+            "dataset_sha256": "a90d12869a4c8b7058e68f0671dabe5b07ad952566295b4a69fe71d0b4f073a3"
+          }
+        }
+      ]
+    },
+    "evidence_version": "0ea57f4b900bb0411a3d33f4c77c08ab3d8d075ddbd1095beb391db6e1dc0efe",
+    "identity": {
+      "benchmark": "discoverybench",
+      "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+      "domain": "train",
+      "group_id": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+      "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+      "task_id": "real:test:nls_ses"
+    },
+    "question": "{\"dataset\":[{\"columns\":[{\"description\":\"Unique ID of each respondent\",\"name\":\"CASE ID\"},{\"description\":\"Race of the respondent (Hispanic, Black or White)\",\"name\":\"SAMPLE_RACE\"},{\"description\":\"Sex of the respondent (Male or Female)\",\"name\":\"SAMPLE_SEX\"},{\"description\":\"Family size of the respondent\",\"name\":\"FAMILY SIZE OF SAMPLE\"},{\"description\":\"Composite variable created by summing following variables:\\n\\nASVAB - Arithmetic Reasoning Z Score (rounded), 1981\\nASVAB - Word Knowledge Z Score (rounded), 1981\\nASVAB - Paragraph Comprehension Z Score (rounded), 1981\\nASVAB - Mathematics Knowledge Z Score (rounded), 1981\",\"name\":\"ABILITY: COMPOSITE OF ASVAB SCORE\"},{\"description\":\"Boolean variable that equals 1 if the BA Degree was completed by the respondent else 0\",\"name\":\"BA DEGREE COMPLETED\"},{\"description\":\"Respondent's percentile in the class that he attended in school last year\",\"name\":\"PERCENTILE IN CLASS\"},{\"description\":\"Socioeconomic Status of the respondent\",\"name\":\"SES\"}],\"description\":\"This dataset contains social background factors (race, gender, and socioeconomic status) and academic resources at the time of secondary school graduation (standardized test scores, class rank, and curriculum) for the participants of the NLS.\",\"name\":\"nls_ses_processed.csv\"}],\"difficulty\":null,\"question\":\"How strongly does BA degree completion vary with socioeconomic status?\",\"source_kind\":\"real\",\"task_id\":\"real:test:nls_ses\"}",
+    "used_bytes": 7985
+  },
+  "execution_feedback": [
+    {
+      "id": "f494e41b69ac1217105f0fa8bd5d208a9e0beaf849c780f09447db546c2b7e48",
+      "status": "succeeded",
+      "stderr": "",
+      "stdout": "{\"rows\": 8773, \"columns\": {\"Unnamed: 0\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 8773, \"min\": 0.0, \"max\": 8772.0}, \"CASE ID\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 8773, \"min\": 2.0, \"max\": 12583.0}, \"SAMPLE_RACE\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 3, \"examples\": [\"White\", \"Black\", \"Hispanic\"]}, \"SAMPLE_SEX\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"Female\", \"Male\"]}, \"FAMILY SIZE OF SAMPLE\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 12, \"min\": 1.0, \"max\": 12.0}, \"ABILITY: COMPOSITE OF ASVAB SCORE\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 1504, \"min\": 1016.0, \"max\": 3068.0}, \"BA DEGREE COMPLETED\": {\"dtype\": \"bool\", \"missing\": 0, \"unique\": 2, \"min\": 0.0, \"max\": 1.0}, \"PERCENTILE IN CLASS\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 8453, \"min\": 0.0372930286867756, \"max\": 99.93614303959131}, \"SES\": {\"dtype\": \"float64\", \"missing\": 0, \"unique\": 5753, \"min\": -2.4454531999442155, \"max\": 2.7182217284791017}}}\n"
+    },
+    {
+      "id": "f6727a68bf130150b340b0b96db960f2e64b5a921235aa47fe2d2a83bcbb307f",
+      "status": "succeeded",
+      "stderr": "",
+      "stdout": "{\"question\":\"How strongly does BA degree completion vary with socioeconomic status?\",\"outcome\":\"BA DEGREE COMPLETED\",\"observed_indicator_labels\":[\"false\",\"true\"],\"indicator_mapping\":{\"false\":0,\"true\":1},\"counts\":{\"input_rows\":8773,\"analyzed_rows\":8773,\"excluded_rows\":0,\"missing_outcome\":0,\"missing_or_invalid_ses\":0,\"duplicate_nonmissing_case_ids\":0},\"handling\":\"Complete cases for BA and SES. Negative SES values are retained because the observed profile supports a signed continuous SES scale. No undocumented sentinel codes are inferred. Index and ID columns are not predictors.\",\"limitations\":[\"Observational, unadjusted associations do not identify a causal effect of socioeconomic status.\",\"No survey weights, strata, or cluster identifiers are supplied; estimates are sample descriptions and intervals assume independent respondents.\",\"Processed-data selection and measurement limitations cannot be assessed from this CSV.\",\"SES quintiles are sample-relative; tied SES values stay together and group sizes may differ.\",\"Logistic estimates assume linear SES effects on log odds; quintile rates provide a less restrictive descriptive comparison.\"],\"overall\":{\"completed\":236,\"not_completed\":8537,\"completion_rate\":0.02690071811239029,\"completion_rate_ci95_wilson\":[0.023716606715226053,0.030498962866753257],\"ses_mean\":-0.009049485365392134,\"ses_sd\":0.7423821256555051,\"ses_quantiles\":{\"0\":-2.4454531999442155,\"0.1\":-0.8703894054248635,\"0.25\":-0.4782319514668822,\"0.5\":-0.0795025271797803,\"0.75\":0.4129103214579842,\"0.9\":0.946857227262166,\"1\":2.7182217284791017}},\"ses_quintiles\":{\"cut_edges\":[-2.4454531999442155,-0.587464839801213,-0.23739536740367742,0.105840679442417,0.5430805381877203,2.7182217284791017],\"groups\":[{\"group_low_to_high\":1,\"n\":1755,\"completed\":12,\"ses_min\":-2.4454531999442155,\"ses_max\":-0.5879078819569864,\"ses_mean\":-0.9700950597673419,\"completion_rate\":0.006837606837606838,\"completion_rate_ci95_wilson\":[0.003915720017983562,0.01191371058877611]},{\"group_low_to_high\":2,\"n\":1754,\"completed\":48,\"ses_min\":-0.5868002765675532,\"ses_max\":-0.2374758159655268,\"ses_mean\":-0.3975837241171798,\"completion_rate\":0.027366020524515394,\"completion_rate_ci95_wilson\":[0.02070252284755169,0.03609523801973156]},{\"group_low_to_high\":3,\"n\":1758,\"completed\":55,\"ses_min\":-0.2373752552632151,\"ses_max\":0.105840679442417,\"ses_mean\":-0.07245111961003005,\"completion_rate\":0.03128555176336746,\"completion_rate_ci95_wilson\":[0.024114581309925887,0.04050046010072127]},{\"group_low_to_high\":4,\"n\":1751,\"completed\":59,\"ses_min\":0.1058710893523128,\"ses_max\":0.543074575809111,\"ses_mean\":0.3057222150444363,\"completion_rate\":0.0336950314106225,\"completion_rate_ci95_wilson\":[0.02621185266382766,0.04321975223031203]},{\"group_low_to_high\":5,\"n\":1755,\"completed\":62,\"ses_min\":0.5430845131067932,\"ses_max\":2.7182217284791017,\"ses_mean\":1.0897646818314866,\"completion_rate\":0.035327635327635325,\"completion_rate_ci95_wilson\":[0.02765559162680664,0.04502944668609053]}]},\"highest_lowest_contrast\":{\"comparison\":\"Highest versus lowest observed SES quantile group\",\"completion_difference_percentage_points\":2.8490028490028485,\"difference_ci95_newcombe_percentage_points\":[1.9290730482024843,3.862228224828675],\"completion_risk_ratio\":5.166666666666666,\"risk_ratio_ci95_log\":[2.7944661882400847,9.552609567001495]},\"point_biserial_correlation\":0.06123335346308652,\"unadjusted_logistic_model\":{\"n\":8773,\"standardization\":\"One sample SD of SES\",\"covariance\":\"HC0\",\"odds_ratio_per_ses_sd\":1.4206229731613085,\"odds_ratio_ci95\":[1.2691412006264524,1.5901852614015688],\"ses_slope_log_odds\":0.35109548890042086,\"note\":\"Odds ratios describe odds, not probability ratios.\",\"warnings\":[],\"predictions\":[{\"ses_percentile\":10,\"ses\":-0.8703894054248635,\"predicted_completion_probability\":0.017012459996948965,\"ci95\":[0.013778288513097774,0.020989630091194363]},{\"ses_percentile\":50,\"ses\":-0.0795025271797803,\"predicted_completion_probability\":0.024539740881206265,\"ci95\":[0.02142231557146134,0.028097795443499326]},{\"ses_percentile\":90,\"ses\":0.946857227262166,\"predicted_completion_probability\":0.03927053966543691,\"ci95\":[0.03342709248978365,0.04608678394653697]}],\"p90_minus_p10_percentage_points\":2.225807966848794,\"p90_minus_p10_ci95_delta_percentage_points\":[1.4902480131515432,2.9613679205460453]},\"interpretation\":\"Assess association strength using the highest-lowest completion-rate difference, risk ratio, correlation, and logistic probability contrast, together with uncertainty. Positive contrasts indicate higher completion at higher SES; these are not causal effects.\"}\n"
+    }
+  ],
+  "instruction": "Interpret the actual profile and analysis execution output in this request. Answer the research question with concrete numbers where available, note missing data, outcome/indicator mismatches and uncertainty. Failed code is a failed opportunity: report the limitation, do not pretend it succeeded. The ledger validator validates recorded execution only; scientific truth is not established. Cite evidence root IDs in your conclusion. Set code to an empty string; do not call tools or write another program.",
+  "lock_digest": "0523c16b060d78a5094feb24ab1d5e50783d62c09ae42a5c4fca104a6925940c",
+  "module_context": {},
+  "objective": {
+    "question": "How strongly does BA degree completion vary with socioeconomic status?",
+    "scope": "bounded TRAIN observational analysis, no scoring"
+  },
+  "schema": "public-model-request-v1",
+  "slot": "final",
+  "task": {
+    "identity": {
+      "benchmark": "discoverybench",
+      "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+      "domain": "train",
+      "group_id": "1ebf0272d36b1bdb460fdc283bd227c113d453277763c924fcd1f2534f26428b",
+      "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+      "task_id": "real:test:nls_ses"
+    },
+    "payload": {
+      "dataset": [
+        {
+          "columns": [
+            {
+              "description": "Unique ID of each respondent",
+              "name": "CASE ID"
+            },
+            {
+              "description": "Race of the respondent (Hispanic, Black or White)",
+              "name": "SAMPLE_RACE"
+            },
+            {
+              "description": "Sex of the respondent (Male or Female)",
+              "name": "SAMPLE_SEX"
+            },
+            {
+              "description": "Family size of the respondent",
+              "name": "FAMILY SIZE OF SAMPLE"
+            },
+            {
+              "description": "Composite variable created by summing following variables:\n\nASVAB - Arithmetic Reasoning Z Score (rounded), 1981\nASVAB - Word Knowledge Z Score (rounded), 1981\nASVAB - Paragraph Comprehension Z Score (rounded), 1981\nASVAB - Mathematics Knowledge Z Score (rounded), 1981",
+              "name": "ABILITY: COMPOSITE OF ASVAB SCORE"
+            },
+            {
+              "description": "Boolean variable that equals 1 if the BA Degree was completed by the respondent else 0",
+              "name": "BA DEGREE COMPLETED"
+            },
+            {
+              "description": "Respondent's percentile in the class that he attended in school last year",
+              "name": "PERCENTILE IN CLASS"
+            },
+            {
+              "description": "Socioeconomic Status of the respondent",
+              "name": "SES"
+            }
+          ],
+          "description": "This dataset contains social background factors (race, gender, and socioeconomic status) and academic resources at the time of secondary school graduation (standardized test scores, class rank, and curriculum) for the participants of the NLS.",
+          "name": "nls_ses_processed.csv"
+        }
+      ],
+      "difficulty": null,
+      "question": "How strongly does BA degree completion vary with socioeconomic status?",
+      "source_kind": "real",
+      "task_id": "real:test:nls_ses"
+    }
+  }
+}

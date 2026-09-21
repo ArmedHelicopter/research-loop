@@ -1,0 +1,143 @@
+{
+  "schema": "week1-cost-decision-v1",
+  "source_sha256": "9f9bc189abe5c13ff6bc5d229d324fa20c3f635dcd68ea45db6840954ebbc8bf",
+  "resource_rule_sha256": "fffe5a47de6a968a935622f96eeff0937c202dbe9ad17bc6173fc357c4d605a3",
+  "opportunities": [
+    {
+      "series": "domain-pilot-r1",
+      "opportunity": "week1-domain-1-r1",
+      "status": "failed",
+      "manifest_sha256": "e60b9711ea4e8b234a908eb75460b88b41fbb87c3acf599074158aea0e148219",
+      "context_and_refresh_ms": 0.2933,
+      "official_client_seconds": 93.5031174,
+      "tool_seconds": 0.94868,
+      "client_plus_tool_seconds": 94.45179739999999,
+      "target_elimination_share_percent": 0.00031052876501426967,
+      "session_startup_ms": 100.0677,
+      "evidence_claim_append_ms": 274.8347,
+      "runtime_invoke_overhead_ms": null,
+      "wall_including_quota_seconds": 99.8042661,
+      "exact_request_checks": 0,
+      "B_cache_hit_medians_us": [],
+      "replay_timing_batches": 0,
+      "analysis_execution_status": "not_completed",
+      "scientific_validated": false,
+      "client_slots_completed": 0
+    },
+    {
+      "series": "domain-pilot-r2",
+      "opportunity": "week1-domain-2-r2",
+      "status": "complete",
+      "manifest_sha256": "279fdf88737e5d706d0c6dbef6b3762d8f9b14d66b18f87549bef360b4405ef6",
+      "context_and_refresh_ms": 1.1258000000000001,
+      "official_client_seconds": 140.2023095,
+      "tool_seconds": 2.6986886,
+      "client_plus_tool_seconds": 142.9009981,
+      "target_elimination_share_percent": 0.0007878181503058377,
+      "session_startup_ms": 85.72,
+      "evidence_claim_append_ms": 640.8969,
+      "runtime_invoke_overhead_ms": 515.9294000000045,
+      "wall_including_quota_seconds": 157.2911179,
+      "exact_request_checks": 2,
+      "B_cache_hit_medians_us": [
+        288.025,
+        512.745
+      ],
+      "replay_timing_batches": 600,
+      "analysis_execution_status": "succeeded",
+      "scientific_validated": false,
+      "client_slots_completed": 2,
+      "context_bytes": [
+        14043,
+        20837
+      ],
+      "evidence_roots": [
+        1,
+        2
+      ],
+      "claims": [
+        1,
+        2
+      ]
+    },
+    {
+      "series": "domain-pilot-r2",
+      "opportunity": "week1-domain-3-r2",
+      "status": "complete",
+      "manifest_sha256": "279fdf88737e5d706d0c6dbef6b3762d8f9b14d66b18f87549bef360b4405ef6",
+      "context_and_refresh_ms": 0.7578999999999999,
+      "official_client_seconds": 83.2284397,
+      "tool_seconds": 1.7654487,
+      "client_plus_tool_seconds": 84.99388839999999,
+      "target_elimination_share_percent": 0.0008917111739060053,
+      "session_startup_ms": 82.8707,
+      "evidence_claim_append_ms": 599.8283,
+      "runtime_invoke_overhead_ms": 430.5535999999961,
+      "wall_including_quota_seconds": 93.930239,
+      "exact_request_checks": 2,
+      "B_cache_hit_medians_us": [
+        156.875,
+        341.265
+      ],
+      "replay_timing_batches": 600,
+      "analysis_execution_status": "succeeded",
+      "scientific_validated": false,
+      "client_slots_completed": 2,
+      "context_bytes": [
+        3589,
+        8794
+      ],
+      "evidence_roots": [
+        1,
+        2
+      ],
+      "claims": [
+        1,
+        2
+      ]
+    },
+    {
+      "series": "domain-pilot-r3",
+      "opportunity": "week1-domain-1-r3",
+      "status": "complete",
+      "manifest_sha256": "05c3ee250b8145749186a3bb8fe25f40d9bfd38c5a76690ba7489fdbe4723b2d",
+      "context_and_refresh_ms": 0.8838,
+      "official_client_seconds": 113.5250429,
+      "tool_seconds": 2.3475892,
+      "client_plus_tool_seconds": 115.8726321,
+      "target_elimination_share_percent": 0.0007627340330348809,
+      "session_startup_ms": 120.11149999999999,
+      "evidence_claim_append_ms": 549.7647,
+      "runtime_invoke_overhead_ms": 599.1252999999972,
+      "wall_including_quota_seconds": 127.0120353,
+      "exact_request_checks": 2,
+      "B_cache_hit_medians_us": [
+        165.57,
+        359.78
+      ],
+      "replay_timing_batches": 600,
+      "analysis_execution_status": "succeeded",
+      "scientific_validated": false,
+      "client_slots_completed": 2,
+      "context_bytes": [
+        4252,
+        10101
+      ],
+      "evidence_roots": [
+        1,
+        2
+      ],
+      "claims": [
+        1,
+        2
+      ]
+    }
+  ],
+  "observed_complete": 3,
+  "failed": 1,
+  "raw_original_opportunities": 4,
+  "scientific_task_success": "unscored; no VAL/scorer used",
+  "paid_api_calls": 0,
+  "candidate_development": "stop under predeclared <1% observed target-cost elimination rule",
+  "scope": "bounded official-client two-stage observational analyses; 1 then 2 evidence roots and execution-status claims; no rich dependency workload"
+}

@@ -1,0 +1,96 @@
+{
+  "core_checks": [
+    {
+      "series": "domain-pilot-r1",
+      "path": "research_loop/modular/benchmarks/execution.py",
+      "sha256": "21d9c34afdf135b7f58911d1236b74f4b20d3a23826b7ef0c8dcbbfbbf1d72ba"
+    },
+    {
+      "series": "domain-pilot-r1",
+      "path": "research_loop/modular/contracts.py",
+      "sha256": "c774d9f77bf0efdfcdcf2dc64da1a9c73e1d38372d1faa38cfdf9a6d2099311b"
+    },
+    {
+      "series": "domain-pilot-r1",
+      "path": "research_loop/modular/modules/context.py",
+      "sha256": "a50f5cc6e11f1526a776309b94d991fffa90be48c51706777169c57480dfbf15"
+    },
+    {
+      "series": "domain-pilot-r1",
+      "path": "research_loop/modular/modules/evidence.py",
+      "sha256": "c2aefe1d1faa32499e4aac67cd953ed0cb013026f3b6a4cffa359065d8c2db1c"
+    },
+    {
+      "series": "domain-pilot-r1",
+      "path": "research_loop/modular/runtime.py",
+      "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4"
+    },
+    {
+      "series": "domain-pilot-r1",
+      "path": "research_loop/ontology.py",
+      "sha256": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb"
+    },
+    {
+      "series": "domain-pilot-r2",
+      "path": "research_loop/modular/benchmarks/execution.py",
+      "sha256": "21d9c34afdf135b7f58911d1236b74f4b20d3a23826b7ef0c8dcbbfbbf1d72ba"
+    },
+    {
+      "series": "domain-pilot-r2",
+      "path": "research_loop/modular/contracts.py",
+      "sha256": "c774d9f77bf0efdfcdcf2dc64da1a9c73e1d38372d1faa38cfdf9a6d2099311b"
+    },
+    {
+      "series": "domain-pilot-r2",
+      "path": "research_loop/modular/modules/context.py",
+      "sha256": "a50f5cc6e11f1526a776309b94d991fffa90be48c51706777169c57480dfbf15"
+    },
+    {
+      "series": "domain-pilot-r2",
+      "path": "research_loop/modular/modules/evidence.py",
+      "sha256": "c2aefe1d1faa32499e4aac67cd953ed0cb013026f3b6a4cffa359065d8c2db1c"
+    },
+    {
+      "series": "domain-pilot-r2",
+      "path": "research_loop/modular/runtime.py",
+      "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4"
+    },
+    {
+      "series": "domain-pilot-r2",
+      "path": "research_loop/ontology.py",
+      "sha256": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb"
+    },
+    {
+      "series": "domain-pilot-r3",
+      "path": "research_loop/modular/benchmarks/execution.py",
+      "sha256": "21d9c34afdf135b7f58911d1236b74f4b20d3a23826b7ef0c8dcbbfbbf1d72ba"
+    },
+    {
+      "series": "domain-pilot-r3",
+      "path": "research_loop/modular/contracts.py",
+      "sha256": "c774d9f77bf0efdfcdcf2dc64da1a9c73e1d38372d1faa38cfdf9a6d2099311b"
+    },
+    {
+      "series": "domain-pilot-r3",
+      "path": "research_loop/modular/modules/context.py",
+      "sha256": "a50f5cc6e11f1526a776309b94d991fffa90be48c51706777169c57480dfbf15"
+    },
+    {
+      "series": "domain-pilot-r3",
+      "path": "research_loop/modular/modules/evidence.py",
+      "sha256": "c2aefe1d1faa32499e4aac67cd953ed0cb013026f3b6a4cffa359065d8c2db1c"
+    },
+    {
+      "series": "domain-pilot-r3",
+      "path": "research_loop/modular/runtime.py",
+      "sha256": "b1a3cf6ee411ade75db955d77e8d6e0791dd71afff5fdadc9102d15baf96cbd4"
+    },
+    {
+      "series": "domain-pilot-r3",
+      "path": "research_loop/ontology.py",
+      "sha256": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb"
+    }
+  ],
+  "core_unchanged": true,
+  "formal_val_access": false
+}
