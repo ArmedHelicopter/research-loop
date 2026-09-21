@@ -1,0 +1,42 @@
+{
+  "analysis_execution_status": "succeeded",
+  "decision": {
+    "candidate_digest": "6f42ef545d95f151c9164a80c73b3ff160e3bb8f5c57fa6ce7adae8c7335ba64",
+    "decision": "unknown",
+    "execution_attempts": 2,
+    "identity": {
+      "benchmark": "discoverybench",
+      "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+      "domain": "train",
+      "group_id": "9b0484d1584950a1769c6b0c4ff77648564f329ac1fdd891cc1ec2d5aa373d8e",
+      "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+      "task_id": "real:test:nls_incarceration"
+    },
+    "lock_digest": "342b3c05c1792f754c230a1bfc40809209192cf2c82289fa1eaefd960caf6dd3",
+    "model_calls": 2,
+    "programme_complete": false,
+    "reasons": [],
+    "schema": "run-decision-v1",
+    "scientific_validated": false
+  },
+  "scientific_validated": false,
+  "status": "completed",
+  "trace": {
+    "events": 10,
+    "lock_digest": "342b3c05c1792f754c230a1bfc40809209192cf2c82289fa1eaefd960caf6dd3",
+    "stages": [
+      "objective_lock",
+      "execution_request",
+      "execution_result",
+      "model_request",
+      "model_response",
+      "execution_request",
+      "execution_result",
+      "model_request",
+      "model_response",
+      "final_decision"
+    ],
+    "terminal": true,
+    "trace_digest": "fa257c73cee79bb6a579c1a9f22029d3862931080792938a2a1405f499a9670d"
+  }
+}

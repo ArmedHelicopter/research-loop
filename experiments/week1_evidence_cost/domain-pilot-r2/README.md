@@ -7,3 +7,5 @@ World Bank education/GDP (week1-domain-2-r2) completed both official-client slot
 Actual B context plus dependency refresh totaled 1.1258 ms. Official-client wall totaled 140.2023095 s; container operations totaled 2.6986886 s. These are official-client conditions, not pure model latency. End-to-end scientific correctness was not scored and the final scientific status is unknown. Full timing also retains startup, journal append and invocation overhead, plus separately identifiable quota-check overhead.
 
 The next frozen NLS incarceration opportunity is unstarted at this checkpoint. Preserve failed/unstarted denominators; see each opportunity's completion or failure receipt for current state.
+
+NLS incarceration (week1-domain-3-r2) also completed both official-client slots and both container executions. Exact pre-call request/context replay passed 2/2; another 600 timing batches and artifact reconciliation are in measurement-task3. This closes the two allowed opportunities in this continuation. Scientific conclusions remain unscored.

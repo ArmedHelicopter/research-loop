@@ -1,0 +1,182 @@
+[
+  {
+    "batch_count": 30,
+    "max_us": 187.5,
+    "median_us": 156.875,
+    "min_us": 149.92,
+    "operation": "B_cache_hit",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 187.88,
+    "median_us": 158.46,
+    "min_us": 151.24,
+    "operation": "B_object_cold",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 151.4,
+    "median_us": 139.52,
+    "min_us": 133.85,
+    "operation": "R_full_builder",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 19.38,
+    "median_us": 16.72,
+    "min_us": 15.91,
+    "operation": "bundle_hash_including_serialization",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 17.61,
+    "median_us": 15.27,
+    "min_us": 14.5,
+    "operation": "bundle_serialize",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 2.94,
+    "median_us": 1.63,
+    "min_us": 1.38,
+    "operation": "dependency_refresh_no_change",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 63.66,
+    "median_us": 53.17,
+    "min_us": 49.8,
+    "operation": "full_request_freeze",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 342.35,
+    "median_us": 275.945,
+    "min_us": 247.18,
+    "operation": "ledger_load_semantic_replay",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 241.13,
+    "median_us": 202.84,
+    "min_us": 186.56,
+    "operation": "ledger_read_format_check",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 5.41,
+    "median_us": 4.765,
+    "min_us": 4.59,
+    "operation": "public_context_expand",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "plan"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 409.48,
+    "median_us": 341.265,
+    "min_us": 331.44,
+    "operation": "B_cache_hit",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 390.51,
+    "median_us": 342.85,
+    "min_us": 327.5,
+    "operation": "B_object_cold",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 319.53,
+    "median_us": 309.515,
+    "min_us": 296.93,
+    "operation": "R_full_builder",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 38.91,
+    "median_us": 33.535,
+    "min_us": 32.21,
+    "operation": "bundle_hash_including_serialization",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 45.76,
+    "median_us": 30.815,
+    "min_us": 29.38,
+    "operation": "bundle_serialize",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 2.95,
+    "median_us": 2.6,
+    "min_us": 2.32,
+    "operation": "dependency_refresh_no_change",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 135.6,
+    "median_us": 98.06,
+    "min_us": 95.09,
+    "operation": "full_request_freeze",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 466.6,
+    "median_us": 388.895,
+    "min_us": 359.31,
+    "operation": "ledger_load_semantic_replay",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 312.69,
+    "median_us": 249.895,
+    "min_us": 225.04,
+    "operation": "ledger_read_format_check",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "final"
+  },
+  {
+    "batch_count": 30,
+    "max_us": 12.11,
+    "median_us": 10.28,
+    "min_us": 9.86,
+    "operation": "public_context_expand",
+    "opportunity": "week1-domain-3-r2",
+    "slot": "final"
+  }
+]

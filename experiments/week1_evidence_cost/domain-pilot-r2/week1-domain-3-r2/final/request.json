@@ -1,0 +1,166 @@
+{
+  "context": {
+    "budget_bytes": 60000,
+    "claim_version": "ae24ff402643af2bcbb0a8285d29fb76f8744f0f2a69c1e5f9ffadc12cffc101",
+    "entries": {
+      "entries": [
+        {
+          "claim_id": "120bb910c44cdfed339b9d26713168459d644b9a7d9508286a15a6697f89dfd4",
+          "depends_on": [],
+          "kind": "claim",
+          "needs_review": false,
+          "refute_roots": [],
+          "revision": 1,
+          "statement": "The recorded analysis execution has status succeeded. This asserts execution only.",
+          "status": "supported",
+          "support_roots": [
+            "a66811b823fe7cdee4915ebca348542b36b51eb9578c45379314d39554a50841"
+          ]
+        },
+        {
+          "claim_id": "2d9141cb437444cf3f004e7d1f020fb83e4f33e19e93c901b16486224921c3a7",
+          "depends_on": [],
+          "kind": "claim",
+          "needs_review": false,
+          "refute_roots": [],
+          "revision": 1,
+          "statement": "The recorded profile execution has status succeeded. This asserts execution only.",
+          "status": "supported",
+          "support_roots": [
+            "477078f3710344aa24408729347128a62bc7a5a06bc33ded6a8ebdad72d1396f"
+          ]
+        },
+        {
+          "kind": "evidence",
+          "payload": {
+            "content": {
+              "scientific_validated": false,
+              "stage": "profile",
+              "status": "succeeded",
+              "stderr": "",
+              "stdout": "{\"rows\": 12013, \"columns\": {\"race\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 3, \"examples\": [\"white\", \"hipanic\", \"black\"]}, \"sex\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"female\", \"male\"]}, \"ever_jailed\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 2, \"min\": 0.0, \"max\": 1.0}, \"composite_wealth_1985\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 2947, \"min\": -57587.0, \"max\": 2574706.0}, \"composite_wealth_1990\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 3435, \"min\": -866400.0, \"max\": 4060077.0}, \"composite_wealth_1996\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 3152, \"min\": -403001.0, \"max\": 3836910.0}}}\n",
+              "validation_scope": "identity, input hash, original execution receipt only"
+            },
+            "kind": "observation",
+            "root_material": {
+              "csv_sha256": "4071aede2c154022af2a6e08c2ba82fef7b911b7b1ede912bea2131e6a353fe3",
+              "execution_digest": "ea4e06c6559a51b1a7206f617cd89bd3f611c37f7a249dd7b5fc4f6ff11742f8"
+            },
+            "trusted_validator": "week1-execution-receipt-only",
+            "validator_verified": true
+          },
+          "root_id": "477078f3710344aa24408729347128a62bc7a5a06bc33ded6a8ebdad72d1396f",
+          "subject_bindings": {
+            "dataset_sha256": "4071aede2c154022af2a6e08c2ba82fef7b911b7b1ede912bea2131e6a353fe3"
+          }
+        },
+        {
+          "kind": "evidence",
+          "payload": {
+            "content": {
+              "scientific_validated": false,
+              "stage": "analysis",
+              "status": "succeeded",
+              "stderr": "",
+              "stdout": "{\"status\":\"ok\",\"question\":\"In what year were gender disparities highest in median wealth among individuals who were ever incarcerated?\",\"definition\":\"Absolute difference between male and female median composite wealth, among ever_jailed == 1, compared across 1985, 1990 and 1996.\",\"answer\":\"Highest observed absolute female\\u2013male median wealth gap: 1985.\",\"sample_counts\":{\"total_rows\":12013,\"raw_sex_labels\":{\"female\":6164,\"male\":5849},\"raw_ever_jailed_labels\":{\"0\":11724,\"1\":289},\"ever_jailed_1\":289,\"missing_incarceration_indicator\":0,\"incarcerated_missing_sex\":0,\"eligible_female\":37,\"eligible_male\":252,\"complete_wealth_all_years\":289},\"cleaning\":{\"composite_wealth_1985\":{\"source_missing\":0,\"nonnumeric_nonmissing\":0,\"nonfinite_numeric\":0,\"negative_values_retained\":649,\"zero_values_retained\":3209},\"composite_wealth_1990\":{\"source_missing\":0,\"nonnumeric_nonmissing\":0,\"nonfinite_numeric\":0,\"negative_values_retained\":614,\"zero_values_retained\":2975},\"composite_wealth_1996\":{\"source_missing\":0,\"nonnumeric_nonmissing\":0,\"nonfinite_numeric\":0,\"negative_values_retained\":358,\"zero_values_retained\":4561}},\"primary_available_case_analysis\":{\"by_year\":[{\"year\":1985,\"groups\":{\"female\":{\"n\":37,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":3100.0},\"male\":{\"n\":252,\"missing_or_invalid_wealth\":0,\"median\":1000.0,\"q25\":0.0,\"q75\":6257.5}},\"male_minus_female_median\":1000.0,\"absolute_median_gap\":1000.0},{\"year\":1990,\"groups\":{\"female\":{\"n\":37,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":400.0},\"male\":{\"n\":252,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":5000.0}},\"male_minus_female_median\":0.0,\"absolute_median_gap\":0.0},{\"year\":1996,\"groups\":{\"female\":{\"n\":37,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":0.0},\"male\":{\"n\":252,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":8762.5}},\"male_minus_female_median\":0.0,\"absolute_median_gap\":0.0}],\"all_years_comparable\":true,\"highest_disparity_years\":[1985],\"maximum_absolute_median_gap\":1000.0},\"sensitivity_same_complete_case_sample\":{\"by_year\":[{\"year\":1985,\"groups\":{\"female\":{\"n\":37,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":3100.0},\"male\":{\"n\":252,\"missing_or_invalid_wealth\":0,\"median\":1000.0,\"q25\":0.0,\"q75\":6257.5}},\"male_minus_female_median\":1000.0,\"absolute_median_gap\":1000.0},{\"year\":1990,\"groups\":{\"female\":{\"n\":37,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":400.0},\"male\":{\"n\":252,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":5000.0}},\"male_minus_female_median\":0.0,\"absolute_median_gap\":0.0},{\"year\":1996,\"groups\":{\"female\":{\"n\":37,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":0.0},\"male\":{\"n\":252,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":8762.5}},\"male_minus_female_median\":0.0,\"absolute_median_gap\":0.0}],\"all_years_comparable\":true,\"highest_disparity_years\":[1985],\"maximum_absolute_median_gap\":1000.0},\"limitations\":[\"Descriptive observational association, not evidence that incarceration or sex causes wealth differences.\",\"Incarceration means ever jailed during 1985\\u20131994; it does not establish incarceration timing relative to each wealth measurement.\",\"Negative wealth and zeros are retained: debt can produce negative wealth, and no sentinel codes are documented. Undocumented sentinel contamination cannot be excluded.\",\"Comparisons use supplied wealth units; inflation adjustment and comparability of the composite across years are undocumented.\",\"Results are unweighted sample summaries; survey weights, sampling design and potential confounders are not supplied.\",\"The ranking describes observed median gaps without a significance test or population uncertainty estimate.\",\"Gender disparities are operationalized using the recorded binary sex labels; absolute gaps may rank years differently from relative disparities.\"]}\n",
+              "validation_scope": "identity, input hash, original execution receipt only"
+            },
+            "kind": "observation",
+            "root_material": {
+              "csv_sha256": "4071aede2c154022af2a6e08c2ba82fef7b911b7b1ede912bea2131e6a353fe3",
+              "execution_digest": "01d7a8051d448efa3d8bbfdd0474d120a70eeed2c016bf8634d30132d9f9eab6"
+            },
+            "trusted_validator": "week1-execution-receipt-only",
+            "validator_verified": true
+          },
+          "root_id": "a66811b823fe7cdee4915ebca348542b36b51eb9578c45379314d39554a50841",
+          "subject_bindings": {
+            "dataset_sha256": "4071aede2c154022af2a6e08c2ba82fef7b911b7b1ede912bea2131e6a353fe3"
+          }
+        }
+      ]
+    },
+    "evidence_version": "3ea9cb8a53178f94ae66f463751d4f1a6d5d119d61b320dda49f1c71d395c62b",
+    "identity": {
+      "benchmark": "discoverybench",
+      "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+      "domain": "train",
+      "group_id": "9b0484d1584950a1769c6b0c4ff77648564f329ac1fdd891cc1ec2d5aa373d8e",
+      "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+      "task_id": "real:test:nls_incarceration"
+    },
+    "question": "{\"dataset\":[{\"columns\":[{\"description\":\"Race of the respondent (hispanic, black or white)\",\"name\":\"race\"},{\"description\":\"Sex of the respondent (male or female)\",\"name\":\"sex\"},{\"description\":\"A boolean variable that equals 1 if the respondent was jailed between 1985 to 1994\",\"name\":\"ever_jailed\"},{\"description\":\"A composite variable creating by summing five wealth variables from the NLS data for the year 1985\",\"name\":\"composite_wealth_1985\"},{\"description\":\"A composite variable creating by summing five wealth variables from the NLS data for the year 1990\",\"name\":\"composite_wealth_1990\"},{\"description\":\"A composite variable creating by summing five wealth variables from the NLS data for the year 1996\",\"name\":\"composite_wealth_1996\"}],\"description\":\"This dataset was created from the National Longitudinal Study of Youth's 1979 cohort to about the race, wealth, and incarceration status of the participants.\",\"name\":\"nls_incarceration_processed.csv\"}],\"difficulty\":null,\"question\":\"In what year were gender disparities highest in median wealth among individuals who were ever incarcerated?\",\"source_kind\":\"real\",\"task_id\":\"real:test:nls_incarceration\"}",
+    "used_bytes": 6969
+  },
+  "execution_feedback": [
+    {
+      "id": "ea4e06c6559a51b1a7206f617cd89bd3f611c37f7a249dd7b5fc4f6ff11742f8",
+      "status": "succeeded",
+      "stderr": "",
+      "stdout": "{\"rows\": 12013, \"columns\": {\"race\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 3, \"examples\": [\"white\", \"hipanic\", \"black\"]}, \"sex\": {\"dtype\": \"object\", \"missing\": 0, \"unique\": 2, \"examples\": [\"female\", \"male\"]}, \"ever_jailed\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 2, \"min\": 0.0, \"max\": 1.0}, \"composite_wealth_1985\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 2947, \"min\": -57587.0, \"max\": 2574706.0}, \"composite_wealth_1990\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 3435, \"min\": -866400.0, \"max\": 4060077.0}, \"composite_wealth_1996\": {\"dtype\": \"int64\", \"missing\": 0, \"unique\": 3152, \"min\": -403001.0, \"max\": 3836910.0}}}\n"
+    },
+    {
+      "id": "01d7a8051d448efa3d8bbfdd0474d120a70eeed2c016bf8634d30132d9f9eab6",
+      "status": "succeeded",
+      "stderr": "",
+      "stdout": "{\"status\":\"ok\",\"question\":\"In what year were gender disparities highest in median wealth among individuals who were ever incarcerated?\",\"definition\":\"Absolute difference between male and female median composite wealth, among ever_jailed == 1, compared across 1985, 1990 and 1996.\",\"answer\":\"Highest observed absolute female\\u2013male median wealth gap: 1985.\",\"sample_counts\":{\"total_rows\":12013,\"raw_sex_labels\":{\"female\":6164,\"male\":5849},\"raw_ever_jailed_labels\":{\"0\":11724,\"1\":289},\"ever_jailed_1\":289,\"missing_incarceration_indicator\":0,\"incarcerated_missing_sex\":0,\"eligible_female\":37,\"eligible_male\":252,\"complete_wealth_all_years\":289},\"cleaning\":{\"composite_wealth_1985\":{\"source_missing\":0,\"nonnumeric_nonmissing\":0,\"nonfinite_numeric\":0,\"negative_values_retained\":649,\"zero_values_retained\":3209},\"composite_wealth_1990\":{\"source_missing\":0,\"nonnumeric_nonmissing\":0,\"nonfinite_numeric\":0,\"negative_values_retained\":614,\"zero_values_retained\":2975},\"composite_wealth_1996\":{\"source_missing\":0,\"nonnumeric_nonmissing\":0,\"nonfinite_numeric\":0,\"negative_values_retained\":358,\"zero_values_retained\":4561}},\"primary_available_case_analysis\":{\"by_year\":[{\"year\":1985,\"groups\":{\"female\":{\"n\":37,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":3100.0},\"male\":{\"n\":252,\"missing_or_invalid_wealth\":0,\"median\":1000.0,\"q25\":0.0,\"q75\":6257.5}},\"male_minus_female_median\":1000.0,\"absolute_median_gap\":1000.0},{\"year\":1990,\"groups\":{\"female\":{\"n\":37,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":400.0},\"male\":{\"n\":252,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":5000.0}},\"male_minus_female_median\":0.0,\"absolute_median_gap\":0.0},{\"year\":1996,\"groups\":{\"female\":{\"n\":37,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":0.0},\"male\":{\"n\":252,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":8762.5}},\"male_minus_female_median\":0.0,\"absolute_median_gap\":0.0}],\"all_years_comparable\":true,\"highest_disparity_years\":[1985],\"maximum_absolute_median_gap\":1000.0},\"sensitivity_same_complete_case_sample\":{\"by_year\":[{\"year\":1985,\"groups\":{\"female\":{\"n\":37,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":3100.0},\"male\":{\"n\":252,\"missing_or_invalid_wealth\":0,\"median\":1000.0,\"q25\":0.0,\"q75\":6257.5}},\"male_minus_female_median\":1000.0,\"absolute_median_gap\":1000.0},{\"year\":1990,\"groups\":{\"female\":{\"n\":37,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":400.0},\"male\":{\"n\":252,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":5000.0}},\"male_minus_female_median\":0.0,\"absolute_median_gap\":0.0},{\"year\":1996,\"groups\":{\"female\":{\"n\":37,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":0.0},\"male\":{\"n\":252,\"missing_or_invalid_wealth\":0,\"median\":0.0,\"q25\":0.0,\"q75\":8762.5}},\"male_minus_female_median\":0.0,\"absolute_median_gap\":0.0}],\"all_years_comparable\":true,\"highest_disparity_years\":[1985],\"maximum_absolute_median_gap\":1000.0},\"limitations\":[\"Descriptive observational association, not evidence that incarceration or sex causes wealth differences.\",\"Incarceration means ever jailed during 1985\\u20131994; it does not establish incarceration timing relative to each wealth measurement.\",\"Negative wealth and zeros are retained: debt can produce negative wealth, and no sentinel codes are documented. Undocumented sentinel contamination cannot be excluded.\",\"Comparisons use supplied wealth units; inflation adjustment and comparability of the composite across years are undocumented.\",\"Results are unweighted sample summaries; survey weights, sampling design and potential confounders are not supplied.\",\"The ranking describes observed median gaps without a significance test or population uncertainty estimate.\",\"Gender disparities are operationalized using the recorded binary sex labels; absolute gaps may rank years differently from relative disparities.\"]}\n"
+    }
+  ],
+  "instruction": "Interpret the actual profile and analysis execution output in this request. Answer the research question with concrete numbers where available, note missing data, outcome/indicator mismatches and uncertainty. Failed code is a failed opportunity: report the limitation, do not pretend it succeeded. The ledger validator validates recorded execution only; scientific truth is not established. Cite evidence root IDs in your conclusion. Set code to an empty string; do not call tools or write another program.",
+  "lock_digest": "342b3c05c1792f754c230a1bfc40809209192cf2c82289fa1eaefd960caf6dd3",
+  "module_context": {},
+  "objective": {
+    "question": "In what year were gender disparities highest in median wealth among individuals who were ever incarcerated?",
+    "scope": "bounded TRAIN observational analysis, no scoring"
+  },
+  "schema": "public-model-request-v1",
+  "slot": "final",
+  "task": {
+    "identity": {
+      "benchmark": "discoverybench",
+      "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+      "domain": "train",
+      "group_id": "9b0484d1584950a1769c6b0c4ff77648564f329ac1fdd891cc1ec2d5aa373d8e",
+      "split_id": "311aab673d5f116b40fc3835dfb83b00d507b899325588a7db90c83c9ed9941e",
+      "task_id": "real:test:nls_incarceration"
+    },
+    "payload": {
+      "dataset": [
+        {
+          "columns": [
+            {
+              "description": "Race of the respondent (hispanic, black or white)",
+              "name": "race"
+            },
+            {
+              "description": "Sex of the respondent (male or female)",
+              "name": "sex"
+            },
+            {
+              "description": "A boolean variable that equals 1 if the respondent was jailed between 1985 to 1994",
+              "name": "ever_jailed"
+            },
+            {
+              "description": "A composite variable creating by summing five wealth variables from the NLS data for the year 1985",
+              "name": "composite_wealth_1985"
+            },
+            {
+              "description": "A composite variable creating by summing five wealth variables from the NLS data for the year 1990",
+              "name": "composite_wealth_1990"
+            },
+            {
+              "description": "A composite variable creating by summing five wealth variables from the NLS data for the year 1996",
+              "name": "composite_wealth_1996"
+            }
+          ],
+          "description": "This dataset was created from the National Longitudinal Study of Youth's 1979 cohort to about the race, wealth, and incarceration status of the participants.",
+          "name": "nls_incarceration_processed.csv"
+        }
+      ],
+      "difficulty": null,
+      "question": "In what year were gender disparities highest in median wealth among individuals who were ever incarcerated?",
+      "source_kind": "real",
+      "task_id": "real:test:nls_incarceration"
+    }
+  }
+}
