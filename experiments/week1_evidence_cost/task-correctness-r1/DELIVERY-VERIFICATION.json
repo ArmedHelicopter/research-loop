@@ -1,0 +1,25 @@
+{
+  "schema": "existing-task-review-delivery-v1",
+  "recorded_at": "2026-09-21T13:50:13.122304+00:00",
+  "source_commit": "052b874bd39c83ff2c539fb67cc151ced255076e",
+  "package_files_verified": 8,
+  "old_index_files_unchanged": 512,
+  "read_input_files_unchanged": 30,
+  "old_index_sha256": "0a7218ddab2f0215d36c3d208a9d092b1d7a81d7ee66a927cacda4e02174d21e",
+  "manifest_sha256": "8727965cfdbd329b10d27ca74dbaa05fcf8b30130e81cdc370dd9646dafb2a59",
+  "recomputation_checks": 401,
+  "mismatches": 0,
+  "known_answers": [
+    "linear quantile",
+    "tie-averaged ranks",
+    "balanced logistic coefficients",
+    "balanced logistic HC0 intercept variance",
+    "balanced logistic HC0 slope variance",
+    "negative correlation sign"
+  ],
+  "original_inputs_unchanged": true,
+  "new_model_calls": 0,
+  "core_modified": false,
+  "script_sha256": "a1860874e3ff0661f0983ea065acf24b6975857b55bca90428ba7413b8368cc9",
+  "status": "verified"
+}

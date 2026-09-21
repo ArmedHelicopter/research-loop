@@ -1,0 +1,20 @@
+{
+  "schema": "existing-task-review-package-v1",
+  "source_commit": "052b874bd39c83ff2c539fb67cc151ced255076e",
+  "created_at": "2026-09-21T13:49:46.303717+00:00",
+  "scope": "Append-only review, no core or old evidence changes",
+  "files": {
+    "task-correctness-r1/README.md": "b87de438c5f41c71f85e8c519566173d776c19550ef4c7b98c6849ce8067aa0b",
+    "task-correctness-r1/REVIEW.md": "ad05c6018dacc2232ed70dcc7ca410473423b746330175c721e58f16442155d3",
+    "task-correctness-r1/CLOSURE.md": "b6dfd79d989f5c1d054a64ac358acc96211e534c60e77aa7001786043f9837bf",
+    "task-correctness-r1/SOURCES.md": "6ea629900c5dbcac1265eaf983a47fe91ed24eae520ecee20c204aec55901a93",
+    "task-correctness-r1/verify_existing.py": "d4328a006a993ab12cb213847da88e6cf7875629b8830feff2e2d3a9faacafa5",
+    "task-correctness-r1/check_delivery.py": "a1860874e3ff0661f0983ea065acf24b6975857b55bca90428ba7413b8368cc9",
+    "task-correctness-r1/recomputation-r1.json": "fd3a24303d744590bb604b362afad5c3c4024da348ec82d4a2bd0eadf0bb167e",
+    "FOLLOWUP-20260921.md": "b76ebeb71a7e742c82854c4c46c52ee07020262e7ec4846a435e357c0346aadc"
+  },
+  "excluded_generated_files": [
+    "MANIFEST.json (self)",
+    "DELIVERY-VERIFICATION.json (post-copy receipt)"
+  ]
+}
