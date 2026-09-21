@@ -110,7 +110,7 @@ def worker(name,index,scheme,repeat):
     assert actual_peak_ws<=m['child_peak_working_set_stop_bytes']
     print(json.dumps({'opportunity':case['opportunity'],'scheme':scheme,'repeat':repeat,'measurements':measurements,'checks':checks,
         'actual_sequence_wall_ns_including_checks':sequence_wall,'actual_cache_stats':actual_stats,'separate_warm_probe_ns':warm,
-        'actual_peak_python_tracemalloc_bytes':actual_peak_python,'whole_child_peak_working_set_bytes':actual_peak_ws,
+        'actual_peak_python_tracemalloc_bytes':actual_peak_python,'actual_sequence_peak_working_set_bytes':actual_peak_ws,'whole_child_peak_working_set_bytes':peak_working_set(),
         'python_peak_including_warm_probe_bytes':peak}))
 def run(name):
     out=HERE/name;m=read(out/'manifest.json');result=out/'measurement';result.mkdir()

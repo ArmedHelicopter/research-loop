@@ -1,0 +1,15 @@
+{
+  "status": "incomplete_timeout",
+  "cause": "Frozen parent runtime limit 180 seconds reached; final process exit 1.",
+  "completed_children": 46,
+  "planned_children": 60,
+  "completed_by_scheme": {
+    "R": 15,
+    "B": 17,
+    "S": 14
+  },
+  "complete_comparison": false,
+  "semantic_mismatch_observed_in_completed_prefix": false,
+  "old_rows_retained": true,
+  "next": "New frozen replay with unchanged operations/schemes/repeats and 600-second parent limit; never append to this raw file."
+}
